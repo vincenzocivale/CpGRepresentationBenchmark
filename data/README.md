@@ -29,6 +29,27 @@ data/
 
 The actual symlink targets are host-dependent; the arrows above are conceptual examples.
 
+## ComputAgeBench
+
+ComputAgeBench is intentionally downloaded and processed locally, not committed to Git.
+It is a CC BY-SA 4.0 collection of study-level Parquet matrices. Download a pinned snapshot
+from `computage/computage_bench` into `data/raw/ComputAgeBench`, then convert the desired
+split with a **GRCh38** `probe_id,chr,pos` crosswalk:
+
+```bash
+python scripts/data/prepare_computagebench.py \
+  --snapshot-dir data/raw/ComputAgeBench \
+  --split benchmark \
+  --probe-crosswalk /path/to/illumina_probe_grch38.parquet \
+  --output-dir data/processed/ComputAgeBench/benchmark
+```
+
+The result has the standard `methylation.h5` (`beta`, `cpg_idx`, `sample_name`) plus
+`phenotypes.parquet`, `cpg_mapping.parquet`, QC and provenance manifests. The benchmark
+split includes healthy controls and aging-accelerating conditions; `age` and
+`is_aging_accelerating_condition` are ready-to-use downstream targets. A common locus protocol across
+all compared representation stores is still required before a run.
+
 ## Current benchmark scope
 
 The first controlled benchmark is deliberately restricted to **chr1**, because the available NTv3-pre atlas currently covers chr1 only. Both Functional and NTv3-pre arms therefore use the same TCGA-array chr1 universe and the same persisted locus split.

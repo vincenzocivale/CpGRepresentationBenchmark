@@ -89,6 +89,30 @@ using sample-wise `nanmean`; the source-probe mapping and group size remain in
 GSE40279 therefore remains a full external cohort.  Any TCGA/representation
 intersection is decided later by the experiment protocol, never during ingestion.
 
+## ComputAgeBench
+
+ComputAgeBench ships one Parquet matrix per GEO study, with probe IDs as rows and GEO
+sample IDs as columns. `prepare_computagebench.py` converts a local snapshot to one
+coordinate-native HDF5 matrix. It requires an explicit `probe_id,chr,pos` crosswalk in
+GRCh38; source probe IDs are retained in `cpg_mapping.parquet`, while only the coordinate
+encoding enters `/cpg_idx`.
+
+```bash
+python scripts/data/prepare_computagebench.py \
+  --snapshot-dir data/raw/ComputAgeBench \
+  --probe-crosswalk /path/to/illumina_probe_grch38.parquet \
+  --split benchmark \
+  --output-dir data/processed/ComputAgeBench/benchmark
+```
+
+The benchmark metadata is preserved as `phenotypes.parquet`. It exposes chronological
+`age`, `condition`, `condition_class`, and binary `is_healthy_control` /
+`is_aging_accelerating_condition`. These are
+downstream labels only: they must never be used while materializing or fitting a locus
+representation. Cite ComputAgeBench and comply with its CC BY-SA 4.0 terms when using the
+derived data. HDF5 sample IDs are made globally unique as `DatasetID:GEO_sample_ID`; the
+unmodified GEO ID is retained as `source_sample_name` in the phenotype artifact.
+
 ## Legacy MethylProphet artifacts
 
 The existing `array_cpg_map.parquet`, `epic_cpg_map.parquet` and

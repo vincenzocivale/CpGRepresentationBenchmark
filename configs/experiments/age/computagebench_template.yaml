@@ -1,0 +1,59 @@
+# Copy for every representation arm. Build a shared common-locus protocol first.
+experiment:
+  name: computagebench_age
+  task: age
+  output_root: outputs
+
+dataset:
+  name: computagebench_benchmark
+  methylation_h5: data/processed/ComputAgeBench/benchmark/methylation.h5
+  cpg_registry: data/processed/ComputAgeBench/benchmark/cpg_mapping.parquet
+  cpg_namespace: grch38_cpg_cytosine_1based_v1
+  locus_protocol: data/protocols/ComputAgeBench/benchmark_common_REPLACE_ME.npz
+  patient_split: [0.80, 0.10, 0.10]
+
+phenotype:
+  parquet: data/processed/ComputAgeBench/benchmark/phenotypes.parquet
+  sample_column: sample_name
+  target_column: age
+  task_type: regression
+
+representation:
+  name: REPLACE_ME
+  family: genomic_fm
+  track: native_frozen
+  component: locus_only
+  source: REPLACE_ME
+  mode: precomputed
+  store_h5: data/cache/representations/materialized/ComputAgeBench/REPLACE_ME.h5
+  id_key: cpg_idx
+  embedding_key: embedding
+  cpg_namespace: grch38_cpg_cytosine_1based_v1
+
+model:
+  locus_latent_dim: 256
+  token_dim: 256
+  patient_dim: 256
+  hidden_dim: 512
+  dropout: 0.10
+
+training:
+  seed: 17
+  device: cuda
+  epochs: 50
+  batch_size: 16
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-4
+  mixed_precision: true
+  num_workers: 4
+  panel_size: 4096
+  mask_fractions: [0.00, 0.15, 0.30, 0.50]
+  beta_epsilon: 1.0e-4
+
+evaluation:
+  panel_size: 4096
+  selection_mask_fraction: 0.30
+  mask_fractions: [0.00, 0.15, 0.30, 0.50, 0.70, 0.90]
+  batch_size: 16
+  num_workers: 2
+  save_predictions: true

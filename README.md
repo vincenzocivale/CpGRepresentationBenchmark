@@ -63,6 +63,10 @@ data/cache/representations/functional_annotations_chr1.h5
 
 See `data/README.md` for the complete contract.
 
+For the external multi-cohort aging benchmark, ComputAgeBench can be ingested from its local
+Hugging Face snapshot with `scripts/data/prepare_computagebench.py`. The data themselves are
+not versioned; see `data/README.md` and `configs/experiments/age/computagebench_template.yaml`.
+
 ## Installation
 
 ```bash
