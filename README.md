@@ -11,11 +11,34 @@ The repository now separates two experimental tracks:
 
 The original chr1 masking experiment remains executable, while the V2 layout adds proxy training and shared downstream evaluation for masked reconstruction, age, mortality and disease prediction, including sparse/masked methylome sweeps. See `docs/BENCHMARK_V2.md`.
 
-## Current executable scope: TCGA array, chromosome 1
+## Datasets
 
-The available NTv3-pre atlas currently contains chr1 only. Therefore the initial benchmark is intentionally restricted to **TCGA-array CpGs on chr1 for both representations**.
+`tcga_array` is the proxy-training / masking-reconstruction source. Every other dataset below is
+an external-cohort downstream task, prepared once with `scripts/data/prepare_*.py` and registered
+into a shared master CpG registry (`scripts/data/build_master_cpg_registry.py`) so representation
+coverage is judged against `shared` (loci also in the TCGA-array proxy source) vs. `external_locus`
+(loci absent from it) vs. `all`.
 
-This is the correct deployment choice now: it lets us validate the complete protocol without spending compute on a genome-wide NTv3 extraction. Once the benchmark is stable, the main paper experiment should be expanded beyond chr1 so the final biological claim is not chromosome-specific.
+| Dataset | Task | Config / protocol doc |
+|---|---|---|
+| `tcga_array` | proxy training, masked reconstruction | `configs/datasets/tcga_array.yaml`, `docs/BENCHMARK_V2.md` |
+| `GSE40279` | age prediction | `configs/datasets/gse40279.yaml`, `docs/GSE40279_AGE_PROTOCOL.md` |
+| `GSE42861` (rheumatoid arthritis) | disease classification | `configs/datasets/gse42861.yaml`, `docs/GSE42861_DISEASE_PROTOCOL.md` |
+| `GSE147221` (schizophrenia) | disease classification | `configs/datasets/gse147221.yaml`, `docs/GSE147221_DISEASE_PROTOCOL.md` |
+| `ComputAgeBench` (65-study aggregate) | age / aging-accelerating-condition classification | `configs/datasets/computagebench_benchmark.yaml`, `docs/COMPUTAGEBENCH_PROTOCOL.md` |
+| `CALERIE` (CR vs. AL intervention) | intervention classification — **not yet prepared, controlled-access** | `docs/CALERIE_ACCESS.md` |
+
+Each downstream cohort is prepared with its own `scripts/data/prepare_<dataset>.py`, producing the
+standard `methylation.h5` (`beta`, `cpg_idx`, `sample_name`) + `phenotypes.parquet` +
+`cpg_mapping.parquet` triple under `data/processed/<DATASET>/`, matching `docs/DATA_CONTRACT.md`.
+None of this raw/processed biological data is committed to Git — see `data/README.md`.
+
+## Original chr1 masking scope: TCGA array, chromosome 1
+
+The masking benchmark's first validated protocol is intentionally restricted to **TCGA-array
+CpGs on chr1 for both representations**, because the original NTv3-pre atlas covered chr1 only.
+This remains executable as the baseline masking sanity check; downstream classification/age tasks
+above are not chr1-restricted.
 
 Both arms share exactly:
 
@@ -242,19 +265,26 @@ A stronger claim that loci are unseen by the **representation encoder itself** r
 ## Repository map
 
 ```text
+configs/datasets/                  per-dataset h5/parquet paths and primary task definitions
 configs/experiments/masking/       representation-controlled masking configs
-configs/experiments/classification/ age/mortality/disease config template
+configs/experiments/classification/ age/mortality/disease config templates (one per dataset)
+configs/experiments/age/           age-task configs (GSE40279, ComputAgeBench)
 configs/proxy/                     shared proxy-training configs
 configs/representations/           representation catalog and provenance
-data/                              local data contract, caches and persistent protocols
-docs/                              benchmark design and extension rules
+data/                              local data contract, caches and persistent protocols (not versioned)
+docs/                              benchmark design, data contract, and per-dataset protocol docs
 scripts/bootstrap_local_data.py    local data/symlink/coverage preflight
+scripts/data/prepare_*.py          per-dataset raw -> methylation.h5/phenotypes.parquet preparation
+scripts/data/build_master_cpg_registry.py
+scripts/data/build_transfer_locus_protocols.py
+scripts/data/build_common_locus_protocol.py
 scripts/build_functional_embeddings.py
 scripts/export_functional_feature_store.py
 scripts/train_proxy_representation.py
 scripts/run_masking_benchmark.py
 scripts/run_classification_benchmark.py
 scripts/validate_feature_store.py
+scripts/summarize_runs.py
 src/cpg_repr_benchmark/            benchmark implementation
 tests/                             synthetic invariants; no biological data required
 ```

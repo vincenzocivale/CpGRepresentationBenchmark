@@ -1,0 +1,16 @@
+name: gse42861
+accession: GSE42861
+methylation_h5: data/processed/GSE42861/methylation.h5
+phenotypes_parquet: data/processed/GSE42861/phenotypes.parquet
+cpg_mapping_parquet: data/processed/GSE42861/cpg_mapping.parquet
+master_registry: data/cpg/master_cpg_registry.parquet
+reference_build: GRCh38
+coordinate_convention: 1-based position of CpG cytosine
+cpg_namespace: grch38_cpg_cytosine_1based_v1
+platform: Illumina HumanMethylation450 BeadChip
+sample_type: peripheral blood leukocytes
+primary_tasks:
+  disease_classification:
+    target_column: disease_label
+    task_type: binary
+    classes: [control, rheumatoid_arthritis]

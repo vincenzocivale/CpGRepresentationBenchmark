@@ -29,6 +29,39 @@ data/
 
 The actual symlink targets are host-dependent; the arrows above are conceptual examples.
 
+## External-cohort downstream datasets
+
+Beyond the chr1 TCGA-array masking scope, downstream cohorts are prepared once from raw/GEO
+sources into a standard `data/processed/<DATASET>/{methylation.h5,phenotypes.parquet,cpg_mapping.parquet}`
+triple and registered into a shared master CpG registry so coverage can be judged consistently
+across representations:
+
+```text
+data/
+├── processed/
+│   ├── GSE40279/          # age prediction — docs/GSE40279_AGE_PROTOCOL.md
+│   ├── GSE42861/          # rheumatoid arthritis disease classification — docs/GSE42861_DISEASE_PROTOCOL.md
+│   ├── GSE147221/         # schizophrenia disease classification — docs/GSE147221_DISEASE_PROTOCOL.md
+│   └── ComputAgeBench/    # multi-study age / AAC classification — docs/COMPUTAGEBENCH_PROTOCOL.md
+├── cpg/
+│   ├── master_cpg_registry.parquet     # every registered source's CpGs, one row per locus
+│   ├── master_cpg_membership.parquet   # per-source membership flags
+│   └── registries/                     # per-platform (array/epic/wgbs) CpG maps
+└── protocols/
+    ├── tcga_array_chr1_masking_seed17_holdout20.npz
+    ├── GSE40279/transfer_vs_tcga/{all,shared,external_locus}.npz
+    └── GSE42861/transfer_vs_tcga/{all,shared,external_locus}.npz
+```
+
+The master registry rebuild (`scripts/data/build_master_cpg_registry.py`) is **not incremental**:
+every source that must remain in scope has to be re-listed on each call, including ones already
+registered, or they silently drop out of the membership table.
+
+`CALERIE` (caloric-restriction intervention task) is documented as a planned dataset in
+`docs/CALERIE_ACCESS.md` but is controlled-access and **not yet prepared** — no
+`configs/datasets/calerie.yaml`, `scripts/data/prepare_calerie.py`, or `data/processed/CALERIE/`
+exist yet.
+
 ## ComputAgeBench
 
 ComputAgeBench is intentionally downloaded and processed locally, not committed to Git.
@@ -50,9 +83,9 @@ split includes healthy controls and aging-accelerating conditions; `age` and
 `is_aging_accelerating_condition` are ready-to-use downstream targets. A common locus protocol across
 all compared representation stores is still required before a run.
 
-## Current benchmark scope
+## Current masking-benchmark scope
 
-The first controlled benchmark is deliberately restricted to **chr1**, because the available NTv3-pre atlas currently covers chr1 only. Both Functional and NTv3-pre arms therefore use the same TCGA-array chr1 universe and the same persisted locus split.
+The original masked-reconstruction benchmark is deliberately restricted to **chr1**, because the available NTv3-pre atlas currently covers chr1 only. Both Functional and NTv3-pre arms therefore use the same TCGA-array chr1 universe and the same persisted locus split. This restriction applies to the masking task only — the external-cohort classification/age datasets above are not chr1-limited.
 
 Do not silently use genome-wide functional loci against a chr1 NTv3 atlas. The runner records and validates chromosome scope.
 

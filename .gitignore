@@ -14,11 +14,12 @@ data/raw
 data/processed/
 data/methylation/
 data/cpg/registries/*.parquet
+data/cpg/*.parquet
 data/derived/
 data/external/
 data/cache/
 data/local_manifest.json
-data/protocols/*.npz
+data/protocols/
 
 # Large binary artifacts anywhere else
 *.pt
