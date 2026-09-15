@@ -1,0 +1,16 @@
+name: gse147221
+accession: GSE147221
+methylation_h5: data/processed/GSE147221/methylation.h5
+phenotypes_parquet: data/processed/GSE147221/phenotypes.parquet
+cpg_mapping_parquet: data/processed/GSE147221/cpg_mapping.parquet
+master_registry: data/cpg/master_cpg_registry.parquet
+reference_build: GRCh38
+coordinate_convention: 1-based position of CpG cytosine
+cpg_namespace: grch38_cpg_cytosine_1based_v1
+platform: Illumina HumanMethylation450 BeadChip
+sample_type: whole blood and buffy coat
+primary_tasks:
+  disease_classification:
+    target_column: disease_label
+    task_type: binary
+    classes: [control, schizophrenia]
