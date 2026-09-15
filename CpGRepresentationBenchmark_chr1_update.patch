@@ -1,0 +1,1361 @@
+diff --git a/.gitignore b/.gitignore
+index 8182781..c081b21 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -4,9 +4,21 @@ __pycache__/
+ .ruff_cache/
+ .venv/
+ *.egg-info/
++wandb/
++
++# Experiment outputs
+ outputs/
++
++# Local biological data and derived caches
++data/methylation/
++data/cpg/registries/*.parquet
++data/derived/
++data/external/
+ data/cache/
+-data/features/
++data/local_manifest.json
++data/protocols/*.npz
++
++# Large binary artifacts anywhere else
+ *.pt
+ *.pth
+ *.h5
+@@ -14,4 +26,3 @@ data/features/
+ *.npy
+ *.npz
+ !tests/fixtures/*.npz
+-wandb/
+diff --git a/README.md b/README.md
+index d2d4971..9d60a53 100644
+--- a/README.md
++++ b/README.md
+@@ -1,105 +1,185 @@
+ # CpGRepresentationBenchmark
+ 
+-A controlled benchmark for one broad question: **what is the most useful patient-agnostic representation of a CpG locus for methylation modeling?**
++Controlled benchmark of **patient-agnostic CpG locus representations** for methylation modeling.
+ 
+-The project grows out of the observation in `MehylPredictor` that a CpG representation derived from ENCODE/reference functional annotations can outperform a sequence-only NTv3-pre locus embedding. The scope here is deliberately broader than RNA→methylation prediction: compare functional annotation representations against representations extracted from approaches such as CpGPT, MethylGPT, DNAmBERT, MethylProphet and genomic foundation models.
++The primary question is whether a CpG representation derived from reference-genome functional annotations is more useful than sequence-derived representations such as genomic foundation-model embeddings. The first executable comparison is **Functional annotations vs NTv3-pre** under a fixed masked-methylome reconstruction model.
+ 
+-## Implemented benchmark: masked methylome reconstruction
++## Current executable scope: TCGA array, chromosome 1
+ 
+-V1 implements the requested first benchmark only. Two views are first-class:
++The available NTv3-pre atlas currently contains chr1 only. Therefore the initial benchmark is intentionally restricted to **TCGA-array CpGs on chr1 for both representations**.
+ 
+-1. `seen`: masked CpGs belong to the train-locus universe;
+-2. `unseen_locus`: targets are a disjoint CpG split that never appears as training context or a training target.
++This is the correct deployment choice now: it lets us validate the complete protocol without spending compute on a genome-wide NTv3 extraction. Once the benchmark is stable, the main paper experiment should be expanded beyond chr1 so the final biological claim is not chromosome-specific.
+ 
+-For `unseen_locus`, even the prior is leakage-safe: held-out CpG methylation values are never read when the prior is fitted. Held-out loci receive one global prior estimated only from train patients × train loci.
++Both arms share exactly:
+ 
+-Default masking sweep: **15%, 30%, 50%, 70%, 90%**.
++- TCGA patient split;
++- chr1 CpG universe;
++- persistent train/held-out CpG split;
++- masking percentages;
++- reconstruction architecture;
++- optimizer/training budget;
++- leakage-safe prior policy;
++- metrics.
+ 
+-## Primary scientific comparison
++Only the CpG representation changes.
+ 
+-The main benchmark is **representation-controlled**. The reconstruction network, patient split, persistent CpG split, masking schedule, optimizer and training budget are fixed; only the CpG representation changes. This is the comparison that can support a claim about representation quality.
++## Data layout
+ 
+-Native CpGPT/MethylGPT/etc. masked inference belongs in a secondary complete-method table, because there the representation and prediction architecture both change. The previous `MethylomeReconstruction` project remains useful as a source for those wrappers when that track is added.
+-
+-The fixed downstream model is intentionally simple:
++The repository now expects the data you transferred at these exact relative paths:
+ 
+ ```text
+-observed locus representation + observed methylation residual
+-        -> tokenization
+-        -> DeepSets patient encoder
+-        -> patient embedding
+-
+-target locus representation + patient embedding
+-        -> residual decoder
+-        -> sigmoid(target prior + delta)
++data/
++├── cpg/
++│   └── registries/
++│       ├── array_cpg_map.parquet
++│       ├── epic_cpg_map.parquet
++│       └── wgbs_cpg_map.parquet
++├── derived/
++│   └── ntv3_pre_chr1_atlas/
++│       └── chr1_ntv3_pretrain_atlas_v1.h5
++└── methylation/
++    └── tcga_array_official_full.h5
+ ```
+ 
+-A shared learned adapter maps every raw representation to the same latent width. Before a final paper claim, add the train-locus PCA/IncrementalPCA capacity control described in `docs/BENCHMARK_DESIGN.md` so raw input dimensionality cannot explain the result.
+-
+-## Four representation modes
+-
+-Cached representations use one canonical contract:
++The functional source data are **not duplicated**. `scripts/bootstrap_local_data.py` links them from the sibling `MehylPredictor` repository into:
+ 
+ ```text
+-/cpg_idx    int64 [N]
+-/embedding  float16/float32 [N, D]
++data/external/functional/locus_features_v1
++data/external/functional/checkpoints/functional_encoder.pt
+ ```
+ 
+-The pipeline supports:
+-
+-- `precomputed` — reuse an existing feature store;
+-- `generate_if_missing` — build it automatically once when absent, then cache it;
+-- `regenerate` — force a full rebuild;
+-- `online` — true runtime/on-the-fly encoding through a Python provider.
+-
+-The first deployment can therefore use the functional and NTv3-pre embeddings you already have. Later genomic/methylation FM adapters only need to implement this boundary; training code remains unchanged.
++The functional chr1 embedding generated by this project is cached at:
+ 
+-## Shared CpG protocol
+-
+-The train/held-out CpG split is persisted under `data/protocols/` and reused by every representation. It is created from the dataset scope, **not** from each encoder's coverage. If one representation cannot encode a required locus, the run fails rather than silently receiving a different/easier test set.
++```text
++data/cache/representations/functional_annotations_chr1.h5
++```
+ 
+-This is essential for a fair comparison.
++See `data/README.md` for the complete contract.
+ 
+-## Setup
++## Installation
+ 
+ ```bash
++conda activate cpg-repr-benchmark
+ python -m pip install -e ".[dev]"
+ pytest -q
+ ```
+ 
+-## First deployment with existing features
++## 1. Bootstrap and preflight
+ 
+-Place or symlink your stores:
++From the repository root:
+ 
+ ```bash
+-mkdir -p data/features
+-ln -s /path/to/functional_annotations.h5 data/features/functional_annotations.h5
+-ln -s /path/to/ntv3_pre.h5 data/features/ntv3_pre.h5
++python scripts/bootstrap_local_data.py
+ ```
+ 
+-Validate them:
++The script validates:
+ 
+-```bash
+-python scripts/validate_feature_store.py \
+-  --store data/features/functional_annotations.h5 \
+-  --methylation-h5 /path/to/tcga_array_official_full.h5
++- `tcga_array_official_full.h5` (`beta`, `cpg_idx`, `sample_name`);
++- alignment with `array_cpg_map.parquet`;
++- the number of TCGA-array CpGs on chr1;
++- the existing NTv3-pre atlas structure and embedding dimension;
++- **complete NTv3 coverage of the dataset-defined chr1 CpG universe**;
++- availability of the existing functional locus store and encoder checkpoint.
++
++It also creates the functional symlinks and writes:
++
++```text
++data/local_manifest.json
+ ```
+ 
+-Run the two initial controlled arms:
++If NTv3 does not cover every required chr1 CpG, preflight exits with code 2 rather than silently changing the benchmark universe.
++
++## 2. Materialize the functional chr1 representation
++
++The first Functional run can generate the representation automatically:
+ 
+ ```bash
+-python scripts/run_masking_benchmark.py \
+-  --config configs/experiments/masking/functional_precomputed.yaml \
++CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
++  --config configs/experiments/masking/functional_generate_if_missing.yaml \
+   --mode all
++```
++
++On the first run this builds:
++
++```text
++data/cache/representations/functional_annotations_chr1.h5
++```
++
++with the canonical contract:
+ 
+-python scripts/run_masking_benchmark.py \
++```text
++/cpg_idx    int64   [N]
++/embedding  float16 [N, 256]
++```
++
++Subsequent runs can use `functional_precomputed.yaml`.
++
++## 3. Run NTv3-pre on the same protocol
++
++```bash
++CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
+   --config configs/experiments/masking/ntv3_precomputed.yaml \
+   --mode all
+ ```
+ 
+-Every run prints `RUN_DIR=...` and writes `experiment.json`, checkpoints, per-view/per-mask `metrics.json`, and an aggregate `summary.json`.
++The NTv3 loader can auto-detect common existing-atlas dataset names such as:
++
++```text
++/cpg_idx + /embedding
++/ids     + /emb
++```
+ 
+-Aggregate all completed runs:
++The actual resolved keys are recorded in `representation_manifest.json`.
++
++Both configurations point to the same persistent locus protocol:
++
++```text
++data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
++```
++
++so the Functional and NTv3-pre arms are evaluated on the exact same CpGs.
++
++## Masking benchmark
++
++Two evaluation views are first-class:
++
++1. `seen`: masked targets come from the train-locus universe;
++2. `unseen_locus`: targets are a disjoint CpG split never used as reconstruction-training context or target.
++
++For `unseen_locus`, held-out CpG methylation is also excluded when fitting the prior. Held-out loci use one global prior estimated from **train patients × train loci only**.
++
++Default masking sweep:
++
++```text
++15%, 30%, 50%, 70%, 90%
++```
++
++## Outputs
++
++Each run is written under:
++
++```text
++outputs/masking/<dataset>/<representation>/seed_<seed>/<timestamp>-<config_hash>/
++```
++
++and contains at least:
++
++```text
++resolved_config.yaml
++experiment.json
++representation_manifest.json
++patient_split.npz
++locus_split.npz
++prior_logit.npy
++history.json
++checkpoints/best.pt
++checkpoints/last.pt
++evaluation/seen/mask_*/metrics.json
++evaluation/unseen_locus/mask_*/metrics.json
++summary.json
++```
++
++Aggregate completed runs with:
+ 
+ ```bash
+ python scripts/summarize_runs.py \
+@@ -107,46 +187,42 @@ python scripts/summarize_runs.py \
+   --csv outputs/masking_summary.csv
+ ```
+ 
+-## Functional representation: build or encode online
++## Representation-controlled comparison
+ 
+-The repo recovers the functional-locus encoding path already used in the existing project: sparse functional tracks + dense locus features -> 256-D patient-agnostic embedding.
++The downstream reconstruction model is fixed:
+ 
+-Materialize it once:
++```text
++observed locus representation + observed methylation residual
++        -> tokenization
++        -> DeepSets patient encoder
++        -> patient embedding
+ 
+-```bash
+-python scripts/build_functional_embeddings.py \
+-  --checkpoint /path/to/MehylPredictor/checkpoints/best.pt \
+-  --array-cpg-map /path/to/array_cpg_map.parquet \
+-  --locus-store /path/to/derived/locus_features_v1 \
+-  --methylpredictor-root /path/to/MehylPredictor \
+-  --output data/features/functional_annotations.h5
++target locus representation + patient embedding
++        -> residual decoder
++        -> sigmoid(target prior + delta)
+ ```
+ 
+-Or edit `functional_generate_if_missing.yaml` to let the run build the cache automatically.
++A learned adapter maps raw representations to a common latent width. Before the final paper comparison, we should additionally implement the fixed-dimensional train-locus PCA/IncrementalPCA control described in `docs/BENCHMARK_DESIGN.md`, so different raw embedding dimensions cannot create a parameter-count confound.
+ 
+-For true on-the-fly generation, edit the paths in `functional_online.yaml` and run it directly. Online mode requires `num_workers: 0` because the encoder owns GPU/model state in the main process.
++## Important interpretation of unseen loci
++
++The current `unseen_locus` protocol guarantees that held-out CpGs are unseen by the **downstream reconstructor** and do not leak through the methylation prior.
++
++A stronger claim that loci are unseen by the **representation encoder itself** requires auditing/retraining the functional encoder so its methylation-supervised fitting also respects the same locus split. Until that is verified, describe this arm as downstream-unseen rather than strict representation-OOD.
+ 
+ ## Repository map
+ 
+ ```text
+-configs/experiments/masking/   executable experiment definitions
+-configs/representations/       templates for future encoders
+-data/protocols/                 persistent shared CpG protocols (generated, gitignored)
+-docs/                          benchmark protocol, leakage rules, extension guide
+-scripts/                       runner, feature builder, validator, result aggregator
+-src/cpg_repr_benchmark/data/   patient/locus splits and masking datasets
+-src/cpg_repr_benchmark/representations/
+-                               cached + online representation interfaces
+-src/cpg_repr_benchmark/models/ fixed reconstruction architecture
+-src/cpg_repr_benchmark/training/
+-                               leakage-safe priors and training engine
+-src/cpg_repr_benchmark/evaluation/ metrics
+-src/cpg_repr_benchmark/experiments/ run-directory/JSON bookkeeping
+-tests/                          synthetic invariants, no external data required
+-```
+-
+-## What is intentionally not implemented yet
+-
+-The repo is ready for additional representations, but V1 does **not** yet contain extraction adapters/checkpoints for CpGPT, MethylGPT, DNAmBERT or every other literature model, nor downstream classification/biological tasks. The first purpose is to deploy and validate the masking protocol using the already-saved functional and NTv3-pre stores, then add those encoders one by one without changing the benchmark core.
+-
+-See `docs/ADDING_REPRESENTATIONS.md`, `docs/BENCHMARK_DESIGN.md`, and `docs/OUTPUT_SCHEMA.md` before adding new arms.
++configs/experiments/masking/       executable Functional/NTv3 benchmark configs
++configs/representations/           future representation templates
++data/                              local data contract, caches and persistent protocols
++docs/                              benchmark design and extension rules
++scripts/bootstrap_local_data.py    local data/symlink/coverage preflight
++scripts/build_functional_embeddings.py
++scripts/run_masking_benchmark.py
++scripts/validate_feature_store.py
++src/cpg_repr_benchmark/            benchmark implementation
++tests/                             synthetic invariants; no biological data required
++```
++
++CpGPT, MethylGPT, DNAmBERT, MethylProphet and other genomic FMs are intentionally subsequent adapters. They should be added without changing this benchmark core.
+diff --git a/configs/datasets/tcga_array.yaml b/configs/datasets/tcga_array.yaml
+index b365569..52b81fa 100644
+--- a/configs/datasets/tcga_array.yaml
++++ b/configs/datasets/tcga_array.yaml
+@@ -1,5 +1,7 @@
+-# Reference fragment; the executable experiment configs are self-contained.
+-name: tcga_array
+-methylation_h5: /data2/home/vcivale/projects/methylation/data/MethylPredictorData/methylation/tcga_array_official_full.h5
+-cpg_registry: /data2/home/vcivale/projects/methylation/data/MethylPredictorData/cpg/registries/array_cpg_map.parquet
++# Local repository layout. The full methylation matrix is scoped to chr1 at runtime
++# so it can be compared fairly with the currently available NTv3-pre chr1 atlas.
++name: tcga_array_chr1
++methylation_h5: data/methylation/tcga_array_official_full.h5
++cpg_registry: data/cpg/registries/array_cpg_map.parquet
++chromosomes: [chr1]
+ patient_split: [0.80, 0.10, 0.10]
+diff --git a/configs/experiments/masking/functional_generate_if_missing.yaml b/configs/experiments/masking/functional_generate_if_missing.yaml
+index 681c64f..2979e89 100644
+--- a/configs/experiments/masking/functional_generate_if_missing.yaml
++++ b/configs/experiments/masking/functional_generate_if_missing.yaml
+@@ -1,46 +1,59 @@
+ experiment:
+-  name: masking_representation_controlled
++  name: masking_representation_controlled_chr1
+   output_root: outputs
+   locus_split:
+     heldout_fraction: 0.20
+     seed: 17
+-    protocol_path: data/protocols/tcga_array_masking_seed17_holdout20.npz
++    protocol_path: data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
+ 
+ dataset:
+-  name: tcga_array
+-  methylation_h5: /data2/home/vcivale/projects/methylation/data/MethylPredictorData/methylation/tcga_array_official_full.h5
+-  cpg_registry: /data2/home/vcivale/projects/methylation/data/MethylPredictorData/cpg/registries/array_cpg_map.parquet
++  name: tcga_array_chr1
++  methylation_h5: data/methylation/tcga_array_official_full.h5
++  cpg_registry: data/cpg/registries/array_cpg_map.parquet
++  chromosomes: [chr1]
+   patient_split: [0.80, 0.10, 0.10]
+ 
+ representation:
+-  name: functional_annotations
+-  source: MehylPredictor functional-locus encoder over ENCODE/reference annotations
++  name: functional_annotations_chr1
++  source: MehylPredictor functional-locus encoder over reference-genome functional annotations
+   mode: generate_if_missing
+-  store_h5: data/features/functional_annotations.h5
++  store_h5: data/cache/representations/functional_annotations_chr1.h5
++  supported_chromosomes: [chr1]
++  id_key: cpg_idx
++  embedding_key: embedding
+   generator:
+     command:
+       - python
+       - scripts/build_functional_embeddings.py
+       - --checkpoint
+-      - /EDIT/ME/best.pt
++      - data/external/functional/checkpoints/functional_encoder.pt
+       - --array-cpg-map
+       - "{registry}"
+       - --locus-store
+-      - /EDIT/ME/derived/locus_features_v1
++      - data/external/functional/locus_features_v1
+       - --methylpredictor-root
+-      - /EDIT/ME/MehylPredictor
++      - ../MehylPredictor
+       - --output
+       - "{output}"
++      - --chromosomes
++      - chr1
+   provenance:
+     patient_specific: false
+     reference_genome_only: true
+-    supervision: methylation_proxy_or_task_trained  # verify against the checkpoint recipe
+-    locus_fit_scope: unknown  # set train_protocol_only only after a split-respecting encoder fit
++    supervision: methylation_proxy_or_task_trained
++    locus_fit_scope: unknown
++    benchmark_scope: chr1
++    note: Audit encoder supervision scope and annotation tracks before strict representation-OOD claims.
++
++model:
++  locus_latent_dim: 256
++  token_dim: 256
++  patient_dim: 256
++  hidden_dim: 512
+ 
+-model: {locus_latent_dim: 256, token_dim: 256, patient_dim: 256, hidden_dim: 512}
+ training:
+   seed: 17
+-  device: auto
++  device: cuda
+   epochs: 30
+   batch_size: 8
+   learning_rate: 1.0e-4
+@@ -49,6 +62,8 @@ training:
+   num_workers: 4
+   panel_size: 2048
+   mask_fractions: [0.15, 0.30, 0.50, 0.70, 0.90]
++  beta_epsilon: 1.0e-4
++
+ evaluation:
+   panel_size: 2048
+   mask_fractions: [0.15, 0.30, 0.50, 0.70, 0.90]
+diff --git a/configs/experiments/masking/functional_online.yaml b/configs/experiments/masking/functional_online.yaml
+index 22802c8..df46168 100644
+--- a/configs/experiments/masking/functional_online.yaml
++++ b/configs/experiments/masking/functional_online.yaml
+@@ -1,36 +1,38 @@
+ experiment:
+-  name: masking_representation_controlled
++  name: masking_representation_controlled_chr1
+   output_root: outputs
+   locus_split:
+     heldout_fraction: 0.20
+     seed: 17
+-    protocol_path: data/protocols/tcga_array_masking_seed17_holdout20.npz
++    protocol_path: data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
+ 
+ dataset:
+-  name: tcga_array
+-  methylation_h5: /data2/home/vcivale/projects/methylation/data/MethylPredictorData/methylation/tcga_array_official_full.h5
+-  cpg_registry: /data2/home/vcivale/projects/methylation/data/MethylPredictorData/cpg/registries/array_cpg_map.parquet
++  name: tcga_array_chr1
++  methylation_h5: data/methylation/tcga_array_official_full.h5
++  cpg_registry: data/cpg/registries/array_cpg_map.parquet
++  chromosomes: [chr1]
+   patient_split: [0.80, 0.10, 0.10]
+ 
+ representation:
+-  name: functional_annotations_online
+-  source: MehylPredictor functional-locus encoder over ENCODE/reference annotations
++  name: functional_annotations_online_chr1
++  source: MehylPredictor functional-locus encoder over reference-genome functional annotations
+   mode: online
++  supported_chromosomes: [chr1]
+   provider:
+     factory: cpg_repr_benchmark.representations.functional_provider:build_functional_online_provider
+     cache_size: 16384
+     kwargs:
+-      checkpoint: /EDIT/ME/best.pt
+-      locus_store: /EDIT/ME/derived/locus_features_v1
+-      methylpredictor_root: /EDIT/ME/MehylPredictor
++      checkpoint: data/external/functional/checkpoints/functional_encoder.pt
++      locus_store: data/external/functional/locus_features_v1
++      methylpredictor_root: ../MehylPredictor
+       device: cuda
+       batch_size: 4096
+   provenance:
+     patient_specific: false
+     reference_genome_only: true
+-    supervision: methylation_proxy_or_task_trained  # verify against the checkpoint recipe
+-    locus_fit_scope: unknown  # set train_protocol_only only after a split-respecting encoder fit
+-    note: Online mode is scientifically equivalent to the cached functional encoder arm but computes embeddings lazily.
++    supervision: methylation_proxy_or_task_trained
++    locus_fit_scope: unknown
++    benchmark_scope: chr1
+ 
+ model: {locus_latent_dim: 256, token_dim: 256, patient_dim: 256, hidden_dim: 512}
+ training:
+@@ -41,12 +43,10 @@ training:
+   learning_rate: 1.0e-4
+   weight_decay: 1.0e-4
+   mixed_precision: true
+-  # Required for online providers: the provider owns model/GPU state in the main process.
+   num_workers: 0
+   panel_size: 2048
+   mask_fractions: [0.15, 0.30, 0.50, 0.70, 0.90]
+   beta_epsilon: 1.0e-4
+-
+ evaluation:
+   panel_size: 2048
+   mask_fractions: [0.15, 0.30, 0.50, 0.70, 0.90]
+diff --git a/configs/experiments/masking/functional_precomputed.yaml b/configs/experiments/masking/functional_precomputed.yaml
+index 51664aa..a1a48e9 100644
+--- a/configs/experiments/masking/functional_precomputed.yaml
++++ b/configs/experiments/masking/functional_precomputed.yaml
+@@ -1,39 +1,37 @@
+ experiment:
+-  name: masking_representation_controlled
++  name: masking_representation_controlled_chr1
+   output_root: outputs
+   locus_split:
+     heldout_fraction: 0.20
+     seed: 17
+-    protocol_path: data/protocols/tcga_array_masking_seed17_holdout20.npz
++    protocol_path: data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
+ 
+ dataset:
+-  name: tcga_array
+-  methylation_h5: /data2/home/vcivale/projects/methylation/data/MethylPredictorData/methylation/tcga_array_official_full.h5
+-  cpg_registry: /data2/home/vcivale/projects/methylation/data/MethylPredictorData/cpg/registries/array_cpg_map.parquet
++  name: tcga_array_chr1
++  methylation_h5: data/methylation/tcga_array_official_full.h5
++  cpg_registry: data/cpg/registries/array_cpg_map.parquet
++  chromosomes: [chr1]
+   patient_split: [0.80, 0.10, 0.10]
+-  # chromosomes: [chr1]  # useful for initial deployment/smoke tests
+ 
+ representation:
+-  name: functional_annotations
+-  source: MehylPredictor functional-locus encoder over ENCODE/reference annotations
++  name: functional_annotations_chr1
++  source: MehylPredictor functional-locus encoder over reference-genome functional annotations
+   mode: precomputed
+-  store_h5: data/features/functional_annotations.h5
++  store_h5: data/cache/representations/functional_annotations_chr1.h5
++  supported_chromosomes: [chr1]
++  id_key: cpg_idx
++  embedding_key: embedding
+   provenance:
+     patient_specific: false
+     reference_genome_only: true
+-    supervision: methylation_proxy_or_task_trained  # verify against the checkpoint recipe
+-    locus_fit_scope: unknown  # set train_protocol_only only after a split-respecting encoder fit
+-    note: "Audit the annotation-track manifest before the primary biological claim."
+-
+-model:
+-  locus_latent_dim: 256
+-  token_dim: 256
+-  patient_dim: 256
+-  hidden_dim: 512
++    supervision: methylation_proxy_or_task_trained
++    locus_fit_scope: unknown
++    benchmark_scope: chr1
+ 
++model: {locus_latent_dim: 256, token_dim: 256, patient_dim: 256, hidden_dim: 512}
+ training:
+   seed: 17
+-  device: auto
++  device: cuda
+   epochs: 30
+   batch_size: 8
+   learning_rate: 1.0e-4
+@@ -43,7 +41,6 @@ training:
+   panel_size: 2048
+   mask_fractions: [0.15, 0.30, 0.50, 0.70, 0.90]
+   beta_epsilon: 1.0e-4
+-
+ evaluation:
+   panel_size: 2048
+   mask_fractions: [0.15, 0.30, 0.50, 0.70, 0.90]
+diff --git a/configs/experiments/masking/ntv3_precomputed.yaml b/configs/experiments/masking/ntv3_precomputed.yaml
+index f228d07..b1734db 100644
+--- a/configs/experiments/masking/ntv3_precomputed.yaml
++++ b/configs/experiments/masking/ntv3_precomputed.yaml
+@@ -1,28 +1,35 @@
+ experiment:
+-  name: masking_representation_controlled
++  name: masking_representation_controlled_chr1
+   output_root: outputs
+   locus_split:
+     heldout_fraction: 0.20
+     seed: 17
+-    protocol_path: data/protocols/tcga_array_masking_seed17_holdout20.npz
++    protocol_path: data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
+ 
+ dataset:
+-  name: tcga_array
+-  methylation_h5: /data2/home/vcivale/projects/methylation/data/MethylPredictorData/methylation/tcga_array_official_full.h5
+-  cpg_registry: /data2/home/vcivale/projects/methylation/data/MethylPredictorData/cpg/registries/array_cpg_map.parquet
++  name: tcga_array_chr1
++  methylation_h5: data/methylation/tcga_array_official_full.h5
++  cpg_registry: data/cpg/registries/array_cpg_map.parquet
++  chromosomes: [chr1]
+   patient_split: [0.80, 0.10, 0.10]
+ 
+ representation:
+-  name: ntv3_pre
+-  source: Nucleotide Transformer v3 pre-training checkpoint, locus embedding cache
++  name: ntv3_pre_chr1
++  source: Nucleotide Transformer v3 pre-training checkpoint, chr1 locus atlas
+   mode: precomputed
+-  store_h5: data/features/ntv3_pre.h5
++  store_h5: data/derived/ntv3_pre_chr1_atlas/chr1_ntv3_pretrain_atlas_v1.h5
++  supported_chromosomes: [chr1]
++  # Auto-detection supports canonical /cpg_idx + /embedding as well as common
++  # existing-atlas aliases such as /ids + /emb.
++  id_key: auto
++  embedding_key: auto
+   provenance:
+     patient_specific: false
+     reference_genome_only: true
+     supervision: genomic_pretraining
+     locus_fit_scope: external_pretrained
+     posttrained: false
++    benchmark_scope: chr1
+ 
+ model:
+   locus_latent_dim: 256
+@@ -32,7 +39,7 @@ model:
+ 
+ training:
+   seed: 17
+-  device: auto
++  device: cuda
+   epochs: 30
+   batch_size: 8
+   learning_rate: 1.0e-4
+diff --git a/configs/representations/README.md b/configs/representations/README.md
+index b60fbc0..c6f385a 100644
+--- a/configs/representations/README.md
++++ b/configs/representations/README.md
+@@ -8,7 +8,7 @@ Recommended provenance fields:
+ representation:
+   name: example
+   mode: precomputed
+-  store_h5: data/features/example.h5
++  store_h5: data/cache/representations/example.h5
+   provenance:
+     genome_build: hg38
+     checkpoint: ...
+diff --git a/configs/representations/future_models.yaml b/configs/representations/future_models.yaml
+index 72ad8ae..afa0bd5 100644
+--- a/configs/representations/future_models.yaml
++++ b/configs/representations/future_models.yaml
+@@ -3,20 +3,20 @@ representations:
+   cpgpt_locus:
+     name: cpgpt_locus
+     mode: precomputed
+-    store_h5: data/features/cpgpt_locus.h5
++    store_h5: data/cache/representations/cpgpt_locus.h5
+     source: CpGPT locus encoder
+   methylgpt_locus:
+     name: methylgpt_locus
+     mode: precomputed
+-    store_h5: data/features/methylgpt_locus.h5
++    store_h5: data/cache/representations/methylgpt_locus.h5
+     source: MethylGPT locus encoder
+   dnambert_locus:
+     name: dnambert_locus
+     mode: precomputed
+-    store_h5: data/features/dnambert_locus.h5
++    store_h5: data/cache/representations/dnambert_locus.h5
+     source: DNAmBERT locus encoder
+   methylprophet_locus:
+     name: methylprophet_locus
+     mode: precomputed
+-    store_h5: data/features/methylprophet_locus.h5
++    store_h5: data/cache/representations/methylprophet_locus.h5
+     source: MethylProphet genomic locus representation
+diff --git a/data/README.md b/data/README.md
+new file mode 100644
+index 0000000..54f8df0
+--- /dev/null
++++ b/data/README.md
+@@ -0,0 +1,54 @@
++# Local data layout
++
++Large biological data are intentionally **not versioned in Git**. The repository expects this layout:
++
++```text
++data/
++├── methylation/
++│   └── tcga_array_official_full.h5
++├── cpg/
++│   └── registries/
++│       ├── array_cpg_map.parquet
++│       ├── epic_cpg_map.parquet
++│       └── wgbs_cpg_map.parquet
++├── derived/
++│   └── ntv3_pre_chr1_atlas/
++│       └── chr1_ntv3_pretrain_atlas_v1.h5
++├── external/
++│   └── functional/
++│       ├── locus_features_v1 -> ../../../../MehylPredictor/local_methyl_data/derived/locus_features_v1
++│       └── checkpoints/
++│           └── functional_encoder.pt -> ../../../../../MehylPredictor/.../checkpoints/last.pt
++├── cache/
++│   └── representations/
++│       └── functional_annotations_chr1.h5     # generated by this repo
++├── protocols/
++│   └── tcga_array_chr1_masking_seed17_holdout20.npz
++└── local_manifest.json                        # generated preflight report
++```
++
++The actual symlink targets are host-dependent; the arrows above are conceptual examples.
++
++## Current benchmark scope
++
++The first controlled benchmark is deliberately restricted to **chr1**, because the available NTv3-pre atlas currently covers chr1 only. Both Functional and NTv3-pre arms therefore use the same TCGA-array chr1 universe and the same persisted locus split.
++
++Do not silently use genome-wide functional loci against a chr1 NTv3 atlas. The runner records and validates chromosome scope.
++
++## Bootstrap
++
++From the repository root:
++
++```bash
++python scripts/bootstrap_local_data.py
++```
++
++The script:
++
++1. validates the TCGA methylation matrix and array CpG registry;
++2. auto-detects the CpG-ID and embedding datasets in the existing NTv3-pre atlas;
++3. measures NTv3 coverage of the TCGA chr1 universe;
++4. creates symlinks to the existing MehylPredictor functional locus store and functional encoder checkpoint;
++5. writes `data/local_manifest.json`.
++
++It exits non-zero if the NTv3 atlas does not cover the complete dataset-defined chr1 universe. This is intentional: a representation is not allowed to receive a silently reduced/easier test set.
+diff --git a/docs/ADDING_REPRESENTATIONS.md b/docs/ADDING_REPRESENTATIONS.md
+index 6dfa5cb..6cab973 100644
+--- a/docs/ADDING_REPRESENTATIONS.md
++++ b/docs/ADDING_REPRESENTATIONS.md
+@@ -17,7 +17,7 @@ Then create a config with:
+ representation:
+   name: dnambert
+   mode: precomputed
+-  store_h5: data/features/dnambert.h5
++  store_h5: data/cache/representations/dnambert.h5
+ ```
+ 
+ This is the preferred paper path because feature extraction and downstream training become independently reproducible.
+diff --git a/docs/DATA_CONTRACT.md b/docs/DATA_CONTRACT.md
+index 88ce292..a3f2475 100644
+--- a/docs/DATA_CONTRACT.md
++++ b/docs/DATA_CONTRACT.md
+@@ -18,11 +18,13 @@ Do not silently take a different per-representation intersection. If a future mo
+ 
+ ## CpG representation store
+ 
+-Cached representations — functional annotations, genomic FMs or published methylation-model encoders — resolve to:
++Cached representations — functional annotations, genomic FMs or published methylation-model encoders — use the canonical contract:
+ 
+ - `/cpg_idx`: unique int64 `[n_loci]`;
+ - `/embedding`: float16/float32 `[n_loci, d]`.
+ 
++For already-existing atlases, the loader can also auto-detect common aliases such as `/ids` + `/emb`; the resolved dataset keys are persisted in the run manifest. New caches generated by this repository should always use the canonical names.
++
+ The store may contain extra loci, but it must cover every locus required by the selected benchmark protocol.
+ 
+ ## Representation modes
+@@ -60,3 +62,9 @@ For patient `s`:
+ - hidden target beta `[Q]`.
+ 
+ The target beta values never enter the patient encoder.
++
++## Current deployment scope
++
++The initial Functional-vs-NTv3-pre comparison is explicitly scoped to `chromosomes: [chr1]` because the currently available NTv3-pre atlas is chr1-only. Representation configs may declare `supported_chromosomes`; the runner rejects a dataset scope that exceeds that declared support.
++
++The chromosome labels in the registry are normalized (`1`, `chr1`, etc.) before scoping.
+diff --git a/docs/EXPERIMENT_MATRIX.md b/docs/EXPERIMENT_MATRIX.md
+index d744d3f..169d6cb 100644
+--- a/docs/EXPERIMENT_MATRIX.md
++++ b/docs/EXPERIMENT_MATRIX.md
+@@ -1,28 +1,32 @@
+ # Experiment matrix
+ 
+-## Phase 1 — deploy the masking benchmark
++## Phase 1 — current executable comparison
+ 
+-| Arm | Representation source | Acquisition mode | Status |
+-|---|---|---|---|
+-| Functional | ENCODE/reference functional-locus encoder recovered from MehylPredictor | existing HDF5 | ready |
+-| Functional-online | same encoder, encoded lazily by CpG ID | online | ready |
+-| NTv3-pre | sequence genomic FM locus embedding | existing HDF5 | ready |
++Shared scope: `TCGA array × chr1`, seed 17, same persistent CpG protocol.
+ 
+-Every arm runs the same persistent CpG protocol, patient split, model and five masking fractions in both `seen` and `unseen_locus` views.
++| Arm | Input representation | Status | Store |
++|---|---|---|---|
++| Functional | functional annotations -> trained 256-D locus encoder | ready | generated cache `data/cache/representations/functional_annotations_chr1.h5` |
++| NTv3-pre | sequence-derived NTv3 pre-training locus embedding | ready if preflight coverage is 100% | `data/derived/ntv3_pre_chr1_atlas/chr1_ntv3_pretrain_atlas_v1.h5` |
+ 
+-## Phase 2 — representation adapters
++Evaluation views for both arms: `seen` and `unseen_locus` at mask fractions 0.15/0.30/0.50/0.70/0.90.
+ 
+-Add canonical extraction for CpGPT, MethylGPT, DNAmBERT, MethylProphet's locus representation and additional genomic FMs. Each adapter should export one patient-agnostic vector per CpG and record checkpoint/layer/pooling/window/genome-build provenance.
++## Phase 2 — representation expansion
+ 
+-For each new encoder, first run the representation-controlled benchmark. Only after that should its native masked-prediction head be evaluated as a separate complete-method comparison.
++After the chr1 protocol is validated end-to-end:
+ 
+-## Phase 3 — strict fairness controls
++1. expand NTv3-pre to a genome-wide/common benchmark universe;
++2. materialize the functional representation over the same universe;
++3. add CpGPT, MethylGPT, DNAmBERT, MethylProphet and additional genomic FMs;
++4. define explicit common-vocabulary protocols when an encoder cannot cover the master universe.
+ 
+-- fixed 256-D train-locus PCA/IncrementalPCA for every raw representation;
+-- multiple random seeds for downstream reconstruction training;
+-- an explicitly named common-vocabulary protocol if a model cannot cover the full dataset CpG universe;
+-- audit/removal of any methylation-derived functional annotation tracks from the primary functional arm.
++Do not use a representation-specific intersection silently.
+ 
+-## Deferred by current scope
++## Phase 3 — publication controls
+ 
+-Downstream methylation tasks and the biological experiment are intentionally not implemented in V1. They should use the same persistent representation stores and CpG protocol machinery rather than introducing a second feature pipeline.
++- multiple random seeds;
++- fixed 256-D PCA/IncrementalPCA control fit on train loci only;
++- functional-track leakage audit;
++- strict representation-OOD functional encoder fit if making that claim;
++- genomic/function-context stratification;
++- native-model masked-inference comparison as a secondary complete-method table.
+diff --git a/scripts/bootstrap_local_data.py b/scripts/bootstrap_local_data.py
+new file mode 100755
+index 0000000..7d548cc
+--- /dev/null
++++ b/scripts/bootstrap_local_data.py
+@@ -0,0 +1,149 @@
++#!/usr/bin/env python3
++from __future__ import annotations
++
++import argparse
++import json
++import os
++from pathlib import Path
++
++import h5py
++import numpy as np
++import pandas as pd
++
++from cpg_repr_benchmark.data.chromosomes import normalize_chromosome
++from cpg_repr_benchmark.data.methylation import read_axis
++from cpg_repr_benchmark.representations.hdf5_store import inspect_representation_h5
++
++
++def _safe_symlink(source: Path, target: Path) -> None:
++    source = source.resolve()
++    target.parent.mkdir(parents=True, exist_ok=True)
++    if target.is_symlink():
++        current = target.resolve()
++        if current == source:
++            return
++        target.unlink()
++    elif target.exists():
++        raise FileExistsError(f"refusing to replace existing non-symlink: {target}")
++    target.symlink_to(source, target_is_directory=source.is_dir())
++
++
++def _require(path: Path, label: str) -> Path:
++    if not path.exists():
++        raise FileNotFoundError(f"missing {label}: {path}")
++    return path
++
++
++def _file_info(path: Path) -> dict:
++    stat = path.stat()
++    return {"path": str(path), "size_bytes": int(stat.st_size)}
++
++
++def main() -> None:
++    repo_root_default = Path(__file__).resolve().parents[1]
++    p = argparse.ArgumentParser(description="Prepare and validate the local chr1 benchmark data layout")
++    p.add_argument("--repo-root", type=Path, default=repo_root_default)
++    p.add_argument("--methylpredictor-root", type=Path)
++    p.add_argument("--no-symlinks", action="store_true", help="validate only; do not create functional symlinks")
++    args = p.parse_args()
++
++    repo = args.repo_root.resolve()
++    mp = (args.methylpredictor_root or (repo.parent / "MehylPredictor")).resolve()
++    data = repo / "data"
++
++    methyl = _require(data / "methylation/tcga_array_official_full.h5", "TCGA methylation matrix")
++    registry = _require(data / "cpg/registries/array_cpg_map.parquet", "array CpG registry")
++    ntv3 = _require(
++        data / "derived/ntv3_pre_chr1_atlas/chr1_ntv3_pretrain_atlas_v1.h5",
++        "NTv3-pre chr1 atlas",
++    )
++
++    source_locus_store = _require(
++        mp / "local_methyl_data/derived/locus_features_v1", "MehylPredictor functional locus store"
++    )
++    source_checkpoint = _require(
++        mp
++        / "local_methyl_data/runs/encode_wgbs/runs/rna_methylation/genomewide/"
++        "encode-wgbs-seed17-b128-c65536/checkpoints/last.pt",
++        "functional encoder checkpoint",
++    )
++
++    linked_locus_store = data / "external/functional/locus_features_v1"
++    linked_checkpoint = data / "external/functional/checkpoints/functional_encoder.pt"
++    if not args.no_symlinks:
++        _safe_symlink(source_locus_store, linked_locus_store)
++        _safe_symlink(source_checkpoint, linked_checkpoint)
++
++    matrix_ids, sample_names = read_axis(methyl)
++    reg = pd.read_parquet(registry, columns=["cpg_idx", "chr", "pos"])
++    if reg["cpg_idx"].duplicated().any():
++        raise ValueError("array_cpg_map.parquet contains duplicate cpg_idx")
++    reg_indexed = reg.set_index("cpg_idx")
++    aligned = reg_indexed.reindex(matrix_ids)
++    if aligned["chr"].isna().any():
++        n_missing = int(aligned["chr"].isna().sum())
++        raise ValueError(f"array registry is missing {n_missing} CpGs from the methylation matrix")
++    chrom = aligned["chr"].map(normalize_chromosome).to_numpy()
++    chr1_mask = chrom == "chr1"
++    chr1_ids = matrix_ids[chr1_mask]
++    if len(chr1_ids) == 0:
++        raise ValueError("no chr1 CpGs found after registry alignment")
++
++    ntv3_ids, ntv3_dim, ntv3_id_key, ntv3_embedding_key = inspect_representation_h5(ntv3)
++    ntv3_chr1_covered = np.isin(chr1_ids, ntv3_ids, assume_unique=False)
++    missing_chr1 = chr1_ids[~ntv3_chr1_covered]
++
++    payload = {
++        "schema_version": 1,
++        "benchmark_scope": "chr1",
++        "repo_root": str(repo),
++        "methylpredictor_root": str(mp),
++        "methylation": {
++            **_file_info(methyl),
++            "n_samples": int(len(sample_names)),
++            "n_cpg_total": int(len(matrix_ids)),
++            "n_cpg_chr1": int(len(chr1_ids)),
++        },
++        "registry": {**_file_info(registry), "n_rows": int(len(reg))},
++        "ntv3_pre": {
++            **_file_info(ntv3),
++            "n_loci": int(len(ntv3_ids)),
++            "embedding_dim": int(ntv3_dim),
++            "id_key": ntv3_id_key,
++            "embedding_key": ntv3_embedding_key,
++            "chr1_matrix_loci_covered": int(ntv3_chr1_covered.sum()),
++            "chr1_matrix_loci_missing": int(len(missing_chr1)),
++            "chr1_coverage_fraction": float(ntv3_chr1_covered.mean()),
++            "missing_examples": missing_chr1[:10].astype(np.int64).tolist(),
++        },
++        "functional": {
++            "source_locus_store": str(source_locus_store),
++            "source_checkpoint": str(source_checkpoint),
++            "linked_locus_store": str(linked_locus_store),
++            "linked_checkpoint": str(linked_checkpoint),
++            "links_ready": bool(linked_locus_store.exists() and linked_checkpoint.exists()),
++            "cached_chr1_store": str(data / "cache/representations/functional_annotations_chr1.h5"),
++        },
++    }
++
++    # The benchmark protocol is dataset-defined. We require complete NTv3 coverage of chr1
++    # rather than silently shrinking the CpG universe for this representation.
++    if len(missing_chr1):
++        payload["status"] = "INCOMPLETE_NTV3_CHR1_COVERAGE"
++        payload["action"] = (
++            "The NTv3 atlas does not cover every TCGA-array chr1 CpG. Do not run the benchmark yet; "
++            "either rebuild the atlas for the full chr1 array universe or define one explicit common-universe protocol."
++        )
++    else:
++        payload["status"] = "READY_FOR_FUNCTIONAL_MATERIALIZATION_AND_MASKING"
++
++    out = data / "local_manifest.json"
++    out.write_text(json.dumps(payload, indent=2, sort_keys=True))
++    print(json.dumps(payload, indent=2, sort_keys=True))
++    print(f"\nWROTE={out}")
++    if len(missing_chr1):
++        raise SystemExit(2)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/scripts/run_masking_benchmark.py b/scripts/run_masking_benchmark.py
+index a4c4755..8bf0dec 100755
+--- a/scripts/run_masking_benchmark.py
++++ b/scripts/run_masking_benchmark.py
+@@ -13,6 +13,7 @@ import torch
+ from torch.utils.data import DataLoader
+ 
+ from cpg_repr_benchmark.config import config_fingerprint, load_config
++from cpg_repr_benchmark.data.chromosomes import normalize_chromosome
+ from cpg_repr_benchmark.data.masking import MaskFractionBatchSampler, MaskingDataset
+ from cpg_repr_benchmark.data.methylation import read_axis
+ from cpg_repr_benchmark.data.splits import load_or_create_locus_protocol, patient_disjoint_split
+@@ -46,7 +47,28 @@ def _scoped_columns(cpg_ids: np.ndarray, registry_path: Path | None, chromosomes
+     chrom = table.set_index("cpg_idx")["chr"].reindex(cpg_ids)
+     if chrom.isna().any():
+         raise ValueError(f"registry is missing {int(chrom.isna().sum())} methylation CpGs")
+-    return columns[chrom.isin(set(chromosomes)).to_numpy()]
++    requested = {normalize_chromosome(x) for x in chromosomes}
++    normalized = chrom.map(normalize_chromosome)
++    return columns[normalized.isin(requested).to_numpy()]
++
++
++def _validate_representation_scope(dataset_cfg: dict, representation_cfg: dict) -> None:
++    supported = representation_cfg.get("supported_chromosomes")
++    if not supported:
++        return
++    dataset_chromosomes = dataset_cfg.get("chromosomes")
++    if not dataset_chromosomes:
++        raise ValueError(
++            f"representation {representation_cfg.get('name')!r} is limited to {supported}; "
++            "dataset.chromosomes must explicitly restrict the benchmark scope"
++        )
++    supported_set = {normalize_chromosome(x) for x in supported}
++    requested_set = {normalize_chromosome(x) for x in dataset_chromosomes}
++    if not requested_set.issubset(supported_set):
++        raise ValueError(
++            f"dataset requests chromosomes {sorted(requested_set)} but representation "
++            f"{representation_cfg.get('name')!r} supports only {sorted(supported_set)}"
++        )
+ 
+ 
+ def _build_loader(dataset: MaskingDataset, batch_size: int, num_workers: int, shuffle: bool) -> DataLoader:
+@@ -173,6 +195,7 @@ def main() -> None:
+ 
+     cpg_ids, sample_names = read_axis(matrix_path)
+     representation_cfg = cfg["representation"]
++    _validate_representation_scope(dataset_cfg, representation_cfg)
+     representation_mode = str(representation_cfg.get("mode", "precomputed"))
+     if representation_mode == "online":
+         store = build_online_store(
+@@ -203,7 +226,12 @@ def main() -> None:
+             run_dir=run_dir,
+             repo_root=repo_root,
+         )
+-        store = HDF5RepresentationStore(representation.store_path, cpg_ids)
++        store = HDF5RepresentationStore(
++            representation.store_path,
++            cpg_ids,
++            id_key=representation.id_key,
++            embedding_key=representation.embedding_key,
++        )
+ 
+     # The benchmark universe is dataset-defined, not representation-defined. A representation
+     # that lacks protocol loci fails explicitly instead of silently receiving an easier/different split.
+@@ -305,6 +333,7 @@ def main() -> None:
+                 "dataset": dataset_cfg.get("name", "dataset"),
+                 "representation": representation.name,
+                 "representation_dim": store.dim,
++                "dataset_chromosomes": dataset_cfg.get("chromosomes"),
+                 "seed": seed,
+                 "device": str(device),
+                 "n_train_patients_rows": int(len(patient_splits["train"])),
+diff --git a/scripts/validate_feature_store.py b/scripts/validate_feature_store.py
+index 6f83ad5..45a5244 100755
+--- a/scripts/validate_feature_store.py
++++ b/scripts/validate_feature_store.py
+@@ -8,19 +8,31 @@ from pathlib import Path
+ import numpy as np
+ 
+ from cpg_repr_benchmark.data.methylation import read_axis
+-from cpg_repr_benchmark.representations.hdf5_store import HDF5RepresentationStore, validate_canonical_h5
++from cpg_repr_benchmark.representations.hdf5_store import HDF5RepresentationStore, inspect_representation_h5
+ 
+ 
+ def main() -> None:
+     p = argparse.ArgumentParser()
+     p.add_argument("--store", type=Path, required=True)
+     p.add_argument("--methylation-h5", type=Path)
++    p.add_argument("--id-key", default="auto")
++    p.add_argument("--embedding-key", default="auto")
+     args = p.parse_args()
+-    ids, dim = validate_canonical_h5(args.store)
+-    payload = {"store": str(args.store), "n_loci": int(len(ids)), "embedding_dim": int(dim)}
++    ids, dim, id_key, embedding_key = inspect_representation_h5(
++        args.store, id_key=args.id_key, embedding_key=args.embedding_key
++    )
++    payload = {
++        "store": str(args.store),
++        "n_loci": int(len(ids)),
++        "embedding_dim": int(dim),
++        "id_key": id_key,
++        "embedding_key": embedding_key,
++    }
+     if args.methylation_h5:
+         matrix_ids, _ = read_axis(args.methylation_h5)
+-        store = HDF5RepresentationStore(args.store, matrix_ids)
++        store = HDF5RepresentationStore(
++            args.store, matrix_ids, id_key=id_key, embedding_key=embedding_key
++        )
+         payload["matrix_loci"] = int(len(matrix_ids))
+         payload["covered_matrix_loci"] = int(store.coverage_mask.sum())
+         payload["coverage_fraction"] = float(np.mean(store.coverage_mask))
+diff --git a/src/cpg_repr_benchmark/data/chromosomes.py b/src/cpg_repr_benchmark/data/chromosomes.py
+new file mode 100644
+index 0000000..13a2ebb
+--- /dev/null
++++ b/src/cpg_repr_benchmark/data/chromosomes.py
+@@ -0,0 +1,12 @@
++from __future__ import annotations
++
++
++def normalize_chromosome(value: object) -> str:
++    """Normalize common chromosome labels to chrN/chrX/chrY/chrM."""
++    text = str(value).strip()
++    if text.lower().startswith("chr"):
++        text = text[3:]
++    upper = text.upper()
++    if upper in {"MT", "M"}:
++        return "chrM"
++    return f"chr{upper}"
+diff --git a/src/cpg_repr_benchmark/representations/base.py b/src/cpg_repr_benchmark/representations/base.py
+index 37882d7..3abaece 100644
+--- a/src/cpg_repr_benchmark/representations/base.py
++++ b/src/cpg_repr_benchmark/representations/base.py
+@@ -15,6 +15,8 @@ class RepresentationInfo:
+     dim: int
+     mode: str
+     source: str
++    id_key: str = "cpg_idx"
++    embedding_key: str = "embedding"
+ 
+ 
+ class LocusRepresentationStore(Protocol):
+diff --git a/src/cpg_repr_benchmark/representations/hdf5_store.py b/src/cpg_repr_benchmark/representations/hdf5_store.py
+index a452f22..ca507eb 100644
+--- a/src/cpg_repr_benchmark/representations/hdf5_store.py
++++ b/src/cpg_repr_benchmark/representations/hdf5_store.py
+@@ -10,29 +10,93 @@ class RepresentationCoverageError(ValueError):
+     pass
+ 
+ 
+-def validate_canonical_h5(path: Path) -> tuple[np.ndarray, int]:
++ID_KEY_CANDIDATES = ("cpg_idx", "cpg_ids", "ids", "id")
++EMBEDDING_KEY_CANDIDATES = ("embedding", "embeddings", "emb", "features")
++
++
++def _resolve_dataset_key(handle: h5py.File, requested: str | None, candidates: tuple[str, ...], kind: str) -> str:
++    if requested and requested != "auto":
++        if requested not in handle:
++            raise RepresentationCoverageError(
++                f"requested {kind} dataset /{requested} is absent; available root datasets={list(handle.keys())}"
++            )
++        return requested
++    matches = [key for key in candidates if key in handle and isinstance(handle[key], h5py.Dataset)]
++    if len(matches) == 1:
++        return matches[0]
++    if len(matches) > 1:
++        # Prefer the canonical name when it exists; otherwise ambiguity should be explicit.
++        canonical = candidates[0]
++        if canonical in matches:
++            return canonical
++        raise RepresentationCoverageError(
++            f"ambiguous {kind} dataset in HDF5: {matches}; set representation.{kind}_key explicitly"
++        )
++    raise RepresentationCoverageError(
++        f"cannot find a {kind} dataset; tried {list(candidates)}; available root datasets={list(handle.keys())}"
++    )
++
++
++def inspect_representation_h5(
++    path: Path,
++    *,
++    id_key: str | None = "auto",
++    embedding_key: str | None = "auto",
++) -> tuple[np.ndarray, int, str, str]:
++    """Validate an HDF5 representation store and return IDs/dim plus resolved dataset keys.
++
++    Canonical stores use /cpg_idx and /embedding. Existing atlases may use common aliases
++    such as /ids and /emb; these can be auto-detected or configured explicitly.
++    """
+     path = Path(path)
+     if not path.exists():
+         raise FileNotFoundError(path)
+     with h5py.File(path, "r") as handle:
+-        if "cpg_idx" not in handle or "embedding" not in handle:
+-            raise RepresentationCoverageError(f"{path} must contain /cpg_idx and /embedding")
+-        cpg_ids = np.asarray(handle["cpg_idx"][:], dtype=np.int64)
+-        embedding = handle["embedding"]
++        resolved_id_key = _resolve_dataset_key(handle, id_key, ID_KEY_CANDIDATES, "id")
++        resolved_embedding_key = _resolve_dataset_key(
++            handle, embedding_key, EMBEDDING_KEY_CANDIDATES, "embedding"
++        )
++        cpg_ids = np.asarray(handle[resolved_id_key][:], dtype=np.int64)
++        embedding = handle[resolved_embedding_key]
++        if cpg_ids.ndim != 1:
++            raise RepresentationCoverageError(
++                f"/{resolved_id_key} must be 1-D, got shape={cpg_ids.shape} in {path}"
++            )
+         if embedding.ndim != 2 or embedding.shape[0] != len(cpg_ids):
+-            raise RepresentationCoverageError(f"invalid embedding shape in {path}: {embedding.shape}")
++            raise RepresentationCoverageError(
++                f"invalid /{resolved_embedding_key} shape in {path}: {embedding.shape}; "
++                f"expected ({len(cpg_ids)}, D)"
++            )
+         dim = int(embedding.shape[1])
+     if len(cpg_ids) != len(np.unique(cpg_ids)):
+-        raise RepresentationCoverageError(f"{path} contains duplicate cpg_idx values")
++        raise RepresentationCoverageError(f"{path} contains duplicate CpG IDs in /{resolved_id_key}")
++    return cpg_ids, dim, resolved_id_key, resolved_embedding_key
++
++
++def validate_canonical_h5(path: Path) -> tuple[np.ndarray, int]:
++    cpg_ids, dim, id_key, embedding_key = inspect_representation_h5(
++        path, id_key="cpg_idx", embedding_key="embedding"
++    )
++    if id_key != "cpg_idx" or embedding_key != "embedding":  # defensive; explicit keys above should guarantee this
++        raise RepresentationCoverageError(f"{path} is not canonical")
+     return cpg_ids, dim
+ 
+ 
+ class HDF5RepresentationStore:
+-    """Canonical CpG representation store mapped into methylation-matrix column order."""
++    """CpG representation store mapped into methylation-matrix column order."""
+ 
+-    def __init__(self, path: Path, matrix_cpg_ids: np.ndarray):
++    def __init__(
++        self,
++        path: Path,
++        matrix_cpg_ids: np.ndarray,
++        *,
++        id_key: str | None = "auto",
++        embedding_key: str | None = "auto",
++    ):
+         self.path = Path(path)
+-        store_ids, self._dim = validate_canonical_h5(self.path)
++        store_ids, self._dim, self.id_key, self.embedding_key = inspect_representation_h5(
++            self.path, id_key=id_key, embedding_key=embedding_key
++        )
+         order = np.argsort(store_ids)
+         sorted_ids = store_ids[order]
+         matrix_cpg_ids = np.asarray(matrix_cpg_ids, dtype=np.int64)
+@@ -51,7 +115,7 @@ class HDF5RepresentationStore:
+     def _embedding(self):
+         if self._handle is None:
+             self._handle = h5py.File(self.path, "r")
+-        return self._handle["embedding"]
++        return self._handle[self.embedding_key]
+ 
+     def get_by_matrix_columns(self, matrix_columns: np.ndarray) -> np.ndarray:
+         matrix_columns = np.asarray(matrix_columns, dtype=np.int64)
+diff --git a/src/cpg_repr_benchmark/representations/resolver.py b/src/cpg_repr_benchmark/representations/resolver.py
+index dda7da1..5b9eea7 100644
+--- a/src/cpg_repr_benchmark/representations/resolver.py
++++ b/src/cpg_repr_benchmark/representations/resolver.py
+@@ -8,7 +8,7 @@ from pathlib import Path
+ from typing import Any
+ 
+ from .base import RepresentationInfo
+-from .hdf5_store import validate_canonical_h5
++from .hdf5_store import inspect_representation_h5
+ 
+ 
+ def _format_command(command: list[str] | str, variables: dict[str, str]) -> list[str]:
+@@ -66,7 +66,11 @@ def resolve_representation(
+ 
+     if not store_path.exists():
+         raise FileNotFoundError(f"representation store does not exist: {store_path}")
+-    cpg_ids, dim = validate_canonical_h5(store_path)
++    cpg_ids, dim, id_key, embedding_key = inspect_representation_h5(
++        store_path,
++        id_key=cfg.get("id_key", "auto"),
++        embedding_key=cfg.get("embedding_key", "auto"),
++    )
+     info = RepresentationInfo(
+         name=name,
+         store_path=store_path,
+@@ -74,6 +78,8 @@ def resolve_representation(
+         dim=dim,
+         mode=mode,
+         source=str(cfg.get("source", "unspecified")),
++        id_key=id_key,
++        embedding_key=embedding_key,
+     )
+     manifest = {
+         "schema_version": 1,
+@@ -84,6 +90,8 @@ def resolve_representation(
+         "store_h5": str(info.store_path),
+         "n_loci": info.n_loci,
+         "embedding_dim": info.dim,
++        "id_key": info.id_key,
++        "embedding_key": info.embedding_key,
+         "generator": cfg.get("generator"),
+         "provenance": cfg.get("provenance", {}),
+     }
+diff --git a/tests/test_chromosomes.py b/tests/test_chromosomes.py
+new file mode 100644
+index 0000000..9910897
+--- /dev/null
++++ b/tests/test_chromosomes.py
+@@ -0,0 +1,10 @@
++from cpg_repr_benchmark.data.chromosomes import normalize_chromosome
++
++
++def test_normalize_chromosome_common_encodings():
++    assert normalize_chromosome("chr1") == "chr1"
++    assert normalize_chromosome("1") == "chr1"
++    assert normalize_chromosome(1) == "chr1"
++    assert normalize_chromosome("X") == "chrX"
++    assert normalize_chromosome("chrX") == "chrX"
++    assert normalize_chromosome("MT") == "chrM"
+diff --git a/tests/test_hdf5_store_aliases.py b/tests/test_hdf5_store_aliases.py
+new file mode 100644
+index 0000000..232ac42
+--- /dev/null
++++ b/tests/test_hdf5_store_aliases.py
+@@ -0,0 +1,28 @@
++from pathlib import Path
++
++import h5py
++import numpy as np
++
++from cpg_repr_benchmark.representations.hdf5_store import HDF5RepresentationStore, inspect_representation_h5
++
++
++def test_existing_atlas_aliases_are_auto_detected(tmp_path: Path):
++    path = tmp_path / "atlas.h5"
++    ids = np.asarray([11, 13, 17], dtype=np.int64)
++    emb = np.arange(12, dtype=np.float32).reshape(3, 4)
++    with h5py.File(path, "w") as h:
++        h.create_dataset("ids", data=ids)
++        h.create_dataset("emb", data=emb)
++
++    got_ids, dim, id_key, embedding_key = inspect_representation_h5(path)
++    assert np.array_equal(got_ids, ids)
++    assert dim == 4
++    assert id_key == "ids"
++    assert embedding_key == "emb"
++
++    matrix_ids = np.asarray([17, 11, 99], dtype=np.int64)
++    store = HDF5RepresentationStore(path, matrix_ids)
++    assert store.coverage_mask.tolist() == [True, True, False]
++    values = store.get_by_matrix_columns(np.asarray([0, 1], dtype=np.int64))
++    assert np.array_equal(values, emb[[2, 0]])
++    store.close()

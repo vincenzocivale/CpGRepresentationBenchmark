@@ -1,0 +1,7 @@
+# Local repository layout. The full methylation matrix is scoped to chr1 at runtime
+# so it can be compared fairly with the currently available NTv3-pre chr1 atlas.
+name: tcga_array_chr1
+methylation_h5: data/methylation/tcga_array_official_full.h5
+cpg_registry: data/cpg/registries/array_cpg_map.parquet
+chromosomes: [chr1]
+patient_split: [0.80, 0.10, 0.10]

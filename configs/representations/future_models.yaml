@@ -1,0 +1,22 @@
+# Templates only; these are not automatically composed into experiment YAMLs yet.
+representations:
+  cpgpt_locus:
+    name: cpgpt_locus
+    mode: precomputed
+    store_h5: data/cache/representations/cpgpt_locus.h5
+    source: CpGPT locus encoder
+  methylgpt_locus:
+    name: methylgpt_locus
+    mode: precomputed
+    store_h5: data/cache/representations/methylgpt_locus.h5
+    source: MethylGPT locus encoder
+  dnambert_locus:
+    name: dnambert_locus
+    mode: precomputed
+    store_h5: data/cache/representations/dnambert_locus.h5
+    source: DNAmBERT locus encoder
+  methylprophet_locus:
+    name: methylprophet_locus
+    mode: precomputed
+    store_h5: data/cache/representations/methylprophet_locus.h5
+    source: MethylProphet genomic locus representation

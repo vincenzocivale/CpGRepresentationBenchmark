@@ -1,0 +1,28 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+*.egg-info/
+wandb/
+
+# Experiment outputs
+outputs/
+
+# Local biological data and derived caches
+data/methylation/
+data/cpg/registries/*.parquet
+data/derived/
+data/external/
+data/cache/
+data/local_manifest.json
+data/protocols/*.npz
+
+# Large binary artifacts anywhere else
+*.pt
+*.pth
+*.h5
+*.hdf5
+*.npy
+*.npz
+!tests/fixtures/*.npz

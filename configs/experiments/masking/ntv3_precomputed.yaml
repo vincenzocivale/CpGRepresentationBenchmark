@@ -1,0 +1,59 @@
+experiment:
+  name: masking_representation_controlled_chr1
+  output_root: outputs
+  locus_split:
+    heldout_fraction: 0.20
+    seed: 17
+    protocol_path: data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
+
+dataset:
+  name: tcga_array_chr1
+  methylation_h5: data/methylation/tcga_array_official_full.h5
+  cpg_registry: data/cpg/registries/array_cpg_map.parquet
+  chromosomes: [chr1]
+  patient_split: [0.80, 0.10, 0.10]
+
+representation:
+  name: ntv3_pre_chr1
+  source: Nucleotide Transformer v3 pre-training checkpoint, chr1 locus atlas
+  mode: precomputed
+  store_h5: data/derived/ntv3_pre_chr1_atlas/chr1_ntv3_pretrain_atlas_v1.h5
+  supported_chromosomes: [chr1]
+  # Auto-detection supports canonical /cpg_idx + /embedding as well as common
+  # existing-atlas aliases such as /ids + /emb.
+  id_key: auto
+  embedding_key: auto
+  provenance:
+    patient_specific: false
+    reference_genome_only: true
+    supervision: genomic_pretraining
+    locus_fit_scope: external_pretrained
+    posttrained: false
+    benchmark_scope: chr1
+
+model:
+  locus_latent_dim: 256
+  token_dim: 256
+  patient_dim: 256
+  hidden_dim: 512
+
+training:
+  seed: 17
+  device: cuda
+  epochs: 30
+  batch_size: 8
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-4
+  mixed_precision: true
+  num_workers: 4
+  panel_size: 2048
+  mask_fractions: [0.15, 0.30, 0.50, 0.70, 0.90]
+  beta_epsilon: 1.0e-4
+
+evaluation:
+  panel_size: 2048
+  mask_fractions: [0.15, 0.30, 0.50, 0.70, 0.90]
+  selection_mask_fraction: 0.50
+  batch_size: 8
+  num_workers: 2
+  save_predictions: false
