@@ -10,6 +10,8 @@ wandb/
 outputs/
 
 # Local biological data and derived caches
+data/raw
+data/processed/
 data/methylation/
 data/cpg/registries/*.parquet
 data/derived/

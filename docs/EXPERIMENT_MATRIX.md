@@ -1,32 +1,56 @@
 # Experiment matrix
 
-## Phase 1 — current executable comparison
+## Axis 1 — representation source
 
-Shared scope: `TCGA array × chr1`, seed 17, same persistent CpG protocol.
+- **Functional annotations**: reference-genome functional tracks + dense locus covariates.
+- **Genomic foundation models**: patient-agnostic sequence-derived CpG embeddings.
+- **Methylation foundation models**: only their patient-agnostic CpG/locus component, before
+  methylation-value or other patient-context integration.
 
-| Arm | Input representation | Status | Store |
-|---|---|---|---|
-| Functional | functional annotations -> trained 256-D locus encoder | ready | generated cache `data/cache/representations/functional_annotations_chr1.h5` |
-| NTv3-pre | sequence-derived NTv3 pre-training locus embedding | ready if preflight coverage is 100% | `data/derived/ntv3_pre_chr1_atlas/chr1_ntv3_pretrain_atlas_v1.h5` |
+## Axis 2 — representation training regime
 
-Evaluation views for both arms: `seen` and `unseen_locus` at mask fractions 0.15/0.30/0.50/0.70/0.90.
+| Track | Question | Allowed supervision |
+|---|---|---|
+| `native_frozen` | How informative is the representation as published? | only the source model's original training |
+| `proxy_aligned` | How informative can this source become with our methylation-aware proxy? | train-patient mean beta on persistent train CpGs only |
 
-## Phase 2 — representation expansion
+Do not mix these tracks in one ranking.
 
-After the chr1 protocol is validated end-to-end:
+## Axis 3 — downstream tasks
 
-1. expand NTv3-pre to a genome-wide/common benchmark universe;
-2. materialize the functional representation over the same universe;
-3. add CpGPT, MethylGPT, DNAmBERT, MethylProphet and additional genomic FMs;
-4. define explicit common-vocabulary protocols when an encoder cannot cover the master universe.
+1. masked methylation reconstruction;
+2. age prediction / age-bin classification;
+3. mortality classification;
+4. disease classification.
 
-Do not use a representation-specific intersection silently.
+For age/mortality/disease, evaluate robustness under the same CpG masking sweep:
+`0%, 15%, 30%, 50%, 70%, 90%`.
 
-## Phase 3 — publication controls
+## Publication matrix
 
-- multiple random seeds;
-- fixed 256-D PCA/IncrementalPCA control fit on train loci only;
+Every row below uses the same patient/CpG protocol within a task.
+
+| Representation | Family | Track | Masking | Age | Mortality | Disease | Sparse eval |
+|---|---|---|---:|---:|---:|---:|---:|
+| Functional annotation encoder | functional | proxy_aligned | yes | yes | yes | yes | yes |
+| NTv3-pre | genomic FM | native_frozen | yes | yes | yes | yes | yes |
+| NTv3-pre + proxy | genomic FM | proxy_aligned | yes | yes | yes | yes | yes |
+| other genomic FM | genomic FM | native_frozen | yes | yes | yes | yes | yes |
+| other genomic FM + proxy | genomic FM | proxy_aligned | yes | yes | yes | yes | yes |
+| CpGPT locus component | methylation FM | native_frozen | yes | yes | yes | yes | yes |
+| CpGPT locus + proxy | methylation FM | proxy_aligned | yes | yes | yes | yes | yes |
+| MethylGPT locus component | methylation FM | native_frozen | yes | yes | yes | yes | yes |
+| MethylGPT locus + proxy | methylation FM | proxy_aligned | yes | yes | yes | yes | yes |
+
+## Controls required before the main paper table
+
+- multiple seeds;
+- persistent patient and CpG protocols;
+- common CpG vocabulary (no silent representation-specific intersection);
+- fixed embedding width control (proxy output is 256-D; native raw embeddings should also get a
+  label-free 256-D PCA/IncrementalPCA sensitivity analysis);
 - functional-track leakage audit;
-- strict representation-OOD functional encoder fit if making that claim;
-- genomic/function-context stratification;
-- native-model masked-inference comparison as a secondary complete-method table.
+- strict proxy train-locus-only fitting;
+- exact extraction manifest for every external model: checkpoint, layer, pooling, sequence window,
+  genome build and whether the extracted tensor is before patient/value integration;
+- native full-model masking results in a separate complete-method table only.

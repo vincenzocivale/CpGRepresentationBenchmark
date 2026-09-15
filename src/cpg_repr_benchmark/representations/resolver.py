@@ -80,11 +80,23 @@ def resolve_representation(
         source=str(cfg.get("source", "unspecified")),
         id_key=id_key,
         embedding_key=embedding_key,
+        family=str(cfg.get("family", "control")),
+        track=str(cfg.get("track", "native_frozen")),
+        component=str(cfg.get("component", "locus_only")),
+        cpg_namespace=str(cfg.get("cpg_namespace", "legacy_unspecified")),
+        reference_build=str(cfg.get("reference_build", "unspecified")),
+        coordinate_convention=str(cfg.get("coordinate_convention", "unspecified")),
     )
     manifest = {
-        "schema_version": 1,
+        "schema_version": 2,
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "name": info.name,
+        "family": info.family,
+        "track": info.track,
+        "component": info.component,
+        "cpg_namespace": info.cpg_namespace,
+        "reference_build": info.reference_build,
+        "coordinate_convention": info.coordinate_convention,
         "mode": info.mode,
         "source": info.source,
         "store_h5": str(info.store_path),
@@ -93,6 +105,7 @@ def resolve_representation(
         "id_key": info.id_key,
         "embedding_key": info.embedding_key,
         "generator": cfg.get("generator"),
+        "proxy": cfg.get("proxy"),
         "provenance": cfg.get("provenance", {}),
     }
     (run_dir / "representation_manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True))

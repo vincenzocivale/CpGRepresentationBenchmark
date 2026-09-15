@@ -11,7 +11,6 @@ import yaml
 from cpg_repr_benchmark.config import config_fingerprint
 
 
-
 def git_revision(repo_root: Path) -> str | None:
     try:
         result = subprocess.run(
@@ -25,23 +24,34 @@ def git_revision(repo_root: Path) -> str | None:
     except (OSError, subprocess.CalledProcessError):
         return None
 
+
 def create_run_dir(cfg: dict[str, Any], repo_root: Path) -> Path:
     root = Path(cfg["experiment"].get("output_root", "outputs"))
     if not root.is_absolute():
         root = repo_root / root
+    task = str(cfg["experiment"].get("task", "masking"))
     dataset_name = str(cfg["dataset"].get("name", "dataset"))
     representation_name = str(cfg["representation"]["name"])
+    representation_track = str(cfg["representation"].get("track", "native_frozen"))
     seed = int(cfg["training"]["seed"])
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     run_id = f"{stamp}-{config_fingerprint(cfg)}"
-    run_dir = root / "masking" / dataset_name / representation_name / f"seed_{seed}" / run_id
+    run_dir = (
+        root
+        / task
+        / dataset_name
+        / representation_name
+        / representation_track
+        / f"seed_{seed}"
+        / run_id
+    )
     run_dir.mkdir(parents=True, exist_ok=False)
     (run_dir / "resolved_config.yaml").write_text(yaml.safe_dump(cfg, sort_keys=False))
     return run_dir
 
 
 def write_experiment_manifest(run_dir: Path, payload: dict[str, Any]) -> None:
-    payload = {"schema_version": 1, "created_utc": datetime.now(timezone.utc).isoformat(), **payload}
+    payload = {"schema_version": 2, "created_utc": datetime.now(timezone.utc).isoformat(), **payload}
     (Path(run_dir) / "experiment.json").write_text(json.dumps(payload, indent=2, sort_keys=True))
 
 

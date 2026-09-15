@@ -10,6 +10,9 @@ from pathlib import Path
 def flatten_summary(path: Path) -> list[dict]:
     summary = json.loads(path.read_text())
     rows = []
+    path_track = path.parent.parent.parent.name
+    if path_track == summary.get("representation"):
+        path_track = None
     for view, masks in summary.get("evaluation", {}).items():
         for mask_name, metrics in masks.items():
             rows.append(
@@ -18,6 +21,7 @@ def flatten_summary(path: Path) -> list[dict]:
                     "dataset": summary.get("dataset"),
                     "representation": summary.get("representation"),
                     "representation_dim": summary.get("representation_dim"),
+                    "representation_track": summary.get("representation_track") or path_track,
                     "seed": summary.get("seed"),
                     "view": view,
                     "mask": mask_name,
@@ -37,7 +41,12 @@ def main() -> None:
     parser.add_argument("--outputs", type=Path, default=Path("outputs"))
     parser.add_argument("--csv", type=Path, help="optional output CSV")
     args = parser.parse_args()
-    paths = sorted(args.outputs.glob("masking/*/*/seed_*/*/summary.json"))
+    # Track is now an explicit path component. Keep a legacy glob so pre-v2 runs
+    # remain aggregatable during migration.
+    paths = sorted({
+        *args.outputs.glob("masking/*/*/*/seed_*/*/summary.json"),
+        *args.outputs.glob("masking/*/*/seed_*/*/summary.json"),
+    })
     if not paths:
         raise SystemExit(f"no summary.json files found under {args.outputs}")
     rows = [row for path in paths for row in flatten_summary(path)]

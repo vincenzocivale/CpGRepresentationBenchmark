@@ -1,4 +1,5 @@
 experiment:
+  task: masking
   name: masking_representation_controlled_chr1
   output_root: outputs
   locus_split:
@@ -15,6 +16,9 @@ dataset:
 
 representation:
   name: functional_annotations_chr1
+  family: functional_annotations
+  track: legacy
+  component: locus_only
   source: MehylPredictor functional-locus encoder over reference-genome functional annotations
   mode: precomputed
   store_h5: data/cache/representations/functional_annotations_chr1.h5

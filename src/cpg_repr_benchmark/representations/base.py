@@ -2,9 +2,17 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Protocol
+from typing import Literal, Protocol
 
 import numpy as np
+
+RepresentationFamily = Literal[
+    "functional_annotations",
+    "genomic_fm",
+    "methylation_fm",
+    "control",
+]
+RepresentationTrack = Literal["native_frozen", "proxy_aligned", "legacy"]
 
 
 @dataclass(frozen=True)
@@ -17,6 +25,21 @@ class RepresentationInfo:
     source: str
     id_key: str = "cpg_idx"
     embedding_key: str = "embedding"
+    family: RepresentationFamily | str = "control"
+    track: RepresentationTrack | str = "native_frozen"
+    component: str = "locus_only"
+    cpg_namespace: str = "legacy_unspecified"
+    reference_build: str = "unspecified"
+    coordinate_convention: str = "unspecified"
+
+    def __post_init__(self) -> None:
+        if self.track not in {"native_frozen", "proxy_aligned", "legacy"}:
+            raise ValueError(f"unsupported representation track: {self.track!r}")
+        if self.component != "locus_only":
+            raise ValueError(
+                "representation benchmark accepts only patient-agnostic locus-only embeddings; "
+                f"got component={self.component!r}"
+            )
 
 
 class LocusRepresentationStore(Protocol):

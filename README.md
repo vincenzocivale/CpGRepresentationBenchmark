@@ -2,7 +2,14 @@
 
 Controlled benchmark of **patient-agnostic CpG locus representations** for methylation modeling.
 
-The primary question is whether a CpG representation derived from reference-genome functional annotations is more useful than sequence-derived representations such as genomic foundation-model embeddings. The first executable comparison is **Functional annotations vs NTv3-pre** under a fixed masked-methylome reconstruction model.
+The primary question is whether a CpG representation derived from reference-genome functional annotations is more useful than locus representations extracted from genomic or methylation foundation models. The benchmark is **representation-controlled**: the downstream model is fixed and only the patient-agnostic CpG representation changes.
+
+The repository now separates two experimental tracks:
+
+- `native_frozen`: the CpG/locus embedding exactly as extracted from the published model;
+- `proxy_aligned`: the same patient-agnostic source after optimization with the shared train-locus-only methylation proxy.
+
+The original chr1 masking experiment remains executable, while the V2 layout adds proxy training and shared downstream evaluation for masked reconstruction, age, mortality and disease prediction, including sparse/masked methylome sweeps. See `docs/BENCHMARK_V2.md`.
 
 ## Current executable scope: TCGA array, chromosome 1
 
@@ -139,6 +146,24 @@ data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
 
 so the Functional and NTv3-pre arms are evaluated on the exact same CpGs.
 
+## V2 proxy-aligned masking
+
+After materializing the shared proxy embeddings, the same masking runner can be used without any architecture change:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 python scripts/train_proxy_representation.py \
+  --config configs/proxy/functional_mean_beta_chr1.yaml
+CUDA_VISIBLE_DEVICES=0 python scripts/train_proxy_representation.py \
+  --config configs/proxy/ntv3_pre_mean_beta_chr1.yaml
+
+CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
+  --config configs/experiments/masking/functional_proxy_aligned.yaml --mode all
+CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
+  --config configs/experiments/masking/ntv3_pre_proxy_aligned.yaml --mode all
+```
+
+The two proxy encoders are fitted on the same train-locus protocol and never use downstream held-out CpGs for proxy loss or checkpoint selection.
+
 ## Masking benchmark
 
 Two evaluation views are first-class:
@@ -159,7 +184,7 @@ Default masking sweep:
 Each run is written under:
 
 ```text
-outputs/masking/<dataset>/<representation>/seed_<seed>/<timestamp>-<config_hash>/
+outputs/<task>/<dataset>/<representation>/<track>/seed_<seed>/<timestamp>-<config_hash>/
 ```
 
 and contains at least:
@@ -213,16 +238,21 @@ A stronger claim that loci are unseen by the **representation encoder itself** r
 ## Repository map
 
 ```text
-configs/experiments/masking/       executable Functional/NTv3 benchmark configs
-configs/representations/           future representation templates
+configs/experiments/masking/       representation-controlled masking configs
+configs/experiments/classification/ age/mortality/disease config template
+configs/proxy/                     shared proxy-training configs
+configs/representations/           representation catalog and provenance
 data/                              local data contract, caches and persistent protocols
 docs/                              benchmark design and extension rules
 scripts/bootstrap_local_data.py    local data/symlink/coverage preflight
 scripts/build_functional_embeddings.py
+scripts/export_functional_feature_store.py
+scripts/train_proxy_representation.py
 scripts/run_masking_benchmark.py
+scripts/run_classification_benchmark.py
 scripts/validate_feature_store.py
 src/cpg_repr_benchmark/            benchmark implementation
 tests/                             synthetic invariants; no biological data required
 ```
 
-CpGPT, MethylGPT, DNAmBERT, MethylProphet and other genomic FMs are intentionally subsequent adapters. They should be added without changing this benchmark core.
+CpGPT, MethylGPT, DNAmBERT, MethylProphet and genomic FMs should enter through canonical locus-only caches. Full native-model evaluations belong to a separate complete-method comparison and must not be mixed with the representation-controlled ranking.

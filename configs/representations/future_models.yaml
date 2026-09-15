@@ -1,22 +1,78 @@
-# Templates only; these are not automatically composed into experiment YAMLs yet.
+# Canonical representation catalog. Every downstream task consumes only the locus-only
+# HDF5 cache; extraction/training happens before the benchmark run.
 representations:
-  cpgpt_locus:
+  functional_annotations_proxy:
+    name: functional_annotations_proxy
+    family: functional_annotations
+    track: proxy_aligned
+    component: locus_only
+    mode: precomputed
+    store_h5: data/cache/representations/functional_annotations__proxy_mean_beta_chr1.h5
+    source: reference-genome functional annotations -> functional locus encoder
+    provenance:
+      patient_specific: false
+      reference_genome_only: true
+      supervision: train_patient_mean_beta
+      locus_fit_scope: train_protocol_only
+
+  ntv3_pre_native:
+    name: ntv3_pre
+    family: genomic_fm
+    track: native_frozen
+    component: locus_only
+    mode: precomputed
+    store_h5: data/derived/ntv3_pre_chr1_atlas/chr1_ntv3_pretrain_atlas_v1.h5
+    source: Nucleotide Transformer v3 pre-training checkpoint
+    provenance:
+      patient_specific: false
+      supervision: genomic_pretraining
+      locus_fit_scope: external_pretrained
+
+  ntv3_pre_proxy:
+    name: ntv3_pre
+    family: genomic_fm
+    track: proxy_aligned
+    component: locus_only
+    mode: precomputed
+    store_h5: data/cache/representations/ntv3_pre__proxy_mean_beta_chr1.h5
+    source: NTv3-pre locus embedding -> shared mean-beta proxy encoder
+    provenance:
+      patient_specific: false
+      supervision: genomic_pretraining+train_patient_mean_beta
+      locus_fit_scope: train_protocol_only
+
+  cpgpt_locus_native:
     name: cpgpt_locus
+    family: methylation_fm
+    track: native_frozen
+    component: locus_only
     mode: precomputed
     store_h5: data/cache/representations/cpgpt_locus.h5
-    source: CpGPT locus encoder
-  methylgpt_locus:
+    source: CpGPT patient-agnostic CpG/locus component only
+
+  methylgpt_locus_native:
     name: methylgpt_locus
+    family: methylation_fm
+    track: native_frozen
+    component: locus_only
     mode: precomputed
     store_h5: data/cache/representations/methylgpt_locus.h5
-    source: MethylGPT locus encoder
-  dnambert_locus:
+    source: MethylGPT patient-agnostic CpG/locus component only
+
+  dnambert_locus_native:
     name: dnambert_locus
+    family: methylation_fm
+    track: native_frozen
+    component: locus_only
     mode: precomputed
     store_h5: data/cache/representations/dnambert_locus.h5
-    source: DNAmBERT locus encoder
-  methylprophet_locus:
+    source: DNAmBERT patient-agnostic locus component only
+
+  methylprophet_locus_native:
     name: methylprophet_locus
+    family: genomic_fm
+    track: native_frozen
+    component: locus_only
     mode: precomputed
     store_h5: data/cache/representations/methylprophet_locus.h5
-    source: MethylProphet genomic locus representation
+    source: MethylProphet genomic locus representation without patient RNA/value information

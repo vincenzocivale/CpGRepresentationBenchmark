@@ -1,0 +1,43 @@
+experiment:
+  name: proxy_mean_beta_chr1
+  task: proxy_mean_methylation
+  output_root: outputs
+  locus_split:
+    heldout_fraction: 0.20
+    seed: 17
+    protocol_path: data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
+
+dataset:
+  name: tcga_array_chr1
+  methylation_h5: data/methylation/tcga_array_official_full.h5
+  cpg_registry: data/cpg/registries/array_cpg_map.parquet
+  chromosomes: [chr1]
+  patient_split: [0.80, 0.10, 0.10]
+representation:
+  name: ntv3_pre
+  family: genomic_fm
+  track: proxy_aligned
+  component: locus_only
+  input_kind: dense_hdf5
+  source_store_h5: data/derived/ntv3_pre_chr1_atlas/chr1_ntv3_pretrain_atlas_v1.h5
+  id_key: auto
+  embedding_key: auto
+proxy:
+  objective: train_patient_mean_beta
+  embedding_dim: 256
+  n_blocks: 2
+  dropout: 0.10
+  validation_fraction: 0.10
+  output_store_h5: data/cache/representations/ntv3_pre__proxy_mean_beta_chr1.h5
+model: {}
+training:
+  seed: 17
+  device: cuda
+  epochs: 80
+  batch_size: 512
+  export_batch_size: 2048
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-4
+  mixed_precision: true
+  beta_epsilon: 1.0e-4
+evaluation: {}
