@@ -41,9 +41,6 @@ CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
 CUDA_VISIBLE_DEVICES=0 python scripts/train_proxy_representation.py \
   --config configs/proxy/<config>.yaml
 
-# classification benchmark (age/mortality/disease)
-python scripts/run_classification_benchmark.py --config configs/experiments/classification/<config>.yaml
-
 # aggregate finished runs into a summary CSV
 python scripts/summarize_runs.py --outputs outputs --csv outputs/masking_summary.csv
 ```

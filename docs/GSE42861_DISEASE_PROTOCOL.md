@@ -1,5 +1,7 @@
 # GSE42861 disease classification benchmark protocol
 
+> **Note:** `scripts/run_classification_benchmark.py` and the direct representation-conditioned classifier it drove have been removed. Downstream phenotype evaluation now goes through the reconstruction-to-downstream pipeline (sparse methylome -> reconstruction model -> frozen predictor); the dataset-preparation steps above are still current. See CLAUDE.md for the current protocol.
+
 ## Purpose
 
 GSE42861 (Liu et al. 2013) is the rheumatoid-arthritis case/control cohort used as an

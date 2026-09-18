@@ -1,5 +1,7 @@
 # GSE147221 schizophrenia disease-classification protocol
 
+> **Note:** `scripts/run_classification_benchmark.py` and the direct representation-conditioned classifier it drove have been removed. Downstream phenotype evaluation now goes through the reconstruction-to-downstream pipeline (sparse methylome -> reconstruction model -> frozen predictor); the dataset-preparation steps above are still current. See CLAUDE.md for the current protocol.
+
 ## Purpose and cohort definition
 
 GSE147221 is an external whole-blood/buffy-coat Illumina HumanMethylation450

@@ -282,7 +282,6 @@ scripts/build_functional_embeddings.py
 scripts/export_functional_feature_store.py
 scripts/train_proxy_representation.py
 scripts/run_masking_benchmark.py
-scripts/run_classification_benchmark.py
 scripts/validate_feature_store.py
 scripts/summarize_runs.py
 src/cpg_repr_benchmark/            benchmark implementation
