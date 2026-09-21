@@ -11,10 +11,11 @@ representation's extraction pipeline leak patient-specific values, RNA state, or
 embedding — see `docs/BENCHMARK_V2.md` for the full rationale and `docs/ADDING_REPRESENTATIONS.md` before
 wiring in a new representation.
 
-Every representation belongs to one of two tracks, reported in separate result tables:
-- `native_frozen` — embedding exactly as extracted from the published model/checkpoint.
-- `proxy_aligned` — same patient-agnostic source, re-optimized on the shared train-locus-only
-  mean-beta proxy objective (see `configs/proxy/`).
+Every representation reports under the `native_frozen` track — embedding exactly as extracted
+from the published model/checkpoint, or compacted unsupervised from it (e.g. PCA/SVD over the
+raw ENCODE functional-annotation feature store, see `scripts/build_functional_pca_embedding.py`).
+There is no proxy-training track: representations are never re-optimized against a methylation
+objective before being benchmarked.
 
 ## Commands
 
@@ -37,9 +38,8 @@ python scripts/bootstrap_local_data.py
 CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
   --config configs/experiments/masking/<config>.yaml --mode all
 
-# fit a proxy encoder before a proxy_aligned masking run
-CUDA_VISIBLE_DEVICES=0 python scripts/train_proxy_representation.py \
-  --config configs/proxy/<config>.yaml
+# compact the raw ENCODE functional-annotation feature store into a PCA embedding
+python scripts/build_functional_pca_embedding.py --help
 
 # aggregate finished runs into a summary CSV
 python scripts/summarize_runs.py --outputs outputs --csv outputs/masking_summary.csv
@@ -82,14 +82,13 @@ per-mask-fraction metrics under `evaluation/{seen,unseen_locus}/`.
 family, track, mode, store path, and provenance (patient-specific?, supervision, locus-fit scope). When
 adding a representation, register it here rather than hardcoding paths in experiment configs.
 
-**Config layering**: `configs/datasets/`, `configs/representations/`, `configs/proxy/`, and
+**Config layering**: `configs/datasets/`, `configs/representations/`, and
 `configs/experiments/{masking,classification,age}/` compose independently — an experiment config references
 a representation entry and a dataset, not the other way around.
 
 ## Key invariants when modifying code
 
-- Held-out/unseen CpGs must never influence proxy training loss, proxy checkpoint selection, the prior, or
-  downstream model selection for that arm.
+- Held-out/unseen CpGs must never influence the prior or downstream model selection for that arm.
 - Don't change reconstruction architecture, losses, split seed, or training budget for only one
   representation arm — that breaks the controlled comparison that is this repo's entire purpose.
 - `online` mode requires `training.num_workers=0` and `evaluation.num_workers=0` (GPU-resident encoder state

@@ -44,12 +44,12 @@ coordinates through the historical array registry and invokes the old functional
 cannot support strict external-locus claims because coordinates absent from that legacy registry
 are rejected explicitly.
 
-### Proxy-aligned Functional
+### Native-frozen Functional (PCA-compacted)
 
-`functional-proxy` is the publication path.  It consumes a **coordinate-native raw functional
-feature HDF5** and a proxy checkpoint trained only on the configured TCGA proxy-training loci.
-The frozen encoder can then be materialized over any locus covered by the raw functional feature
-store, including GSE40279-only loci.
+`scripts/build_functional_pca_embedding.py` is the publication path. It consumes a
+**coordinate-native raw functional feature HDF5** and compacts it with an unsupervised PCA/SVD
+transform — no methylation-supervised fitting. The resulting embedding covers every locus in
+the raw functional feature store, including GSE40279-only loci.
 
 ## GSE40279 chr1 smoke
 
@@ -89,5 +89,5 @@ python scripts/data/build_common_locus_protocol.py \
 ```
 
 The resulting smoke comparison is not a publication ranking because the historical Functional arm
-is `legacy`.  Its purpose is to validate the complete coordinate-native pipeline before training
-and exporting the clean `proxy_aligned` Functional representation.
+is `legacy`.  Its purpose is to validate the complete coordinate-native pipeline before exporting
+the clean `native_frozen` PCA-compacted Functional representation.

@@ -54,13 +54,11 @@ class ResidualQueryDecoder(nn.Module):
 
 
 class MaskedMethylomeReconstructor(nn.Module):
-    """Fixed downstream reconstruction architecture used for every representation arm.
+    """Representation-controlled methylome reconstructor.
 
-    Raw representations can have different dimensionalities. A *single shared* locus adapter
-    maps each raw representation to `locus_latent_dim`; everything downstream is identical.
-    Because the adapter parameter count still depends on raw dimension, the paper benchmark
-    should additionally include a fixed-dimensional unsupervised adapter (e.g. train-locus PCA)
-    as a strict capacity-control ablation before making representation-only claims.
+    The same architecture is used for every representation arm. `encode_patient` and
+    `decode_targets` are exposed so a sparse patient profile can be encoded once and an
+    arbitrarily large missing locus set can be decoded in chunks at downstream time.
     """
 
     def __init__(
@@ -82,6 +80,26 @@ class MaskedMethylomeReconstructor(nn.Module):
         self.patient_encoder = DeepSetsPatientEncoder(token_dim, patient_dim, hidden_dim)
         self.decoder = ResidualQueryDecoder(locus_latent_dim, patient_dim, hidden_dim)
 
+    def encode_patient(
+        self,
+        observed_locus: torch.Tensor,
+        observed_residual: torch.Tensor,
+        observed_valid: torch.Tensor,
+    ) -> torch.Tensor:
+        observed_locus = self.locus_adapter(observed_locus)
+        tokens = self.tokenizer(observed_locus, observed_residual)
+        return self.patient_encoder(tokens, observed_valid)
+
+    def decode_targets(
+        self,
+        patient: torch.Tensor,
+        target_locus: torch.Tensor,
+        target_prior_logit: torch.Tensor,
+    ) -> torch.Tensor:
+        target_locus = self.locus_adapter(target_locus)
+        delta = self.decoder(patient, target_locus)
+        return torch.sigmoid(target_prior_logit + delta)
+
     def forward(
         self,
         observed_locus: torch.Tensor,
@@ -90,9 +108,36 @@ class MaskedMethylomeReconstructor(nn.Module):
         target_locus: torch.Tensor,
         target_prior_logit: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor]:
-        observed_locus = self.locus_adapter(observed_locus)
-        target_locus = self.locus_adapter(target_locus)
-        tokens = self.tokenizer(observed_locus, observed_residual)
-        patient = self.patient_encoder(tokens, observed_valid)
-        delta = self.decoder(patient, target_locus)
-        return torch.sigmoid(target_prior_logit + delta), patient
+        patient = self.encode_patient(observed_locus, observed_residual, observed_valid)
+        prediction = self.decode_targets(patient, target_locus, target_prior_logit)
+        return prediction, patient
+
+
+def build_reconstructor(raw_locus_dim: int, model_cfg: dict) -> nn.Module:
+    """Build the configured reconstruction architecture.
+
+    `deepsets` keeps the original benchmark model available as an architectural baseline;
+    `perceiver_io` is the target-conditioned sparse reconstruction model.
+    """
+    architecture = str(model_cfg.get("architecture", "deepsets")).lower()
+    if architecture in {"deepsets", "masked_methylome", "legacy"}:
+        return MaskedMethylomeReconstructor(
+            raw_locus_dim=raw_locus_dim,
+            locus_latent_dim=int(model_cfg.get("locus_latent_dim", 256)),
+            token_dim=int(model_cfg.get("token_dim", 256)),
+            patient_dim=int(model_cfg.get("patient_dim", 256)),
+            hidden_dim=int(model_cfg.get("hidden_dim", 512)),
+        )
+    if architecture in {"perceiver", "perceiver_io"}:
+        from cpg_repr_benchmark.models.perceiver import PerceiverMaskedMethylomeReconstructor
+
+        return PerceiverMaskedMethylomeReconstructor(
+            raw_locus_dim=raw_locus_dim,
+            model_dim=int(model_cfg.get("model_dim", 256)),
+            num_latents=int(model_cfg.get("num_latents", 64)),
+            num_latent_blocks=int(model_cfg.get("num_latent_blocks", 4)),
+            num_heads=int(model_cfg.get("num_heads", 8)),
+            ff_mult=int(model_cfg.get("ff_mult", 4)),
+            dropout=float(model_cfg.get("dropout", 0.1)),
+        )
+    raise ValueError(f"unsupported reconstruction architecture: {architecture!r}")

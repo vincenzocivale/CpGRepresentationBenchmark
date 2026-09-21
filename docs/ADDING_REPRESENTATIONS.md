@@ -55,4 +55,11 @@ Before accepting an arm into the main table:
 
 ## Planned adapters
 
-The initial deployment only needs the already-saved functional and NTv3-pre stores. Next adapters should cover CpGPT, MethylGPT, DNAmBERT, MethylProphet/its sequence representation and additional genomic foundation models. Their extraction code should never leak into the downstream model package.
+The initial deployment only needs the already-saved functional and NTv3-pre stores. Next adapters should cover MethylGPT, DNAmBERT, MethylProphet/its sequence representation and additional genomic foundation models. Their extraction code should never leak into the downstream model package.
+
+CpGPT is implemented: `scripts/cpgpt/` holds a self-contained extractor with no
+dependency on `cpg_repr_benchmark` (it must run in a separate, CpGPT-pinned
+environment; see `scripts/cpgpt/README.md`), and `scripts/build_cpgpt_embedding.py`
+converts this repo's CpG registry into CpGPT location keys and writes the
+canonical store registered as `cpgpt_locus_native` in
+`configs/representations/future_models.yaml`.

@@ -10,8 +10,8 @@ from cpg_repr_benchmark.data.transfer_protocols import (
 
 def test_split_external_locus_sets_preserves_dataset_order():
     dataset = np.asarray([50, 10, 40, 20, 30], dtype=np.int64)
-    proxy = np.asarray([10, 20, 99], dtype=np.int64)
-    result = split_external_locus_sets(dataset, proxy)
+    training_source = np.asarray([10, 20, 99], dtype=np.int64)
+    result = split_external_locus_sets(dataset, training_source)
     assert result["all"].tolist() == [50, 10, 40, 20, 30]
     assert result["shared"].tolist() == [10, 20]
     assert result["external_locus"].tolist() == [50, 40, 30]
@@ -19,13 +19,13 @@ def test_split_external_locus_sets_preserves_dataset_order():
 
 def test_write_external_locus_protocols(tmp_path: Path):
     dataset = np.asarray([11, 12, 13, 14], dtype=np.int64)
-    proxy = np.asarray([12, 14, 15], dtype=np.int64)
+    training_source = np.asarray([12, 14, 15], dtype=np.int64)
     manifest = write_external_locus_protocols(
         dataset,
-        proxy,
+        training_source,
         tmp_path,
         dataset_source="external",
-        proxy_source="proxy",
+        training_source="training",
     )
     assert manifest["n_dataset_loci"] == 4
     assert manifest["n_shared_loci"] == 2

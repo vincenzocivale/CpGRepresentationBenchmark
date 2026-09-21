@@ -21,6 +21,10 @@ data/cache/
 data/local_manifest.json
 data/protocols/
 
+# Local staging for third-party model resources (e.g. scripts/cpgpt symlinks)
+/dependencies/
+/.venv-cpgpt/
+
 # Large binary artifacts anywhere else
 *.pt
 *.pth

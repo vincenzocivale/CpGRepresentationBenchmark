@@ -105,7 +105,6 @@ def resolve_representation(
         "id_key": info.id_key,
         "embedding_key": info.embedding_key,
         "generator": cfg.get("generator"),
-        "proxy": cfg.get("proxy"),
         "provenance": cfg.get("provenance", {}),
     }
     (run_dir / "representation_manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True))

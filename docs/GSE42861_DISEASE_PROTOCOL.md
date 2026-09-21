@@ -6,15 +6,15 @@
 
 GSE42861 (Liu et al. 2013) is the rheumatoid-arthritis case/control cohort used as an
 external-cohort validation dataset for the disease-classification track of the coordinate-native
-CpG representation benchmark. Proxy supervision is sourced from TCGA (`tcga_array`); downstream
-disease classification (`disease_label`: 0 = control, 1 = rheumatoid arthritis) is trained and
-evaluated only on GSE42861 samples (689 samples: 354 RA, 335 control; whole-blood/PBL, Illumina
-450k, GRCh38).
+CpG representation benchmark. TCGA (`tcga_array`) is the masking/reconstruction training source;
+downstream disease classification (`disease_label`: 0 = control, 1 = rheumatoid arthritis) is
+trained and evaluated only on GSE42861 samples (689 samples: 354 RA, 335 control; whole-blood/PBL,
+Illumina 450k, GRCh38).
 
 The locus analysis is split before representation coverage is considered:
 
-- `shared`: GSE42861 loci also present in the TCGA-array proxy source;
-- `external_locus`: GSE42861 loci absent from the TCGA-array proxy source;
+- `shared`: GSE42861 loci also present in the TCGA-array training source;
+- `external_locus`: GSE42861 loci absent from the TCGA-array training source;
 - `all`: every mapped GSE42861 locus.
 
 For the current master registry the expected counts are:
@@ -54,7 +54,7 @@ python scripts/data/build_transfer_locus_protocols.py \
   --dataset-h5 data/processed/GSE42861/methylation.h5 \
   --membership data/cpg/master_cpg_membership.parquet \
   --dataset-source gse42861 \
-  --proxy-source tcga_array \
+  --training-source tcga_array \
   --output-dir data/protocols/GSE42861/transfer_vs_tcga
 ```
 
@@ -76,16 +76,21 @@ python scripts/representations/materialize.py ntv3-pre \
   --device cuda
 ```
 
-Functional, proxy-aligned (primary path; requires a fitted proxy checkpoint, see
-`docs/ADDING_REPRESENTATIONS.md` and `configs/proxy/`):
+Functional, native_frozen PCA (primary path; a compact unsupervised PCA/SVD embedding over the
+raw ENCODE functional-annotation feature store, see `scripts/build_functional_pca_embedding.py`
+and `docs/ADDING_REPRESENTATIONS.md`):
 
 ```bash
-python scripts/representations/materialize.py functional-proxy \
-  --locus-protocol data/protocols/GSE42861/transfer_vs_tcga/shared.npz \
-  --output data/cache/representations/materialized/GSE42861/shared/functional_proxy.h5 \
-  --batch-size 4096 \
-  --device cuda
+python scripts/build_functional_pca_embedding.py \
+  --input data/derived/functional_annotations/<raw feature store>.h5 \
+  --output data/cache/representations/materialized/GSE42861/shared/functional_pca.h5 \
+  --n-components 256
 ```
+
+This runs over the full raw feature store's CpG universe (it does not take a `--locus-protocol`
+filter); downstream locus coverage against `shared.npz`/`external_locus.npz` is still enforced
+by `build_common_locus_protocol.py` in step 3 below. It reads directly from the raw
+functional-annotation feature store rather than going through `scripts/representations/materialize.py`.
 
 Functional, legacy checkpoint (smoke-test only, not a publication arm):
 
@@ -109,7 +114,7 @@ Repeat against `external_locus.npz` or `all.npz` when evaluating that view inste
 python scripts/data/build_common_locus_protocol.py \
   --dataset-h5 data/processed/GSE42861/methylation.h5 \
   --candidate-protocol data/protocols/GSE42861/transfer_vs_tcga/shared.npz \
-  --representation functional=data/cache/representations/materialized/GSE42861/shared/functional_proxy.h5 \
+  --representation functional=data/cache/representations/materialized/GSE42861/shared/functional_pca.h5 \
   --representation ntv3=data/cache/representations/materialized/GSE42861/shared/ntv3_pre.h5 \
   --output data/protocols/GSE42861/disease_shared_functional_ntv3_common.npz
 ```

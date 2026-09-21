@@ -16,7 +16,7 @@ representation:
     pooling: ...
     sequence_window_bp: ...
     patient_specific: false
-    supervision: none | methylation_proxy | masked_methylation | other
+    supervision: none | masked_methylation | other
     locus_fit_scope: reference_only | train_protocol_only | external_pretrained | unknown
 ```
 

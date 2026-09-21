@@ -63,7 +63,7 @@ python scripts/data/build_transfer_locus_protocols.py \
   --dataset-h5 data/processed/GSE147221/methylation.h5 \
   --membership data/cpg/master_cpg_membership.parquet \
   --dataset-source gse147221 \
-  --proxy-source tcga_array \
+  --training-source tcga_array \
   --output-dir data/protocols/GSE147221/transfer_vs_tcga
 ```
 

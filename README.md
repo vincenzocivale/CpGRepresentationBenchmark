@@ -4,24 +4,27 @@ Controlled benchmark of **patient-agnostic CpG locus representations** for methy
 
 The primary question is whether a CpG representation derived from reference-genome functional annotations is more useful than locus representations extracted from genomic or methylation foundation models. The benchmark is **representation-controlled**: the downstream model is fixed and only the patient-agnostic CpG representation changes.
 
-The repository now separates two experimental tracks:
+Every representation reports under a single `native_frozen` track: the CpG/locus embedding
+exactly as extracted from the published model or checkpoint, optionally compacted with an
+unsupervised transform (e.g. PCA/SVD over the raw ENCODE functional-annotation feature store —
+see `scripts/build_functional_pca_embedding.py`). No representation is re-optimized against a
+methylation objective before being benchmarked.
 
-- `native_frozen`: the CpG/locus embedding exactly as extracted from the published model;
-- `proxy_aligned`: the same patient-agnostic source after optimization with the shared train-locus-only methylation proxy.
-
-The original chr1 masking experiment remains executable, while the V2 layout adds proxy training and shared downstream evaluation for masked reconstruction, age, mortality and disease prediction, including sparse/masked methylome sweeps. See `docs/BENCHMARK_V2.md`.
+The original chr1 masking experiment remains executable, and the V2 layout adds shared
+downstream evaluation for masked reconstruction, age, mortality and disease prediction,
+including sparse/masked methylome sweeps. See `docs/BENCHMARK_V2.md`.
 
 ## Datasets
 
-`tcga_array` is the proxy-training / masking-reconstruction source. Every other dataset below is
+`tcga_array` is the masking-reconstruction training source. Every other dataset below is
 an external-cohort downstream task, prepared once with `scripts/data/prepare_*.py` and registered
 into a shared master CpG registry (`scripts/data/build_master_cpg_registry.py`) so representation
-coverage is judged against `shared` (loci also in the TCGA-array proxy source) vs. `external_locus`
+coverage is judged against `shared` (loci also in the TCGA-array training source) vs. `external_locus`
 (loci absent from it) vs. `all`.
 
 | Dataset | Task | Config / protocol doc |
 |---|---|---|
-| `tcga_array` | proxy training, masked reconstruction | `configs/datasets/tcga_array.yaml`, `docs/BENCHMARK_V2.md` |
+| `tcga_array` | masked reconstruction | `configs/datasets/tcga_array.yaml`, `docs/BENCHMARK_V2.md` |
 | `GSE40279` | age prediction | `configs/datasets/gse40279.yaml`, `docs/GSE40279_AGE_PROTOCOL.md` |
 | `GSE42861` (rheumatoid arthritis) | disease classification | `configs/datasets/gse42861.yaml`, `docs/GSE42861_DISEASE_PROTOCOL.md` |
 | `GSE147221` (schizophrenia) | disease classification | `configs/datasets/gse147221.yaml`, `docs/GSE147221_DISEASE_PROTOCOL.md` |
@@ -173,24 +176,6 @@ data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
 
 so the Functional and NTv3-pre arms are evaluated on the exact same CpGs.
 
-## V2 proxy-aligned masking
-
-After materializing the shared proxy embeddings, the same masking runner can be used without any architecture change:
-
-```bash
-CUDA_VISIBLE_DEVICES=0 python scripts/train_proxy_representation.py \
-  --config configs/proxy/functional_mean_beta_chr1.yaml
-CUDA_VISIBLE_DEVICES=0 python scripts/train_proxy_representation.py \
-  --config configs/proxy/ntv3_pre_mean_beta_chr1.yaml
-
-CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
-  --config configs/experiments/masking/functional_proxy_aligned.yaml --mode all
-CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
-  --config configs/experiments/masking/ntv3_pre_proxy_aligned.yaml --mode all
-```
-
-The two proxy encoders are fitted on the same train-locus protocol and never use downstream held-out CpGs for proxy loss or checkpoint selection.
-
 ## Masking benchmark
 
 Two evaluation views are first-class:
@@ -269,7 +254,6 @@ configs/datasets/                  per-dataset h5/parquet paths and primary task
 configs/experiments/masking/       representation-controlled masking configs
 configs/experiments/classification/ age/mortality/disease config templates (one per dataset)
 configs/experiments/age/           age-task configs (GSE40279, ComputAgeBench)
-configs/proxy/                     shared proxy-training configs
 configs/representations/           representation catalog and provenance
 data/                              local data contract, caches and persistent protocols (not versioned)
 docs/                              benchmark design, data contract, and per-dataset protocol docs
@@ -279,8 +263,8 @@ scripts/data/build_master_cpg_registry.py
 scripts/data/build_transfer_locus_protocols.py
 scripts/data/build_common_locus_protocol.py
 scripts/build_functional_embeddings.py
+scripts/build_functional_pca_embedding.py
 scripts/export_functional_feature_store.py
-scripts/train_proxy_representation.py
 scripts/run_masking_benchmark.py
 scripts/validate_feature_store.py
 scripts/summarize_runs.py

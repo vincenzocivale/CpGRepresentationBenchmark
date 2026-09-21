@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """One-time migration helper from the original MehylPredictor functional cache.
 
-After this export, proxy training is self-contained in CpGRepresentationBenchmark and no
-RNA branch or MehylPredictor model code is needed for the benchmark.
+After this export, representation compaction (PCA) is self-contained in
+CpGRepresentationBenchmark and no RNA branch or MehylPredictor model code is needed for the
+benchmark.
 """
 from __future__ import annotations
 

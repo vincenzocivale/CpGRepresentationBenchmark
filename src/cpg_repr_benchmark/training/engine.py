@@ -42,7 +42,9 @@ def evaluate_loader(model: torch.nn.Module, loader, device: torch.device) -> tup
         "target_matrix_column": np.concatenate(columns, axis=0),
         "sample_index": np.concatenate(samples, axis=0),
     }
-    return reconstruction_metrics(pred, true, prior), outputs
+    return reconstruction_metrics(
+        pred, true, prior, target_matrix_column=outputs["target_matrix_column"]
+    ), outputs
 
 
 def train_model(

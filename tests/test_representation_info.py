@@ -29,6 +29,20 @@ def test_representation_tracks_are_explicit():
         mode="precomputed",
         source="test",
         family="genomic_fm",
-        track="proxy_aligned",
+        track="legacy",
     )
-    assert info.track == "proxy_aligned"
+    assert info.track == "legacy"
+
+
+def test_representation_info_rejects_unknown_track():
+    with pytest.raises(ValueError):
+        RepresentationInfo(
+            name="bad",
+            store_path=Path("x.h5"),
+            n_loci=10,
+            dim=32,
+            mode="precomputed",
+            source="test",
+            family="genomic_fm",
+            track="proxy_aligned",
+        )

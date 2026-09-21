@@ -15,14 +15,16 @@ from cpg_repr_benchmark.data.transfer_protocols import write_external_locus_prot
 def main() -> None:
     p = argparse.ArgumentParser(
         description=(
-            "Build persistent downstream locus sets: all, shared with the proxy source, "
-            "and loci external to the proxy source"
+            "Build persistent downstream locus sets: all, shared with the training source, "
+            "and loci external to the training source"
         )
     )
     p.add_argument("--dataset-h5", type=Path, required=True)
     p.add_argument("--membership", type=Path, required=True, help="master_cpg_membership.parquet")
     p.add_argument("--dataset-source", required=True, help="source label used in master membership")
-    p.add_argument("--proxy-source", required=True, help="proxy-training source label used in master membership")
+    p.add_argument(
+        "--training-source", required=True, help="representation-training source label used in master membership"
+    )
     p.add_argument("--output-dir", type=Path, required=True)
     args = p.parse_args()
 
@@ -34,13 +36,13 @@ def main() -> None:
     dataset_membership = membership.loc[
         membership["source"].astype(str) == str(args.dataset_source), "cpg_idx"
     ].to_numpy(dtype=np.int64)
-    proxy_ids = membership.loc[
-        membership["source"].astype(str) == str(args.proxy_source), "cpg_idx"
+    training_source_ids = membership.loc[
+        membership["source"].astype(str) == str(args.training_source), "cpg_idx"
     ].to_numpy(dtype=np.int64)
     if not len(dataset_membership):
         raise ValueError(f"dataset source {args.dataset_source!r} is absent from master membership")
-    if not len(proxy_ids):
-        raise ValueError(f"proxy source {args.proxy_source!r} is absent from master membership")
+    if not len(training_source_ids):
+        raise ValueError(f"training source {args.training_source!r} is absent from master membership")
 
     dataset_set = set(dataset_ids.tolist())
     membership_set = set(dataset_membership.tolist())
@@ -55,10 +57,10 @@ def main() -> None:
 
     manifest = write_external_locus_protocols(
         dataset_ids,
-        proxy_ids,
+        training_source_ids,
         args.output_dir,
         dataset_source=str(args.dataset_source),
-        proxy_source=str(args.proxy_source),
+        training_source=str(args.training_source),
         metadata={
             "dataset_h5": str(args.dataset_h5.resolve()),
             "membership": str(args.membership.resolve()),

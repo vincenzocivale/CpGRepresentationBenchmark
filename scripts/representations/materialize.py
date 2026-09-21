@@ -55,18 +55,6 @@ def _parser() -> argparse.ArgumentParser:
     legacy.add_argument("--n-functional-ffn-blocks", type=int, default=8)
     legacy.add_argument("--dropout", type=float, default=0.1)
 
-    functional = sub.add_parser(
-        "functional-proxy",
-        help="primary proxy-aligned functional encoder over a coordinate-native raw feature store",
-    )
-    _common(functional)
-    functional.add_argument("--raw-functional-h5", type=Path, required=True)
-    functional.add_argument("--proxy-checkpoint", type=Path, required=True)
-    functional.add_argument("--device", default="cuda")
-    functional.add_argument("--n-tracks", type=int, default=4165)
-    functional.add_argument("--embedding-dim", type=int, default=256)
-    functional.add_argument("--n-blocks", type=int, default=8)
-    functional.add_argument("--dropout", type=float, default=0.1)
     return p
 
 
@@ -101,19 +89,6 @@ def main() -> None:
             device=args.device,
             encoder_batch_size=args.encoder_batch_size,
             n_functional_ffn_blocks=args.n_functional_ffn_blocks,
-            dropout=args.dropout,
-        )
-    elif args.provider == "functional-proxy":
-        from cpg_repr_benchmark.representations.providers.functional_proxy import FunctionalProxyProvider
-
-        provider = FunctionalProxyProvider(
-            raw_store_h5=args.raw_functional_h5,
-            proxy_checkpoint=args.proxy_checkpoint,
-            requested_cpg_ids=ids,
-            device=args.device,
-            n_tracks=args.n_tracks,
-            embedding_dim=args.embedding_dim,
-            n_blocks=args.n_blocks,
             dropout=args.dropout,
         )
     else:  # pragma: no cover - argparse guarantees this

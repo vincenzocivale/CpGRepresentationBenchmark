@@ -5,13 +5,13 @@
 ## Purpose
 
 GSE40279 is the first external-cohort validation dataset for the coordinate-native
-CpG representation benchmark.  Proxy supervision is sourced from TCGA; downstream age
-prediction is trained and evaluated only on GSE40279 samples.
+CpG representation benchmark.  TCGA (`tcga_array`) is the masking/reconstruction training
+source; downstream age prediction is trained and evaluated only on GSE40279 samples.
 
 The locus analysis is split before representation coverage is considered:
 
-- `shared`: GSE40279 loci also present in the TCGA-array proxy source;
-- `external_locus`: GSE40279 loci absent from the TCGA-array proxy source;
+- `shared`: GSE40279 loci also present in the TCGA-array training source;
+- `external_locus`: GSE40279 loci absent from the TCGA-array training source;
 - `all`: every mapped GSE40279 locus.
 
 For the current master registry the expected counts are:
@@ -33,7 +33,7 @@ python scripts/data/build_transfer_locus_protocols.py \
   --dataset-h5 data/processed/GSE40279/methylation.h5 \
   --membership data/cpg/master_cpg_membership.parquet \
   --dataset-source gse40279 \
-  --proxy-source tcga_array \
+  --training-source tcga_array \
   --output-dir data/protocols/GSE40279/transfer_vs_tcga
 ```
 
@@ -107,8 +107,9 @@ not a final paper ranking against the native NTv3-pre representation.
 
 ## 5. Publication-grade locus-transfer experiments
 
-After genome-wide `proxy_aligned` caches can be exported from the proxy checkpoint to
-arbitrary master-registry loci, create three separate common protocols:
+After genome-wide `native_frozen` caches can be exported (e.g. via
+`scripts/build_functional_pca_embedding.py`) to arbitrary master-registry loci, create three
+separate common protocols:
 
 ```text
 shared          -> transfer_vs_tcga/shared.npz

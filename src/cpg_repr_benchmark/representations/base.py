@@ -12,7 +12,7 @@ RepresentationFamily = Literal[
     "methylation_fm",
     "control",
 ]
-RepresentationTrack = Literal["native_frozen", "proxy_aligned", "legacy"]
+RepresentationTrack = Literal["native_frozen", "legacy"]
 
 
 @dataclass(frozen=True)
@@ -33,7 +33,7 @@ class RepresentationInfo:
     coordinate_convention: str = "unspecified"
 
     def __post_init__(self) -> None:
-        if self.track not in {"native_frozen", "proxy_aligned", "legacy"}:
+        if self.track not in {"native_frozen", "legacy"}:
             raise ValueError(f"unsupported representation track: {self.track!r}")
         if self.component != "locus_only":
             raise ValueError(

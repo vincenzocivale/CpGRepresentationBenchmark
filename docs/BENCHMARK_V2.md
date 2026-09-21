@@ -7,24 +7,14 @@ competitor's patient methylation value, RNA state, task token, or final contextu
 the locus representation. For methylation foundation models, extract only the component that
 identifies/represents the CpG locus before patient-specific value integration.
 
-Every representation is assigned to one of two tracks:
+Every representation is reported under a single track:
 
-1. **`native_frozen`** — use the locus embedding as supplied by the published model/checkpoint.
-2. **`proxy_aligned`** — start from the same patient-agnostic source and optimize an encoder on
-   the exact same proxy objective used for the functional representation.
+- **`native_frozen`** — use the locus embedding as supplied by the published model/checkpoint,
+  optionally compacted with an unsupervised transform (e.g. PCA/SVD over the raw ENCODE
+  functional-annotation feature store — see `scripts/build_functional_pca_embedding.py`).
 
-These tracks answer different questions and should be reported in separate main-table blocks.
-
-## Proxy objective
-
-The default proxy is **mean methylation per CpG over training patients**. The proxy encoder may
-see only CpGs in the persistent downstream `train_locus` split. A deterministic subset of those
-train loci is used for proxy checkpoint selection. Downstream held-out loci are never used for
-proxy loss or model selection.
-
-The resulting embedding is materialized once as a canonical HDF5 store and frozen for every
-downstream task. This prevents task-specific fine-tuning from contaminating a representation
-comparison.
+No representation is re-optimized against a methylation objective before being benchmarked; a
+representation is compared purely on what its source model/feature store already encodes.
 
 ### Functional annotations
 
@@ -34,26 +24,9 @@ The old RNA->DNAm model is not retained. Only its CpG branch is migrated:
 reference functional track IDs --EmbeddingBag--+
                                                 +--> norm -> residual FFN blocks -> 256-D CpG embedding
 reference dense locus features -------MLP-------+
-                                                |
-                                                +--> scalar mean-beta proxy head (training only)
 ```
 
-After training, the scalar head is discarded. The 256-D locus embedding is cached.
-
-For the primary functional arm, direct DNA-methylation-derived annotation tracks must be excluded or explicitly audited. A secondary permissive arm may retain them, but it must not be presented as a clean reference-only functional comparison.
-
-### Dense competing embeddings
-
-For sequence FMs and locus components extracted from methylation FMs:
-
-```text
-frozen raw CpG embedding -> LayerNorm -> Linear(256) -> residual FFN -> 256-D embedding
-                                                           |
-                                                           +--> scalar mean-beta head (training only)
-```
-
-This is the `proxy_aligned` comparison. The unmodified source embedding remains the separate
-`native_frozen` comparison.
+For the primary functional arm, direct DNA-methylation-derived annotation tracks must be excluded or explicitly audited. A secondary permissive arm may retain them, but it must not be presented as a clean reference-only functional comparison. The compact 256-D embedding above is obtained via unsupervised PCA/SVD (`scripts/build_functional_pca_embedding.py`), not via any methylation-supervised fitting.
 
 ## Downstream tasks
 
@@ -101,14 +74,13 @@ Self-contained functional source cache:
 ```
 
 The one-time migration script `scripts/export_functional_feature_store.py` is the only code path
-allowed to depend on the old MehylPredictor repository. Once the source cache exists, all proxy
-training and downstream benchmarking are self-contained here.
+allowed to depend on the old MehylPredictor repository. Once the source cache exists, all
+representation compaction and downstream benchmarking are self-contained here.
 
 ## Output hierarchy
 
 ```text
 outputs/
-  proxy_mean_methylation/<dataset>/<representation>/<track>/seed_<s>/<run>/
   masking/<dataset>/<representation>/<track>/seed_<s>/<run>/
   age/<dataset>/<representation>/<track>/seed_<s>/<run>/
   mortality/<dataset>/<representation>/<track>/seed_<s>/<run>/
@@ -122,11 +94,11 @@ checkpoints, evaluation files and `summary.json`.
 
 For each source representation `R`:
 
-| Source | Native frozen | Same proxy objective | Masking | Age | Mortality | Disease | Sparsity sweep |
-|---|---:|---:|---:|---:|---:|---:|---:|
-| Functional annotations | n/a | yes | yes | yes | yes | yes | yes |
-| genomic FM R | yes | yes | yes | yes | yes | yes | yes |
-| methylation FM locus component R | yes | yes | yes | yes | yes | yes | yes |
+| Source | Native frozen | Masking | Age | Mortality | Disease | Sparsity sweep |
+|---|---:|---:|---:|---:|---:|---:|
+| Functional annotations | yes | yes | yes | yes | yes | yes |
+| genomic FM R | yes | yes | yes | yes | yes | yes |
+| methylation FM locus component R | yes | yes | yes | yes | yes | yes |
 
 Keep any **native full-model** CpGPT/MethylGPT evaluation in a separate complete-method table; it
 answers a different question from locus representation quality.

@@ -160,11 +160,11 @@ python scripts/data/build_common_locus_protocol.py \
 
 ## External-locus transfer protocols
 
-When proxy supervision comes from one source (for example TCGA Array) and a downstream
-cohort contains additional loci (for example GSE40279), first materialize source-membership
-sets with `build_transfer_locus_protocols.py`.  This separates the biological question
-("was this locus available to proxy supervision?") from representation coverage.  Only
-then intersect a chosen set with every representation using
+When a representation's training/fitting source comes from one dataset (for example TCGA Array)
+and a downstream cohort contains additional loci (for example GSE40279), first materialize
+source-membership sets with `build_transfer_locus_protocols.py`.  This separates the biological
+question ("was this locus available to the representation's training source?") from
+representation coverage.  Only then intersect a chosen set with every representation using
 `build_common_locus_protocol.py --candidate-protocol ...`.
 
 For the current TCGA Array / GSE40279 master registry the split is 408,017 shared loci and

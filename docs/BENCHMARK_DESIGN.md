@@ -79,6 +79,6 @@ The implemented `unseen_locus` view guarantees that the **downstream reconstruct
 For a stronger claim — *the representation itself has never been supervised on those loci* — provenance must also show one of the following:
 
 - the representation is label-free/reference-only and therefore has no methylation-label fit scope; or
-- its supervised/proxy training was restricted to the persistent train-CpG protocol.
+- any supervised training it underwent was restricted to the persistent train-CpG protocol.
 
 A functional embedding produced by a checkpoint trained with methylation supervision over the held-out CpGs should be reported as `downstream-unseen`, not `strict representation-OOD`. This distinction should be encoded in each representation's `provenance` fields (for example `supervision` and `locus_fit_scope`) and carried into the paper table.
