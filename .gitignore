@@ -8,6 +8,7 @@ wandb/
 
 # Experiment outputs
 outputs/
+logs/
 
 # Local biological data and derived caches
 data/raw
