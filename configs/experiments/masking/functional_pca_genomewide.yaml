@@ -1,44 +1,33 @@
 experiment:
-  name: masking_representation_controlled_chr1
   task: masking
+  name: masking_representation_controlled_genomewide_functional_pca
   output_root: outputs
   locus_split:
-    heldout_fraction: 0.20
+    heldout_fraction: 0.0
     seed: 17
-    protocol_path: data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
+    protocol_path: data/protocols/tcga_array_genomewide_masking_seed17_noholdout.npz
 
 dataset:
-  name: tcga_array_chr1
+  name: tcga_array_genomewide
   methylation_h5: data/methylation/tcga_array_official_full.h5
   cpg_registry: data/cpg/registries/array_cpg_map.parquet
-  chromosomes: [chr1]
   patient_split: [0.80, 0.10, 0.10]
 
 representation:
-  name: functional_annotations
+  name: functional_annotations_pca
   family: functional_annotations
-  track: proxy_aligned
+  track: native_frozen
   component: locus_only
-  source: reference functional annotations optimized on the shared train-locus mean-beta proxy
+  source: reference-genome functional annotations -> unsupervised PCA/SVD compaction
   mode: precomputed
-  store_h5: data/cache/representations/functional_annotations__proxy_mean_beta_chr1.h5
-  supported_chromosomes: [chr1]
-  id_key: cpg_idx
-  embedding_key: embedding
+  store_h5: data/cache/representations/functional_annotations__pca_native_genomewide.h5
   provenance:
     patient_specific: false
     reference_genome_only: true
-    supervision: train_patient_mean_beta
-    locus_fit_scope: train_protocol_only
-    benchmark_scope: chr1
-    proxy_config: configs/proxy/functional_mean_beta_chr1.yaml
+    supervision: none
+    locus_fit_scope: unsupervised
 
-model:
-  locus_latent_dim: 256
-  token_dim: 256
-  patient_dim: 256
-  hidden_dim: 512
-
+model: {locus_latent_dim: 256, token_dim: 256, patient_dim: 256, hidden_dim: 512}
 training:
   seed: 17
   device: cuda
@@ -51,7 +40,6 @@ training:
   panel_size: 2048
   mask_fractions: [0.15, 0.30, 0.50, 0.70, 0.90]
   beta_epsilon: 1.0e-4
-
 evaluation:
   panel_size: 2048
   mask_fractions: [0.15, 0.30, 0.50, 0.70, 0.90]

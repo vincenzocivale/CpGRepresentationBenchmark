@@ -44,9 +44,25 @@ def locus_disjoint_split(
     seed: int,
     heldout_fraction: float,
 ) -> LocusSplit:
-    if not 0.0 < heldout_fraction < 1.0:
-        raise ValueError("heldout_fraction must be between 0 and 1")
+    """Split candidate loci into train/heldout for the unseen_locus OOD view.
+
+    `heldout_fraction == 0.0` is a valid opt-out: it means "no locus holdout" and
+    returns every candidate locus as `train_columns` with an empty `heldout_columns`.
+    Use this path (via `load_or_create_locus_protocol`) for the genome-wide
+    seen-only masking protocol; any `heldout_fraction` in (0, 1) still produces a
+    genuine disjoint OOD split for future unseen_locus work.
+    """
+    if not 0.0 <= heldout_fraction < 1.0:
+        raise ValueError("heldout_fraction must be between 0 (inclusive) and 1 (exclusive)")
     candidate_columns = np.asarray(candidate_columns, dtype=np.int64)
+    if heldout_fraction == 0.0:
+        if len(candidate_columns) < 1:
+            raise ValueError("need at least one candidate CpG for a locus split")
+        canonical_order = candidate_columns[np.argsort(cpg_ids[candidate_columns], kind="stable")]
+        return LocusSplit(
+            train_columns=np.sort(canonical_order),
+            heldout_columns=np.asarray([], dtype=np.int64),
+        )
     if len(candidate_columns) < 2:
         raise ValueError("need at least two candidate CpGs for a locus split")
     # Sort by canonical ID first so the split is invariant to matrix column ordering.

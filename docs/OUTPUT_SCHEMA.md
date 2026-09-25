@@ -30,11 +30,15 @@ evaluation/
   seen/
     mask_0.15/metrics.json
     ...
-  unseen_locus/
+  unseen_locus/            # only present when experiment.locus_split.heldout_fraction > 0
     mask_0.15/metrics.json
     ...
 summary.json
 ```
+
+The default masking protocol is genome-wide and seen-only (`heldout_fraction: 0.0`), so most runs write
+only `evaluation/seen/`. `evaluation/unseen_locus/` appears only for runs that opt into a nonzero
+`heldout_fraction` for strict locus-OOD comparisons.
 
 In addition, `experiment.locus_split.protocol_path` points to a persistent shared protocol under `data/protocols/` by default. That protocol is reused across representation arms and is separate from the per-run copy in `locus_split.npz`.
 

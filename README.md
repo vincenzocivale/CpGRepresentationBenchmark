@@ -10,44 +10,32 @@ unsupervised transform (e.g. PCA/SVD over the raw ENCODE functional-annotation f
 see `scripts/build_functional_pca_embedding.py`). No representation is re-optimized against a
 methylation objective before being benchmarked.
 
-The original chr1 masking experiment remains executable, and the V2 layout adds shared
-downstream evaluation for masked reconstruction, age, mortality and disease prediction,
-including sparse/masked methylome sweeps. See `docs/BENCHMARK_V2.md`.
+The benchmark reports two axes per representation: the masking-reconstruction benchmark (computational
+justification — see `docs/BENCHMARK_V2.md`) and bio-validation of the CpG-locus embedding against
+independent biological annotations (see `docs/EMBEDDING_EVALUATION.md`). Downstream phenotype-task
+probing (age/disease prediction from a patient embedding) was dropped; see git history if needed again.
 
 ## Datasets
 
-`tcga_array` is the masking-reconstruction training source. Every other dataset below is
-an external-cohort downstream task, prepared once with `scripts/data/prepare_*.py` and registered
-into a shared master CpG registry (`scripts/data/build_master_cpg_registry.py`) so representation
-coverage is judged against `shared` (loci also in the TCGA-array training source) vs. `external_locus`
-(loci absent from it) vs. `all`.
+`tcga_array` is the masking-reconstruction training/evaluation source.
 
 | Dataset | Task | Config / protocol doc |
 |---|---|---|
 | `tcga_array` | masked reconstruction | `configs/datasets/tcga_array.yaml`, `docs/BENCHMARK_V2.md` |
-| `GSE40279` | age prediction | `configs/datasets/gse40279.yaml`, `docs/GSE40279_AGE_PROTOCOL.md` |
-| `GSE42861` (rheumatoid arthritis) | disease classification | `configs/datasets/gse42861.yaml`, `docs/GSE42861_DISEASE_PROTOCOL.md` |
-| `GSE147221` (schizophrenia) | disease classification | `configs/datasets/gse147221.yaml`, `docs/GSE147221_DISEASE_PROTOCOL.md` |
-| `ComputAgeBench` (65-study aggregate) | age / aging-accelerating-condition classification | `configs/datasets/computagebench_benchmark.yaml`, `docs/COMPUTAGEBENCH_PROTOCOL.md` |
-| `CALERIE` (CR vs. AL intervention) | intervention classification — **not yet prepared, controlled-access** | `docs/CALERIE_ACCESS.md` |
 
-Each downstream cohort is prepared with its own `scripts/data/prepare_<dataset>.py`, producing the
-standard `methylation.h5` (`beta`, `cpg_idx`, `sample_name`) + `phenotypes.parquet` +
-`cpg_mapping.parquet` triple under `data/processed/<DATASET>/`, matching `docs/DATA_CONTRACT.md`.
-None of this raw/processed biological data is committed to Git — see `data/README.md`.
+## Masking scope: TCGA array, genome-wide
 
-## Original chr1 masking scope: TCGA array, chromosome 1
+The masking benchmark's standard protocol is **genome-wide, seen-only** (no locus holdout):
+every representation arm is evaluated against the full TCGA-array CpG universe on the same
+persistent locus protocol. See `docs/BENCHMARK_DESIGN.md` for how the earlier chr1-restricted,
+locus-holdout protocol (`unseen_locus`) relates to this one — it remains available as an
+opt-in `heldout_fraction` for future strict-OOD representation work, but is no longer the default.
 
-The masking benchmark's first validated protocol is intentionally restricted to **TCGA-array
-CpGs on chr1 for both representations**, because the original NTv3-pre atlas covered chr1 only.
-This remains executable as the baseline masking sanity check; downstream classification/age tasks
-above are not chr1-restricted.
-
-Both arms share exactly:
+All arms share exactly:
 
 - TCGA patient split;
-- chr1 CpG universe;
-- persistent train/held-out CpG split;
+- genome-wide CpG universe;
+- persistent locus protocol (`data/protocols/tcga_array_genomewide_masking_seed17_noholdout.npz`);
 - masking percentages;
 - reconstruction architecture;
 - optimizer/training budget;
@@ -89,10 +77,6 @@ data/cache/representations/functional_annotations_chr1.h5
 
 See `data/README.md` for the complete contract.
 
-For the external multi-cohort aging benchmark, ComputAgeBench can be ingested from its local
-Hugging Face snapshot with `scripts/data/prepare_computagebench.py`. The data themselves are
-not versioned; see `data/README.md` and `configs/experiments/age/computagebench_template.yaml`.
-
 ## Installation
 
 ```bash
@@ -126,64 +110,41 @@ data/local_manifest.json
 
 If NTv3 does not cover every required chr1 CpG, preflight exits with code 2 rather than silently changing the benchmark universe.
 
-## 2. Materialize the functional chr1 representation
+## 2. Run the genome-wide masking benchmark
 
-The first Functional run can generate the representation automatically:
-
-```bash
-CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
-  --config configs/experiments/masking/functional_generate_if_missing.yaml \
-  --mode all
-```
-
-On the first run this builds:
-
-```text
-data/cache/representations/functional_annotations_chr1.h5
-```
-
-with the canonical contract:
-
-```text
-/cpg_idx    int64   [N]
-/embedding  float16 [N, 256]
-```
-
-Subsequent runs can use `functional_precomputed.yaml`.
-
-## 3. Run NTv3-pre on the same protocol
+Each representation is registered in `configs/representations/future_models.yaml` and has a
+matching genome-wide experiment config in `configs/experiments/masking/`. Run them in turn,
+each against the same shared locus protocol (created by the first run, reused by the rest):
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
-  --config configs/experiments/masking/ntv3_precomputed.yaml \
-  --mode all
+  --config configs/experiments/masking/functional_pca_genomewide.yaml --mode all
+CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
+  --config configs/experiments/masking/cpgpt_small_genomewide.yaml --mode all
+CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
+  --config configs/experiments/masking/cpgpt_large_genomewide.yaml --mode all
+CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
+  --config configs/experiments/masking/deepcpg_genomewide.yaml --mode all
 ```
 
-The NTv3 loader can auto-detect common existing-atlas dataset names such as:
+All four point to the same persistent locus protocol:
 
 ```text
-/cpg_idx + /embedding
-/ids     + /emb
+data/protocols/tcga_array_genomewide_masking_seed17_noholdout.npz
 ```
 
-The actual resolved keys are recorded in `representation_manifest.json`.
-
-Both configurations point to the same persistent locus protocol:
-
-```text
-data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
-```
-
-so the Functional and NTv3-pre arms are evaluated on the exact same CpGs.
+so every arm is evaluated on the exact same genome-wide CpG universe. The actual resolved
+representation keys are recorded per-run in `representation_manifest.json`.
 
 ## Masking benchmark
 
-Two evaluation views are first-class:
-
-1. `seen`: masked targets come from the train-locus universe;
-2. `unseen_locus`: targets are a disjoint CpG split never used as reconstruction-training context or target.
-
-For `unseen_locus`, held-out CpG methylation is also excluded when fitting the prior. Held-out loci use one global prior estimated from **train patients × train loci only**.
+The standard protocol is **genome-wide, seen-only**: `experiment.locus_split.heldout_fraction: 0.0`,
+so every candidate CpG is in the train-locus universe and only the `seen` view (masked targets
+drawn from that train-locus universe) is evaluated. A nonzero `heldout_fraction` still produces
+a genuine locus-disjoint split and an additional `unseen_locus` view (targets from a disjoint CpG
+split never used as reconstruction-training context or target, with a leakage-safe prior fit from
+**train patients × train loci only**) — this remains available for future strict-OOD work but is
+not the default; see `docs/BENCHMARK_DESIGN.md`.
 
 Default masking sweep:
 
@@ -212,7 +173,7 @@ history.json
 checkpoints/best.pt
 checkpoints/last.pt
 evaluation/seen/mask_*/metrics.json
-evaluation/unseen_locus/mask_*/metrics.json
+evaluation/unseen_locus/mask_*/metrics.json  # only when heldout_fraction > 0
 summary.json
 ```
 
@@ -252,8 +213,6 @@ A stronger claim that loci are unseen by the **representation encoder itself** r
 ```text
 configs/datasets/                  per-dataset h5/parquet paths and primary task definitions
 configs/experiments/masking/       representation-controlled masking configs
-configs/experiments/classification/ age/mortality/disease config templates (one per dataset)
-configs/experiments/age/           age-task configs (GSE40279, ComputAgeBench)
 configs/representations/           representation catalog and provenance
 data/                              local data contract, caches and persistent protocols (not versioned)
 docs/                              benchmark design, data contract, and per-dataset protocol docs
@@ -266,6 +225,9 @@ scripts/build_functional_embeddings.py
 scripts/build_functional_pca_embedding.py
 scripts/export_functional_feature_store.py
 scripts/run_masking_benchmark.py
+scripts/run_masking_benchmark_all.py
+scripts/run_bio_validation.py
+scripts/run_bio_validation_all.py
 scripts/validate_feature_store.py
 scripts/summarize_runs.py
 src/cpg_repr_benchmark/            benchmark implementation

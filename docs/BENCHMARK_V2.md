@@ -28,32 +28,17 @@ reference dense locus features -------MLP-------+
 
 For the primary functional arm, direct DNA-methylation-derived annotation tracks must be excluded or explicitly audited. A secondary permissive arm may retain them, but it must not be presented as a clean reference-only functional comparison. The compact 256-D embedding above is obtained via unsupervised PCA/SVD (`scripts/build_functional_pca_embedding.py`), not via any methylation-supervised fitting.
 
-## Downstream tasks
+## Masked methylation reconstruction
 
-All downstream tasks use a fixed methylome backbone and swap only `representation.store_h5`.
-
-### Masked methylation reconstruction
-
+The masking benchmark uses a fixed methylome backbone and swaps only `representation.store_h5`.
 Keep the existing `MaskedMethylomeReconstructor` protocol. Report seen-locus and unseen-locus
-views over the masking sweep.
+views over the masking sweep (0%, 15%, 30%, 50%, 70%, 90%), using identical deterministic masks
+across representation arms via the shared seed/protocol.
 
-### Age / mortality / disease
-
-The shared patient encoder is:
-
-```text
-CpG locus embedding + observed methylation residual
-        -> token
-        -> DeepSets patient encoder
-        -> fixed task head
-```
-
-The head is regression, binary, or multiclass according to the phenotype. For a specific task,
-architecture, split, optimizer, CpG panel and training budget are identical across representations.
-
-Sparsity is a first-class evaluation axis. Test every trained model at the same masking fractions,
-including 0%, 15%, 30%, 50%, 70%, and 90%. Use identical deterministic masks across
-representation arms via the shared seed/protocol.
+Downstream phenotype-task probing (age/mortality/disease prediction from a patient embedding) was
+dropped from this repo's evaluation scope; see git history if that pipeline is ever needed again.
+Bio-validation of the CpG-locus embedding itself against independent biological annotations is
+covered separately — see `docs/EMBEDDING_EVALUATION.md`.
 
 ## Canonical cache contracts
 
@@ -82,9 +67,7 @@ representation compaction and downstream benchmarking are self-contained here.
 ```text
 outputs/
   masking/<dataset>/<representation>/<track>/seed_<s>/<run>/
-  age/<dataset>/<representation>/<track>/seed_<s>/<run>/
-  mortality/<dataset>/<representation>/<track>/seed_<s>/<run>/
-  disease/<dataset>/<representation>/<track>/seed_<s>/<run>/
+  bio_validation/<representation>/<track>/seed_<s>/summary.json
 ```
 
 Each run keeps `resolved_config.yaml`, `representation_manifest.json`, `experiment.json`,
@@ -94,11 +77,11 @@ checkpoints, evaluation files and `summary.json`.
 
 For each source representation `R`:
 
-| Source | Native frozen | Masking | Age | Mortality | Disease | Sparsity sweep |
-|---|---:|---:|---:|---:|---:|---:|
-| Functional annotations | yes | yes | yes | yes | yes | yes |
-| genomic FM R | yes | yes | yes | yes | yes | yes |
-| methylation FM locus component R | yes | yes | yes | yes | yes | yes |
+| Source | Native frozen | Masking (genome-wide, seen-only) | Bio-validation |
+|---|---:|---:|---:|
+| Functional annotations | yes | yes | yes |
+| genomic FM R | yes | yes | yes |
+| methylation FM locus component R | yes | yes | yes |
 
 Keep any **native full-model** CpGPT/MethylGPT evaluation in a separate complete-method table; it
 answers a different question from locus representation quality.

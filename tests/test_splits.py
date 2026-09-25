@@ -19,6 +19,39 @@ def test_locus_split_is_canonical_id_invariant():
     assert set(cpg_b[b.heldout_columns]) == heldout_ids_a
 
 
+def test_zero_heldout_fraction_returns_all_loci_as_train():
+    cpg_ids = np.array([40, 10, 30, 20, 50, 60], dtype=np.int64)
+    cols = np.arange(len(cpg_ids))
+    split = locus_disjoint_split(cols, cpg_ids, seed=17, heldout_fraction=0.0)
+    assert split.heldout_columns.size == 0
+    assert set(cpg_ids[split.train_columns]) == set(cpg_ids.tolist())
+
+
+def test_locus_disjoint_split_rejects_out_of_range_fraction():
+    cpg_ids = np.arange(6, dtype=np.int64)
+    cols = np.arange(6)
+    for bad_fraction in (-0.1, 1.0, 1.5):
+        try:
+            locus_disjoint_split(cols, cpg_ids, seed=17, heldout_fraction=bad_fraction)
+        except ValueError:
+            continue
+        raise AssertionError(f"expected ValueError for heldout_fraction={bad_fraction}")
+
+
+def test_shared_protocol_supports_no_holdout(tmp_path: Path):
+    path = tmp_path / "protocol_noholdout.npz"
+    ids = np.array([7, 2, 9, 1, 4, 8], dtype=np.int64)
+    first = load_or_create_locus_protocol(path, np.arange(6), ids, seed=3, heldout_fraction=0.0)
+    assert first.heldout_columns.size == 0
+    assert set(ids[first.train_columns]) == set(ids.tolist())
+
+    order = np.array([3, 1, 5, 0, 4, 2])
+    reordered = ids[order]
+    second = load_or_create_locus_protocol(path, np.arange(6), reordered, seed=3, heldout_fraction=0.0)
+    assert second.heldout_columns.size == 0
+    assert set(reordered[second.train_columns]) == set(ids.tolist())
+
+
 def test_shared_protocol_reuses_same_cpg_ids(tmp_path: Path):
     path = tmp_path / "protocol.npz"
     ids = np.array([7, 2, 9, 1, 4, 8], dtype=np.int64)

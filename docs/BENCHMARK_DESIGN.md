@@ -72,6 +72,20 @@ This is adequate for pipeline deployment, but the strict paper benchmark should 
 
 Before using the functional arm for the primary biological claim, export a manifest of every annotation track and classify whether any track directly measures DNA methylation or is derived from methylation labels. The clean primary arm should exclude direct methylation-derived tracks; any version retaining them should be reported separately.
 
+## Masking protocol: genome-wide, seen-only (no locus holdout)
+
+The standard masking protocol sets `experiment.locus_split.heldout_fraction: 0.0`, which assigns every
+candidate CpG in the dataset scope (genome-wide, no `dataset.chromosomes` restriction) to the train-locus
+universe. There is no held-out locus split: only the `seen` view (masked targets drawn from that same
+train-locus universe) is trained and reported, at every masking fraction. This maximizes coverage for the
+primary representation comparison and matches the "no proxy-training track" policy — representations are
+compared purely on how well their frozen, patient-agnostic embedding supports reconstruction of masked
+loci it has already been assigned to represent, not on generalization to unseen loci.
+
+The `unseen_locus` view described below remains implemented and available by setting a nonzero
+`heldout_fraction` in `(0, 1)`; it is kept for future strict representation-OOD work but is not run as
+part of the current genome-wide masking sweep.
+
 ## What “unseen locus” means
 
 The implemented `unseen_locus` view guarantees that the **downstream reconstruction model** never receives the held-out CpGs as training context or targets, and that held-out methylation labels do not enter its prior.

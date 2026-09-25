@@ -132,8 +132,9 @@ def _evaluate_views(
     results: dict[str, dict] = {}
     views = {
         "seen": (train_columns, train_columns, "empirical train-patient prior on train loci"),
-        "unseen_locus": (train_columns, heldout_columns, "global train-patients x train-loci prior"),
     }
+    if len(heldout_columns):
+        views["unseen_locus"] = (train_columns, heldout_columns, "global train-patients x train-loci prior")
     for view_name, (context_pool, target_pool, prior_policy) in views.items():
         view_results: dict[str, dict] = {}
         for fraction in fractions:
@@ -275,7 +276,9 @@ def main() -> None:
         )
         train_columns = locus_split.train_columns[train_locus_usable]
         heldout_columns = locus_split.heldout_columns
-        if len(train_columns) < 2 or len(heldout_columns) < 1:
+        if len(train_columns) < 2:
+            raise RuntimeError("locus split became empty after train-prior availability filtering")
+        if len(heldout_columns) < 1 and float(locus_cfg["heldout_fraction"]) > 0.0:
             raise RuntimeError("locus split became empty after train-prior availability filtering")
         # Persist the exact post-filter split used by training/evaluation.
         class _Split: pass

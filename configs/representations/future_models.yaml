@@ -9,6 +9,10 @@ representations:
     mode: precomputed
     store_h5: data/cache/representations/functional_annotations__pca_native_genomewide.h5
     source: reference-genome functional annotations -> unsupervised PCA/SVD compaction
+    # cpg_idx here is the array_cpg_map.parquet row-indexed legacy axis, not the
+    # grch38_cpg_cytosine_1based_v1 coordinate namespace bio_validation's annotations use.
+    # Full coverage (408399/408399) confirmed against this registry.
+    bio_validation_cpg_registry: data/cpg/registries/array_cpg_map.parquet
     provenance:
       patient_specific: false
       reference_genome_only: true
@@ -23,6 +27,13 @@ representations:
     mode: precomputed
     store_h5: data/derived/ntv3_pre_chr1_atlas/chr1_ntv3_pretrain_atlas_v1.h5
     source: Nucleotide Transformer v3 pre-training checkpoint
+    # cpg_idx here is a legacy wgbs-row axis, not the grch38_cpg_cytosine_1based_v1 coordinate
+    # namespace bio_validation's annotations use. wgbs_cpg_map.parquet covers 1999446/2004436
+    # (99.75%) of this atlas's CpGs; the remaining ~0.25% are isolated single-CpG gaps in the
+    # registry (likely upstream QC filtering, not a truncated chromosome region), so the lenient
+    # (drop-missing) conversion is used for this diagnostic probe only.
+    bio_validation_cpg_registry: data/cpg/registries/wgbs_cpg_map.parquet
+    bio_validation_cpg_registry_lenient: true
     provenance:
       patient_specific: false
       supervision: genomic_pretraining
@@ -36,8 +47,29 @@ representations:
     mode: precomputed
     store_h5: data/cache/representations/cpgpt_locus.h5
     source: CpGPT (small) DNA-sequence-encoder projection per CpG; see scripts/cpgpt/README.md
+    # cpg_idx here is the array_cpg_map.parquet row-indexed legacy axis, not the
+    # grch38_cpg_cytosine_1based_v1 coordinate namespace bio_validation's annotations use.
+    # Full coverage (408399/408399) confirmed against this registry.
+    bio_validation_cpg_registry: data/cpg/registries/array_cpg_map.parquet
     provenance:
       checkpoint: small
+      genome_build: GRCh38
+      patient_specific: false
+      supervision: none
+      locus_fit_scope: external_pretrained
+      pooling: cpgpt_dna_sequence_projection_no_positional_encoding
+
+  cpgpt_locus_large_native:
+    name: cpgpt_locus_large
+    family: methylation_fm
+    track: native_frozen
+    component: locus_only
+    mode: precomputed
+    store_h5: data/cache/representations/cpgpt_locus_large.h5
+    source: CpGPT (large) DNA-sequence-encoder projection per CpG; see scripts/cpgpt/README.md
+    bio_validation_cpg_registry: data/cpg/registries/array_cpg_map.parquet
+    provenance:
+      checkpoint: large
       genome_build: GRCh38
       patient_specific: false
       supervision: none
@@ -51,22 +83,74 @@ representations:
     component: locus_only
     mode: precomputed
     store_h5: data/cache/representations/methylgpt_locus.h5
-    source: MethylGPT patient-agnostic CpG/locus component only
+    source: MethylGPT pretrained CpG token embedding table (encoder.embedding.weight), looked
+      up by Illumina probe ID; no sample methylation input, no forward pass. See scripts/methylgpt/README.md
+    # cpg_idx here is the array_cpg_map.parquet row-indexed legacy axis, not the
+    # grch38_cpg_cytosine_1based_v1 coordinate namespace bio_validation's annotations use.
+    # Coverage is bounded by the probe_id crosswalk join (data/processed/ComputAgeBench/
+    # illumina_probe_grch38.parquet) and MethylGPT's trained probe vocabulary; see the store's
+    # .json sidecar for the actual n_loci / n_loci_dropped_no_probe_id.
+    bio_validation_cpg_registry: data/cpg/registries/array_cpg_map.parquet
+    provenance:
+      checkpoint: tiny_epoch10
+      patient_specific: false
+      supervision: none
+      locus_fit_scope: external_pretrained
+      pooling: methylgpt_token_embedding_table_lookup_no_forward_pass
 
-  dnambert_locus_native:
-    name: dnambert_locus
+  methylgpt_locus_medium_native:
+    name: methylgpt_locus_medium
     family: methylation_fm
     track: native_frozen
     component: locus_only
     mode: precomputed
-    store_h5: data/cache/representations/dnambert_locus.h5
-    source: DNAmBERT patient-agnostic locus component only
+    store_h5: data/cache/representations/methylgpt_locus_medium.h5
+    source: MethylGPT (locally labeled "medium" download; args.json layer_size=256 makes it
+      architecturally the "large" variant per the official README table, base=64d/medium=128d/
+      large=256d -- base/medium/large official checkpoints were not locally available at build
+      time) pretrained CpG token embedding table (encoder.embedding.weight), looked up by
+      Illumina probe ID; no sample methylation input, no forward pass. See scripts/methylgpt/README.md
+    # Same probe_id crosswalk / vocabulary coverage caveat as methylgpt_locus_native (identical
+    # 49156-probe vocabulary and probe order; only checkpoint width differs, 64-dim vs 256-dim).
+    bio_validation_cpg_registry: data/cpg/registries/array_cpg_map.parquet
+    provenance:
+      checkpoint: medium_epoch6_256dim
+      patient_specific: false
+      supervision: none
+      locus_fit_scope: external_pretrained
+      pooling: methylgpt_token_embedding_table_lookup_no_forward_pass
 
-  methylprophet_locus_native:
-    name: methylprophet_locus
-    family: genomic_fm
+  deepcpg_dna_locus_native:
+    name: deepcpg_dna_locus
+    family: methylation_fm
     track: native_frozen
     component: locus_only
     mode: precomputed
-    store_h5: data/cache/representations/methylprophet_locus.h5
-    source: MethylProphet genomic locus representation without patient RNA/value information
+    store_h5: data/cache/representations/deepcpg_dna_locus.h5
+    source: DeepCpG DNA-module (sequence-only) stem activation per CpG, HCC checkpoint (CnnL2h128); see scripts/deepcpg/README.md
+    bio_validation_cpg_registry: data/cpg/registries/array_cpg_map.parquet
+    provenance:
+      checkpoint: hcc_dna
+      genome_build: GRCh38
+      patient_specific: false
+      supervision: none
+      locus_fit_scope: external_pretrained
+      pooling: deepcpg_dna_module_stem_pre_output_head
+
+  deepcpg_dna_locus_hepg2_native:
+    name: deepcpg_dna_locus_hepg2
+    family: methylation_fm
+    track: native_frozen
+    component: locus_only
+    mode: precomputed
+    store_h5: data/cache/representations/deepcpg_dna_locus_hepg2.h5
+    source: DeepCpG DNA-module (sequence-only) stem activation per CpG, HepG2 checkpoint (CnnL3h128); see scripts/deepcpg/README.md
+    bio_validation_cpg_registry: data/cpg/registries/array_cpg_map.parquet
+    provenance:
+      checkpoint: hepg2_dna
+      genome_build: GRCh38
+      patient_specific: false
+      supervision: none
+      locus_fit_scope: external_pretrained
+      pooling: deepcpg_dna_module_stem_pre_output_head
+

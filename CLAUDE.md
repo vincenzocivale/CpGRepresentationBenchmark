@@ -60,11 +60,16 @@ train/held-out CpG split (`src/cpg_repr_benchmark/data/transfer_protocols.py`,
 `src/cpg_repr_benchmark/data/splits.py`). A representation that cannot cover the required loci must fail
 explicitly rather than silently narrowing the universe — never build a per-representation intersection.
 
-**Two first-class evaluation views** for masked reconstruction (`src/cpg_repr_benchmark/training/engine.py`,
-`data/masking.py`): `seen` (masked targets from train-locus universe) and `unseen_locus` (disjoint held-out
-CpG split, excluded from both reconstruction context and the prior fit). Priors for held-out loci are fit
-from train patients × train loci only — see `training/priors.py`. Both views must be reported for every
-masking fraction.
+**Masking protocol is genome-wide, seen-only (no locus holdout).** `experiment.locus_split.heldout_fraction: 0.0`
+(or an omitted `locus_split` block) is the standard configuration: `locus_disjoint_split`/
+`load_or_create_locus_protocol` (`src/cpg_repr_benchmark/data/splits.py`) then assign every candidate CpG to
+`train_columns` and return an empty `heldout_columns`, and `scripts/run_masking_benchmark.py` skips building
+and evaluating the `unseen_locus` view entirely — only `evaluation/seen/` is written. The `seen` view (masked
+targets from the train-locus universe, i.e. the full genome-wide universe) is reported for every masking
+fraction. A nonzero `heldout_fraction` in `(0, 1)` still produces a genuine locus-disjoint split and both
+`seen` and `unseen_locus` views, and remains available for future strict-OOD representation work — see
+`docs/BENCHMARK_DESIGN.md`'s "what unseen locus means" section — but it is no longer the default masking
+protocol. Priors for train loci are fit from train patients × train loci only — see `training/priors.py`.
 
 **Fixed model shape** (`src/cpg_repr_benchmark/models/model.py`): observed locus representation + observed
 methylation residual → tokenization → DeepSets patient encoder → patient embedding; target locus
@@ -76,14 +81,15 @@ specific branches.
 `outputs/<task>/<dataset>/<representation>/<track>/seed_<seed>/<timestamp>-<config_hash>/`, driven by
 `src/cpg_repr_benchmark/experiments/run_store.py`. Each run directory is self-describing: resolved config,
 `representation_manifest.json` (records which HDF5 keys were actually resolved), splits, checkpoints, and
-per-mask-fraction metrics under `evaluation/{seen,unseen_locus}/`.
+per-mask-fraction metrics under `evaluation/seen/` (plus `evaluation/unseen_locus/` only for runs that opt
+into a nonzero `heldout_fraction`).
 
 **Representation catalog**: `configs/representations/*.yaml` is the single source of truth for every arm's
 family, track, mode, store path, and provenance (patient-specific?, supervision, locus-fit scope). When
 adding a representation, register it here rather than hardcoding paths in experiment configs.
 
 **Config layering**: `configs/datasets/`, `configs/representations/`, and
-`configs/experiments/{masking,classification,age}/` compose independently — an experiment config references
+`configs/experiments/masking/` compose independently — an experiment config references
 a representation entry and a dataset, not the other way around.
 
 ## Key invariants when modifying code

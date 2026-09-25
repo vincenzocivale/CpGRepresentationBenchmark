@@ -1,36 +1,33 @@
 experiment:
   task: masking
-  name: masking_representation_controlled_chr1
+  name: masking_representation_controlled_genomewide_cpgpt_large
   output_root: outputs
   locus_split:
-    heldout_fraction: 0.20
+    heldout_fraction: 0.0
     seed: 17
-    protocol_path: data/protocols/tcga_array_chr1_masking_seed17_holdout20.npz
+    protocol_path: data/protocols/tcga_array_genomewide_masking_seed17_noholdout.npz
 
 dataset:
-  name: tcga_array_chr1
+  name: tcga_array_genomewide
   methylation_h5: data/methylation/tcga_array_official_full.h5
   cpg_registry: data/cpg/registries/array_cpg_map.parquet
-  chromosomes: [chr1]
   patient_split: [0.80, 0.10, 0.10]
 
 representation:
-  name: functional_annotations_chr1
-  family: functional_annotations
-  track: legacy
+  name: cpgpt_locus_large
+  family: methylation_fm
+  track: native_frozen
   component: locus_only
-  source: MehylPredictor functional-locus encoder over reference-genome functional annotations
+  source: CpGPT (large) DNA-sequence-encoder projection per CpG; see scripts/cpgpt/README.md
   mode: precomputed
-  store_h5: data/cache/representations/functional_annotations_chr1.h5
-  supported_chromosomes: [chr1]
-  id_key: cpg_idx
-  embedding_key: embedding
+  store_h5: data/cache/representations/cpgpt_locus_large.h5
   provenance:
+    checkpoint: large
+    genome_build: GRCh38
     patient_specific: false
-    reference_genome_only: true
-    supervision: methylation_proxy_or_task_trained
-    locus_fit_scope: unknown
-    benchmark_scope: chr1
+    supervision: none
+    locus_fit_scope: external_pretrained
+    pooling: cpgpt_dna_sequence_projection_no_positional_encoding
 
 model: {locus_latent_dim: 256, token_dim: 256, patient_dim: 256, hidden_dim: 512}
 training:

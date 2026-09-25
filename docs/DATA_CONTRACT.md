@@ -49,7 +49,8 @@ representation:
     factory: cpg_repr_benchmark.representations.functional_provider:build_functional_online_provider
 ```
 
-See `configs/experiments/masking/functional_online.yaml`.
+No genome-wide masking config currently uses `online` mode (all four genome-wide arms are
+`precomputed`); this remains available for a future representation without a materialized store.
 
 ## Model sample
 
