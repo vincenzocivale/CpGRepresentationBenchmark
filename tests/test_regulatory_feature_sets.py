@@ -49,6 +49,42 @@ def test_real_catalog_counts_and_exclusions():
     assert allx.track_indices != allx.feature_columns
 
 
+@needs_real
+def test_family_screen_sets_real_catalog():
+    hist = resolve_feature_set('regulatory_histone', REAL_CATALOG, check_expected=True)
+    dnase = resolve_feature_set('regulatory_histone_dnase', REAL_CATALOG, check_expected=True)
+    tf = resolve_feature_set('regulatory_histone_tf', REAL_CATALOG, check_expected=True)
+    clean = resolve_feature_set('regulatory_clean', REAL_CATALOG, check_expected=True)
+    assert (hist.n_selected, dnase.n_selected, tf.n_selected, clean.n_selected) == (1959, 2492, 3618, 4151)
+    assert all(f.dense_columns == () for f in (hist, dnase, tf, clean))
+    assert dnase.counts_per_block == {'accessibility': 533, 'histone': 1959}
+    assert tf.counts_per_block == {'histone': 1959, 'tf': 1659}
+    cat = read_catalog(REAL_CATALOG)
+    linked_ids = set(cat.track_id[cat.encode_target.isin(clean.excluded_targets)])
+    assert linked_ids and len(linked_ids) == 14
+    # histone_tf and clean exclude exactly the 14 methylation-linked tracks; histone / histone_dnase lack them trivially
+    assert {t['track_id'] for t in tf.excluded_tracks} == linked_ids
+    assert not linked_ids & set(tf.track_ids) and not linked_ids & set(clean.track_ids)
+    assert not linked_ids & set(hist.track_ids) and not linked_ids & set(dnase.track_ids)
+    assert set(hist.track_ids) < set(dnase.track_ids) and set(hist.track_ids) < set(tf.track_ids)
+    assert set(tf.track_ids) | set(dnase.track_ids) == set(clean.track_ids)
+    assert set(tf.track_ids) & set(dnase.track_ids) == set(hist.track_ids)
+
+
+def test_family_screen_sets_synthetic_and_shuffle(tmp_path):
+    base = make_catalog()
+    order = [4, 2, 6, 0, 5, 1, 3]
+    a = write(base, tmp_path, 'a.tsv')
+    b = write(make_catalog(order), tmp_path, 'b.tsv')
+    dn, tf = 'regulatory_histone_dnase', 'regulatory_histone_tf'
+    assert resolve_feature_set(dn, a).track_ids == ('E1', 'E2', 'E6')
+    assert resolve_feature_set(tf, a).track_ids == ('E1', 'E2', 'E4', 'E7')
+    assert {t['track_id'] for t in resolve_feature_set(tf, a).excluded_tracks} == {'E3', 'E5'}
+    for name in (dn, tf):
+        assert resolve_feature_set(name, a).manifest_hash == resolve_feature_set(name, b).manifest_hash
+    assert resolve_feature_set(dn, a).manifest_hash != resolve_feature_set(tf, a).manifest_hash
+
+
 def make_catalog(order=None) -> pd.DataFrame:
     rows = [('E1', 'Histone ChIP-seq', 'H3K27ac', 'histone'), ('E2', 'Histone ChIP-seq', 'H3K9me3', 'histone'),
             ('E3', 'TF ChIP-seq', 'ZBTB33', 'tf_binding'), ('E4', 'TF ChIP-seq', 'CTCF', 'ctcf'),
@@ -110,7 +146,8 @@ def test_errors(tmp_path):
         resolve_feature_set('regulatory_clean', write(dup, tmp_path, 'dup.tsv'))
     with pytest.raises(ValueError, match='Missing catalog columns'):
         resolve_feature_set('regulatory_clean', write(make_catalog().drop(columns='encode_target'), tmp_path, 'm.tsv'))
-    assert list_feature_sets() == ['regulatory_all_experimental', 'regulatory_clean', 'regulatory_histone']
+    assert list_feature_sets() == ['regulatory_all_experimental', 'regulatory_clean', 'regulatory_histone',
+                                   'regulatory_histone_dnase', 'regulatory_histone_tf']
 
 
 def test_source_unchanged_after_resolve_and_audit(tmp_path):

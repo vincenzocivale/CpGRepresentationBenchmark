@@ -48,3 +48,18 @@ Notes
   block mean 0.77 (152/256 > 0.9; leading-32 0.94). Weighting shifts energy from accessibility to histone/tf in the global SVD
   (dnase block-only 0.14 -> 0.09), raises effective rank (global expH 18.4 -> 20.0, block expH 21.7 -> 26.4, PR 5.1 -> 5.7) and
   lowers row norm (13.2 -> 10.6). Subspaces are largely shared at the top, and diverge in the tail.
+
+## Family-screen embeddings (global SVD-256, discovery_chr1_19; representation properties only)
+Added for `docs/REGULATORY_FAMILY_SCREEN.md`. Same compressor, fit loci (n=388,599, sha256 `995edc58...`), seed 17, weighting none; existing embeddings untouched.
+Computed with `scripts/report_regulatory_embeddings.py` on the three histone-family entries (output kept out of `outputs/regulatory_compression_reports/`).
+
+| embedding | tracks | E@16 | E@64 | E@256 | V@256 | PR | expH | PR (uncent.) | block-only hist/tf/dnase | fit s | zero rows (all / fit % / chr20-22 %) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| histone global | 1,959 | 0.735 | 0.790 | 0.854 | 0.802 | 3.6 | 15.1 | 2.4 | 1.00/-/- | 680 | 1,166 / 0.29 / 0.24 |
+| histone+dnase global | 2,492 | 0.709 | 0.765 | 0.827 | 0.772 | 4.3 | 16.7 | 2.7 | 0.84/-/0.16 | 232 | 849 / 0.21 / 0.16 |
+| histone+tf global | 3,618 | 0.665 | 0.722 | 0.784 | 0.721 | 4.1 | 17.5 | 2.6 | 0.84/0.15/- | 282 | 971 / 0.24 / 0.20 |
+| clean global (ref.) | 4,151 | 0.653 | 0.711 | 0.772 | 0.709 | 4.5 | 18.4 | 2.9 | 0.72/0.13/0.14 | 976 | 733 |
+
+Shapes (408,399, 256) float32; median row norm (fit / chr20-22): histone+dnase 12.98 / 14.98, histone+tf 12.72 / 14.65.
+Adding blocks lowers explained energy at fixed 256 dims and slightly raises effective rank; histone stays dominant (84% block-only energy) in both additions.
+Fit times depend on machine load and are not comparable across rows.

@@ -1,0 +1,13 @@
+# Family-screen arm: Histone ChIP-seq + TF ChIP-seq (tf_binding + ctcf), minus methylation-machinery targets.
+name: regulatory_histone_tf
+assays: [Histone ChIP-seq, TF ChIP-seq]
+exclude_targets: [ZBTB33, MBD1, MBD2, DNMT1, DNMT3B]
+dense: none
+expected_counts:
+  n_selected: 3618
+  n_excluded: 547
+  per_assay: {Histone ChIP-seq: 1959, TF ChIP-seq: 1659}
+  per_block: {histone: 1959, tf: 1659}
+provenance: >-
+  Same target-exclusion rule as regulatory_clean (14 methylation-linked TF tracks removed by encode_target);
+  DNase-seq tracks and all dense columns are dropped. Family screen: tests the added value of TF binding over histone.

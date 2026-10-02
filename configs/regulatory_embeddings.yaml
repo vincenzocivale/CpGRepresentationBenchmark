@@ -16,3 +16,6 @@ embeddings:
   - {feature_set: regulatory_clean, method: global_svd, dim: 256, replicate_weighting: equal_group_mass}
   - {feature_set: regulatory_clean, method: block_svd, dim: 256, block_components: 256,
      replicate_weighting: equal_group_mass}
+  # family screen (docs/REGULATORY_FAMILY_SCREEN.md)
+  - {feature_set: regulatory_histone_dnase, method: global_svd, dim: 256}
+  - {feature_set: regulatory_histone_tf, method: global_svd, dim: 256}

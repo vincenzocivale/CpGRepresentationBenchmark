@@ -1,0 +1,13 @@
+# Family-screen arm: Histone ChIP-seq + DNase-seq (no TF tracks, hence no methylation-linked targets can enter).
+name: regulatory_histone_dnase
+assays: [Histone ChIP-seq, DNase-seq]
+exclude_targets: []
+dense: none
+expected_counts:
+  n_selected: 2492
+  n_excluded: 1673
+  per_assay: {DNase-seq: 533, Histone ChIP-seq: 1959}
+  per_block: {accessibility: 533, histone: 1959}
+provenance: >-
+  Histone ChIP-seq + DNase-seq tracks only; all TF/CTCF ChIP-seq tracks and all dense columns are dropped.
+  Family screen (docs/REGULATORY_FAMILY_SCREEN.md): tests the added value of chromatin accessibility over histone.
