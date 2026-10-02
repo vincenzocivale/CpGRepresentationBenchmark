@@ -1,0 +1,19 @@
+name: encode_atlas_v1
+output: outputs/encode_atlas_v1
+features: data/derived/functional_annotations/reference_functional_features_tcga_array_all_v1_cpgidx_fixed.h5
+catalog: data/external/functional/locus_features_v1/regulatory/track_contract.tsv
+registry: data/cpg/registries/array_cpg_map.parquet
+methylation: data/methylation/tcga_array_official_full.h5
+benchmark_template: configs/experiments/masking/functional_pca_genomewide.yaml
+patient_split_seed: 20260925
+mask_seed: 17001
+seeds: [17, 42, 97]
+width: 256
+screen_loci: 12000
+screen_patients: null
+holdout_chromosomes: [chr20, chr21, chr22]
+panel_sizes: [8, 16, 32, 64, 128, 256]
+confirmation_panel_repeats: 4
+bootstrap_replicates: 1000
+minimum_free_gpu_gb: 20
+torch_threads: 4

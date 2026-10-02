@@ -15,6 +15,16 @@ justification — see `docs/BENCHMARK_V2.md`) and bio-validation of the CpG-locu
 independent biological annotations (see `docs/EMBEDDING_EVALUATION.md`). Downstream phenotype-task
 probing (age/disease prediction from a patient embedding) was dropped; see git history if needed again.
 
+## ENCODE feature attribution
+
+The resumable biological attribution campaign decomposes the functional representation
+into original ENCODE assays, targets, biosamples and dense annotations. It includes
+derived-feature-safe ablations, chromosome-blocked probes, tissue profiles, redundancy
+controls and paired reconstruction analysis. See [ENCODE_ATTRIBUTION.md](docs/ENCODE_ATTRIBUTION.md),
+the [completed focused results and paper decisions](docs/ENCODE_RESULTS_2026-09-29.md),
+the [follow-up results and completion audit](docs/ENCODE_FOLLOWUP_RESULTS_2026-10-02.md),
+and `configs/encode_atlas.yaml`; launch with `python scripts/run_encode_atlas.py pipeline`.
+
 ## Datasets
 
 `tcga_array` is the masking-reconstruction training/evaluation source.

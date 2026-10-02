@@ -1,9 +1,14 @@
 # Bio-validation of CpG-locus embeddings
 
+**Source audit correction:** genomic context, gene region, cCRE and TSS information are
+already functional inputs. Their recoverability is not independent biological validation.
+The older random-fold probes below remain exploratory. For chromosome-blocked, context-controlled
+attribution and source-feature ablations, use [ENCODE_ATTRIBUTION.md](ENCODE_ATTRIBUTION.md).
+
 `scripts/run_bio_validation.py` (or the catalog-driven `scripts/run_bio_validation_all.py`) probes a
 representation's raw CpG-locus embedding (the `/embedding` array of its canonical HDF5 store, not a
-patient embedding) against external annotations that are not part of the ENCODE input features used to
-build `functional_annotations_pca`: genomic context (island/shore/shelf, gene relationship),
+patient embedding) against annotations with different levels of independence from the functional
+inputs: source-derived genomic context (island/shore/shelf, gene relationship),
 literature-curated known CpG sets (binary membership; e.g. Horvath/Hannum/PhenoAge clocks, EWAS
 Catalog traits), and — for the three clocks that publish a full per-CpG weight table — a stricter
 `clock_coefficients` regression probe (`--coefficients-dir`) that predicts the actual elastic-net

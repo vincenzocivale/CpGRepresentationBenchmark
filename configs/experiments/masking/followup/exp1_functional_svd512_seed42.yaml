@@ -1,0 +1,67 @@
+experiment:
+  task: masking
+  name: followup_exp1_functional_svd512
+  output_root: /data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/outputs/encode_atlas_v1/followup/exp1/benchmark
+  locus_split:
+    heldout_fraction: 0.0
+    seed: 17001
+    protocol_path: /data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/outputs/encode_atlas_v1/loci_seen.npz
+dataset:
+  name: tcga_array_genomewide
+  methylation_h5: /data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/methylation/tcga_array_official_full.h5
+  cpg_registry: /data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/cpg/registries/array_cpg_map.parquet
+  patient_split:
+  - 0.8
+  - 0.1
+  - 0.1
+  patient_protocol: /data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/outputs/encode_atlas_v1/patients.npz
+  patient_split_seed: 20260925
+representation:
+  name: functional_svd512
+  family: functional_annotations
+  track: native_frozen
+  component: locus_only
+  source: followup exp1 native-dimension control
+  mode: precomputed
+  store_h5: /data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/outputs/encode_atlas_v1/followup/exp1/embeddings/functional_svd512.h5
+  provenance:
+    patient_specific: false
+    supervision: none
+    transform_fit: all_loci_transductive_svd
+model:
+  locus_latent_dim: 256
+  token_dim: 256
+  patient_dim: 256
+  hidden_dim: 512
+training:
+  seed: 42
+  device: cuda
+  epochs: 30
+  batch_size: 8
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  mixed_precision: true
+  num_workers: 0
+  panel_size: 2048
+  mask_fractions:
+  - 0.15
+  - 0.3
+  - 0.5
+  - 0.7
+  - 0.9
+  beta_epsilon: 0.0001
+evaluation:
+  panel_size: 2048
+  mask_fractions:
+  - 0.15
+  - 0.3
+  - 0.5
+  - 0.7
+  - 0.9
+  selection_mask_fraction: 0.5
+  batch_size: 8
+  num_workers: 0
+  save_predictions: true
+  mask_seed: 17001
+  patient_view: test
+  panel_repeats: 4

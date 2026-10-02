@@ -160,11 +160,11 @@ def bio_validation_report(
     seed: int = 17,
     locality_registry: pd.DataFrame | None = None,
 ) -> dict[str, Any]:
-    """Evaluate whether a CpG-locus embedding linearly separates biological categories that
-    were never part of the ENCODE feature construction: genomic context (island/shore/shelf,
-    gene relationship) and literature-curated known CpG sets (e.g. epigenetic-clock CpGs).
-    Each annotation is its own classification target; a strong probe score means the
-    representation preserves that biological signal even though it was not explicitly given.
+    """Explore annotation recoverability, with source overlap explicitly distinguished.
+
+    Genomic context is part of the functional input, so its prediction is not independent
+    validation. Literature sets are external associations but can inherit context confounding.
+    Use encode_atlas for chromosome-blocked, context-controlled feature attribution.
     """
     cpg_idx = np.asarray(cpg_idx, dtype=np.int64)
     embedding = np.asarray(embedding, dtype=np.float64)

@@ -127,7 +127,7 @@ def _evaluate_views(
     num_workers = int(eval_cfg.get("num_workers", 0))
     panel_size = int(eval_cfg.get("panel_size", cfg["training"]["panel_size"]))
     fractions = [float(x) for x in eval_cfg["mask_fractions"]]
-    seed = int(cfg["training"]["seed"])
+    seed = int(eval_cfg.get("mask_seed", cfg["training"]["seed"]))
     save_predictions = bool(eval_cfg.get("save_predictions", False))
     results: dict[str, dict] = {}
     views = {
@@ -151,11 +151,26 @@ def _evaluate_views(
                 beta_epsilon=float(cfg["training"].get("beta_epsilon", 1e-4)),
             )
             loader = _build_loader(dataset, batch_size=batch_size, num_workers=num_workers, shuffle=False)
-            metrics, outputs = evaluate_loader(model, loader, device)
+            repeats = int(eval_cfg.get("panel_repeats", 1))
+            if repeats < 1:
+                raise ValueError("panel_repeats must be positive")
+            chunks = []
+            for repeat in range(repeats):
+                dataset.set_epoch(repeat)
+                _, chunk = evaluate_loader(model, loader, device)
+                chunk['panel_repeat'] = np.full(len(chunk['sample_index']), repeat, dtype=np.int64)
+                chunks.append(chunk)
+            outputs = {k: np.concatenate([chunk[k] for chunk in chunks]) for k in chunks[0]}
+            from cpg_repr_benchmark.evaluation.metrics import reconstruction_metrics
+            metrics = reconstruction_metrics(outputs['prediction'], outputs['target'],
+                                             outputs['prior_prediction'],
+                                             target_matrix_column=outputs['target_matrix_column'])
             key = f"mask_{fraction:.2f}"
             out_dir = run_dir / "evaluation" / view_name / key
             out_dir.mkdir(parents=True, exist_ok=True)
-            payload = {**metrics, "mask_fraction": fraction, "view": view_name, "prior_policy": prior_policy}
+            payload = {**metrics, "mask_fraction": fraction, "view": view_name, "prior_policy": prior_policy,
+                       "patient_view": eval_cfg.get("patient_view", "test"), "panel_repeats": repeats,
+                       "mask_seed": seed}
             (out_dir / "metrics.json").write_text(json.dumps(payload, indent=2, sort_keys=True, allow_nan=True))
             if save_predictions:
                 np.savez_compressed(out_dir / "predictions.npz", **outputs)
@@ -173,6 +188,8 @@ def main() -> None:
 
     repo_root = _repo_root()
     cfg = load_config(args.config)
+    if cfg['evaluation'].get('patient_view', 'test') not in {'validation', 'test'}:
+        raise ValueError('evaluation.patient_view must be validation or test')
     seed = int(cfg["training"]["seed"])
     random.seed(seed)
     np.random.seed(seed)
@@ -241,7 +258,12 @@ def main() -> None:
     if len(candidate_columns) < 2:
         raise RuntimeError("dataset scope has insufficient CpGs")
 
-    patient_splits = patient_disjoint_split(sample_names, seed, tuple(cfg["dataset"].get("patient_split", [0.8, 0.1, 0.1])))
+    patient_splits = patient_disjoint_split(
+        sample_names, int(dataset_cfg.get("patient_split_seed", seed)),
+        tuple(dataset_cfg.get("patient_split", [0.8, 0.1, 0.1])))
+    if dataset_cfg.get('patient_protocol'):
+        from cpg_repr_benchmark.encode_atlas.protocol import load_patient_protocol
+        patient_splits = load_patient_protocol(repo_root / dataset_cfg['patient_protocol'], sample_names)
     device = _device(cfg["training"])
 
     if args.mode in {"train", "all"}:
@@ -302,7 +324,7 @@ def main() -> None:
             target_columns=train_columns,
             panel_size=int(training_cfg["panel_size"]),
             mask_fractions=training_cfg["mask_fractions"],
-            seed=seed,
+            seed=int(cfg['evaluation'].get('mask_seed', seed)),
             beta_epsilon=float(training_cfg.get("beta_epsilon", 1e-4)),
         )
         val_ds = MaskingDataset(
@@ -314,7 +336,7 @@ def main() -> None:
             target_columns=train_columns,
             panel_size=int(training_cfg["panel_size"]),
             mask_fractions=[validation_fraction],
-            seed=seed,
+            seed=int(cfg['evaluation'].get('mask_seed', seed)),
             beta_epsilon=float(training_cfg.get("beta_epsilon", 1e-4)),
         )
         train_loader = _build_loader(train_ds, int(training_cfg["batch_size"]), int(training_cfg.get("num_workers", 0)), True)
@@ -394,7 +416,7 @@ def main() -> None:
             store=store,
             matrix_path=matrix_path,
             prior=prior,
-            test_rows=patient_splits["test"],
+            test_rows=patient_splits[cfg['evaluation'].get('patient_view', 'test')],
             train_columns=train_columns,
             heldout_columns=heldout_columns,
             device=device,
@@ -409,6 +431,7 @@ def main() -> None:
             "n_train_loci": int(len(train_columns)),
             "n_heldout_loci": int(len(heldout_columns)),
             "evaluation": results,
+            "patient_view": cfg['evaluation'].get('patient_view', 'test'),
         }
         write_summary(run_dir, summary)
         print(json.dumps(summary, indent=2, allow_nan=True))
