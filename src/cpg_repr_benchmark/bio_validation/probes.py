@@ -11,6 +11,23 @@ from sklearn.neighbors import NearestNeighbors
 from cpg_repr_benchmark.bio_validation.annotations import CpGAnnotations
 from cpg_repr_benchmark.bio_validation.metrics import classification_metrics, regression_metrics
 
+# Role of each metric group in `bio_validation_report`. Purely descriptive: it does not enter any
+# metric computation and is not written into the report (so existing consumers/summaries are unchanged);
+# reporting/plotting code may import it to label outputs.
+#
+# `genomic_context` (CpG island/shore/shelf/open sea; the same source also underlies gene region,
+# cCRE class and TSS distance) is made of INPUT features of the ENCODE functional feature store behind
+# `functional_annotations_pca`. For that representation a high score is a source-information
+# retention / sanity check (did the compaction keep what went in?), NOT independent biological
+# validation. Independent targets are phastCons, EWAS sets, clock coefficients, etc.
+SOURCE_RETENTION_LABEL = "source-information retention check (not independent)"
+PROBE_VALIDATION_ROLE: dict[str, str] = {
+    "genomic_context": "source_retention_check",
+    "known_cpg_sets": "external_association",
+    "clock_coefficients": "external_association",
+    "locality": "unsupervised_structure",
+}
+
 
 def _cv_classification(embedding: np.ndarray, label: np.ndarray, *, seed: int, folds: int = 5) -> dict[str, Any]:
     """K-fold cross-validated linear probe of a CpG-locus embedding against one categorical
@@ -162,8 +179,10 @@ def bio_validation_report(
 ) -> dict[str, Any]:
     """Explore annotation recoverability, with source overlap explicitly distinguished.
 
-    Genomic context is part of the functional input, so its prediction is not independent
-    validation. Literature sets are external associations but can inherit context confounding.
+    Genomic context (island/shore/shelf, gene region, cCRE class, TSS distance) is part of the
+    functional input, so for `functional_annotations_pca` the `genomic_context` group is a
+    source-information retention / sanity check, NOT independent validation (see
+    `PROBE_VALIDATION_ROLE`). Literature sets are external associations but can inherit context confounding.
     Use encode_atlas for chromosome-blocked, context-controlled feature attribution.
     """
     cpg_idx = np.asarray(cpg_idx, dtype=np.int64)

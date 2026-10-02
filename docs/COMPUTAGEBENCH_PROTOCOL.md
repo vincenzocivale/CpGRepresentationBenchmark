@@ -78,6 +78,6 @@ python scripts/data/build_common_locus_protocol.py \
   --output data/protocols/ComputAgeBench/benchmark_common_functional_ntv3.npz
 ```
 
-Copy `configs/experiments/age/computagebench_template.yaml` once per representation arm and
+Copy `configs/experiments/age/computagebench_template.yaml` (not present in this repo; archived reference) once per representation arm and
 point `dataset.locus_protocol` to that shared file. Never use a representation-specific
 intersection, condition labels, or held-out samples while building a locus representation.

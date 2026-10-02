@@ -7,8 +7,9 @@ outputs/
   masking/
     <dataset>/
       <representation>/
-        seed_<seed>/
-          <UTC timestamp>-<config hash>/
+        <track>/                        # e.g. native_frozen
+          seed_<seed>/
+            <UTC timestamp>-<config hash>/
 ```
 
 A run contains:
@@ -44,7 +45,7 @@ In addition, `experiment.locus_split.protocol_path` points to a persistent share
 
 `experiment.json` contains the minimal provenance needed to identify a run without opening checkpoints. `summary.json` is the paper-table-friendly aggregate of every evaluation view and masking fraction.
 
-To gather all completed runs into one CSV:
+To gather all completed runs into one CSV (`outputs/masking_summary.csv` is produced by `scripts/summarize_runs.py` when run; it is not currently present):
 
 ```bash
 python scripts/summarize_runs.py --outputs outputs --csv outputs/masking_summary.csv

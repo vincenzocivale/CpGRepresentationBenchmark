@@ -126,7 +126,7 @@ intersection outside this step.
 
 ## 4. Register experiment configs and run
 
-Copy `configs/experiments/classification/gse42861_disease_template.yaml` once per representation
+Copy `configs/experiments/classification/gse42861_disease_template.yaml` (not present in this repo; archived reference; the summary CSV below is not produced) once per representation
 arm, set `representation.*` and (if scoping to the common universe from step 3)
 `dataset.locus_protocol`, then run:
 

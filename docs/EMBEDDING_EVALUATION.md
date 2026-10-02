@@ -8,15 +8,19 @@ attribution and source-feature ablations, use [ENCODE_ATTRIBUTION.md](ENCODE_ATT
 `scripts/run_bio_validation.py` (or the catalog-driven `scripts/run_bio_validation_all.py`) probes a
 representation's raw CpG-locus embedding (the `/embedding` array of its canonical HDF5 store, not a
 patient embedding) against annotations with different levels of independence from the functional
-inputs: source-derived genomic context (island/shore/shelf, gene relationship),
+inputs: source-derived genomic context (island/shore/shelf, gene relationship; a
+**source-information retention / sanity check** for `functional_annotations_pca`, not independent validation),
 literature-curated known CpG sets (binary membership; e.g. Horvath/Hannum/PhenoAge clocks, EWAS
 Catalog traits), and — for the three clocks that publish a full per-CpG weight table — a stricter
 `clock_coefficients` regression probe (`--coefficients-dir`) that predicts the actual elastic-net
 coefficient rather than just set membership. See `data/bio_annotations/README.md` for the expected
 file formats — none are bundled; provenance must be recorded before use.
 
-This is the primary biological-validity axis for the paper, alongside the masking-reconstruction
-benchmark (`docs/BENCHMARK_V2.md`), which is the computational-justification axis. Downstream
+Only the probes independent of the functional inputs (phastCons, EWAS sets, clock coefficients,
+etc.) count as biological evidence; genomic context, gene region, cCRE class and TSS distance are
+retention checks for `functional_annotations_pca`. Together with the masking-reconstruction
+benchmark (`docs/BENCHMARK_V2.md`, the computational axis), these exploratory probes are
+supporting evidence; chromosome-blocked, context-controlled attribution lives in `ENCODE_ATTRIBUTION.md`. Downstream
 phenotype-task probing (age/disease prediction from a patient embedding) was dropped from this repo;
 see git history if that pipeline is ever needed again.
 
@@ -53,7 +57,7 @@ outputs/bio_validation/<representation>/<track>/seed_<seed>/summary.json
   "track": "native_frozen",
   "mode": "frozen_pretrained",
   "embedding_source": {"type": "cpg_locus_embedding", "dim": 256, "checkpoint": "..."},
-  "metrics": {"genomic_context": {...}, "known_cpg_sets": {...}, "clock_coefficients": {...}},
+  "metrics": {"genomic_context": {... source-retention check ...}, "known_cpg_sets": {...}, "clock_coefficients": {...}},
   "n_patients": null
 }
 ```

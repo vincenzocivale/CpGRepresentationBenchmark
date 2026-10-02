@@ -1,5 +1,7 @@
 # Benchmark design
 
+> Framing note: `functional_annotations_pca` is the discovery/baseline representation, not necessarily the final method. The objective is a patient-independent, interpretable CpG representation grounded in experimental functional evidence; downstream phenotype tasks are not a central objective. See [REFACTOR_AUDIT.md](REFACTOR_AUDIT.md).
+
 ## Research hypothesis
 
 Current methylation and genomic foundation models frequently characterize a CpG from sequence context, learned CpG identity, or a model-specific token embedding. This project tests a broader hypothesis: **a patient-agnostic CpG representation built from reference-genome functional annotations can be more useful than sequence-centric representations for methylome reconstruction and, later, methylation downstream tasks.**

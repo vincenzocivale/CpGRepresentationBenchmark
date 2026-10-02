@@ -8,7 +8,10 @@ are genuinely the same loci across stores (not just the same row count).
 
 Two coloring modes, each answering a different question about what the raw embedding
 already encodes without any task-specific training:
-  --color-by context     genomic context (island/shore/shelf/open_sea)
+  --color-by context     genomic context (island/shore/shelf/open_sea). NOTE: these labels are
+                          input features of the functional feature store, so for
+                          functional_annotations_pca this is a source-information retention
+                          check (not independent biological validation)
   --color-by known-set    membership in a bio_validation known CpG set (e.g. a cancer
                           EWAS set) vs. everything else
 
@@ -194,6 +197,13 @@ def main() -> None:
         ax.grid(False)
 
     fig.legend(handles=handles, loc="center left", bbox_to_anchor=(1.0, 0.5), frameon=False)
+    if args.color_by == "context":
+        fig.suptitle("Genomic context coloring: source-information retention check (not independent)",
+                     x=0.01, ha="left", fontsize=8, fontweight="normal")
+        fig.text(0.01, -0.02,
+                 "Island/shore/shelf labels are input features of the functional feature store; "
+                 "structure here is not independent biological validation.",
+                 fontsize=6, ha="left", va="top")
     args.out_dir.mkdir(parents=True, exist_ok=True)
     out_name = args.out_name or f"umap_comparison_{args.color_by.replace('-', '_')}"
     savefig(fig, args.out_dir / out_name)

@@ -2,6 +2,8 @@
 
 Controlled benchmark of **patient-agnostic CpG locus representations** for methylation modeling.
 
+**Framing note (see [docs/REFACTOR_AUDIT.md](docs/REFACTOR_AUDIT.md)):** `functional_annotations_pca` (PCA/SVD of the ENCODE functional-annotation store) is the *discovery/baseline* representation, not necessarily the final method. The scientific objective is to develop a patient-independent, interpretable CpG-locus representation grounded in experimental functional/regulatory evidence and to test whether it captures methylation and regulatory properties better than sequence-based and foundation-model locus embeddings. This benchmark is the evaluation instrument; downstream phenotype prediction is not a central objective. Genomic context (CpG island/shore/shelf, gene region, cCRE class, TSS distance) is part of the functional input, so recovering it is a sanity check, not independent validation.
+
 The primary question is whether a CpG representation derived from reference-genome functional annotations is more useful than locus representations extracted from genomic or methylation foundation models. The benchmark is **representation-controlled**: the downstream model is fixed and only the patient-agnostic CpG representation changes.
 
 Every representation reports under a single `native_frozen` track: the CpG/locus embedding
@@ -12,7 +14,7 @@ methylation objective before being benchmarked.
 
 The benchmark reports two axes per representation: the masking-reconstruction benchmark (computational
 justification — see `docs/BENCHMARK_V2.md`) and bio-validation of the CpG-locus embedding against
-independent biological annotations (see `docs/EMBEDDING_EVALUATION.md`). Downstream phenotype-task
+held-out annotations (known CpG sets, clock coefficients, conservation; genomic context is a functional input, not independent validation; see `docs/EMBEDDING_EVALUATION.md`). Downstream phenotype-task
 probing (age/disease prediction from a patient embedding) was dropped; see git history if needed again.
 
 ## ENCODE feature attribution
@@ -192,7 +194,7 @@ Aggregate completed runs with:
 ```bash
 python scripts/summarize_runs.py \
   --outputs outputs \
-  --csv outputs/masking_summary.csv
+  --csv outputs/masking_summary.csv   # produced by scripts/summarize_runs.py when run; not currently present
 ```
 
 ## Representation-controlled comparison
@@ -231,7 +233,6 @@ scripts/data/prepare_*.py          per-dataset raw -> methylation.h5/phenotypes.
 scripts/data/build_master_cpg_registry.py
 scripts/data/build_transfer_locus_protocols.py
 scripts/data/build_common_locus_protocol.py
-scripts/build_functional_embeddings.py
 scripts/build_functional_pca_embedding.py
 scripts/export_functional_feature_store.py
 scripts/run_masking_benchmark.py

@@ -90,6 +90,8 @@ The adjacent JSON manifest records per-representation coverage and the final com
 
 ## 4. Run the age smoke test
 
+> The configs below are not present in this repo and the runner has been removed (archived reference).
+
 ```bash
 CUDA_VISIBLE_DEVICES=0 python scripts/run_classification_benchmark.py \
   --config configs/experiments/age/gse40279_chr1_functional_legacy_smoke.yaml \

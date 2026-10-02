@@ -1,5 +1,8 @@
 # CALERIE intervention dataset: access status
 
+> **Status: archived. Not present in this repo.** No CALERIE data, `configs/datasets/calerie.yaml` or task config exists, and the phenotype-task runner has been removed. Kept for historical reference only.
+
+
 ## What CALERIE is
 
 CALERIE (Comprehensive Assessment of Long-term Effects of Reducing Intake of Energy,

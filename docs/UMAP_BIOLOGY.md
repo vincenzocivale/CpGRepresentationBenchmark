@@ -17,6 +17,12 @@ reported, rather than selecting a favorable map. UMAP axes are arbitrary and
 are not aligned between representations. Distances between separated clusters
 and cluster area should not be used to infer a quantitative biological effect.
 
+**Caveat:** the genomic-context panels (island/shore/shelf) color by labels that are input
+features of the ENCODE functional feature store. For Functional PCA they are a
+source-information retention / sanity check, not independent biological validation; only
+overlays on independent targets (e.g. EWAS sets) carry biological interpretation. The same
+applies to gene region, cCRE class and TSS distance.
+
 Each figure reuses the exact same coordinates for genomic context and both EWAS
 overlays. Background CpGs are drawn first and highlighted CpGs last; no EWAS
 oversampling is used. Missing context annotations remain `unknown`.

@@ -4,6 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this benchmark measures
 
+> Framing: `functional_annotations_pca` is the discovery/baseline representation, not necessarily the final method.
+> The objective is a patient-independent, interpretable CpG-locus representation grounded in experimental
+> functional/regulatory evidence, evaluated against sequence/foundation-model embeddings. Genomic context is part of
+> the functional input (not independent validation). Downstream phenotype prediction is not a central objective.
+> See `docs/REFACTOR_AUDIT.md` for the keep/archive/remove classification (nothing removed yet).
+
 This repo controls for everything except the **patient-agnostic CpG locus representation**. The downstream
 reconstruction/prediction model, patient split, locus split, masking sweep, optimizer budget, and prior policy
 are held fixed; only `representation.store_h5` (or online provider) changes between arms. Never let a

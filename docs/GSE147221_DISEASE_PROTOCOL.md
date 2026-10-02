@@ -75,7 +75,7 @@ membership only. They are not representation-specific intersections.
 Materialize each representation against the same chosen transfer set, then use
 `build_common_locus_protocol.py` to create one common locus protocol across all
 arms. Set that file as `dataset.locus_protocol` in copies of
-`configs/experiments/classification/gse147221_schizophrenia_template.yaml`.
+`configs/experiments/classification/gse147221_schizophrenia_template.yaml` (not present in this repo; archived reference).
 Only the `representation.*` fields may differ between arms.
 
 ```bash

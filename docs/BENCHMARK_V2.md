@@ -1,5 +1,7 @@
 # Benchmark V2: representation-first experimental design
 
+> Framing note: `functional_annotations_pca` is the discovery/baseline representation, not necessarily the final method; see [REFACTOR_AUDIT.md](REFACTOR_AUDIT.md). The PCA/SVD arm is label-free; the learned-encoder sketch below is legacy and its methylation-supervision status is an open audit item.
+
 ## Scientific unit of comparison
 
 The benchmark compares **patient-agnostic CpG locus representations**. It must never pass a
@@ -37,7 +39,7 @@ across representation arms via the shared seed/protocol.
 
 Downstream phenotype-task probing (age/mortality/disease prediction from a patient embedding) was
 dropped from this repo's evaluation scope; see git history if that pipeline is ever needed again.
-Bio-validation of the CpG-locus embedding itself against independent biological annotations is
+Bio-validation of the CpG-locus embedding itself against held-out annotations (known CpG sets, clock coefficients, conservation). Genomic context, gene region, cCRE and TSS distance are functional inputs, so their recovery is a sanity check, not independent validation is
 covered separately — see `docs/EMBEDDING_EVALUATION.md`.
 
 ## Canonical cache contracts

@@ -83,7 +83,13 @@ def plot_bio_probes_auc(df: pd.DataFrame, out_dir: Path) -> None:
     ax.set_xticklabels([pretty_label(cls) for cls in classes])
     ax.set_ylabel("AUC")
     ax.set_ylim(0.4, 1.0)
+    ax.set_title("Genomic-context probes: source-information retention check (not independent)",
+                 loc="left", fontsize=8, fontweight="normal")
     ax.legend(loc="center left", bbox_to_anchor=(1.0, 0.5))
+    fig.text(0.0, -0.04,
+             "Island/shore/shelf (and gene region, cCRE, TSS distance) are input features of the functional store;\n"
+             "high AUC there shows retention of source information, not independent biology.",
+             fontsize=6, ha="left", va="top")
     savefig(fig, out_dir / "bio_probes_auc")
     plt.close(fig)
 

@@ -44,5 +44,5 @@ def test_representation_info_rejects_unknown_track():
             mode="precomputed",
             source="test",
             family="genomic_fm",
-            track="proxy_aligned",
+            track="unsupported_track",
         )
