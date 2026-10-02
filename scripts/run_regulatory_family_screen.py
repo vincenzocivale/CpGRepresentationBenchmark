@@ -3,7 +3,9 @@
 
 Same protocol as scripts/run_regulatory_selection.py (template functional_pca_genomewide.yaml, frozen patient/locus
 protocols, mask seed 17001, validation-only guard, saved predictions). TRAINING (including training.mask_fractions)
-and the model are identical to the campaign; only evaluation.mask_fractions is restricted to [0.5].
+and the model are identical to the campaign, with TWO documented, all-arms-shared throughput deviations:
+training/evaluation batch_size 32 (campaign: 8) and training.num_workers 8 (campaign: 0; precomputed stores only).
+evaluation.mask_fractions is restricted to [0.5]. See docs/REGULATORY_FAMILY_SCREEN.md ("Throughput deviation").
 
   generate   write configs/experiments/regulatory_family_screen/<arm>__seed17.yaml
   validate   no-training dry run: configs, stores, cpg_idx equality with protocol, split sizes
@@ -35,6 +37,8 @@ SEED = 17
 MASK_SEED = 17001
 PATIENT_SPLIT_SEED = 20260925
 EVAL_FRACTIONS = [0.5]
+BATCH_SIZE = 32   # campaign template: 8. Run is data-loader bound (profiled), so this is a convergence/throughput compromise.
+NUM_WORKERS = 8   # campaign template: 0. Loader workers do not change sampled masks (RNG keyed on epoch/row/fraction).
 FIT_LOCI_SHA256_PREFIX = "995edc58"
 ARMS = {  # arm: (store, expected number of tracks)
     "regulatory_histone": (REPS / "regulatory_histone__global_svd256__discovery_chr1_19.h5", 1959),
@@ -56,9 +60,9 @@ def build(arm: str) -> dict:
         name=arm, store_h5=str(store), source=f"regulatory family screen arm ({n_tracks} tracks, global SVD-256)",
         provenance={"patient_specific": False, "supervision": "none", "role": "family_screen",
                     "n_tracks": n_tracks})
-    cfg["training"].update(seed=SEED, num_workers=0)  # training.mask_fractions deliberately untouched
+    cfg["training"].update(seed=SEED, num_workers=NUM_WORKERS, batch_size=BATCH_SIZE)  # mask_fractions untouched
     cfg["evaluation"].update(mask_fractions=EVAL_FRACTIONS, save_predictions=True, mask_seed=MASK_SEED,
-                             num_workers=0, patient_view="validation", panel_repeats=1,
+                             num_workers=0, batch_size=BATCH_SIZE, patient_view="validation", panel_repeats=1,
                              require_patient_view="validation")
     return cfg
 
@@ -87,12 +91,14 @@ def check_config(cfg, template, arm):
     for section in ("model", "training", "evaluation"):
         a, b = dict(cfg[section]), dict(template[section])
         for k in ("seed", "num_workers", "save_predictions", "mask_seed", "patient_view", "panel_repeats",
-                  "require_patient_view", "mask_fractions"):
+                  "require_patient_view", "mask_fractions", "batch_size"):
             a.pop(k, None); b.pop(k, None)
         if a != b:
             raise ValueError(f"{arm}: {section} differs from the campaign template")
-    if cfg["training"]["seed"] != SEED or cfg["training"]["num_workers"] != 0:
+    if cfg["training"]["seed"] != SEED or cfg["training"]["num_workers"] != NUM_WORKERS:
         raise ValueError("seed/num_workers mismatch")
+    if cfg["training"]["batch_size"] != BATCH_SIZE or cfg["evaluation"]["batch_size"] != BATCH_SIZE:
+        raise ValueError(f"{arm}: batch_size must be the shared screen value {BATCH_SIZE}")
 
 
 def validate(args):

@@ -27,8 +27,25 @@ Identical to the ENCODE campaign template (`configs/experiments/masking/function
 outputs in `outputs/regulatory_family_screen_v1/`):
 
 - frozen patients (`outputs/encode_atlas_v1/patients.npz`, 7342/918/918), frozen genome-wide seen loci (`loci_seen.npz`, 408,399 CpGs);
-- model, optimizer, budget unchanged: 30 epochs, batch 8, lr 1e-4, wd 1e-4, mixed precision, panel 2048, hidden 512 (enforced by `validate`);
-- decoder seed 17, mask seed 17001, `panel_repeats: 1`, `num_workers: 0`, `save_predictions: true`, `patient_view: validation`.
+- model, optimizer, budget unchanged: 30 epochs, lr 1e-4, wd 1e-4, mixed precision, panel 2048, hidden 512 (enforced by `validate`);
+- decoder seed 17, mask seed 17001, `panel_repeats: 1`, `evaluation.num_workers: 0`, `save_predictions: true`, `patient_view: validation`.
+
+### Throughput deviation from the ENCODE campaign (explicit, shared by all four arms)
+
+Profiling on the A100 showed the run is data-loader bound, not GPU bound: with `num_workers=0` the loader delivers about
+95 samples/s regardless of batch size (random HDF5 column reads, ~10 ms/sample), while the GPU step itself takes 11-20 ms
+for batch 8-64 (peak GPU memory 0.3-1.5 GB; GPU utilisation 5-12 %). Two settings therefore deviate from the campaign:
+
+- `training.batch_size` 32 and `evaluation.batch_size` 32 (campaign: 8). Larger batches do not add throughput once loading is
+  the limit, so 32 was chosen over 64/128 to keep more optimizer steps per epoch (about 230 vs 920 in the campaign).
+  Learning rate, weight decay and epochs are NOT rescaled. Fewer optimizer steps per epoch may slightly change convergence,
+  and absolute MSE is not directly comparable with the campaign numbers (batch 8). All four arms share the setting, so the
+  within-screen paired comparison stays valid.
+- `training.num_workers` 8 (campaign: 0). Allowed because the stores are precomputed (CLAUDE.md restricts only online
+  encoders). Masks are keyed on (seed, epoch, row, fraction), so worker count does not change what is sampled.
+  Validation during training uses 2 workers (`min(2, num_workers)` in `run_masking_benchmark.py`) and the training batch size.
+
+`validate` enforces both values.
 
 ### Masking fractions: what was found and what was done
 
