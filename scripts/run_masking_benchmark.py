@@ -190,6 +190,8 @@ def main() -> None:
     cfg = load_config(args.config)
     if cfg['evaluation'].get('patient_view', 'test') not in {'validation', 'test'}:
         raise ValueError('evaluation.patient_view must be validation or test')
+    from cpg_repr_benchmark.experiments.guards import enforce_patient_view
+    enforce_patient_view(cfg)  # no-op unless evaluation.require_patient_view is set
     seed = int(cfg["training"]["seed"])
     random.seed(seed)
     np.random.seed(seed)
