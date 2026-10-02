@@ -19,6 +19,23 @@ representations:
       supervision: none
       locus_fit_scope: unsupervised
 
+  functional_annotations_pca_450k_fit:
+    # 450K->EPIC upscaling arm (docs/UPSCALING_450K_TO_EPIC.md). Same recipe as functional_annotations_pca,
+    # but the SVD is fitted on the 439,760 450K/EPIC-shared loci and then applied to the 404,095 EPIC-only
+    # loci, so the store covers the whole task universe (build: scripts/build_functional_pca_projection.py).
+    name: functional_annotations_pca_450k_fit
+    family: functional_annotations
+    track: native_frozen
+    component: locus_only
+    mode: precomputed
+    store_h5: data/cache/representations/functional_annotations__pca_450k_fit_paired_v1.h5
+    source: reference-genome functional annotations -> unsupervised PCA/SVD fitted on 450K-shared loci, projected onto EPIC-only loci
+    provenance:
+      patient_specific: false
+      reference_genome_only: true
+      supervision: none
+      locus_fit_scope: unsupervised
+
   ntv3_pre_native:
     name: ntv3_pre
     family: genomic_fm

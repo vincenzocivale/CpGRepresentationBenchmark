@@ -1,0 +1,38 @@
+# 450K -> EPIC upscaling. Baseline: train-sample mean beta per EPIC-only locus (no model).
+experiment: {task: upscale_450k_epic, name: upscale_450k_epic_baseline_prior_mean,
+  output_root: outputs}
+dataset:
+  name: epic_sim_blood__real_paired
+  universe: data/prepared/paired_450k_epic/loci_v1.npz
+  simulated_training: {h5: data/prepared/epic_sim_training/epic_blood.h5, samples: data/prepared/epic_sim_training/samples.parquet}
+  real_pairs:
+    dir: data/prepared/paired_450k_epic
+    cohorts: [GSE86833, GSE92580]
+  locus_holdout: {fraction: 0.1, seed: 17}
+representation:
+  name: baseline_prior_mean
+  family: baseline
+  track: baseline
+  component: none
+  kind: none
+  provenance: {patient_specific: false, supervision: none, locus_fit_scope: none}
+model: {architecture: deepsets, locus_latent_dim: 256, token_dim: 256, patient_dim: 256,
+  hidden_dim: 512}
+training:
+  seed: 17
+  device: cuda
+  steps: 6000
+  batch_size: 16
+  context_size: [4096, 32768]
+  target_size: 4096
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  warmup: 200
+  eval_every: 250
+  val_context: 16384
+  val_targets: 16384
+  obs_noise_std: 0.0
+  beta_epsilon: 0.0001
+evaluation: {context_size: 32768, repeats: 3, bootstrap: 200, variable_quantile: 0.9,
+  save_predictions: true}
+baseline: prior_mean

@@ -21,6 +21,7 @@ data/external/
 data/cache/
 data/local_manifest.json
 data/protocols/
+data/prepared/
 
 # Local staging for third-party model resources (e.g. scripts/cpgpt symlinks)
 /dependencies/
