@@ -1,0 +1,18 @@
+# Step 5: label-free linear compression of the ENCODE regulatory track matrix (no methylation, no /dense).
+store: data/derived/functional_annotations/reference_functional_features_tcga_array_all_v1_cpgidx_fixed.h5
+catalog: data/external/functional/locus_features_v1/regulatory/track_contract.tsv
+registry: data/cpg/registries/array_cpg_map.parquet  # cpg_idx -> chr, used only to define the fit protocol
+output_dir: data/cache/representations
+protocol: discovery_chr1_19  # fit on chr1-19; ALL loci are transformed, chr20-22 rows are out-of-fit
+seed: 17
+dtype: float32
+# name suffix `_egm` = replicate_weighting equal_group_mass (property comparison only, not a benchmark arm)
+embeddings:
+  - {feature_set: regulatory_clean, method: global_svd, dim: 256}
+  - {feature_set: regulatory_all_experimental, method: global_svd, dim: 256}
+  - {feature_set: regulatory_histone, method: global_svd, dim: 256}
+  - {feature_set: regulatory_clean, method: block_svd, dim: 256, block_components: 256}
+  - {feature_set: regulatory_all_experimental, method: block_svd, dim: 256, block_components: 256}
+  - {feature_set: regulatory_clean, method: global_svd, dim: 256, replicate_weighting: equal_group_mass}
+  - {feature_set: regulatory_clean, method: block_svd, dim: 256, block_components: 256,
+     replicate_weighting: equal_group_mass}

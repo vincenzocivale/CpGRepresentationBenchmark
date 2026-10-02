@@ -50,6 +50,10 @@ python scripts/build_functional_pca_embedding.py --help
 # audit regulatory feature-set contracts (catalog metadata only; see docs/REGULATORY_REPRESENTATION.md)
 python scripts/audit_regulatory_feature_sets.py --feature-set all
 
+# regulatory (ENCODE-track-only) label-free embeddings: materialize, then describe their properties
+python scripts/build_regulatory_embeddings.py --config configs/regulatory_embeddings.yaml [--only <name>]
+python scripts/report_regulatory_embeddings.py
+
 # aggregate finished runs into a summary CSV
 python scripts/summarize_runs.py --outputs outputs --csv outputs/masking_summary.csv
 ```

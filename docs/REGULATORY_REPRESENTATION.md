@@ -169,6 +169,15 @@ The three column-mask contracts are resolved from catalog metadata (no hard-code
 row-order-independent manifest hash), audit via `python scripts/audit_regulatory_feature_sets.py` (writes JSON + per-track TSV to
 `outputs/feature_set_audits/`). Metadata only: no store is opened and no embedding is built. Tests: `tests/test_regulatory_feature_sets.py`.
 
+## Compression (Step 5)
+
+Label-free linear compression of these contracts (global SVD, block SVD, optional equal-group-mass replicate weighting, fit on a named
+leakage-safe protocol such as `discovery_chr1_19`): `src/cpg_repr_benchmark/encode_atlas/compression.py`, materialization
+`scripts/build_regulatory_embeddings.py` (`configs/regulatory_embeddings.yaml`), descriptive report
+`scripts/report_regulatory_embeddings.py`, results in `docs/REGULATORY_COMPRESSION_REPORT.md`. Tests:
+`tests/test_regulatory_compression.py`. Only the track CSR is read (never `/dense`, never methylation); the embeddings are not registered
+as benchmark arms.
+
 ## 6. Not done
 
 No embedding built, no SVD or PCA fit, no feature selection or redundancy pruning, no training or evaluation, no change to the store, catalog,
