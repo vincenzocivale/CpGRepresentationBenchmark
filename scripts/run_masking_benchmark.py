@@ -385,6 +385,7 @@ def main() -> None:
             weight_decay=float(training_cfg.get("weight_decay", 1e-4)),
             mixed_precision=bool(training_cfg.get("mixed_precision", True)),
             output_dir=run_dir,
+            early_stopping=training_cfg.get("early_stopping"),
         )
     else:
         prior = np.load(run_dir / "prior_logit.npy")

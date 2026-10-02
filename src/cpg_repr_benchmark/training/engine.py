@@ -58,7 +58,21 @@ def train_model(
     weight_decay: float,
     mixed_precision: bool,
     output_dir: Path,
+    early_stopping: dict | None = None,
 ) -> list[dict]:
+    """Train with AdamW at constant learning rate (no LR schedule: `epochs` only caps the run length).
+
+    `early_stopping` is opt-in (None = off, behaviour unchanged). Keys: `patience` (int >= 1, epochs without a
+    significant improvement before stopping) and `min_delta_rel` (float >= 0; an epoch is a significant improvement
+    iff validation MSE < reference * (1 - min_delta_rel), where the reference is the last significant value).
+    `best.pt` is still the strict minimum validation MSE, independent of min_delta_rel.
+    """
+    patience, min_delta_rel = None, 0.0
+    if early_stopping:
+        patience = int(early_stopping["patience"])
+        min_delta_rel = float(early_stopping.get("min_delta_rel", 0.0))
+        if patience < 1 or min_delta_rel < 0:
+            raise ValueError("early_stopping requires patience >= 1 and min_delta_rel >= 0")
     output_dir = Path(output_dir)
     checkpoints = output_dir / "checkpoints"
     checkpoints.mkdir(parents=True, exist_ok=True)
@@ -67,6 +81,9 @@ def train_model(
     model.to(device)
     history: list[dict] = []
     best = float("inf")
+    reference = float("inf")
+    stalled = 0
+    stopped_epoch = None
     for epoch in range(epochs):
         if hasattr(train_loader.dataset, "set_epoch"):
             train_loader.dataset.set_epoch(epoch)
@@ -112,5 +129,21 @@ def train_model(
         if float(validation["mse"]) < best:
             best = float(validation["mse"])
             torch.save(state, checkpoints / "best.pt")
+        if patience is not None:
+            if float(validation["mse"]) < reference * (1.0 - min_delta_rel):
+                reference = float(validation["mse"])
+                stalled = 0
+            else:
+                stalled += 1
+            if stalled >= patience:
+                stopped_epoch = epoch
+                break
     (output_dir / "history.json").write_text(json.dumps(history, indent=2))
+    if patience is not None:
+        best_epoch = int(np.argmin([r["validation_mse"] for r in history]))
+        (output_dir / "early_stopping.json").write_text(json.dumps({
+            "patience": patience, "min_delta_rel": min_delta_rel, "max_epochs": int(epochs),
+            "epochs_run": len(history), "best_epoch": best_epoch,
+            "stopped_early": stopped_epoch is not None, "stopped_epoch": stopped_epoch,
+        }, indent=2))
     return history
