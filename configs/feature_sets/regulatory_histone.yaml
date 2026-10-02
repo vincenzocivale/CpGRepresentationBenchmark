@@ -1,0 +1,12 @@
+# Regulatory-Histone (mechanistic/sufficiency arm): Histone ChIP-seq only.
+name: regulatory_histone
+assays: [Histone ChIP-seq]
+exclude_targets: []
+dense: none
+expected_counts:
+  n_selected: 1959
+  n_excluded: 2206
+  per_assay: {Histone ChIP-seq: 1959}
+  per_block: {histone: 1959}
+provenance: >-
+  Histone ChIP-seq tracks only; all TF and DNase tracks and all dense columns are dropped.

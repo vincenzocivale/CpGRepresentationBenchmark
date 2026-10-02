@@ -1,0 +1,13 @@
+# Regulatory-Clean (primary candidate): all tracks minus methylation-machinery targets.
+name: regulatory_clean
+assays: [Histone ChIP-seq, TF ChIP-seq, DNase-seq]
+exclude_targets: [ZBTB33, MBD1, MBD2, DNMT1, DNMT3B]
+dense: none
+expected_counts:
+  n_selected: 4151
+  n_excluded: 14
+  per_assay: {DNase-seq: 533, Histone ChIP-seq: 1959, TF ChIP-seq: 1659}
+  per_block: {accessibility: 533, histone: 1959, tf: 1659}
+provenance: >-
+  Excluded by rule on encode_target (not by id): direct DNA-methylation readers/writers.
+  Other methylation-adjacent targets (CTCF, EZH2, KDMs, ...) are intentionally retained.

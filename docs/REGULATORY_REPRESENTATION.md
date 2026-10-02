@@ -161,6 +161,14 @@ Note `outputs/encode_atlas_v1` panels (`panel/selected/N`) used methylation-info
    `target/ZBTB33`, `target/MBD1`, `target/MBD2`, `target/DNMT1`, `target/DNMT3B` exist in `groups.json` **[V]**.
 10. The `tf` block merge of `ctcf` and `tf_binding` is a naming choice (see section 0).
 
+## Executable contracts
+
+The three column-mask contracts are resolved from catalog metadata (no hard-coded indices): rule specs in
+`configs/feature_sets/regulatory_{all_experimental,clean,histone}.yaml`, resolver `resolve_feature_set` in
+`src/cpg_repr_benchmark/encode_atlas/feature_sets.py` (returns store columns = catalog row order plus catalog `track_index`, and a
+row-order-independent manifest hash), audit via `python scripts/audit_regulatory_feature_sets.py` (writes JSON + per-track TSV to
+`outputs/feature_set_audits/`). Metadata only: no store is opened and no embedding is built. Tests: `tests/test_regulatory_feature_sets.py`.
+
 ## 6. Not done
 
 No embedding built, no SVD or PCA fit, no feature selection or redundancy pruning, no training or evaluation, no change to the store, catalog,

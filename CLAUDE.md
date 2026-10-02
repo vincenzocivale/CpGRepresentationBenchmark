@@ -47,6 +47,9 @@ CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
 # compact the raw ENCODE functional-annotation feature store into a PCA embedding
 python scripts/build_functional_pca_embedding.py --help
 
+# audit regulatory feature-set contracts (catalog metadata only; see docs/REGULATORY_REPRESENTATION.md)
+python scripts/audit_regulatory_feature_sets.py --feature-set all
+
 # aggregate finished runs into a summary CSV
 python scripts/summarize_runs.py --outputs outputs --csv outputs/masking_summary.csv
 ```

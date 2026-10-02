@@ -1,0 +1,13 @@
+# Executable contract for docs/REGULATORY_REPRESENTATION.md section 3 (Regulatory-AllExperimental).
+name: regulatory_all_experimental
+assays: [Histone ChIP-seq, TF ChIP-seq, DNase-seq]
+exclude_targets: []
+dense: none
+expected_counts:
+  n_selected: 4165
+  n_excluded: 0
+  per_assay: {DNase-seq: 533, Histone ChIP-seq: 1959, TF ChIP-seq: 1673}
+  per_block: {accessibility: 533, histone: 1959, tf: 1673}
+provenance: >-
+  All ENCODE experimental peak-overlap tracks, no dense columns (no context/gene/cCRE/TSS/breadth).
+  Selection by catalog metadata only; no methylation information is used.
