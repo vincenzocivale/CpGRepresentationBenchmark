@@ -22,6 +22,7 @@ REAL_CATALOG = ROOT / DEFAULT_CATALOG
 LINKED = {'ENCSR000BPZ', 'ENCSR000BHC', 'ENCSR542FLV', 'ENCSR156CWW', 'ENCSR260UJI', 'ENCSR396QWK',
           'ENCSR000BNA', 'ENCSR987PBI', 'ENCSR221GAN', 'ENCSR876GXA', 'ENCSR940MHE', 'ENCSR231YFE',
           'ENCSR345YWJ', 'ENCSR516HUP'}
+SUBPROCESS_ENV = {**os.environ, 'PYTHONPATH': os.pathsep.join([str(ROOT / 'src'), os.environ.get('PYTHONPATH', '')])}
 needs_real = pytest.mark.skipif(not REAL_CATALOG.is_file(), reason=f'real catalog absent: {REAL_CATALOG}')
 
 
@@ -117,7 +118,7 @@ def test_source_unchanged_after_resolve_and_audit(tmp_path):
     before = (cat.read_bytes(), os.stat(cat).st_mtime_ns)
     resolve_feature_set('regulatory_clean', cat)
     subprocess.run([sys.executable, str(ROOT / 'scripts' / 'audit_regulatory_feature_sets.py'), '--catalog',
-                    str(cat), '--out-dir', str(tmp_path / 'audit')], check=True, cwd=ROOT, capture_output=True)
+                    str(cat), '--out-dir', str(tmp_path / 'audit')], check=True, cwd=ROOT, capture_output=True, env=SUBPROCESS_ENV)
     assert (cat.read_bytes(), os.stat(cat).st_mtime_ns) == before
     assert (tmp_path / 'audit' / 'regulatory_clean.json').is_file()
     assert len(pd.read_csv(tmp_path / 'audit' / 'regulatory_clean.tsv', sep='\t')) == 7
@@ -128,5 +129,5 @@ def test_real_catalog_untouched(tmp_path):
     before = (sha(REAL_CATALOG), os.stat(REAL_CATALOG).st_mtime_ns)
     resolve_feature_set('regulatory_clean', REAL_CATALOG)
     subprocess.run([sys.executable, str(ROOT / 'scripts' / 'audit_regulatory_feature_sets.py'),
-                    '--out-dir', str(tmp_path)], check=True, cwd=ROOT, capture_output=True)
+                    '--out-dir', str(tmp_path)], check=True, cwd=ROOT, capture_output=True, env=SUBPROCESS_ENV)
     assert (sha(REAL_CATALOG), os.stat(REAL_CATALOG).st_mtime_ns) == before
