@@ -39,6 +39,14 @@ def test_default_off_runs_all_epochs(monkeypatch, tmp_path):
     assert not (tmp_path / "early_stopping.json").exists()
 
 
+def test_false_disables_early_stopping_and_keeps_best_not_last(monkeypatch, tmp_path):
+    vals = [1.0, 0.9, 0.8, 0.85, 0.86, 0.87, 0.88, 0.89]  # best at epoch 2, then a long stall: must still run all epochs
+    hist = _run(monkeypatch, tmp_path, vals, 8, False)
+    assert len(hist) == 8
+    assert not (tmp_path / "early_stopping.json").exists()
+    assert torch.load(tmp_path / "checkpoints" / "best.pt", weights_only=False)["epoch"] == 2  # not the last epoch
+
+
 def test_patience_stops_and_best_is_kept(monkeypatch, tmp_path):
     vals = [1.0, 0.9, 0.8, 0.85, 0.86, 0.87, 0.5, 0.4]  # best at epoch 2, then 3 stalled epochs
     hist = _run(monkeypatch, tmp_path, vals, 8, {"patience": 3, "min_delta_rel": 0.0})

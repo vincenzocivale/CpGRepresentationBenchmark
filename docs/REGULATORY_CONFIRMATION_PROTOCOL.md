@@ -17,10 +17,12 @@ Recorded before any confirmation run and before any test-set evaluation (no conf
   amendment. Everywhere below, "80 epochs" refers to that phase only.
 - **Freeze:** with this amendment the confirmation training budget (120 epochs maximum, `best_val_mse` selection) is FROZEN. It may not be changed,
   extended, shortened or re-tuned — per arm or globally — on the basis of validation or test results of the confirmation.
-- **Early-stopping safeguard (interpretation recorded for review):** the feature-selection phase used an opt-in early-stopping safeguard
-  (patience 10, `min_delta_rel` 1e-4 on 50%-masking validation MSE; it never triggered in any of the 9 runs). The amendment text fixes a
-  *maximum* of 120 epochs; this safeguard is kept unchanged and identical for all arms as part of the frozen budget unless the author amends this
-  clause BEFORE the first confirmation run. If it is removed, every arm runs exactly 120 epochs.
+- **Closure of the last ambiguity (supersedes the earlier early-stopping interpretation):** the final confirmation executes **exactly 120
+  epochs for every arm and every seed**. Early stopping is **DISABLED for all confirmation runs** (`training.early_stopping: false`; the engine
+  treats a falsy value as off, so the global engine behaviour and the opt-in key are unchanged). `best.pt` is still the checkpoint with the
+  lowest `best_val_mse` at 50% masking (`evaluation.selection_mask_fraction: 0.5`); the **last epoch is never used automatically** — it is only
+  the evaluated checkpoint if it happens to be that minimum. It is **not allowed to stop or prolong any individual arm or seed** on the basis of
+  the observed learning curve (validation or test); every arm gets the same 120 epochs regardless of its curve.
 
 ## Question
 

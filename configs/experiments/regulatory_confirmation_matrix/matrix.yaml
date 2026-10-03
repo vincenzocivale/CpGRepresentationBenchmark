@@ -1,9 +1,15 @@
-# Confirmation-matrix SPEC (scaffold only). Nothing here has been executed. No per-run config exists in this directory and no
+# Confirmation-matrix SPEC (scaffold only). Nothing here has been executed. Training budget frozen by AMENDMENT 2. No per-run config exists in this directory and no
 # runner reads it. Status flags: not_run | pending. The test patients are NOT used until explicitly authorized by the user.
 matrix:
   name: regulatory_confirmation_matrix_v1
   status: not_run
-  protocol: "to be defined; test patients NOT used until explicitly authorized"
+  protocol:
+    reference: "docs/REGULATORY_CONFIRMATION_PROTOCOL.md, AMENDMENT 2 (frozen training budget of the final confirmation)"
+    max_epochs: 120                      # exactly 120 epochs for every arm and seed; no per-arm stop or extension
+    early_stopping: false                # disabled for all confirmation runs
+    checkpoint_selection: best_val_mse   # best.pt = lowest validation MSE; the last epoch is never used automatically
+    checkpoint_selection_mask_fraction: 0.50
+    other_protocol_elements: "not yet defined here (seeds, evaluation split/fractions, comparators); test patients NOT used until explicitly authorized"
   test_set_authorized: false
   seeds: []                      # placeholder, to be fixed by the user together with the protocol
   fixed_across_arms: [downstream model, patient split, locus split, masking sweep, optimizer budget, prior policy]
