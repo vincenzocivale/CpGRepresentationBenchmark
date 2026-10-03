@@ -1,0 +1,30 @@
+# Regulatory (ENCODE-track-only) candidate representations. Separate file from future_models.yaml on purpose:
+# existing catalog loaders (run_bio_validation_all, plot_umap_*, encode_atlas.extensions) read future_models.yaml only,
+# so this entry does not change any existing run. Same entry format and provenance fields as future_models.yaml.
+# Frozen identifiers and verification: configs/frozen/regulatory_histone_dnase_v1.json, scripts/verify_frozen_candidate.py.
+representations:
+  regulatory_histone_dnase:
+    name: regulatory_histone_dnase
+    version: regulatory_histone_dnase_v1
+    status: candidate_frozen   # NOT final_confirmed; see docs/REGULATORY_FAMILY_SCREEN_RESULTS.md (Decision)
+    family: regulatory_encode_tracks
+    track: native_frozen
+    component: locus_only
+    mode: precomputed
+    store_h5: data/cache/representations/regulatory_histone_dnase__global_svd256__discovery_chr1_19.h5
+    source: >-
+      ENCODE binary peak-overlap tracks, 1,959 Histone ChIP-seq + 533 DNase-seq = 2,492 tracks (0 dense columns, no TF/CTCF
+      tracks, no beta values) -> global TruncatedSVD 256D (randomized, seed 17), fit on discovery_chr1_19 (388,599 loci)
+    bio_validation_cpg_registry: data/cpg/registries/array_cpg_map.parquet
+    frozen_manifest: configs/frozen/regulatory_histone_dnase_v1.json
+    feature_set: configs/feature_sets/regulatory_histone_dnase.yaml
+    provenance:
+      genome_build: GRCh38
+      patient_specific: false
+      reference_genome_only: true
+      supervision: none
+      locus_fit_scope: train_protocol_only   # unsupervised fit on discovery_chr1_19 (chr1-19); chr20-22 rows transformed only
+      fit_protocol: discovery_chr1_19
+      n_fit_loci: 388599
+      n_tracks: 2492
+      pooling: global_truncated_svd_256_uncentered_binary_input

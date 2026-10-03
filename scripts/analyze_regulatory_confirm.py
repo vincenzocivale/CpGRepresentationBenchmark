@@ -49,7 +49,9 @@ CURVE_EPOCHS = (30, 50, 70)  # 1-based epoch counts
 # Decision-rule constants (docs/REGULATORY_CONFIRMATION_PROTOCOL.md, rules i-iii; do not change here)
 STRONG_REL = -0.01
 CLEAN_MIN_REL = -0.005
-BIO_FRACTION_OF_GAP = 0.015
+# NOTE: no numeric 'biologically non-negligible' bar is coded. An earlier 1.5%-of-gap bar was chosen post hoc, never
+# preregistered by the user, and has been removed from the decision (gain as % of gap is descriptive only).
+NON_NEGLIGIBILITY_NOTE = "judged by the author, not coded"
 PAIR_KEYS = ("sample_index", "target_matrix_column", "panel_repeat", "target", "prior_prediction")
 
 
@@ -208,23 +210,29 @@ def apply_decision_rule(seeds_i: list[dict], seeds_iii: list[dict], *, n_runs_do
         mean_gain = float(np.mean(gains))
         stable = sign_mse and sign_mae and ci3
         small = mean_rel > CLEAN_MIN_REL
-        bio = mean_gain >= BIO_FRACTION_OF_GAP
-        promote = (mean_rel <= CLEAN_MIN_REL) and sign_mse and ci3 and sign_mae and mae_ci_side and bio
+        # Statistical clauses of (iii). Biological non-negligibility is NOT coded (author judgement).
+        stat_all = (mean_rel <= CLEAN_MIN_REL) and sign_mse and ci3 and sign_mae and mae_ci_side
         cl = {"n_seeds": len(seeds_iii), "mean_rel_mse": mean_rel, "improvement_lt_0p5pct": small,
               "sign_mse_all": sign_mse, "sign_mae_all": sign_mae, "ci_excludes0_mse_all": ci3,
               "seed_mean_mae_ci_hi_below0": mae_ci_side, "stable": stable, "prefer_HD_by_rule_ii": small or not stable,
               "gain_fraction_of_gap_prior_mean": mean_gain, "gain_fractions_per_seed": gains,
-              "biologically_non_negligible": bio, "PROMOTE": promote}
+              "gain_fraction_is_descriptive_only": True,
+              "biologically_non_negligible": NON_NEGLIGIBILITY_NOTE, "STAT_CLAUSES_ALL": stat_all}
     # ---- verdict
     if not seeds_i and not seeds_iii:
         verdict, why = "not evaluable", "no complete contrast available yet"
-    elif cl.get("PROMOTE"):
-        verdict, why = "Clean promoted", "rule (iii): all conditions met"
+    elif cl.get("STAT_CLAUSES_ALL") and ci.get("PASS"):
+        verdict = "Histone+DNase preferred by parsimony pending author judgement on non-negligibility"
+        why = ("rule (i) satisfied; all statistical clauses of (iii) hold (Clean advantage reproducible on MSE), but "
+               "biological non-negligibility is not coded: author decision")
+    elif cl.get("STAT_CLAUSES_ALL"):
+        verdict = "Clean advantage reproducible on MSE; non-negligibility not coded - author decision"
+        why = "all statistical clauses of (iii) hold and rule (i) is not satisfied; no automatic promotion"
     elif ci.get("PASS"):
         verdict = "Histone+DNase preferred"
         why = "rule (i) satisfied and Clean not promoted by (ii)/(iii)" if cl else \
             "rule (i) satisfied; Clean vs Histone+DNase not yet evaluable"
-    elif ci and ci["no_gain_in_any_seed_or_metric"] and cl and not cl["PROMOTE"]:
+    elif ci and ci["no_gain_in_any_seed_or_metric"] and cl and not cl["STAT_CLAUSES_ALL"]:
         verdict, why = "Histone sufficient", "Histone+DNase gives no gain in any seed/metric; Clean not promoted"
     else:
         verdict, why = "inconclusive", "rule (i) neither confirmed nor cleanly rejected (mixed signs or CI including 0)"
@@ -233,7 +241,8 @@ def apply_decision_rule(seeds_i: list[dict], seeds_iii: list[dict], *, n_runs_do
     if n_runs_done < n_runs_total:
         reasons.append(f"{n_runs_done}/{n_runs_total} runs done")
     if any_not_converged:
-        reasons.append("at least one run flagged 'not converged'")
+        reasons.append("at least one run's best epoch is in the last 10 epochs (fixed budget reached while still improving: "
+                       "not converged)")
     return {"verdict": verdict, "reason": why, "provisional": provisional, "provisional_reasons": reasons,
             "rule_i": ci, "rule_ii_iii": cl, "point_only": point_only,
             "note_pcc": "MAS-PCC / MAC-PCC are reported only; they are not inputs of this function (rule iv)."}
@@ -291,9 +300,15 @@ def build_report(res: dict, tables: dict, missing, args, plot_ok: bool) -> str:
         L.append(f"> **PROVISIONAL**: {'; '.join(res['provisional_reasons'])}. Numbers below are preliminary and the verdict "
                  "is not final.\n")
     else:
-        L.append("> FINAL: all 9 runs done and no run flagged 'not converged'.\n")
+        L.append("> FINAL: all 9 runs done and no run's best epoch is in the last 10 epochs.\n")
+    L.append("**Training regime: FIXED-BUDGET selection protocol** (80 epochs, identical for all arms and seeds), NOT convergence. "
+             "Early stopping (patience 10) never triggered in any run; the best epoch lies in the last epochs of the budget, so "
+             "curves were still improving (see slope column). Conclusions are about the ranking of arms at equal budget.\n")
     L.append(f"## Verdict{' (PROVISIONAL)' if prov else ''}: **{v}**\n")
     L.append(f"Reason: {res['reason']}.\n")
+    L.append("No numeric 'biologically non-negligible' threshold is used anywhere in the verdict: an earlier 1.5%-of-gap bar was "
+             "NOT preregistered by the user and has been removed. 'Gain as % of the prior-to-model gap' is reported as a descriptive "
+             "number only. Non-negligibility of Clean's advantage is judged by the author, not coded.\n")
     L.append("Recommendation only (rule vi): nothing is promoted to the README, catalog or paper without separate approval.\n")
     L.append("Caveats: the three decoder seeds share mask seed 17001, sample order and validation panels, so per-seed "
              "bootstraps (patient x 1 Mb block, "
@@ -317,8 +332,9 @@ def build_report(res: dict, tables: dict, missing, args, plot_ok: bool) -> str:
         L.append(f"**(iii) Promote Clean**: seed-mean rel. MSE <= -0.5%: {not rc['improvement_lt_0p5pct']}; MSE CI excludes 0 with same sign "
                  f"in all used seeds: {rc['ci_excludes0_mse_all'] and rc['sign_mse_all']}; MAE same sign: {rc['sign_mae_all']}; "
                  f"seed-mean MAE CI upper bound < 0: {rc['seed_mean_mae_ci_hi_below0']}; gain as fraction of gap_prior (seed-mean) "
-                 f"{pct(rc['gain_fraction_of_gap_prior_mean'], sign=False)} (bar 1.5%): {rc['biologically_non_negligible']}. "
-                 f"Outcome: **{'PROMOTE' if rc['PROMOTE'] else 'NOT promoted'}**.\n")
+                 f"{pct(rc['gain_fraction_of_gap_prior_mean'], sign=False)} (DESCRIPTIVE ONLY, not a criterion; no numeric bar was "
+                 f"preregistered and none is used). Biological non-negligibility: {rc['biologically_non_negligible']}. "
+                 f"Statistical clauses of (iii) all hold: **{rc['STAT_CLAUSES_ALL']}**. No automatic promotion of Clean is coded.\n")
     else:
         L.append("**(ii)/(iii)** not evaluable yet (no seed with both Histone+DNase and Clean done).\n")
     L.append("**(iv)** MAS-PCC and MAC-PCC are reported in the tables but are not used by the verdict code.\n")
@@ -373,7 +389,7 @@ def build_report(res: dict, tables: dict, missing, args, plot_ok: bool) -> str:
     L.append("")
     L.append("## Per run (best.pt, 50% masking, validation)\n")
     L.append("| Arm | Seed | MSE | MAE | MAS-PCC | MAC-PCC | skill vs prior | best ep (0-based) | last ep | epochs run | early stop | "
-             "NOT CONVERGED | train h |")
+             "best epoch in last 10 (budget-limited) | train h |")
     L.append("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | ---: |")
     for _, r in pm.iterrows():
         L.append(f"| {SHORT[r.arm]} | {r.seed} | {r.mse:.6f} | {r.mae:.6f} | {r.mas_pcc:.5f} | {r.mac_pcc:.5f} | {r.skill_vs_prior:.4f} | "

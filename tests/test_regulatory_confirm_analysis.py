@@ -135,15 +135,23 @@ def test_verdict_branches():
     hd_zero = [seed_rec(.001, dmae=.001, hi=.002)] * 3
     hd_mixed = [seed_rec(-.02), seed_rec(.01, dmae=.01, hi=.02), seed_rec(-.02)]
     cl_none = [seed_rec(-.001)] * 3
-    # gap_prior 0.007, dMSE -0.0002 -> 2.9% of gap -> biologically non-negligible
+    # gap fractions are descriptive only: no numeric non-negligibility bar is coded
     cl_good = [seed_rec(-.012, dmse=-.0002, gap=.007)] * 3
-    cl_tiny = [seed_rec(-.006, dmse=-.00002, gap=.007)] * 3
+    cl_tiny = [seed_rec(-.003, dmse=-.00002, gap=.007)] * 3
     r = rule(hd_ok, cl_none)
     assert r["verdict"] == "Histone+DNase preferred" and r["rule_i"]["ge_1pct_flag"] and r["rule_i"]["PASS"]
     assert rule([seed_rec(-.005, hi=-1e-5)] * 3, cl_none)["rule_i"]["label"].startswith("SUPPORTED-SMALL")
-    assert rule(hd_ok, cl_good)["verdict"] == "Clean promoted" and not rule(hd_ok, cl_good)["provisional"]
+    # all statistical clauses of (iii) hold + rule (i) PASS -> never silently promoted nor silently dismissed
+    g = rule(hd_ok, cl_good)
+    assert g["verdict"].startswith("Histone+DNase preferred by parsimony pending author judgement") and not g["provisional"]
+    assert g["rule_ii_iii"]["STAT_CLAUSES_ALL"] and "not coded" in g["rule_ii_iii"]["biologically_non_negligible"]
+    assert g["rule_ii_iii"]["gain_fraction_is_descriptive_only"]
+    # a tiny gain (<0.5% rel. MSE) fails the statistical clause (ii)/(iii): plain parsimony verdict, whatever its % of gap
     t = rule(hd_ok, cl_tiny)
-    assert t["verdict"] == "Histone+DNase preferred" and not t["rule_ii_iii"]["biologically_non_negligible"]
+    assert t["verdict"] == "Histone+DNase preferred" and not t["rule_ii_iii"]["STAT_CLAUSES_ALL"]
+    # statistical clauses of (iii) hold but rule (i) not satisfied -> author-decision state, not a promotion
+    assert rule(hd_zero, cl_good)["verdict"].startswith("Clean advantage reproducible on MSE; non-negligibility not coded")
+    assert not any("promoted" in rule(a, b)["verdict"].lower() for a in (hd_ok, hd_zero, hd_mixed) for b in (cl_good, cl_tiny, cl_none))
     unstable = [seed_rec(-.012, dmse=-.0002, gap=.007), seed_rec(-.012, dmse=-.0002, gap=.007),
                 seed_rec(.001, dmae=.001, hi=.002, dmse=.00002, gap=.007)]
     assert rule(hd_ok, unstable)["verdict"] == "Histone+DNase preferred" and rule(hd_ok, unstable)["rule_ii_iii"]["prefer_HD_by_rule_ii"]
@@ -153,7 +161,7 @@ def test_verdict_branches():
     assert rule(ci_fail, cl_none)["verdict"] == "inconclusive"
     # MAE disagreeing blocks Clean promotion
     mae_bad = [dict(seed_rec(-.012, dmse=-.0002, gap=.007), d_mae=.001)] * 3
-    assert rule(hd_ok, mae_bad)["verdict"] != "Clean promoted"
+    assert not rule(hd_ok, mae_bad)["rule_ii_iii"]["STAT_CLAUSES_ALL"]
     assert rule([], [])["verdict"] == "not evaluable"
     assert mod.apply_decision_rule(hd_ok[:2], cl_none[:2], n_runs_done=6)["provisional"]
     assert rule(hd_ok, cl_none, any_not_converged=True)["provisional"]

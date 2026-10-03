@@ -55,6 +55,8 @@ profile run, 0.020694, matches the campaign's 0.020691; the small remainder is f
 
 ### Convergence rule (identical for all arms and seeds)
 
+Note (post-run wording): the 80-epoch run is a FIXED-BUDGET selection protocol, not a convergence claim. Early stopping never triggered in any of the 9 runs, best epochs were 77-79 and curves were still improving (slope about -0.05%/epoch).
+
 `training.early_stopping: {patience: 10, min_delta_rel: 1.0e-4}` with `training.epochs: 80` (opt-in key; default off for every other caller; implemented in `training/engine.py`).
 Validation MSE at 50% masking is evaluated every epoch. An epoch is a significant improvement iff MSE < reference x (1 - 1e-4), the reference being the last significant value. Training stops after 10 consecutive epochs without one.
 `best.pt` remains the strict minimum validation MSE (what the runner restores); `early_stopping.json` per run records epochs run, best epoch, whether stopping triggered.
@@ -91,7 +93,7 @@ Notation: relMSE = (MSE_alt - MSE_ref) / MSE_ref, negative favours alt. "CI excl
 
 (ii) Parsimony. If Clean improves over Histone+DNase by less than 0.5% relative MSE (seed-mean), OR the improvement is not stable (any seed with the wrong sign for MSE or MAE, or CI including 0 in any seed), prefer Histone+DNase (fewer tracks, simpler, interpretable). Clean is never preferred merely because its point estimate is lower.
 
-(iii) Promote Clean over Histone+DNase only if ALL hold: seed-mean relMSE <= -0.5%; per-seed MSE CI excludes 0 with the same sign in 3/3 seeds; delta MAE has the same sign in 3/3 seeds (and the seed-mean MAE CI side supports it); AND the gain is biologically non-negligible, defined operationally as delta MSE >= 1.5% of gap_prior (prior-only MSE minus Histone+DNase MSE; in the screen gap_prior was about 0.0070, so 1.5% corresponds to about 0.00010, about 0.6% relMSE), reported together with the skill-vs-prior change. Tiny gains below this bar are flagged as not promoted even if statistically clear.
+(iii) Promote Clean over Histone+DNase only if ALL hold: seed-mean relMSE <= -0.5%; per-seed MSE CI excludes 0 with the same sign in 3/3 seeds; delta MAE has the same sign in 3/3 seeds (and the seed-mean MAE CI side supports it); AND the gain is biologically non-negligible, a judgement of the author that is NOT coded. AMENDMENT (after the runs, before any verdict was accepted): this clause originally carried an operational bar (delta MSE >= 1.5% of gap_prior). That bar was chosen post hoc by the assistant and was never preregistered by the user; it is NOT used in the decision. Gain as a percentage of gap_prior (prior-only MSE minus Histone+DNase MSE) is reported only as a descriptive number together with the skill-vs-prior change. When all statistical clauses of (iii) hold, the code verdict is 'Histone+DNase preferred by parsimony pending author judgement on non-negligibility' (rule (i) satisfied) or 'Clean advantage reproducible on MSE; non-negligibility not coded - author decision' (rule (i) not satisfied); Clean is never promoted automatically.
 
 (iv) MAS-PCC and MAC-PCC may NOT break a tie or rescue a contrast when MSE and MAE do not support an advantage; they are reported as secondary.
 

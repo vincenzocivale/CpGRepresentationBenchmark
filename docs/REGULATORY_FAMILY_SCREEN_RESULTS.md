@@ -92,3 +92,48 @@ Flags:
 - Bootstrap fraction favouring is 1.000 for all histone contrasts at 2000 replicates, i.e. the sampling uncertainty over patients and blocks is small; the dominant uncertainty is seed variance.
 
 Suggested next step if pursued: confirmation of histone vs histone+DNase vs clean with at least 3 decoder seeds (and, if budget allows, a longer schedule), since TF alone failed the screen.
+
+## Decision (closing record of feature engineering)
+
+Evidence: this screen (1 seed, batch 32, 30 epochs, validation only) and the 3-seed confirmation (`docs/REGULATORY_CONFIRMATION_PROTOCOL.md`,
+`docs/REGULATORY_CONFIRMATION_RESULTS.md`; batch 8, 80 epochs, validation only).
+
+**Selected: `regulatory_histone_dnase`** (1,959 Histone ChIP-seq + 533 DNase-seq = 2,492 tracks; global SVD 256D; frozen as
+`regulatory_histone_dnase_v1`, status `candidate_frozen`, see `docs/REGULATORY_REPRESENTATION.md`, section Frozen candidate). The choice is made
+for parsimony and interpretability, on these grounds (3 seeds, paired bootstrap per seed):
+
+- Adding DNase to Histone improves validation MSE by about 1.75% on average (seed range -1.62% to -1.87%), in 3/3 seeds, with a consistent MAE
+  gain (-0.99% to -1.49%) and a per-seed bootstrap CI excluding 0 for both MSE and MAE in 3/3 seeds.
+- Regulatory-Clean versus Histone+DNase improves MSE by only about 0.51% on average (-0.46% to -0.54%; seed-wise just above or below 0.5%).
+- Clean's small advantage is less stable on MAE: seed 42 has delta MAE of about 0.00% with a CI that includes 0, and the MAE CI excludes 0 in
+  2/3 seeds (MSE CI excludes 0 in 3/3).
+- Clean needs 1,659 additional TF/CTCF tracks (4,151 versus 2,492), which also include the methylation-linked TF tracks handled separately in section 2 of
+  `docs/REGULATORY_REPRESENTATION.md`.
+
+Histone+DNase is NOT statistically equivalent to Clean. Clean's MSE gain is statistically clear within the bootstrap and reproducible in sign in
+every seed. The decision is a parsimony/interpretability choice that leaves a small, MSE-reproducible advantage of Clean on the table. Whether
+that advantage is biologically non-negligible is a judgement of the author; no numeric threshold for it was preregistered and none is used. An
+earlier 1.5%-of-gap bar that appeared in the confirmation analysis was chosen post hoc by the assistant and was never preregistered by the user: it has
+been removed from the decision and from the analysis code. The quantity "gain as a percentage of the prior-to-model gap" (about 0.90% for
+H+D to Clean, about 3.2% for H to H+D, seed mean) is kept as a descriptive number only.
+
+Training regime of the confirmation: a **fixed-budget selection protocol** (80 epochs, identical for all arms and seeds), not convergence. Early
+stopping never triggered in any of the 9 runs and best epochs were 77 to 79, so curves were still improving at the end of the budget (mean
+slope about -0.05% of MSE per epoch). Conclusions concern the ranking of arms at an equal, fixed budget.
+
+Limits:
+
+- The three decoder seeds share the mask seed, sample order and validation panels, so they are not independent samples of masking; n = 3 seeds
+  supports sign counts and spread, not a formal test across seeds. The bootstrap covers patient and 1 Mb block sampling only.
+- Fixed budget, not converged: a longer schedule could change the size (and in principle the ordering) of small gaps.
+- Validation patients were used for checkpoint selection (`best.pt`) as well as for the reported score (small bias shared across arms).
+- TCGA validation only; one dataset, 50% masking only.
+
+Archive statement:
+
+- Histone-only: mechanistic / sufficiency control.
+- Regulatory-Clean: upper / reference feature-set control.
+- The TF/CTCF block is NOT carried forward in the primary representation.
+- Block-SVD and equal-group-mass weighting remain sensitivity analyses and are not selected.
+- No further feature engineering will use TCGA validation. The test set is untouched.
+

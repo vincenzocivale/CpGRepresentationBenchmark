@@ -178,9 +178,40 @@ leakage-safe protocol such as `discovery_chr1_19`): `src/cpg_repr_benchmark/enco
 `tests/test_regulatory_compression.py`. Only the track CSR is read (never `/dense`, never methylation); the embeddings are not registered
 as benchmark arms.
 
+## Frozen candidate: `regulatory_histone_dnase` (v1, status `candidate_frozen`)
+
+Closing record of feature engineering (decision: `docs/REGULATORY_FAMILY_SCREEN_RESULTS.md`, section Decision). The status is
+`candidate_frozen`, NOT `final_confirmed`: it is the representation carried forward for further evaluation, not a confirmed result.
+The contracts above are unchanged.
+
+| Field | Value |
+| --- | --- |
+| name / version tag | `regulatory_histone_dnase` / `regulatory_histone_dnase_v1` |
+| tracks | 1,959 Histone ChIP-seq + 533 DNase-seq = 2,492; 0 dense columns; no TF/CTCF tracks |
+| inputs | binary 0/1 ENCODE peak overlap only; patient-independent; no beta values, no RNA, no task tokens |
+| compression | global TruncatedSVD, 256D (randomized, n_iter 7, oversamples 20, uncentered, no column scaling, no replicate weighting), seed 17 |
+| fit loci | protocol `discovery_chr1_19`, 388,599 loci (chr20-22 rows are transformed only, out of fit) |
+| store | `data/cache/representations/regulatory_histone_dnase__global_svd256__discovery_chr1_19.h5` (408,399 x 256 float32, `cpg_idx` int64) |
+| companions | `.h5.json`, `.compressor.json`, `.compressor.npz` next to the store |
+| catalog entry | `configs/representations/regulatory.yaml` (separate file; existing loaders read `future_models.yaml` only) |
+| frozen manifest | `configs/frozen/regulatory_histone_dnase_v1.json` (hashes below), checked by `scripts/verify_frozen_candidate.py` |
+
+Frozen identifiers (recomputed at freeze, all consistent with the values recorded when the store was built):
+
+- feature-set manifest hash `658b658508124e0713679ad4b66a11e52d0e1d013ab6114d5305b504bbc82ef9` (re-resolved from the current catalog with `resolve_feature_set`);
+- track catalog `data/external/functional/locus_features_v1/regulatory/track_contract.tsv` sha256 `fc76b61d0b0ec8fa6cd75fbaa7995b31576bb511677945b48d5558da5a2b87e4`;
+- fit-loci sha256 `995edc587a4927f852cf7c6fe2136c2ed6651478cae74246af278aed4ef120bc` (n = 388,599);
+- compressor-manifest hash `eb0c08bd6b0ff099dad744523bdb4f5d4f9538e84fe504545917f819985ee6bd`, defined as sha256 of the canonical JSON
+  (`sort_keys`, separators `(',', ':')`) of the compressor manifest (the JSON stored in the `.compressor.npz`, equal to `.compressor.json`);
+- store sha256 `fa3a816338ce2c2ce5669b4be6f5334a44470e2b149395901168dbe673a9fe1e`; compressor `.npz` / `.json` sha256 values are in the manifest file.
+
+Reproducibility is verified without regenerating the store: re-transforming 200 loci (rng seed 17) through the saved compressor reproduces
+the stored embedding (max abs diff 0). The code commit at build time was not recorded in the artifacts; the manifest records the HEAD at freeze and
+the last commit touching the compression code. Run `python scripts/verify_frozen_candidate.py [--skip-store-sha]` (exit code 1 on any mismatch).
+
 ## 6. Not done
 
 No embedding built, no SVD or PCA fit, no feature selection or redundancy pruning, no training or evaluation, no change to the store, catalog,
-configs, code or tests, no registration in `configs/representations/`, no git commit. The 14 tracks were not removed from any file. ENCODE
+configs, code or tests, no git commit (at the time of writing; the frozen candidate was later registered in `configs/representations/regulatory.yaml`, see the section above). The 14 tracks were not removed from any file. ENCODE
 accessions were not re-validated online. Overlap between ENCODE biosamples and evaluation cohorts, CpG-density confounds and the cCRE methylation
 dependency were not measured. Regulatory-Compact is not designed beyond the rule above.
