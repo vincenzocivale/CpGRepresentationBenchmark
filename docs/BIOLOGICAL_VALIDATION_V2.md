@@ -328,5 +328,5 @@ Altri sha256 (win500 / tss5k dropped positives, report 4DN) sono in `3d_genome/F
 
 Il tag git `bioval-v2-protocol-freeze-v1` punta al commit di freeze, il cui SHA e' registrato qui sotto in un commit successivo (un commit non puo' contenere il proprio hash). Quel commit modifica solo questa riga, non il protocollo.
 
-- Commit di freeze: _(registrato nel commit successivo)_
-- Tag: `bioval-v2-protocol-freeze-v1`
+- Commit di freeze: `27d8bce1b2ce391cb4ffb0d89eb15660710c2b33`
+- Tag: `bioval-v2-protocol-freeze-v1` (annotato, oggetto tag `fa328fcde47c98863e1c745593e2d0ba5cb61cfe`, target = commit di freeze)
