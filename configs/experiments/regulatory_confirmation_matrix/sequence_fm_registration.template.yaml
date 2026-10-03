@@ -1,0 +1,30 @@
+# REGISTRATION TEMPLATE for a modern sequence foundation-model comparator slot (modern_sequence_fm / modern_sequence_fm_alt).
+#
+# A slot may leave `status: pending` in matrix.yaml ONLY after a copy of this file, saved as
+#   configs/experiments/regulatory_confirmation_matrix/sequence_fm_registration_slot1.yaml   (resp. _slot2.yaml)
+# is COMPLETE (every field below filled, no placeholder, acknowledgement true) AND the store is materialized, hashed and covers
+# the protocol loci. scripts/audit_confirmation_matrix.py treats any missing/placeholder field as a FAILURE.
+#
+# BINDING RULE: NONE of these choices (model, checkpoint, window, pooling, layer, strand, projection, ...) may be selected or
+# tuned using TCGA methylation reconstruction performance (validation or test) or any other methylation reconstruction result.
+# Decide them from the model's documentation/design and from label-free considerations only, BEFORE looking at any result.
+# The cost of a bad choice is accepted (equal-treatment rule); the registration cannot be revised after the first confirmation run.
+registration:
+  slot: modern_sequence_fm                 # or modern_sequence_fm_alt
+  model_name: "<exact model name>"
+  checkpoint: "<exact checkpoint identifier / file name>"
+  checkpoint_sha256: "<sha256 of the checkpoint weights>"
+  version_revision: "<release tag / git commit / HF revision hash>"
+  input_window_bp: "<window length in bp, e.g. 1001, and tokenization length>"
+  cpg_position_in_window: "<where the CpG C sits in the window: centered / offset / token index>"
+  strand_handling: "<forward only | reverse-complement averaged | both concatenated; how the CpG strand is chosen>"
+  pooling_rule: "<token at CpG | mean over window | CLS | ...>"
+  extracted_layer: "<layer index/name, e.g. last hidden state>"
+  embedding_dim: "<native dimension (integer)>"
+  preprocessing_tokenization: "<case handling, N handling, tokenizer name/version, special tokens>"
+  genome_build: "<GRCh38 | other; must match the CpG registry>"
+  missing_failed_loci_policy: "<what happens to loci without sequence / extraction failures; must be none for the 408,399 protocol loci (a store that cannot cover them fails the audit; no silent narrowing)>"
+  projection_compression: "<none | description of any projection/compression, fit WITHOUT methylation labels>"
+  decided_by: "<name of the person who froze these choices>"
+  decided_on: "<YYYY-MM-DD, must precede the first confirmation run>"
+  no_choice_optimized_with_tcga_methylation_reconstruction: false   # set true ONLY if the statement in the header is literally true

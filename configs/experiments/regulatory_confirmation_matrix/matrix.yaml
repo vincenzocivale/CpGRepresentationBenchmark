@@ -1,62 +1,209 @@
-# Confirmation-matrix SPEC (scaffold only). Nothing here has been executed. Training budget frozen by AMENDMENT 2. No per-run config exists in this directory and no
-# runner reads it. Status flags: not_run | pending. The test patients are NOT used until explicitly authorized by the user.
+# Confirmation-matrix SPEC v1 (frozen design, nothing executed). Read by scripts/audit_confirmation_matrix.py and
+# scripts/run_regulatory_confirmation_matrix.py (logic: src/cpg_repr_benchmark/experiments/confirmation_matrix.py).
+# Training budget: docs/REGULATORY_CONFIRMATION_PROTOCOL.md AMENDMENT 2. Fairness contract: docs/REGULATORY_CONFIRMATION_FAIRNESS.md.
+# State machine: freeze_state draft -> complete. test_set_authorized may be true ONLY when freeze_state is complete AND the audit is
+# all-green (both enforced by the audit and by guards.require_test_authorization). The TEST patients are NOT used until then.
 matrix:
   name: regulatory_confirmation_matrix_v1
   status: not_run
-  protocol:
+  freeze_state: draft               # draft | complete  (complete requires: no pending comparator, audit all-green)
+  test_set_authorized: false        # never set true by tooling; only the user, after freeze_state: complete
+  fairness_contract: docs/REGULATORY_CONFIRMATION_FAIRNESS.md
+  sequence_fm_registration_template: configs/experiments/regulatory_confirmation_matrix/sequence_fm_registration.template.yaml
+  seeds: [17, 42, 97]               # downstream reconstructor init/training seed (training.seed)
+  mask_fractions: [0.15, 0.30, 0.50, 0.70, 0.90]   # evaluation fractions; the SAME best.pt is evaluated at all five
+  fixed_across_arms: [downstream model, patient split, locus split, masking sweep and mask seed, optimizer budget, prior policy, locus panels]
+  protocol:                         # shared by EVERY arm and seed; per-arm overrides are forbidden (audit fails)
     reference: "docs/REGULATORY_CONFIRMATION_PROTOCOL.md, AMENDMENT 2 (frozen training budget of the final confirmation)"
-    max_epochs: 120                      # exactly 120 epochs for every arm and seed; no per-arm stop or extension
-    early_stopping: false                # disabled for all confirmation runs
-    checkpoint_selection: best_val_mse   # best.pt = lowest validation MSE; the last epoch is never used automatically
+    max_epochs: 120                 # exactly 120 epochs for every arm and seed; no per-arm stop or extension
+    early_stopping: false           # disabled for all confirmation runs
+    checkpoint_selection: best_val_mse   # best.pt = lowest validation MSE at mask 0.50; last epoch never used automatically
     checkpoint_selection_mask_fraction: 0.50
-    other_protocol_elements: "not yet defined here (seeds, evaluation split/fractions, comparators); test patients NOT used until explicitly authorized"
-  test_set_authorized: false
-  seeds: []                      # placeholder, to be fixed by the user together with the protocol
-  fixed_across_arms: [downstream model, patient split, locus split, masking sweep, optimizer budget, prior policy]
+    batch_size: 8
+    learning_rate: 1.0e-4
+    weight_decay: 1.0e-4
+    mixed_precision: true           # fp16
+    lr_schedule: constant           # AdamW, no scheduler (engine.py)
+    panel_size: 2048
+    panel_repeats: 1
+    mask_seed: 17001                # identical masks/panels for all arms -> paired comparisons
+    num_workers: 8                  # training loader; throughput only (verified neutral, protocol doc); evaluation uses 0
+    heldout_fraction: 0.0           # genome-wide seen-only, no locus holdout
+    patient_split_seed: 20260925
+    template: configs/experiments/masking/functional_pca_genomewide.yaml   # campaign template (sha256 9226331...)
+    patient_split_path: outputs/encode_atlas_v1/patients.npz
+    loci_split_path: outputs/encode_atlas_v1/loci_seen.npz
+    endpoints:
+      primary: {metric: mse, mask_fraction: 0.50}
+      secondary: [mae, mas_pcc, mac_pcc]
+      per_fraction: [0.15, 0.30, 0.50, 0.70, 0.90]
+    statistics: "paired bootstrap over patients x 1 Mb genomic blocks (encode_atlas/statistics.py), 2000 replicates, bootstrap seed 17; contrasts = comparator minus frozen candidate, per seed and across seeds, validation split by default"
+    evaluation_order: "validation first; the TEST split is evaluated only after freeze_state: complete, an all-green audit and explicit user authorization"
+  splits:
+    patient_split: {path: outputs/encode_atlas_v1/patients.npz, sha256: 73add7f52e3481bd64fd7f247aef276524244b8c257efe4fb577d41327f24d11}
+    loci_split: {path: outputs/encode_atlas_v1/loci_seen.npz, sha256: f135a589d4e9c5b7527a81275b3ec943efbae6a479c46bc0907e67adcbf9d07a}
   arms:
+    # ------------------------------------------------------------------ MAIN comparators (native dimension, primary result)
     - id: regulatory_histone_dnase
-      role: frozen candidate (regulatory_histone_dnase_v1, candidate_frozen)
-      status: not_run
-      catalog: configs/representations/regulatory.yaml
+      role: main
+      comparator_kind: frozen_candidate
+      status: not_run               # not_run (available) | pending
+      description: regulatory_histone_dnase_v1 (candidate_frozen), ENCODE Histone ChIP-seq + DNase-seq tracks, global TruncatedSVD-256
+      family: regulatory_encode_tracks
+      catalog: configs/representations/regulatory.yaml#regulatory_histone_dnase
       frozen_manifest: configs/frozen/regulatory_histone_dnase_v1.json
       store_h5: data/cache/representations/regulatory_histone_dnase__global_svd256__discovery_chr1_19.h5
-      dim: 256
       store_present: true
+      dim: 256
+      dtype: float32
+      size_bytes: 421474568
+      sha256: fa3a816338ce2c2ce5669b4be6f5334a44470e2b149395901168dbe673a9fe1e   # == configs/frozen/regulatory_histone_dnase_v1.json file_sha256.store_h5
+      provenance:
+        patient_specific: false
+        supervision: none
+        locus_fit_scope: "unsupervised SVD fit on discovery_chr1_19 (388,599 loci); chr20-22 rows transformed only"
+        genome_build: GRCh38
+        source: "2,492 ENCODE binary peak-overlap tracks (1,959 histone + 533 DNase), no dense columns, no beta values"
+        known_property: "849 loci have an all-zero embedding row (no track overlap)"
     - id: functional_annotations_pca
-      role: legacy baseline (same store as the ENCODE campaign 'full' arm)
+      role: main
+      comparator_kind: legacy_functional_baseline
       status: not_run
-      store_h5: outputs/encode_atlas_v1/embeddings/full_a18b869b.h5     # reference by path only
-      dim: 256
+      description: legacy functional baseline, unsupervised SVD-256 of 4,165 ENCODE tracks + 23 dense genomic-context features
+      family: functional_annotations
+      catalog: configs/representations/confirmation_matrix.yaml#functional_annotations_pca_campaign_full
+      store_h5: outputs/encode_atlas_v1/embeddings/full_a18b869b.h5     # canonical store (decision, see canonical_store_decision)
       store_present: true
-      note: >-
-        the genome-wide masking baseline config uses data/cache/representations/functional_annotations__pca_native_genomewide.h5
-        (also 256D); the campaign 'full' store is referenced here as requested. Do not mix the two within one comparison.
-    - id: cpgpt_large_locus_256
-      role: foundation-model locus embedding, compacted (campaign store)
+      dim: 256
+      dtype: float16
+      size_bytes: 212373728
+      sha256: 3d99fe5ba4fb88991100f848e1d2c48ad19037c72b8821421b2eb677996e187f
+      provenance:
+        patient_specific: false
+        supervision: none
+        locus_fit_scope: "unsupervised SVD fit on ALL 408,399 loci (transductive)"
+        genome_build: GRCh38
+        source: "reference_functional_features_tcga_array_all_v1_cpgidx_fixed.h5: 4,165 tracks + 23 dense (CpG context, gene region, cCRE classes, TSS distance, breadth)"
+      canonical_store_decision:
+        status: OPEN_DECISION_FOR_USER   # evidence does not separate the two stores (they are numerically equivalent); see rationale
+        chosen: outputs/encode_atlas_v1/embeddings/full_a18b869b.h5
+        alternative_not_used: data/cache/representations/functional_annotations__pca_native_genomewide.h5
+        alternative_sha256: b17273f27dcacf84884b7843155be8424fa970fe6474d2ab53a38331ff539ea7
+        rationale: >-
+          Both are TruncatedSVD-256, seed 17, fit on all 408,399 loci, float16, identical cpg_idx order, built from the same raw store
+          (4,165 tracks + 23 dense; variance retained 0.7069 vs 0.7068); on a 1-in-97 row sample every column correlates |r|=1.0000
+          and max abs difference is 0.05 on values with std 32 (float16 / solver rounding). Chosen = the store used by the ENCODE campaign
+          'full' arm AND by the regulatory family-screen / selection controls (run_regulatory_selection.py), so the comparison reuses the
+          same bytes as the whole regulatory selection phase. The two must never be mixed within one comparison.
+    - id: cpgpt_large_locus
+      role: main
+      comparator_kind: native_foundation_model
       status: not_run
-      store_h5: outputs/encode_atlas_v1/embeddings/fm_cpgpt_locus_large_d3474a48.h5
-      dim: 256
+      description: CpGPT-large DNA-sequence-encoder locus embedding, native 512D (float16)
+      family: methylation_fm
+      catalog: configs/representations/future_models.yaml#cpgpt_locus_large_native
+      store_h5: data/cache/representations/cpgpt_locus_large.h5
       store_present: true
-      native_variant:
-        store_h5: data/cache/representations/cpgpt_locus_large.h5      # native 512D, float16
-        dim: 512
-        store_present: true
+      dim: 512
+      dtype: float16
+      size_bytes: 421474456
+      sha256: c08138cd83e08f5015521c2a5d42b88e1834f0670c84906590d9730223d7b71e
+      provenance:
+        patient_specific: false
+        supervision: "none at extraction; encoder pretrained on methylation (external, unverifiable locally)"
+        locus_fit_scope: external_pretrained
+        genome_build: GRCh38
+        source: "CpGPT (large) DNA-sequence-encoder projection per CpG, no positional encoding; scripts/cpgpt/README.md"
     - id: deepcpg_dna_locus
-      role: sequence-only DNA model (DeepCpG DNA module, HCC checkpoint)
+      role: main
+      comparator_kind: native_sequence_cnn
       status: not_run
-      catalog_entry: configs/representations/future_models.yaml#deepcpg_dna_locus_native
+      description: DeepCpG DNA module stem activation (HCC checkpoint, 1001 bp window), native 128D (float16)
+      family: methylation_fm
+      catalog: configs/representations/future_models.yaml#deepcpg_dna_locus_native
       store_h5: data/cache/representations/deepcpg_dna_locus.h5
+      store_present: true
       dim: 128
-      store_present: true            # also present: deepcpg_dna_locus_hepg2.h5 (128D); existing masking config: configs/experiments/masking/deepcpg_genomewide.yaml
+      dtype: float16
+      size_bytes: 107823912
+      sha256: e7280d5ff14d89a247e4cb3560a952250a3f1fa78daf653b9ec02761389b82b7
+      provenance:
+        patient_specific: false
+        supervision: "none at extraction; DNA module trained on single-cell methylation (external)"
+        locus_fit_scope: external_pretrained
+        genome_build: GRCh38
+        source: "DeepCpG DNA-module stem, HCC checkpoint hcc_dna (CnnL2h128), output head stripped; scripts/deepcpg/README.md"
     - id: modern_sequence_fm
-      role: placeholder for a modern sequence foundation model (to be chosen)
-      status: pending
+      role: main
+      comparator_kind: modern_sequence_foundation_model
+      status: pending               # leaves pending only after a COMPLETE registration + materialized store
+      requires_registration: true
+      registration: configs/experiments/regulatory_confirmation_matrix/sequence_fm_registration_slot1.yaml   # not yet written
+      family: genomic_fm
+      catalog: null
       store_h5: null
-      dim: null
       store_present: false
+      dim: null
+      dtype: null
+      sha256: null
+      provenance: {}
     - id: modern_sequence_fm_alt
-      role: placeholder (second modern sequence foundation model, optional)
+      role: main
+      comparator_kind: modern_sequence_foundation_model
       status: pending
+      requires_registration: true
+      registration: configs/experiments/regulatory_confirmation_matrix/sequence_fm_registration_slot2.yaml   # not yet written
+      family: genomic_fm
+      catalog: null
       store_h5: null
-      dim: null
       store_present: false
+      dim: null
+      dtype: null
+      sha256: null
+      provenance: {}
+    # ------------------------------------------------------------------ SENSITIVITY arms (never main comparators)
+    - id: cpgpt_large_locus_256_compact
+      role: sensitivity
+      main_arm: cpgpt_large_locus
+      sensitivity_kind: dimension_controlled_256D_compact
+      status: not_run
+      description: CpGPT-large SVD-256 (ENCODE campaign compact store, fit on all 408,399 loci; variance retained 0.838)
+      family: methylation_fm
+      catalog: configs/representations/confirmation_matrix.yaml#cpgpt_large_svd256_campaign
+      store_h5: outputs/encode_atlas_v1/embeddings/fm_cpgpt_locus_large_d3474a48.h5
+      store_present: true
+      dim: 256
+      dtype: float16
+      size_bytes: 212373728
+      sha256: d0d9048bf15f6222a0e11f9ff0c4a3e95ca9ae9d963fefb9b14d28699fec4de9
+      provenance:
+        patient_specific: false
+        supervision: "none at compression; source model pretrained on methylation (external)"
+        locus_fit_scope: "unsupervised SVD fit on ALL 408,399 loci (transductive); source external_pretrained"
+        genome_build: GRCh38
+        source: "SVD-256 of cpgpt_locus_large.h5 (external_sha256 c08138cd...)"
+    - id: deepcpg_dna_locus_hepg2
+      role: sensitivity
+      main_arm: deepcpg_dna_locus
+      sensitivity_kind: tissue_specific_checkpoint
+      status: not_run
+      description: DeepCpG DNA module, HepG2 checkpoint (CnnL3h128), 128D
+      family: methylation_fm
+      catalog: configs/representations/future_models.yaml#deepcpg_dna_locus_hepg2_native
+      store_h5: data/cache/representations/deepcpg_dna_locus_hepg2.h5
+      store_present: true
+      dim: 128
+      dtype: float16
+      size_bytes: 107823912
+      sha256: 685579757f357071d960ba727be8da7e1e65b52304445b5c812e6a4df1c6b75c
+      provenance:
+        patient_specific: false
+        supervision: "none at extraction; DNA module trained on HepG2 single-cell methylation (external)"
+        locus_fit_scope: external_pretrained
+        genome_build: GRCh38
+        source: "DeepCpG DNA-module stem, HepG2 checkpoint hepg2_dna (CnnL3h128); scripts/deepcpg/README.md"
+  cost_estimate:                    # conservative, see README; per run = ~7 min setup + 120 x ~49 s + ~1 min eval (5 fractions: ~2-3 min)
+    per_run_hours: {main_native_256_or_less: 1.8, cpgpt_large_512: 2.1}
+    main_available_runs: 12
+    sensitivity_runs: 6
+    pending_modern_fm_runs: 6

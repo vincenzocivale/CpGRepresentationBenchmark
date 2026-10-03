@@ -22,3 +22,16 @@ def enforce_patient_view(cfg: dict[str, Any]) -> None:
         raise PermissionError(
             f"GUARD: evaluation.patient_view={actual!r} but this protocol permits 'validation' only; "
             "test patients must not be read or evaluated")
+
+
+def require_test_authorization(matrix_spec: dict[str, Any]) -> None:
+    """Raise PermissionError unless a confirmation-matrix spec explicitly authorizes the TEST split.
+
+    Requires ``test_set_authorized is True`` AND ``freeze_state == 'complete'``. Pure function: reads no data. It does not
+    relax `enforce_patient_view` (which still rejects ``require_patient_view: test``).
+    """
+    if matrix_spec.get("test_set_authorized") is not True:
+        raise PermissionError("GUARD: test_set_authorized is not true; the TEST split must not be read or evaluated")
+    if matrix_spec.get("freeze_state") != "complete":
+        raise PermissionError(
+            f"GUARD: freeze_state is {matrix_spec.get('freeze_state')!r}, not 'complete'; the TEST split stays locked")

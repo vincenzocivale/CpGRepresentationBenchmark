@@ -1,0 +1,39 @@
+# Catalog entries for ENCODE-campaign stores re-used (read-only, byte-for-byte) as confirmation-matrix comparators.
+# Separate file on purpose (like regulatory.yaml): the loaders of future_models.yaml are not affected. Same entry format.
+# Hashes and the canonical-store decision: configs/experiments/regulatory_confirmation_matrix/matrix.yaml.
+representations:
+  functional_annotations_pca_campaign_full:
+    name: functional_annotations_pca
+    family: functional_annotations
+    track: native_frozen
+    component: locus_only
+    mode: precomputed
+    store_h5: outputs/encode_atlas_v1/embeddings/full_a18b869b.h5
+    source: >-
+      ENCODE campaign 'full' arm: 4,165 ENCODE tracks (1,959 histone, 1,673 TF, 533 DNase) + 23 dense genomic-context features
+      -> unsupervised TruncatedSVD 256D (seed 17, variance retained 0.7069), fit on all 408,399 loci
+    bio_validation_cpg_registry: data/cpg/registries/array_cpg_map.parquet
+    sidecar: outputs/encode_atlas_v1/embeddings/full_a18b869b.json
+    provenance:
+      genome_build: GRCh38
+      patient_specific: false
+      reference_genome_only: true
+      supervision: none
+      locus_fit_scope: unsupervised_all_loci   # transductive, 408,399 loci
+      includes_dense_context_inputs: true
+  cpgpt_large_svd256_campaign:
+    name: cpgpt_locus_large_svd256
+    family: methylation_fm
+    track: native_frozen
+    component: locus_only
+    mode: precomputed
+    store_h5: outputs/encode_atlas_v1/embeddings/fm_cpgpt_locus_large_d3474a48.h5
+    source: ENCODE campaign compact FM control, SVD-256 of data/cache/representations/cpgpt_locus_large.h5 (variance retained 0.838)
+    bio_validation_cpg_registry: data/cpg/registries/array_cpg_map.parquet
+    sidecar: outputs/encode_atlas_v1/embeddings/fm_cpgpt_locus_large_d3474a48.json
+    provenance:
+      genome_build: GRCh38
+      patient_specific: false
+      supervision: none
+      locus_fit_scope: unsupervised_all_loci_over_external_pretrained
+      external_sha256: c08138cd83e08f5015521c2a5d42b88e1834f0670c84906590d9730223d7b71e

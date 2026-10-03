@@ -138,3 +138,10 @@ Then: rule (i) outcome, rule (ii)/(iii) outcome, convergence flags, delta as fra
 python scripts/run_regulatory_confirm.py generate && python scripts/run_regulatory_confirm.py validate
 python scripts/run_regulatory_confirm.py run --dry-run
 ```
+
+## Confirmation matrix (pointer; AMENDMENT 2 above is unchanged)
+
+The final confirmation is specified in `configs/experiments/regulatory_confirmation_matrix/matrix.yaml` (arms, roles, store hashes, seeds 17/42/97,
+mask fractions 0.15-0.90, shared protocol = AMENDMENT 2, `freeze_state`/`test_set_authorized` state machine) with the fairness contract in
+`docs/REGULATORY_CONFIRMATION_FAIRNESS.md`. Pre-test audit: `python scripts/audit_confirmation_matrix.py`; runner:
+`scripts/run_regulatory_confirmation_matrix.py`; analysis scaffold: `scripts/analyze_confirmation_matrix.py`. Nothing has been run; the TEST split stays locked.
