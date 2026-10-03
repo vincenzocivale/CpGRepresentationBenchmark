@@ -18,7 +18,7 @@ from cpg_repr_benchmark.experiments.guards import require_test_authorization
 
 MATRIX_PATH = Path("configs/experiments/regulatory_confirmation_matrix/matrix.yaml")
 CONFIG_DIR = Path("configs/experiments/regulatory_confirmation_matrix/runs")
-OUTPUT_ROOT = Path("outputs/regulatory_confirmation_matrix_v1")
+OUTPUT_ROOT = Path("outputs/regulatory_confirmation_v1")
 
 # ----------------------------------------------------------------------------- frozen specification (user, 2026-10-03)
 FROZEN_SEEDS = [17, 42, 97]
@@ -55,12 +55,20 @@ REGISTRATION_REQUIRED = [
     "genome_build", "missing_failed_loci_policy", "projection_compression", "decided_by", "decided_on",
 ]
 REGISTRATION_ACK = "no_choice_optimized_with_tcga_methylation_reconstruction"
-FREEZE_STATES = ("draft", "complete")
+FREEZE_STATES = ("draft", "final")
 # audit failure codes that `run --allow-incomplete-validation-only` may tolerate (nothing else, and never for test)
 TOLERABLE_CODES = {"PENDING_COMPARATOR", "REGISTRATION_INCOMPLETE"}
+# Phase A (validation-only training of the 4 fully registered main arms; the pending modern FM slots are NOT part of it).
+# Order matters: seed-major, arms in this order (the 512D CpGPT store is exercised early, in seed 17).
+PHASE_A_ARMS = ["regulatory_histone_dnase", "functional_annotations_pca", "cpgpt_large_locus", "deepcpg_dna_locus"]
+PHASE_A_SPLIT = "validation"
+STATUS_VOCABULARY = ("trained_validation_frozen",)   # NEVER 'confirmed': confirmation needs the final, authorized test evaluation
+STATUS_FILE = "confirmation_status.json"
+PHASE_A_STATUS_FILE = "phase_A_status.json"
+OUTPUT_LAYOUT = "split_dirs"
 TRAIN_ALLOWED = {"seed", "epochs", "num_workers", "early_stopping"}
 EVAL_ALLOWED = {"mask_fractions", "save_predictions", "mask_seed", "patient_view", "panel_repeats",
-                "require_patient_view", "num_workers"}
+                "require_patient_view", "num_workers", "output_layout", "allow_overwrite_split_dir"}
 # any of these keys inside an arm's `protocol_overrides` is a protocol deviation (the shared protocol is the only one)
 PLACEHOLDER_PREFIXES = ("todo", "tbd", "<", "xxx", "fill me", "fixme")
 
@@ -281,16 +289,16 @@ def audit_state(spec: dict, others: list[Result]) -> list[Result]:
         out.append(Result("FREEZE_STATE", "matrix.freeze_state", False, f"freeze_state {state!r} not in {FREEZE_STATES}"))
     if not isinstance(authorized, bool):
         out.append(Result("TEST_AUTH", "matrix.test_set_authorized", False, f"must be a boolean, got {authorized!r}"))
-    elif authorized and (state != "complete" or fails):
+    elif authorized and (state != "final" or fails):
         out.append(Result("TEST_AUTH", "matrix.test_set_authorized", False,
                           f"test_set_authorized is true but freeze_state={state!r} and {len(fails)} audit failure(s); "
-                          "test requires freeze_state complete AND an all-green audit"))
+                          "test requires freeze_state final AND an all-green audit"))
     else:
         out.append(Result("TEST_AUTH", "matrix.test_set_authorized", True,
                           f"test_set_authorized={authorized} (freeze_state={state})"))
-    if state == "complete" and fails:
+    if state == "final" and fails:
         out.append(Result("FREEZE_STATE", "matrix.freeze_state", False,
-                          f"freeze_state is 'complete' but {len(fails)} audit check(s) fail"))
+                          f"freeze_state is 'final' but {len(fails)} audit check(s) fail"))
     elif state in FREEZE_STATES:
         out.append(Result("FREEZE_STATE", "matrix.freeze_state", True, f"freeze_state={state}"))
     return out
@@ -322,8 +330,15 @@ def arms_by_id(spec: dict) -> dict[str, dict]:
     return {a["id"]: a for a in spec["arms"]}
 
 
-def job_arms(spec: dict, *, include_sensitivity: bool = False, only: list[str] | None = None) -> list[dict]:
-    """Runnable arms (never `pending`): main first, then (optionally) sensitivity."""
+def job_arms(spec: dict, *, include_sensitivity: bool = False, only: list[str] | None = None,
+             phase: str | None = None) -> list[dict]:
+    """Runnable arms (never `pending`): main first, then (optionally) sensitivity. `phase="A"` = the 4 PHASE_A_ARMS in order only."""
+    if phase is not None:
+        if phase != "A":
+            raise ValueError(f"unknown phase {phase!r} (only 'A')")
+        byid = arms_by_id(spec)
+        arms = [byid[i] for i in PHASE_A_ARMS if i in byid and byid[i].get("status") != "pending" and byid[i].get("role") == "main"]
+        return [a for a in arms if only is None or a["id"] in only]
     arms = [a for a in spec["arms"] if a.get("status") != "pending" and a.get("role") == "main"]
     if include_sensitivity:
         arms += [a for a in spec["arms"] if a.get("status") != "pending" and a.get("role") == "sensitivity"]
@@ -360,7 +375,8 @@ def build_config(spec: dict, arm: dict, seed: int, root: Path, *, split: str = "
                            early_stopping=p["early_stopping"])
     cfg["evaluation"].update(mask_fractions=list(spec["mask_fractions"]), save_predictions=True, mask_seed=p["mask_seed"],
                              selection_mask_fraction=p["checkpoint_selection_mask_fraction"], num_workers=0,
-                             patient_view="validation", panel_repeats=p["panel_repeats"], require_patient_view="validation")
+                             patient_view="validation", panel_repeats=p["panel_repeats"], require_patient_view="validation",
+                             output_layout=OUTPUT_LAYOUT, allow_overwrite_split_dir=False)
     return cfg
 
 
@@ -396,6 +412,8 @@ def check_config(cfg: dict, template: dict, spec: dict, arm_id: str, seed: int) 
         raise ValueError(f"{w}: mask seed / panel size / panel repeats differ")
     if not ev.get("save_predictions"):
         raise ValueError(f"{w}: save_predictions must be true")
+    if ev.get("output_layout") != OUTPUT_LAYOUT or ev.get("allow_overwrite_split_dir") is not False:
+        raise ValueError(f"{w}: evaluation.output_layout must be {OUTPUT_LAYOUT!r} with allow_overwrite_split_dir false")
     ls = cfg["experiment"]["locus_split"]
     if ls["protocol_path"] != p["loci_split_path"] or ls["heldout_fraction"] != 0.0 \
             or cfg["dataset"]["patient_protocol"] != p["patient_split_path"]:
@@ -424,27 +442,136 @@ def audit_configs(spec: dict, root: Path) -> list[Result]:
 
 
 # ----------------------------------------------------------------------------- run gate
-def gate(spec: dict, results: list[Result], *, split: str, allow_incomplete_validation_only: bool) -> tuple[bool, str]:
-    """Decide whether `run` may launch. Test is never permitted unless authorized + complete + all-green."""
+def phase_a_problems(spec: dict, results: list[Result]) -> list[str]:
+    """Why Phase A (4 main arms, validation only) is NOT launchable. Empty list == ready.
+
+    Tolerates ONLY the pending modern-sequence-FM failures (PENDING_COMPARATOR / REGISTRATION_INCOMPLETE scoped to an arm outside
+    PHASE_A_ARMS). Every other audit failure, and any failure scoped to a Phase A arm, blocks.
+    """
+    byid = arms_by_id(spec)
+    probs = [f"phase-A arm {i} missing from the matrix" for i in PHASE_A_ARMS if i not in byid]
+    probs += [f"phase-A arm {i} is pending" for i in PHASE_A_ARMS if byid.get(i, {}).get("status") == "pending"]
+    tolerated_scopes = {f"arm:{a['id']}" for a in spec["arms"] if a["id"] not in PHASE_A_ARMS and a.get("status") == "pending"}
+    for r in failures(results):
+        if r.code in TOLERABLE_CODES and r.scope in tolerated_scopes:
+            continue
+        probs.append(f"{r.code}@{r.scope}")
+    return probs
+
+
+def gate(spec: dict, results: list[Result], *, split: str, allow_incomplete_validation_only: bool = False,
+         phase: str | None = None) -> tuple[bool, str]:
+    """Decide whether `run` may launch. Test is never permitted unless authorized + final + all-green.
+
+    `phase="A"` (validation only) launches the 4 fully registered main arms without waiting for the pending FM slots. The legacy
+    `allow_incomplete_validation_only` escape hatch is equivalent (all available arms) and is kept for compatibility.
+    """
     fails = failures(results)
     if split == "test":
-        if allow_incomplete_validation_only:
-            return False, "--allow-incomplete-validation-only never applies to the test split"
+        if allow_incomplete_validation_only or phase is not None:
+            return False, "phase A / --allow-incomplete-validation-only never apply to the test split"
         try:
             require_test_authorization(spec)
         except PermissionError as exc:
             return False, str(exc)
         if fails:
             return False, f"audit has {len(fails)} failure(s): refusing the TEST split"
-        return True, "test split authorized, freeze complete, audit green"
+        return True, "test split authorized, freeze final, audit green"
     if split != "validation":
         return False, f"unknown split {split!r}"
     if not fails:
         return True, "audit green"
+    if phase is not None:
+        probs = phase_a_problems(spec, results)
+        if probs:
+            return False, "phase A not ready: " + "; ".join(probs)
+        return True, ("PHASE A (validation only): the 4 fully registered main arms pass the audit; the pending modern sequence FM "
+                      "slots still block freeze_state final, test_set_authorized true and any test evaluation")
     if allow_incomplete_validation_only:
         intolerable = [r for r in fails if r.code not in TOLERABLE_CODES]
         if intolerable:
             return False, "audit failures beyond pending modern sequence FMs: " + "; ".join(f"{r.code}@{r.scope}" for r in intolerable)
         return True, ("INCOMPLETE matrix (pending comparators only): validation-only runs of already-available arms; "
                       "this is not the final benchmark and never permits test")
-    return False, f"audit has {len(fails)} failure(s) (e.g. pending modern sequence FMs); pass --allow-incomplete-validation-only for validation-only runs of available arms"
+    return False, (f"audit has {len(fails)} failure(s) (e.g. pending modern sequence FMs); use `run --phase A` (validation only) "
+                   "for the 4 fully registered main arms")
+
+
+# ----------------------------------------------------------------------------- per-run status (Phase A)
+def run_dir_from_log(log: Path) -> Path | None:
+    lines = [x for x in Path(log).read_text().splitlines() if x.startswith("RUN_DIR=")] if Path(log).is_file() else []
+    return Path(lines[-1].split("=", 1)[1]) if lines else None
+
+
+def build_status(arm_id: str, seed: int, run_dir: Path, *, wall_clock_seconds: float, spec: dict) -> dict:
+    """Status of ONE finished validation run, derived from its files (history.json, best.pt, resolved_config.yaml, evaluation/).
+
+    Raises ValueError when the frozen protocol check fails (the run must then NOT be marked done). Reads no patient/test data.
+    """
+    import json
+
+    from cpg_repr_benchmark.config import config_fingerprint
+    from cpg_repr_benchmark.experiments.eval_layout import eval_base
+    run_dir = Path(run_dir)
+    p = spec["protocol"]
+    cfg = yaml.safe_load((run_dir / "resolved_config.yaml").read_text())
+    hist = json.loads((run_dir / "history.json").read_text())
+    mse = [float(r["validation_mse"]) for r in hist]
+    best_epoch = min(range(len(mse)), key=mse.__getitem__)
+    best = run_dir / "checkpoints" / "best.pt"
+    ev = cfg["evaluation"]
+    val_dir = eval_base(run_dir, OUTPUT_LAYOUT, "validation")
+    check = {"epochs_run": len(hist), "epochs_expected": p["max_epochs"], "epochs_ok": len(hist) == p["max_epochs"] == cfg["training"]["epochs"],
+             "early_stopping_false": cfg["training"].get("early_stopping") is False,
+             "validation_only": ev.get("patient_view") == "validation" and ev.get("require_patient_view") == "validation",
+             "split_dirs_layout": ev.get("output_layout") == OUTPUT_LAYOUT,
+             "validation_outputs_present": all((val_dir / "seen" / f"mask_{f:.2f}" / "metrics.json").is_file()
+                                               for f in spec["mask_fractions"]),
+             "no_test_dir": not (run_dir / "evaluation" / "test").exists(),
+             "best_pt_present": best.is_file()}
+    check["ok"] = all(v for k, v in check.items() if k not in ("epochs_run", "epochs_expected"))
+    if not check["ok"]:
+        raise ValueError(f"{arm_id}/seed{seed}: protocol check failed: {check}")
+    return {"status": "trained_validation_frozen", "arm": arm_id, "seed": seed, "split": "validation",
+            "best_epoch_0based": best_epoch, "epochs_run": len(hist), "best_val_mse_at_0.50": mse[best_epoch],
+            "wall_clock_seconds": round(float(wall_clock_seconds), 1), "best_pt_path": str(best), "best_pt_sha256": sha256_file(best),
+            "config_hash": config_fingerprint(cfg), "run_dir": str(run_dir), "protocol_check": check, "test_read": False}
+
+
+def write_status(run_dir: Path, status: dict) -> Path:
+    import json
+    path = Path(run_dir) / STATUS_FILE
+    path.write_text(json.dumps(status, indent=2, sort_keys=True))
+    return path
+
+
+def phase_a_status(spec: dict, runs_root: Path) -> dict:
+    """Aggregate of the Phase A runs (arm x seed, seed-major) from their per-run status files. Results live in outputs, not the spec."""
+    import json
+    runs_root = Path(runs_root)
+    entries = []
+    for arm, seed in jobs(spec, phase="A"):
+        marker = runs_root / "logs" / f"{arm['id']}__seed{seed}.done"
+        rd = run_dir_from_log(runs_root / "logs" / f"{arm['id']}__seed{seed}.log") if marker.exists() else None
+        st = rd / STATUS_FILE if rd else None
+        if st is not None and st.is_file():
+            d = json.loads(st.read_text())
+            entries.append({"arm": arm["id"], "seed": seed, "status": d["status"], "run_dir": d["run_dir"],
+                            "best_epoch_0based": d["best_epoch_0based"], "best_val_mse_at_0.50": d["best_val_mse_at_0.50"],
+                            "wall_clock_seconds": d["wall_clock_seconds"], "best_pt_sha256": d["best_pt_sha256"],
+                            "status_file": str(st)})
+        else:
+            entries.append({"arm": arm["id"], "seed": seed, "status": "not_run" if rd is None else "incomplete"})
+    n_done = sum(e["status"] == "trained_validation_frozen" for e in entries)
+    return {"phase": "A", "split": "validation", "status_vocabulary": list(STATUS_VOCABULARY), "n_expected": len(entries),
+            "n_trained_validation_frozen": n_done, "test_read": False, "runs": entries}
+
+
+def write_phase_a_status(spec: dict, runs_root: Path) -> Path:
+    import json
+    path = Path(runs_root) / PHASE_A_STATUS_FILE
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp = path.with_suffix(".tmp")
+    tmp.write_text(json.dumps(phase_a_status(spec, runs_root), indent=2))
+    tmp.replace(path)
+    return path

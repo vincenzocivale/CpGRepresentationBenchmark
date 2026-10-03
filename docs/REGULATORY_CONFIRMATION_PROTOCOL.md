@@ -144,4 +144,19 @@ python scripts/run_regulatory_confirm.py run --dry-run
 The final confirmation is specified in `configs/experiments/regulatory_confirmation_matrix/matrix.yaml` (arms, roles, store hashes, seeds 17/42/97,
 mask fractions 0.15-0.90, shared protocol = AMENDMENT 2, `freeze_state`/`test_set_authorized` state machine) with the fairness contract in
 `docs/REGULATORY_CONFIRMATION_FAIRNESS.md`. Pre-test audit: `python scripts/audit_confirmation_matrix.py`; runner:
-`scripts/run_regulatory_confirmation_matrix.py`; analysis scaffold: `scripts/analyze_confirmation_matrix.py`. Nothing has been run; the TEST split stays locked.
+`scripts/run_regulatory_confirmation_matrix.py`; analysis scaffold: `scripts/analyze_confirmation_matrix.py`. Nothing had been run when this pointer was written; the TEST split stays locked.
+
+### Phase A and evaluation layout (confirmation-matrix preparation, 2026-10-03)
+
+- Freeze states are `draft | final` (formerly `complete`). `final` requires no pending comparator and an all-green audit; `test_set_authorized: true`
+  additionally requires `final`. The two modern sequence FM slots stay `pending`, so the audit still fails overall.
+- PHASE A = validation-only training of the 4 fully registered main arms x seeds 17/42/97 (12 runs), launched with
+  `run --phase A --split validation` (seed-major; order histone_dnase, functional, cpgpt_large 512D, deepcpg 128D; one job at a time; resumable via
+  `.done`). Output root `outputs/regulatory_confirmation_v1/`; per-run `confirmation_status.json` (`trained_validation_frozen`, never `confirmed`,
+  `test_read: false`) and aggregate `phase_A_status.json`. Not in Phase A: CpGPT 256D compact, DeepCpG HepG2, modern FMs, test evaluation, biological validation.
+- Evaluation output layout: opt-in `evaluation.output_layout: split_dirs` writes `<run>/evaluation/<split>/seen/mask_<f>/{metrics.json,predictions.npz}`
+  and `<run>/evaluation/<split>/summary.json` (split = `evaluation.patient_view`); the default `legacy` layout is unchanged. A split directory that
+  already holds results is never reused unless `evaluation.allow_overwrite_split_dir: true`; the test split needs `test_set_authorized: true`,
+  `freeze_state: final` and a green audit, and can only ever write under `evaluation/test/`.
+- Canonical functional store (definitive): `outputs/encode_atlas_v1/embeddings/full_a18b869b.h5`. `functional_annotations__pca_native_genomewide.h5`
+  is an unused historical artifact.

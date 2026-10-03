@@ -16,13 +16,16 @@ python scripts/run_regulatory_confirmation_matrix.py generate   # 18 configs in 
 python scripts/run_regulatory_confirmation_matrix.py validate
 python scripts/audit_confirmation_matrix.py [--list]            # exit 1 + failure list unless fully green
 python scripts/run_regulatory_confirmation_matrix.py run --dry-run
+python scripts/audit_confirmation_matrix.py --phase A           # also reports "phase-A arms ready"; overall audit still fails (pending FMs)
+python scripts/run_regulatory_confirmation_matrix.py run --phase A --dry-run   # exactly the 12 Phase A runs, launches nothing
+python scripts/run_regulatory_confirmation_matrix.py run --phase A --split validation   # PHASE A: 12 validation-only runs
 python scripts/run_regulatory_confirmation_matrix.py run [--only ARM...] [--seeds S...] [--include-sensitivity]
 python scripts/analyze_confirmation_matrix.py                   # validation split; --split test is refused unless authorized
 ```
-`run` refuses while the audit fails. `--allow-incomplete-validation-only` is the only escape hatch: it tolerates only the pending modern-FM failures,
-launches validation-split runs of available arms only, is not the final benchmark, and never permits `--split test`. `--split test` additionally needs
-`test_set_authorized: true`, `freeze_state: complete` and an all-green audit, and test execution is not implemented in this scaffold (it needs a separate
-evaluation output directory so the validation results are not overwritten).
+`run` without `--phase` refuses while the audit fails. `--phase A` (validation only) launches the 4 fully registered main arms when they pass the audit; only the pending
+modern-FM failures are tolerated and they still block `final`/test. The legacy `--allow-incomplete-validation-only` flag is an equivalent escape hatch for all available arms. Neither permits `--split test`. `--split test` additionally needs
+`test_set_authorized: true`, `freeze_state: final` and an all-green audit, and test execution is not implemented in this scaffold (the `split_dirs` layout already separates
+`evaluation/test` from `evaluation/validation`).
 
 ## Registering a modern sequence FM
 Copy `sequence_fm_registration.template.yaml` to `sequence_fm_registration_slot1.yaml` / `_slot2.yaml`, fill EVERY field, materialize the store
@@ -30,9 +33,14 @@ Copy `sequence_fm_registration.template.yaml` to `sequence_fm_registration_slot1
 with TCGA methylation reconstruction. An incomplete registration fails the audit.
 
 ## State machine
-`freeze_state: draft -> complete` (complete requires an all-green audit); `test_set_authorized` may be true only when complete + green. Both are enforced by the audit.
+`freeze_state: draft -> final` (final requires an all-green audit); `test_set_authorized` may be true only when final + green. Both are enforced by the audit.
 
 ## Cost (estimate; shared machine)
 Per run ~7 min setup + 120 x ~49 s + ~3 min evaluation (5 fractions) = ~1.8 h; CpGPT-large 512D ~2.1 h (conservative: larger locus-embedding
 reads per batch, loader bound). Main 12 runs: 9 x 1.8 + 3 x 2.1 = ~22.5 h; sensitivity 6 runs: ~11 h; the two future modern FMs add 6 runs (~11-13 h).
 Disk ~1.1 GB per run (every-epoch checkpoints, ~14 MB/epoch).
+
+## Phase A outputs and analysis
+Runs live under `outputs/regulatory_confirmation_v1/benchmark/...`, logs/`.done` markers in `outputs/regulatory_confirmation_v1/logs/`, each run has
+`confirmation_status.json` and the aggregate is `outputs/regulatory_confirmation_v1/phase_A_status.json`. Results are under `<run>/evaluation/validation/`.
+After completion: `python scripts/analyze_confirmation_matrix.py --split validation` (paired bootstrap, comparator minus candidate, writes to `<runs-root>/analysis`).

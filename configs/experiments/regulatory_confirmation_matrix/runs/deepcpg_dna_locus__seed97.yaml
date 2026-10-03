@@ -1,7 +1,7 @@
 experiment:
   task: masking
   name: regulatory_confirmation_matrix_deepcpg_dna_locus__seed97
-  output_root: outputs/regulatory_confirmation_matrix_v1/benchmark
+  output_root: outputs/regulatory_confirmation_v1/benchmark
   locus_split:
     heldout_fraction: 0.0
     seed: 17001
@@ -72,3 +72,5 @@ evaluation:
   patient_view: validation
   panel_repeats: 1
   require_patient_view: validation
+  output_layout: split_dirs
+  allow_overwrite_split_dir: false

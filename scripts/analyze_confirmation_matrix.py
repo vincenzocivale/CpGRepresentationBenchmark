@@ -7,7 +7,7 @@ secondary MAE, MAS-PCC, MAC-PCC. Uncertainty = `encode_atlas.statistics.paired_b
 identical to the validated confirmation analysis; it is imported, not re-implemented).
 
 The same `best.pt` (selected by validation MSE @ 0.50) is evaluated at all five fractions: every fraction is read from ONE run directory.
-Split: `validation` by default. `--split test` is refused unless test_set_authorized is true AND freeze_state is complete AND the
+Split: `validation` by default. `--split test` is refused unless test_set_authorized is true AND freeze_state is final AND the
 audit is green (guards.require_test_authorization); even then this scaffold has no test result directory defined and refuses.
 Never writes into run directories. Works with partial results.
 
@@ -35,6 +35,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from cpg_repr_benchmark.encode_atlas.statistics import prediction_table
 from cpg_repr_benchmark.experiments import confirmation_matrix as cm
+from cpg_repr_benchmark.experiments.eval_layout import metrics_dir
 from cpg_repr_benchmark.experiments.guards import require_test_authorization
 
 _spec = importlib.util.spec_from_file_location("_confirm", ROOT / "scripts/analyze_regulatory_confirm.py")
@@ -46,7 +47,7 @@ RUNS_ROOT = ROOT / cm.OUTPUT_ROOT
 
 
 def check_split_allowed(spec: dict, split: str, audit_results=None) -> None:
-    """validation: always allowed. test: refuse unless authorized + complete + all-green audit (and then still refuse: no test layout)."""
+    """validation: always allowed. test: refuse unless authorized + final + all-green audit (and then still refuse: no test layout)."""
     if split == "validation":
         return
     if split != "test":
@@ -92,11 +93,12 @@ def load_run(arm: str, seed: int, d: Path, spec: dict, split: str) -> dict:
     out = {"best_epoch": int(np.argmin(mse)), "epochs_run": len(hist), "metrics": {}, "paths": {}}
     for f in spec["mask_fractions"]:
         key = f"mask_{f:.2f}"
-        m = json.loads((d / "evaluation/seen" / key / "metrics.json").read_text())
+        mdir = metrics_dir(d, cfg, split, "seen", key)  # layout-aware: evaluation/<split>/seen/<key> for split_dirs
+        m = json.loads((mdir / "metrics.json").read_text())
         if m.get("patient_view") != split:
             raise PermissionError(f"{arm}/seed{seed}/{key}: metrics patient_view {m.get('patient_view')!r} != {split!r}")
         out["metrics"][f] = m
-        out["paths"][f] = d / "evaluation/seen" / key / "predictions.npz"
+        out["paths"][f] = mdir / "predictions.npz"
     return out
 
 

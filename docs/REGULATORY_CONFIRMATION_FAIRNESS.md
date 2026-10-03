@@ -31,7 +31,7 @@ Fairness issues below are DOCUMENTED, NOT FIXED: no store is rebuilt, re-fit, re
 | 6 | Methylation-pretrained comparators: CpGPT and DeepCpG encoders were trained on methylation (external, not verifiable locally). Extraction is label-free and patient-independent, but the supervision caveat applies. | `REPRESENTATION_PROVENANCE.md` | Always labelled "pretrained on methylation" in tables; the candidate has no methylation exposure at any stage. Never claimed as supervision-free. |
 | 7 | 450K/EPIC-specific or CpG-id-vocabulary FMs (e.g. MethylGPT, 49k-CpG vocabulary) cannot cover the genome-wide 408,399-locus array universe; they are absent by design. | `methylgpt_locus*.h5` coverage | Stated as a coverage limitation. No per-representation locus intersection is ever built (a store that does not cover the panel fails the audit). |
 | 8 | Tissue/cell-specific DeepCpG checkpoint (HepG2) vs the canonical HCC checkpoint. | catalog | HepG2 is sensitivity only. |
-| 9 | Two functional stores exist (campaign `full_a18b869b.h5` vs masking baseline `functional_annotations__pca_native_genomewide.h5`). | Numerically equivalent (|r| = 1.0000 per column on a 1-in-97 sample, max abs diff 0.05 on std ~32), different bytes. | Canonical = campaign `full` store; FLAGGED as an open decision for the user (matrix.yaml `canonical_store_decision`). Never mixed. |
+| 9 | Two functional stores exist (campaign `full_a18b869b.h5` vs masking baseline `functional_annotations__pca_native_genomewide.h5`). | Numerically equivalent (|r| = 1.0000 per column on a 1-in-97 sample, max abs diff 0.05 on std ~32), different bytes. | DECIDED (definitive): `outputs/encode_atlas_v1/embeddings/full_a18b869b.h5` is the only functional store of the matrix; `functional_annotations__pca_native_genomewide.h5` is documented only as an unused historical artifact (matrix.yaml `canonical_store_decision`). Never mixed. |
 | 10 | Sequence window and context differ: DeepCpG 1001 bp; CpGPT its own window; modern FMs per registration. The candidate uses no sequence at all. | catalog, registration template | Described per arm in the results table. |
 | 11 | Seeds vary only reconstructor initialization (shared masks/panels); n = 3. | protocol | Seed spread descriptive; paired patient x 1 Mb block bootstrap per seed; no inferential claim across seeds beyond counts and spread. |
 
@@ -44,5 +44,13 @@ of these choices may be optimized using TCGA methylation reconstruction.
 
 ## Test-set policy
 
-`freeze_state: draft | complete`; `test_set_authorized` may be true only when `freeze_state: complete` AND `python scripts/audit_confirmation_matrix.py`
+`freeze_state: draft | final`; `test_set_authorized` may be true only when `freeze_state: final` AND `python scripts/audit_confirmation_matrix.py`
 passes. The runner and the analysis script refuse the test split otherwise (`guards.require_test_authorization`).
+
+## Phase A (validation-only training of the fully registered arms)
+
+`run --phase A --split validation` trains the 4 fully registered main arms (histone_dnase, functional, cpgpt_large 512D, deepcpg 128D) x
+seeds 17/42/97 (12 runs, validation split only, exact frozen protocol) without waiting for the pending modern FM slots. Those slots still
+block `freeze_state: final`, `test_set_authorized: true` and every test evaluation. Phase A results are `trained_validation_frozen`, never
+`confirmed`. Evaluation outputs use `evaluation.output_layout: split_dirs` (`<run>/evaluation/validation/...`), so a later test
+evaluation (`<run>/evaluation/test/...`) cannot overwrite them (guards in `experiments/eval_layout.py`).

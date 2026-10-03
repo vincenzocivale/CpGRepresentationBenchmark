@@ -1,13 +1,22 @@
 # Confirmation-matrix SPEC v1 (frozen design, nothing executed). Read by scripts/audit_confirmation_matrix.py and
 # scripts/run_regulatory_confirmation_matrix.py (logic: src/cpg_repr_benchmark/experiments/confirmation_matrix.py).
 # Training budget: docs/REGULATORY_CONFIRMATION_PROTOCOL.md AMENDMENT 2. Fairness contract: docs/REGULATORY_CONFIRMATION_FAIRNESS.md.
-# State machine: freeze_state draft -> complete. test_set_authorized may be true ONLY when freeze_state is complete AND the audit is
+# State machine: freeze_state draft -> final. test_set_authorized may be true ONLY when freeze_state is final AND the audit is
 # all-green (both enforced by the audit and by guards.require_test_authorization). The TEST patients are NOT used until then.
 matrix:
   name: regulatory_confirmation_matrix_v1
   status: not_run
-  freeze_state: draft               # draft | complete  (complete requires: no pending comparator, audit all-green)
-  test_set_authorized: false        # never set true by tooling; only the user, after freeze_state: complete
+  freeze_state: draft               # draft | final  (final requires: no pending comparator, audit all-green)
+  test_set_authorized: false        # never set true by tooling; only the user, after freeze_state: final
+  phase_A:                          # SPEC only; actual per-run results live in outputs (never hand-edited here)
+    description: "validation-only training of the 4 fully registered main arms x seeds 17/42/97 (12 runs); pending modern FM slots excluded"
+    arms: [regulatory_histone_dnase, functional_annotations_pca, cpgpt_large_locus, deepcpg_dna_locus]   # launch order, seed-major
+    split: validation
+    output_root: outputs/regulatory_confirmation_v1
+    evaluation_layout: split_dirs   # <run>/evaluation/validation/seen/mask_<f>/{metrics.json,predictions.npz}, <run>/evaluation/validation/summary.json
+    status: "trained_validation_frozen (per arm/seed, from <run>/confirmation_status.json; aggregate outputs/regulatory_confirmation_v1/phase_A_status.json)"
+    status_vocabulary: [trained_validation_frozen]   # never 'confirmed' before the final, authorized test evaluation
+    not_in_phase_A: [cpgpt_large_locus_256_compact, deepcpg_dna_locus_hepg2, modern_sequence_fm, modern_sequence_fm_alt, test_evaluation, biological_validation]
   fairness_contract: docs/REGULATORY_CONFIRMATION_FAIRNESS.md
   sequence_fm_registration_template: configs/experiments/regulatory_confirmation_matrix/sequence_fm_registration.template.yaml
   seeds: [17, 42, 97]               # downstream reconstructor init/training seed (training.seed)
@@ -38,7 +47,7 @@ matrix:
       secondary: [mae, mas_pcc, mac_pcc]
       per_fraction: [0.15, 0.30, 0.50, 0.70, 0.90]
     statistics: "paired bootstrap over patients x 1 Mb genomic blocks (encode_atlas/statistics.py), 2000 replicates, bootstrap seed 17; contrasts = comparator minus frozen candidate, per seed and across seeds, validation split by default"
-    evaluation_order: "validation first; the TEST split is evaluated only after freeze_state: complete, an all-green audit and explicit user authorization"
+    evaluation_order: "validation first; the TEST split is evaluated only after freeze_state: final, an all-green audit and explicit user authorization"
   splits:
     patient_split: {path: outputs/encode_atlas_v1/patients.npz, sha256: 73add7f52e3481bd64fd7f247aef276524244b8c257efe4fb577d41327f24d11}
     loci_split: {path: outputs/encode_atlas_v1/loci_seen.npz, sha256: f135a589d4e9c5b7527a81275b3ec943efbae6a479c46bc0907e67adcbf9d07a}
@@ -85,16 +94,16 @@ matrix:
         genome_build: GRCh38
         source: "reference_functional_features_tcga_array_all_v1_cpgidx_fixed.h5: 4,165 tracks + 23 dense (CpG context, gene region, cCRE classes, TSS distance, breadth)"
       canonical_store_decision:
-        status: OPEN_DECISION_FOR_USER   # evidence does not separate the two stores (they are numerically equivalent); see rationale
+        status: DECIDED                  # definitive: full_a18b869b.h5 is the ONLY functional store of this matrix
         chosen: outputs/encode_atlas_v1/embeddings/full_a18b869b.h5
-        alternative_not_used: data/cache/representations/functional_annotations__pca_native_genomewide.h5
+        alternative_not_used: data/cache/representations/functional_annotations__pca_native_genomewide.h5   # unused historical artifact
         alternative_sha256: b17273f27dcacf84884b7843155be8424fa970fe6474d2ab53a38331ff539ea7
         rationale: >-
           Both are TruncatedSVD-256, seed 17, fit on all 408,399 loci, float16, identical cpg_idx order, built from the same raw store
           (4,165 tracks + 23 dense; variance retained 0.7069 vs 0.7068); on a 1-in-97 row sample every column correlates |r|=1.0000
           and max abs difference is 0.05 on values with std 32 (float16 / solver rounding). Chosen = the store used by the ENCODE campaign
           'full' arm AND by the regulatory family-screen / selection controls (run_regulatory_selection.py), so the comparison reuses the
-          same bytes as the whole regulatory selection phase. The two must never be mixed within one comparison.
+          same bytes as the whole regulatory selection phase. The other store is an unused historical artifact (equivalent, never used here); the two must never be mixed.
     - id: cpgpt_large_locus
       role: main
       comparator_kind: native_foundation_model

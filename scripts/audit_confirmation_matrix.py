@@ -35,6 +35,9 @@ def main(argv=None) -> int:
     p.add_argument("--skip-rehash", action="store_true",
                    help="do NOT recompute store sha256 (recorded hash is still required); NOT acceptable for the final audit")
     p.add_argument("--no-configs", action="store_true", help="skip the per-run config comparison")
+    p.add_argument("--phase", choices=("A",), default=None,
+                   help="also report whether the 4 Phase A arms are ready (validation-only launch); exit code is 0 iff ready. "
+                        "The OVERALL audit result is always printed and is unaffected (still fails while FM slots are pending).")
     args = p.parse_args(argv)
     os.nice(10)
     spec, results = run_audit(args.matrix, rehash=not args.skip_rehash, configs=not args.no_configs)
@@ -44,6 +47,14 @@ def main(argv=None) -> int:
             print(r.line())
     print(f"\nconfirmation matrix '{spec.get('name')}': freeze_state={spec.get('freeze_state')}, "
           f"test_set_authorized={spec.get('test_set_authorized')}: {len(results) - len(fails)} passed, {len(fails)} FAILED")
+    if args.phase:
+        probs = cm.phase_a_problems(spec, results)
+        print(f"PHASE {args.phase}: arms {cm.PHASE_A_ARMS}: " + ("READY (validation-only launch OK)" if not probs
+                                                               else "NOT READY: " + "; ".join(probs)))
+        if fails:
+            print(f"OVERALL: AUDIT FAILED ({len(fails)} failure(s)): the final benchmark is NOT authorizable "
+                  "(freeze_state final / test_set_authorized true stay blocked).")
+        return 0 if not probs else 1
     if fails:
         print("AUDIT FAILED: the final benchmark is NOT authorizable.")
         return 1

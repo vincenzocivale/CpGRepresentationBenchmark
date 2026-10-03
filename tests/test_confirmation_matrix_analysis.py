@@ -34,13 +34,13 @@ def names():
     return [f"TCGA-AA-{i:04d}-01" for i in range(N_PAT)]
 
 
-def make_run(root: Path, arm, seed, *, view="validation", epochs=EPOCHS, done=True):
+def make_run(root: Path, arm, seed, *, view="validation", epochs=EPOCHS, done=True, layout="legacy"):
     d = root / "benchmark" / f"{arm}_{seed}" / "run"
     rng = np.random.default_rng(0)
     target = rng.random((N_PAT, N_LOC)).astype(np.float32)
     prior = np.clip(target + rng.normal(0, .2, target.shape), 0, 1).astype(np.float32)
     for f in cm.FROZEN_FRACTIONS:
-        k = d / "evaluation/seen" / f"mask_{f:.2f}"
+        k = d / ("evaluation/validation/seen" if layout == "split_dirs" else "evaluation/seen") / f"mask_{f:.2f}"
         k.mkdir(parents=True)
         noise = np.random.default_rng(seed + int(f * 100)).normal(0, 1, target.shape) * (1 + f)
         pred = np.clip(target + noise * .1 * SCALE[arm], 0, 1).astype(np.float32)
@@ -49,7 +49,8 @@ def make_run(root: Path, arm, seed, *, view="validation", epochs=EPOCHS, done=Tr
         (k / "metrics.json").write_text(json.dumps({"mse": float(np.mean((pred - target) ** 2)), "mae": float(np.mean(np.abs(pred - target))),
                                                     "mas_pcc": .9, "mac_pcc": .3, "patient_view": view, "mask_fraction": f}))
     (d / "resolved_config.yaml").write_text(yaml.safe_dump({
-        "evaluation": {"patient_view": view, "require_patient_view": view, "mask_seed": cm.FROZEN_PROTOCOL["mask_seed"]},
+        "evaluation": {"patient_view": view, "require_patient_view": view, "mask_seed": cm.FROZEN_PROTOCOL["mask_seed"],
+                       **({"output_layout": "split_dirs"} if layout == "split_dirs" else {})},
         "training": {"seed": seed, "epochs": EPOCHS, "early_stopping": False}}))
     curve = 1.0 / (np.arange(epochs) + 1)
     (d / "history.json").write_text(json.dumps([{"epoch": i, "validation_mse": float(c)} for i, c in enumerate(curve)]))
@@ -105,7 +106,7 @@ def test_split_test_refused_unless_authorized_complete_green():
     s["test_set_authorized"] = True
     with pytest.raises(PermissionError):
         mod.check_split_allowed(s, "test", [])  # still draft
-    s["freeze_state"] = "complete"
+    s["freeze_state"] = "final"
     with pytest.raises(PermissionError):  # green audit but no test layout in this scaffold
         mod.check_split_allowed(s, "test", [])
     with pytest.raises(PermissionError):
@@ -114,3 +115,16 @@ def test_split_test_refused_unless_authorized_complete_green():
 
 def test_cli_test_split_refused_exit_code():
     assert mod.main(["--split", "test"]) == 2
+
+
+def test_analysis_reads_split_dirs_layout(tmp_path):
+    """New confirmation analysis reads evaluation/validation/...; identical numbers to the legacy layout."""
+    r_split, r_legacy = tmp_path / "split", tmp_path / "legacy"
+    for arm in (CAND, A, B):
+        for seed in (17, 42):
+            make_run(r_split, arm, seed, layout="split_dirs")
+            make_run(r_legacy, arm, seed)
+    res = mod.analyze(spec_(), r_split, tmp_path / "o1", registry(), names(), replicates=20, seed=3)
+    mod.analyze(spec_(), r_legacy, tmp_path / "o2", registry(), names(), replicates=20, seed=3)
+    assert res["n_runs_done"] == 6 and not res["provisional"]
+    pd.testing.assert_frame_equal(pd.read_csv(tmp_path / "o1/paired_contrasts.csv"), pd.read_csv(tmp_path / "o2/paired_contrasts.csv"))

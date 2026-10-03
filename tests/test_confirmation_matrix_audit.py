@@ -88,7 +88,7 @@ def _arm_of(spec, aid):
 def test_all_green_path(green):
     spec, root = green
     assert cm.failures(cm.audit(spec, root)) == []
-    spec["freeze_state"], spec["test_set_authorized"] = "complete", True  # complete + green -> authorization is legal
+    spec["freeze_state"], spec["test_set_authorized"] = "final", True  # complete + green -> authorization is legal
     assert cm.failures(cm.audit(spec, root)) == []
 
 
@@ -203,7 +203,7 @@ def test_test_authorization_state_machine(green):
     spec, root = green
     spec["test_set_authorized"] = True  # draft + authorized -> fail
     assert "TEST_AUTH" in _codes(spec, root)
-    spec["freeze_state"] = "complete"
+    spec["freeze_state"] = "final"
     _arm_of(spec, "modern_sequence_fm")["status"] = "pending"  # complete but not green -> fail
     codes = _codes(spec, root)
     assert "TEST_AUTH" in codes and "FREEZE_STATE" in codes
@@ -215,10 +215,10 @@ def test_test_authorization_state_machine(green):
 
 def test_guard_require_test_authorization():
     with pytest.raises(PermissionError):
-        require_test_authorization({"test_set_authorized": False, "freeze_state": "complete"})
+        require_test_authorization({"test_set_authorized": False, "freeze_state": "final"})
     with pytest.raises(PermissionError):
         require_test_authorization({"test_set_authorized": True, "freeze_state": "draft"})
-    require_test_authorization({"test_set_authorized": True, "freeze_state": "complete"})
+    require_test_authorization({"test_set_authorized": True, "freeze_state": "final"})
 
 
 def test_gate_semantics(green, make_green):
@@ -237,7 +237,7 @@ def test_gate_semantics(green, make_green):
     assert not cm.gate(spec, res, split="validation", allow_incomplete_validation_only=True)[0]
     # test can only open with authorization + complete + green
     spec2, root2 = make_green()
-    spec2["freeze_state"], spec2["test_set_authorized"] = "complete", True
+    spec2["freeze_state"], spec2["test_set_authorized"] = "final", True
     assert cm.gate(spec2, cm.audit(spec2, root2), split="test", allow_incomplete_validation_only=False)[0]
 
 
@@ -315,4 +315,14 @@ def test_runner_refuses_test_and_incomplete_and_never_launches(monkeypatch, caps
     assert mod.main(["run", "--dry-run", "--allow-incomplete-validation-only"]) == 0
     out = capsys.readouterr().out
     assert out.count("would run [main]") == 12 and "modern_sequence" not in out.split("would run")[1]
+    assert launched == []
+    # PHASE A: no escape-hatch flag needed; exactly the 12 runs of the 4 fully registered arms, seed-major, nothing launched
+    capsys.readouterr()
+    assert mod.main(["run", "--phase", "A", "--dry-run"]) == 0
+    out = capsys.readouterr().out
+    lines = [x for x in out.splitlines() if x.startswith("would run")]
+    names = [Path(x.split()[-1]).stem for x in lines]
+    arms = ["regulatory_histone_dnase", "functional_annotations_pca", "cpgpt_large_locus", "deepcpg_dna_locus"]
+    assert names == [f"{a}__seed{s}" for s in (17, 42, 97) for a in arms]
+    assert mod.main(["run", "--phase", "A", "--split", "test", "--dry-run"]) == 2
     assert launched == []
