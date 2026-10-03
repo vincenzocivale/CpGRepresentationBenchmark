@@ -1,0 +1,56 @@
+# Confirmation-matrix SPEC (scaffold only). Nothing here has been executed. No per-run config exists in this directory and no
+# runner reads it. Status flags: not_run | pending. The test patients are NOT used until explicitly authorized by the user.
+matrix:
+  name: regulatory_confirmation_matrix_v1
+  status: not_run
+  protocol: "to be defined; test patients NOT used until explicitly authorized"
+  test_set_authorized: false
+  seeds: []                      # placeholder, to be fixed by the user together with the protocol
+  fixed_across_arms: [downstream model, patient split, locus split, masking sweep, optimizer budget, prior policy]
+  arms:
+    - id: regulatory_histone_dnase
+      role: frozen candidate (regulatory_histone_dnase_v1, candidate_frozen)
+      status: not_run
+      catalog: configs/representations/regulatory.yaml
+      frozen_manifest: configs/frozen/regulatory_histone_dnase_v1.json
+      store_h5: data/cache/representations/regulatory_histone_dnase__global_svd256__discovery_chr1_19.h5
+      dim: 256
+      store_present: true
+    - id: functional_annotations_pca
+      role: legacy baseline (same store as the ENCODE campaign 'full' arm)
+      status: not_run
+      store_h5: outputs/encode_atlas_v1/embeddings/full_a18b869b.h5     # reference by path only
+      dim: 256
+      store_present: true
+      note: >-
+        the genome-wide masking baseline config uses data/cache/representations/functional_annotations__pca_native_genomewide.h5
+        (also 256D); the campaign 'full' store is referenced here as requested. Do not mix the two within one comparison.
+    - id: cpgpt_large_locus_256
+      role: foundation-model locus embedding, compacted (campaign store)
+      status: not_run
+      store_h5: outputs/encode_atlas_v1/embeddings/fm_cpgpt_locus_large_d3474a48.h5
+      dim: 256
+      store_present: true
+      native_variant:
+        store_h5: data/cache/representations/cpgpt_locus_large.h5      # native 512D, float16
+        dim: 512
+        store_present: true
+    - id: deepcpg_dna_locus
+      role: sequence-only DNA model (DeepCpG DNA module, HCC checkpoint)
+      status: not_run
+      catalog_entry: configs/representations/future_models.yaml#deepcpg_dna_locus_native
+      store_h5: data/cache/representations/deepcpg_dna_locus.h5
+      dim: 128
+      store_present: true            # also present: deepcpg_dna_locus_hepg2.h5 (128D); existing masking config: configs/experiments/masking/deepcpg_genomewide.yaml
+    - id: modern_sequence_fm
+      role: placeholder for a modern sequence foundation model (to be chosen)
+      status: pending
+      store_h5: null
+      dim: null
+      store_present: false
+    - id: modern_sequence_fm_alt
+      role: placeholder (second modern sequence foundation model, optional)
+      status: pending
+      store_h5: null
+      dim: null
+      store_present: false
