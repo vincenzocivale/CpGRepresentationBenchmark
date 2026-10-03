@@ -1,0 +1,155 @@
+# Anti-circularity audit matrix for biological validation v2 (pre-registration; see docs/BIOLOGICAL_VALIDATION_V2.md).
+# Cell codes (relation between a validation TARGET and a representation INPUT):
+#   I = independent: different molecular entity / assay / source; no shared derivation.
+#   P = partially related: target comes from an assay mechanistically or biologically coupled to the input
+#       (e.g. CTCF/cohesin ChIP vs loops; enhancer marks vs CAGE enhancers). Reported, not corrected.
+#   C = source-retention circular: target is derived from, or is a re-encoding of, the input itself.
+# Target class = worst cell: any C -> circular; else any P -> partially_related; else independent.
+# Written before any bioval v2 embedding metric was computed.
+schema_version: 1
+codes: [I, P, C]
+classes: [independent, partially_related, circular]
+# status = ratified analysis class (docs/BIOLOGICAL_VALIDATION_V2.md section 0). Sensitivity analyses are variants of a target
+# (listed in `sensitivities`), not separate classes. holm_family = true exactly for the 4 primary endpoints.
+statuses: [primary, secondary, exploratory, rejected_circular]
+
+inputs:
+  histone_chip:     {description: "ENCODE Histone ChIP-seq peak-overlap tracks (1,959)", family: encode_track}
+  tf_chip:          {description: "ENCODE TF ChIP-seq tracks other than CTCF/RAD21/SMC3 (1,673 TF tracks in total; exact partition to be verified at freeze)", family: encode_track}
+  ctcf_cohesin_chip: {description: "CTCF (201), RAD21 (14), SMC3 (6) ChIP-seq tracks (subset of the 1,673 TF tracks)", family: encode_track}
+  dnase:            {description: "ENCODE DNase-seq tracks (533)", family: encode_track}
+  ccre_v4:          {description: "ENCODE cCRE Registry V4 classes (dense cols 8-16; functional_annotations only)", family: annotation}
+  gencode_v50:      {description: "GENCODE v50 gene_region and log10 TSS distance (dense cols 4-7, 17; functional_annotations only)", family: annotation}
+  cpg_islands:      {description: "UCSC cpgIslandExt hg38 island/shore/shelf/open_sea (dense cols 0-3; functional_annotations only)", family: annotation}
+  sequence_fm:      {description: "Comparator arms: DNA-sequence / foundation-model embeddings (input = reference sequence)", family: comparator}
+
+# Which inputs each arm family consumes (derived columns: breadth = linear summary of tracks -> same as tracks).
+arms:
+  functional_annotations_pca:
+    inputs: [histone_chip, tf_chip, ctcf_cohesin_chip, dnase, ccre_v4, gencode_v50, cpg_islands]
+  regulatory_tracks_only:
+    inputs: [histone_chip, tf_chip, ctcf_cohesin_chip, dnase]
+  sequence_foundation_models:
+    inputs: [sequence_fm]
+
+targets:
+  # ---- validation targets (exactly one primary endpoint per axis) ----
+  loyfer_profile_similarity:
+    axis: external_methylation_programs
+    status: primary
+    primary_endpoint: true
+    holm_family: true
+    sensitivities: [spearman_vs_pearson, mask_lenient, per_distance_stratum, drop_single_sample_groups, min_shared_30]
+    methylation_derived: true   # target is methylation, but external to the representation inputs
+    cells: {histone_chip: I, tf_chip: I, ctcf_cohesin_chip: I, dnase: I, ccre_v4: I, gencode_v50: I, cpg_islands: I, sequence_fm: I}
+    justification: "Loyfer WGBS of sorted primary cells; no ENCODE input contains methylation (assay set is exactly 3 values). Biological coupling of methylation with chromatin is the hypothesis, not source retention. Distance confound handled by stratification."
+  loyfer_marker_knn:
+    axis: external_methylation_programs
+    status: secondary
+    primary_endpoint: false
+    holm_family: false
+    sensitivities: [paper_lifted_marker_set_S4A_S4B, U25_only]
+    methylation_derived: true
+    cells: {histone_chip: I, tf_chip: I, ctcf_cohesin_chip: I, dnase: I, ccre_v4: I, gencode_v50: I, cpg_islands: I, sequence_fm: I}
+    justification: "Hypomethylated cell-type markers (1,257 unique CpGs in the 39 present groups: U25 157 + U250-only 1,100; 1,296 in universe incl. Megakaryocytes/absent groups); provenance of hg38 files WEAK (marker_provenance_verdict.json) hence secondary; low power. Independent of inputs; marker blocks enrich for regulatory elements by biology."
+  fourdn_compartment_ab:
+    axis: 3d_genome
+    status: secondary
+    primary_endpoint: false
+    holm_family: false
+    methylation_derived: false
+    cells: {histone_chip: P, tf_chip: I, ctcf_cohesin_chip: I, dnase: P, ccre_v4: I, gencode_v50: I, cpg_islands: I, sequence_fm: P}
+    justification: "E1 from Micro-C/Hi-C, sign set by GC; compartments biologically coupled to histone/DNase state; sequence arms see GC (E1 oriented by GC)."
+  fourdn_contact_intra:
+    axis: 3d_genome
+    status: primary
+    primary_endpoint: true
+    holm_family: true
+    sensitivities: [HFFc6_MicroC_intra_10kb, per_distance_bin, 50kb_compartment_resolution]
+    methylation_derived: false
+    cells: {histone_chip: I, tf_chip: I, ctcf_cohesin_chip: P, dnase: I, ccre_v4: I, gencode_v50: I, cpg_islands: I, sequence_fm: I}
+    justification: "Contact calls from H1 Micro-C (primary 3D endpoint; HFFc6 = sensitivity); CTCF/RAD21/SMC3 ChIP tracks are mechanistically linked to loop anchors (partial). Distance matched."
+  fourdn_contact_inter:
+    axis: 3d_genome
+    status: exploratory
+    primary_endpoint: false
+    holm_family: false
+    methylation_derived: false
+    cells: {histone_chip: I, tf_chip: I, ctcf_cohesin_chip: I, dnase: I, ccre_v4: I, gencode_v50: I, cpg_islands: I, sequence_fm: I}
+    justification: "1 Mb trans contacts reflect compartment/territory-scale organisation, not loop anchors; exploratory only: 98.3% total drop (89.6% unmatched + fold-straddle), weak coverage-decile balance (SMD 0.30); thin non-contact pool."
+  fantom5_enhancer_membership:
+    axis: regulatory_activity
+    status: primary
+    primary_endpoint: true
+    holm_family: true
+    sensitivities: [window_500bp, tss5k_filtered_pool_bg_enh5k_tss5k, expression_threshold_N, chromatin_covariate_matching]
+    methylation_derived: false
+    cells: {histone_chip: P, tf_chip: P, ctcf_cohesin_chip: I, dnase: P, ccre_v4: P, gencode_v50: P, cpg_islands: I, sequence_fm: I}
+    justification: "FANTOM5 bidirectional CAGE is an independent assay (RNA 5' capture), no FANTOM track is an input; but H3K27ac/H3K4me1/DNase/TF ChIP and cCRE pELS/dELS mark the same active enhancers, and GENCODE TSS is a matching covariate."
+  fantom5_activity_similarity:
+    axis: regulatory_activity
+    status: secondary
+    primary_endpoint: false
+    holm_family: false
+    methylation_derived: false
+    cells: {histone_chip: P, tf_chip: P, ctcf_cohesin_chip: I, dnase: P, ccre_v4: P, gencode_v50: I, cpg_islands: I, sequence_fm: I}
+    justification: "Cross-sample activity profile similarity of CAGE enhancers; same indirect enhancer-mark overlap as membership."
+  replication_timing:
+    axis: replication_domains
+    status: primary
+    primary_endpoint: true
+    holm_family: true
+    sensitivities: [per_line_rt_15_UW_lines, gc_cpg_density_tss_residualisation, normal_vs_tumour_lines]
+    methylation_derived: false
+    cells: {histone_chip: I, tf_chip: I, ctcf_cohesin_chip: I, dnase: I, ccre_v4: I, gencode_v50: I, cpg_islands: I, sequence_fm: I}
+    justification: "Continuous consensus RT (mean z of 15 UW Repli-seq lines, Rep1, hg19 lifted); no Repli-seq/RT/lamin track among the 4,165 inputs. GC and gene density are confounders (handled by sensitivity), not source retention."
+  pmd_decato2020:
+    axis: replication_domains
+    status: exploratory
+    primary_endpoint: false
+    holm_family: false
+    methylation_derived: true   # PMDs are called from WGBS methylation: dependent on the methylation axis
+    cells: {histone_chip: I, tf_chip: I, ctcf_cohesin_chip: I, dnase: I, ccre_v4: I, gencode_v50: I, cpg_islands: I, sequence_fm: I}
+    justification: "Independent of ENCODE inputs but derived from methylation; Decato build verified hg19 (BUILD_CHECK.json: 96.3% CpG-start test) with explicit liftover (loses 2.45% intervals); methylation-derived -> exploratory."
+
+  # ---- rejected as circular: legacy evidence only, never an endpoint ----
+  cpg_island_context:
+    axis: legacy
+    status: rejected_circular
+    primary_endpoint: false
+    holm_family: false
+    methylation_derived: false
+    cells: {histone_chip: I, tf_chip: I, ctcf_cohesin_chip: I, dnase: I, ccre_v4: I, gencode_v50: I, cpg_islands: C, sequence_fm: P}
+    justification: "Island/shore/shelf/open_sea are literally dense columns 0-3 of the baseline; islands are defined from sequence composition, so sequence arms are partially related."
+  gene_region:
+    axis: legacy
+    status: rejected_circular
+    primary_endpoint: false
+    holm_family: false
+    methylation_derived: false
+    cells: {histone_chip: I, tf_chip: I, ctcf_cohesin_chip: I, dnase: I, ccre_v4: I, gencode_v50: C, cpg_islands: I, sequence_fm: I}
+    justification: "promoter/exon/intron/intergenic are dense columns 4-7 (GENCODE v50)."
+  ccre_class:
+    axis: legacy
+    status: rejected_circular
+    primary_endpoint: false
+    holm_family: false
+    methylation_derived: false
+    cells: {histone_chip: C, tf_chip: P, ctcf_cohesin_chip: C, dnase: C, ccre_v4: C, gencode_v50: P, cpg_islands: I, sequence_fm: I}
+    justification: "cCRE V4 classes are dense columns 8-16 and are themselves defined from ENCODE DNase, H3K4me3, H3K27ac and CTCF signal (ENCODE-derived)."
+  tss_distance:
+    axis: legacy
+    status: rejected_circular
+    primary_endpoint: false
+    holm_family: false
+    methylation_derived: false
+    cells: {histone_chip: P, tf_chip: I, ctcf_cohesin_chip: I, dnase: P, ccre_v4: P, gencode_v50: C, cpg_islands: P, sequence_fm: I}
+    justification: "log10 TSS distance is dense column 17 (GENCODE v50 TSS); promoter marks (H3K4me3, DNase) and PLS cCREs and islands co-locate with TSS."
+  chromhmm_same_histone_marks:
+    axis: legacy
+    status: rejected_circular
+    primary_endpoint: false
+    holm_family: false
+    methylation_derived: false
+    cells: {histone_chip: C, tf_chip: I, ctcf_cohesin_chip: I, dnase: P, ccre_v4: P, gencode_v50: I, cpg_islands: I, sequence_fm: I}
+    justification: "ChromHMM states are a segmentation of the same histone-mark ChIP data that are representation inputs. No ChromHMM target exists in legacy bio_validation code (checked grep); listed as a rejected candidate."

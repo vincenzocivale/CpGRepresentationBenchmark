@@ -1,0 +1,10 @@
+{
+ "claim": "Decato 2020 human PMD files are hg19",
+ "method": "157 .pmd BED files (native_assemblies/Human), 20,000 random intervals from 27 files",
+ "evidence": {
+  "max_end_vs_lengths": "max PMD end per autosome <= hg19 length on 22/22 chromosomes (within 0.0004-0.2% of it, e.g. chr1 249,239,872 vs 249,250,621) and exceeds the hg38 length on 14/22 (chr3,5,7,11,16,17,18,20 fit under hg38; others, e.g. chr9 141.13M vs hg38 138.39M, chr21 48.12M vs 46.71M, exceed it).",
+  "cg_at_interval_start": "MethPipe segments start at a CpG. Fraction of interval starts that are the C of a CG in hg38.fa: 0.022 if coordinates are read as GRCh38 (random expectation 0.016), 0.963 after hg19->GRCh38 liftover. Decisive: file coordinates are hg19.",
+  "tool": "pyliftover, data/raw/liftover/hg19ToHg38.over.chain.gz via biological_validation_v2.coordinates"
+ },
+ "conclusion": "hg19 confirmed; explicit liftover to GRCh38 applied in prepare_pmd_decato2020.py"
+}

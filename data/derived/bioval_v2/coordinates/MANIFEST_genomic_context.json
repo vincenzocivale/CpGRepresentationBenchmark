@@ -1,0 +1,46 @@
+{
+  "encoding": "cpg_idx = chrom_code*1e9 + pos (GRCh38 1-based CpG cytosine; X=23,Y=24,M=25); joined to universe cpg_idx (registry id) via exact (chrom,pos)",
+  "source": "data/bio_annotations/genomic_context.parquet",
+  "source_sha256": "4acc71353c1dbf8088aa5442df9c5b73cc4937ba5091847f43b5e9a1bff8e2ce",
+  "island_track": "data/bio_annotations/cpgIslandExt.hg38.txt.gz",
+  "output": "data/derived/bioval_v2/coordinates/genomic_context_canonical.parquet",
+  "output_sha256": "5c1eb4c0dc398588316eadf219c653feadfe3de4007f2f9ecf8f8c3ca5528196",
+  "fasta": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/reference/hg38.fa",
+  "git_commit": "0d228ec9cef39fb25f14289d033caf09da205253",
+  "audit": {
+    "n_source": 1184855,
+    "n_source_bad_chrom": 0,
+    "n_source_dup_chrom_pos": 0,
+    "n_universe": 408399,
+    "n_universe_dup_chrom_pos": 0,
+    "n_universe_mapped": 408399,
+    "n_exact_match_missing": 8,
+    "n_recomputed_from_island_track": 8,
+    "frac_universe_mapped": 1.0,
+    "n_universe_unmapped": 0,
+    "n_output_rows": 408399,
+    "output_cpg_idx_unique": true,
+    "n_source_not_in_universe": 776464,
+    "agreement_recomputed_rule_vs_legacy": 0.999965719127013,
+    "context_counts": {
+      "open_sea": 142644,
+      "island": 131020,
+      "shore": 97562,
+      "shelf": 37173
+    },
+    "cg_check_universe": {
+      "cg_rate_offset_-1": 0.0,
+      "cg_rate_offset_+0": 1.0,
+      "cg_rate_offset_+1": 0.0,
+      "n_checked": 408399
+    },
+    "cg_check_context_mapped": {
+      "cg_rate_offset_-1": 0.0,
+      "cg_rate_offset_+0": 1.0,
+      "cg_rate_offset_+1": 0.0,
+      "n_checked": 408399
+    },
+    "roundtrip_source_id_ok": true,
+    "unmapped_explanation": "universe CpGs without an exact (chrom,pos) row in the legacy table (their probes are absent from illumina_probe_grch38.parquet) get context recomputed from the UCSC cpgIslandExt track (data/bio_annotations/cpgIslandExt.hg38.txt.gz) with the documented rule; mapping_method marks them"
+  }
+}

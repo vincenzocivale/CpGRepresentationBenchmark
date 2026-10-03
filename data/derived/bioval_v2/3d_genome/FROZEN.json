@@ -1,0 +1,165 @@
+{
+  "statement": "Produced before any embedding metric was computed. No embeddings, representation outputs or run results were read; matching used only pair distance, chromosome (pair), bin coverage and (when present) non-embedding per-CpG covariates.",
+  "created": "2026-10-02T18:26:16",
+  "git_commit_of_repo_head": "0d228ec9cef39fb25f14289d033caf09da205253",
+  "roles": {
+    "primary": "H1 Micro-C 4DNFI9GMP2J8 (intra 10 kb pairs; 100 kb E1)",
+    "sensitivity": "HFFc6 Micro-C 4DNFI9FVHJZQ",
+    "secondary": "GM12878 Hi-C 4DNFIXP4QG5B (compartments only)",
+    "exploratory": "H1 inter 1 Mb pairs"
+  },
+  "primary_metric": "AUROC contact vs matched non-contact with cosine similarity as pair score; paired delta-cosine reported as secondary effect size",
+  "params": {
+    "seed": 17,
+    "K_per_bin_pair": 20,
+    "n_folds": 5,
+    "fold_rule": "splits.chromosome_blocked_folds(chroms with CpGs, 5, 17)",
+    "chrom_folds": {
+      "chr21": 0,
+      "chr15": 1,
+      "chr22": 2,
+      "chr18": 3,
+      "chr4": 4,
+      "chr5": 0,
+      "chr17": 1,
+      "chr2": 2,
+      "chr3": 3,
+      "chr20": 4,
+      "chr10": 0,
+      "chr6": 1,
+      "chr13": 2,
+      "chr12": 3,
+      "chr1": 4,
+      "chr14": 0,
+      "chr9": 1,
+      "chr8": 2,
+      "chr16": 3,
+      "chr11": 4,
+      "chr7": 0,
+      "chr19": 1
+    },
+    "universe_n": 408399,
+    "intra_thresholds": {
+      "dist": "20kb-2Mb",
+      "raw_min": 8,
+      "obs_exp_min": 2.0,
+      "noncontact_obs_exp_max": 0.5,
+      "cov_quantile": 0.25
+    },
+    "inter_thresholds": {
+      "raw_min": 50,
+      "obs_exp_min": 2.0
+    },
+    "distance_bins": "80 log-spaced edges 1e4..2.02e6 bp",
+    "matching": "1:1 without replacement, exact chrom x distance bin (x covariate terciles), rank pairing",
+    "inter_fold_policy": "splits.pair_split_by_chrom policy='drop' (straddling pairs fold=-1)",
+    "covariates_file_present_at_freeze": true
+  },
+  "pairs": {
+    "frozen_pairs_H1_intra10kb_seed17.parquet": {
+      "role": "primary",
+      "n_positives": 2689921,
+      "n_controls": 2689921,
+      "n_positives_unmatched_dropped": 221518,
+      "drop_rate": 0.0760853996941031,
+      "per_fold": {
+        "0": 567035,
+        "1": 665475,
+        "2": 456288,
+        "3": 398295,
+        "4": 602828
+      }
+    },
+    "frozen_pairs_H1_inter1Mb_seed17.parquet": {
+      "role": "exploratory (secondary)",
+      "n_positives": 9931,
+      "n_controls": 9931,
+      "n_positives_unmatched_dropped": 538022,
+      "drop_rate": 0.983452608076247,
+      "per_fold": {
+        "0": 1410,
+        "1": 3260,
+        "2": 1160,
+        "3": 1060,
+        "4": 3041
+      }
+    },
+    "frozen_pairs_HFFc6_intra10kb_seed17.parquet": {
+      "role": "sensitivity",
+      "n_positives": 3724445,
+      "n_controls": 3724445,
+      "n_positives_unmatched_dropped": 195405,
+      "drop_rate": 0.04985012181588577,
+      "per_fold": {
+        "0": 814112,
+        "1": 873591,
+        "2": 655756,
+        "3": 563280,
+        "4": 817706
+      }
+    }
+  },
+  "compartments": {
+    "H1_MicroC": {
+      "role": "primary",
+      "n_cpg_universe": 408399,
+      "n_cpg_with_E1": 407903,
+      "n_cpg_without_E1": 496,
+      "n_A": 342745,
+      "n_B": 65158,
+      "per_fold_n_with_E1": {
+        "0": 83307,
+        "1": 98501,
+        "2": 65914,
+        "3": 67377,
+        "4": 92804
+      },
+      "E1_oriented_by": "Spearman(E1, hg38 GC)>0 per chromosome (A = positive)"
+    },
+    "HFFc6_MicroC": {
+      "role": "sensitivity",
+      "n_cpg_universe": 408399,
+      "n_cpg_with_E1": 408223,
+      "n_cpg_without_E1": 176,
+      "n_A": 322024,
+      "n_B": 86199,
+      "per_fold_n_with_E1": {
+        "0": 83371,
+        "1": 98586,
+        "2": 65926,
+        "3": 67464,
+        "4": 92876
+      },
+      "E1_oriented_by": "Spearman(E1, hg38 GC)>0 per chromosome (A = positive)"
+    },
+    "GM12878_HiC": {
+      "role": "secondary",
+      "n_cpg_universe": 408399,
+      "n_cpg_with_E1": 408275,
+      "n_cpg_without_E1": 124,
+      "n_A": 300171,
+      "n_B": 108104,
+      "per_fold_n_with_E1": {
+        "0": 83373,
+        "1": 98590,
+        "2": 65950,
+        "3": 67468,
+        "4": 92894
+      },
+      "E1_oriented_by": "Spearman(E1, hg38 GC)>0 per chromosome (A = positive)"
+    }
+  },
+  "sha256": {
+    "assembly_validation.json": "95349508dfec56e5c24ce29dcf5be659c08285ba290b24e4efba86aa0d5bc1cf",
+    "frozen_compartments.report.json": "6743abba22a0fb7aab5fb5b5932bcd31a64dfbae27283206c20f8e50f123404c",
+    "frozen_compartments_GM12878_100kb.parquet": "103234b7ccf2f67bca74df284669e569a4982a0a599c48598f5918cb9ee3b89c",
+    "frozen_compartments_H1_100kb.parquet": "10d7a9280d32b813dae4e026d383d0a2e730da73083df7eb6c82b28e8ca70220",
+    "frozen_compartments_HFFc6_100kb.parquet": "682967d947f326ce507c64eaa4482a1e11537f406d4fa34c36857b70f8d001b4",
+    "frozen_pairs_H1_inter1Mb_seed17.parquet": "06d6b569d3bdc591896ed38cee997695fe80512e1a03bde30f6d60544e9e01b8",
+    "frozen_pairs_H1_inter1Mb_seed17.report.json": "0c7889fa2011fc081c47cab708d522c06273b64e592bad134e59c59ba26aea5c",
+    "frozen_pairs_H1_intra10kb_seed17.parquet": "968e10846bc5d5ec2ab69805f2e5c2ece0fd028d280af1ddc5e516f728fb3b0e",
+    "frozen_pairs_H1_intra10kb_seed17.report.json": "772d0fa7b520355fac5ee081896be98d1307faea3a36844be5bcefc16d8b823a",
+    "frozen_pairs_HFFc6_intra10kb_seed17.parquet": "6e91aa310c3141cc00b6e2eed370a43205dadbe9637c3304b2cc08cf0f728f02",
+    "frozen_pairs_HFFc6_intra10kb_seed17.report.json": "e8ef63f8a4bd1a28992be6948600b6d3f6e20253b3fa9a4504b39e0140bc03df"
+  }
+}

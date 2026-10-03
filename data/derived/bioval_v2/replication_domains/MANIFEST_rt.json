@@ -1,0 +1,405 @@
+{
+ "retrieval_date": "2026-10-02",
+ "source": "UCSC hg19 encodeDCC wgEncodeUwRepliSeq (WaveSignal Rep1)",
+ "base_url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq",
+ "build_in": "hg19/GRCh37",
+ "build_out": "GRCh38",
+ "files": {
+  "wgEncodeUwRepliSeqBg02esWaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqBg02esWaveSignalRep1.bigWig",
+   "sha256": "36187910027de42760b87296dc8cebe0ad27a781ce44cd7daee75ba9c8f1ce37",
+   "n_bins": 3035165,
+   "bytes": 10317463
+  },
+  "wgEncodeUwRepliSeqBjWaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqBjWaveSignalRep1.bigWig",
+   "sha256": "8e75b9ed9811887d330423f414aeece49e424c76f2d831bef53d90cbf6fe2d08",
+   "n_bins": 3035165,
+   "bytes": 10202136
+  },
+  "wgEncodeUwRepliSeqGm06990WaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqGm06990WaveSignalRep1.bigWig",
+   "sha256": "e68921a3e97d022874e7ef577e74b0434e695e8741ddae1c20ea9045c8cb80d5",
+   "n_bins": 3035165,
+   "bytes": 10210965
+  },
+  "wgEncodeUwRepliSeqGm12801WaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqGm12801WaveSignalRep1.bigWig",
+   "sha256": "d2d6dbc36312547223ef40864fc94fb8b3b32024686ccee742ed42bae645ac15",
+   "n_bins": 3035165,
+   "bytes": 10143277
+  },
+  "wgEncodeUwRepliSeqGm12812WaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqGm12812WaveSignalRep1.bigWig",
+   "sha256": "0439068241057051f1c295739a396314f85f1b143b75baf25d57d120a71dd27c",
+   "n_bins": 3035165,
+   "bytes": 10158789
+  },
+  "wgEncodeUwRepliSeqGm12813WaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqGm12813WaveSignalRep1.bigWig",
+   "sha256": "992e07b60bcb10c378f3a0160ee5ef7f42bc835bd807ef0270080b99fc62b623",
+   "n_bins": 3035165,
+   "bytes": 10123367
+  },
+  "wgEncodeUwRepliSeqGm12878WaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqGm12878WaveSignalRep1.bigWig",
+   "sha256": "2fc920e8b02e2e9bfa25d2b8228ae6597a4c5c842506533813edad03ae76c21f",
+   "n_bins": 3035165,
+   "bytes": 10197898
+  },
+  "wgEncodeUwRepliSeqHelas3WaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqHelas3WaveSignalRep1.bigWig",
+   "sha256": "fa8b4d91c8e5747a4fe70a14d73a0431dfb4489957a92abf7233169da1553b75",
+   "n_bins": 3035165,
+   "bytes": 10255300
+  },
+  "wgEncodeUwRepliSeqHepg2WaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqHepg2WaveSignalRep1.bigWig",
+   "sha256": "d8bd9b40cfd9532fdedad1f371e48ac6ab3c50f30340aea1b9c6c2729dba6e82",
+   "n_bins": 3035165,
+   "bytes": 10215164
+  },
+  "wgEncodeUwRepliSeqHuvecWaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqHuvecWaveSignalRep1.bigWig",
+   "sha256": "022718c056a526da4cfba39dd6b71f5d9c8edc05ce5417fe63db19efeaa393de",
+   "n_bins": 3035165,
+   "bytes": 10291845
+  },
+  "wgEncodeUwRepliSeqImr90WaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqImr90WaveSignalRep1.bigWig",
+   "sha256": "a2c612aaacb6ad5728865153c90f8e363bf0b9f694eba6009195aa46a7db3d40",
+   "n_bins": 3035165,
+   "bytes": 10286531
+  },
+  "wgEncodeUwRepliSeqK562WaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqK562WaveSignalRep1.bigWig",
+   "sha256": "baa4fc0fe1bf3015840233db820ec7ddb5976956dbd7203272cfe3b458cb7183",
+   "n_bins": 3035165,
+   "bytes": 10213595
+  },
+  "wgEncodeUwRepliSeqMcf7WaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqMcf7WaveSignalRep1.bigWig",
+   "sha256": "c443f4a420d1718f52010c0648edc897b8b456e60258c6a93d97733bc5376152",
+   "n_bins": 3035165,
+   "bytes": 10168671
+  },
+  "wgEncodeUwRepliSeqNhekWaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqNhekWaveSignalRep1.bigWig",
+   "sha256": "9f6276184b0bf61e00f66e080b83b45ae290b806a2842c88f5747c39d4448961",
+   "n_bins": 3035165,
+   "bytes": 10199222
+  },
+  "wgEncodeUwRepliSeqSknshWaveSignalRep1.bigWig": {
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeUwRepliSeq/wgEncodeUwRepliSeqSknshWaveSignalRep1.bigWig",
+   "sha256": "b3bfaf5755f79fb8aa5fd21bc37e01308cd72206b97d008a755a0fc04be394ea",
+   "n_bins": 3035165,
+   "bytes": 9982595
+  }
+ },
+ "liftover_report_bins": {
+  "n_in": 3035165,
+  "build_in": "GRCh37",
+  "build_out": "GRCh38",
+  "pos_base_in": 0,
+  "liftover_tool": "pyliftover 0.4.1",
+  "chain": "data/raw/liftover/hg19ToHg38.over.chain.gz",
+  "n_bad_chrom": 0,
+  "n_unmapped": 200661,
+  "n_ambiguous": 0,
+  "n_interval_dropped": 13209,
+  "n_dupe": 0,
+  "n_out": 2820279
+ },
+ "bin_table_rows": 42304185,
+ "zscore_params_per_line_(mean,sd)": {
+  "Bg02es": [
+   43.3631673380401,
+   21.150526077756123
+  ],
+  "Bj": [
+   44.42657444840041,
+   22.51989069873097
+  ],
+  "Gm06990": [
+   42.511269738625046,
+   23.307095448110367
+  ],
+  "Gm12801": [
+   43.16751279359443,
+   20.399283593923194
+  ],
+  "Gm12812": [
+   42.65190609302082,
+   20.13361898922967
+  ],
+  "Gm12813": [
+   43.671232206738075,
+   21.113485142756666
+  ],
+  "Gm12878": [
+   43.97626031499523,
+   25.010234588364987
+  ],
+  "Helas3": [
+   43.50162981605951,
+   23.42243803340885
+  ],
+  "Hepg2": [
+   44.40304679924341,
+   25.871476695660412
+  ],
+  "Huvec": [
+   42.40817251035751,
+   23.78125699564142
+  ],
+  "Imr90": [
+   43.15581398388239,
+   26.171289222591668
+  ],
+  "K562": [
+   43.506240074691526,
+   22.74256747993473
+  ],
+  "Mcf7": [
+   42.85195239075575,
+   22.314939156888983
+  ],
+  "Nhek": [
+   42.94939443367884,
+   20.50038720186525
+  ],
+  "Sknsh": [
+   44.42630972234646,
+   19.73866010931421
+  ]
+ },
+ "cpg_table": {
+  "rows": 408399,
+  "n_any_rt": 408345,
+  "n_consensus": 408345,
+  "per_line_n_with_rt": {
+   "rt_BG02ES": 408345,
+   "rt_BJ": 408345,
+   "rt_GM06990": 408345,
+   "rt_GM12801": 408345,
+   "rt_GM12812": 408345,
+   "rt_GM12813": 408345,
+   "rt_GM12878": 408345,
+   "rt_HELAS3": 408345,
+   "rt_HEPG2": 408345,
+   "rt_HUVEC": 408345,
+   "rt_IMR90": 408345,
+   "rt_K562": 408345,
+   "rt_MCF7": 408345,
+   "rt_NHEK": 408345,
+   "rt_SKNSH": 408345
+  },
+  "coverage_per_chrom": [
+   {
+    "chrom": "chr1",
+    "n_universe": 40627,
+    "n_with_rt": 40620,
+    "n_consensus": 40620,
+    "frac": 0.999827700790115
+   },
+   {
+    "chrom": "chr2",
+    "n_universe": 30288,
+    "n_with_rt": 30288,
+    "n_consensus": 30288,
+    "frac": 1.0
+   },
+   {
+    "chrom": "chr3",
+    "n_universe": 22189,
+    "n_with_rt": 22189,
+    "n_consensus": 22189,
+    "frac": 1.0
+   },
+   {
+    "chrom": "chr4",
+    "n_universe": 17509,
+    "n_with_rt": 17508,
+    "n_consensus": 17508,
+    "frac": 0.9999428865155063
+   },
+   {
+    "chrom": "chr5",
+    "n_universe": 21144,
+    "n_with_rt": 21143,
+    "n_consensus": 21143,
+    "frac": 0.9999527052591752
+   },
+   {
+    "chrom": "chr6",
+    "n_universe": 31034,
+    "n_with_rt": 31029,
+    "n_consensus": 31029,
+    "frac": 0.999838886382677
+   },
+   {
+    "chrom": "chr7",
+    "n_universe": 24873,
+    "n_with_rt": 24861,
+    "n_consensus": 24861,
+    "frac": 0.9995175491496804
+   },
+   {
+    "chrom": "chr8",
+    "n_universe": 18057,
+    "n_with_rt": 18052,
+    "n_consensus": 18052,
+    "frac": 0.9997230990751509
+   },
+   {
+    "chrom": "chr9",
+    "n_universe": 8513,
+    "n_with_rt": 8512,
+    "n_consensus": 8512,
+    "frac": 0.9998825325972043
+   },
+   {
+    "chrom": "chr10",
+    "n_universe": 20910,
+    "n_with_rt": 20910,
+    "n_consensus": 20910,
+    "frac": 1.0
+   },
+   {
+    "chrom": "chr11",
+    "n_universe": 25513,
+    "n_with_rt": 25512,
+    "n_consensus": 25512,
+    "frac": 0.9999608042958492
+   },
+   {
+    "chrom": "chr12",
+    "n_universe": 21501,
+    "n_with_rt": 21499,
+    "n_consensus": 21499,
+    "frac": 0.9999069810706479
+   },
+   {
+    "chrom": "chr13",
+    "n_universe": 10445,
+    "n_with_rt": 10443,
+    "n_consensus": 10443,
+    "frac": 0.9998085208233605
+   },
+   {
+    "chrom": "chr14",
+    "n_universe": 13128,
+    "n_with_rt": 13127,
+    "n_consensus": 13127,
+    "frac": 0.9999238269347959
+   },
+   {
+    "chrom": "chr15",
+    "n_universe": 12870,
+    "n_with_rt": 12869,
+    "n_consensus": 12869,
+    "frac": 0.9999222999223
+   },
+   {
+    "chrom": "chr16",
+    "n_universe": 18548,
+    "n_with_rt": 18547,
+    "n_consensus": 18547,
+    "frac": 0.9999460858313565
+   },
+   {
+    "chrom": "chr17",
+    "n_universe": 24267,
+    "n_with_rt": 24257,
+    "n_consensus": 24257,
+    "frac": 0.9995879177483826
+   },
+   {
+    "chrom": "chr18",
+    "n_universe": 5253,
+    "n_with_rt": 5253,
+    "n_consensus": 5253,
+    "frac": 1.0
+   },
+   {
+    "chrom": "chr19",
+    "n_universe": 21930,
+    "n_with_rt": 21927,
+    "n_consensus": 21927,
+    "frac": 0.9998632010943912
+   },
+   {
+    "chrom": "chr20",
+    "n_universe": 9283,
+    "n_with_rt": 9283,
+    "n_consensus": 9283,
+    "frac": 1.0
+   },
+   {
+    "chrom": "chr21",
+    "n_universe": 3337,
+    "n_with_rt": 3337,
+    "n_consensus": 3337,
+    "frac": 1.0
+   },
+   {
+    "chrom": "chr22",
+    "n_universe": 7180,
+    "n_with_rt": 7179,
+    "n_consensus": 7179,
+    "frac": 0.9998607242339833
+   }
+  ]
+ },
+ "bin_autocorr_1kb_steps": {
+  "K562": {
+   "rho_lag1kb": 0.9999970164725702,
+   "rho_lag10kb": 0.9997621533509853,
+   "rho_lag50kb": 0.99442399689757,
+   "rho_lag100kb": 0.9802750211443394,
+   "rho_lag250kb": 0.9289781951792703,
+   "rho_lag500kb": 0.8290508778146422,
+   "rho_lag1000kb": 0.6519629958475945,
+   "rho_lag2000kb": 0.452726634584831
+  },
+  "GM12878": {
+   "rho_lag1kb": 1.000000916677061,
+   "rho_lag10kb": 0.9998722255984449,
+   "rho_lag50kb": 0.9964361826603139,
+   "rho_lag100kb": 0.9867887724966352,
+   "rho_lag250kb": 0.9444552779506816,
+   "rho_lag500kb": 0.8490380190659472,
+   "rho_lag1000kb": 0.6556649540011568,
+   "rho_lag2000kb": 0.44118052699613547
+  },
+  "IMR90": {
+   "rho_lag1kb": 1.0000003116499914,
+   "rho_lag10kb": 0.999832729160068,
+   "rho_lag50kb": 0.9954809642195552,
+   "rho_lag100kb": 0.9828613468055386,
+   "rho_lag250kb": 0.9204871087620013,
+   "rho_lag500kb": 0.7893453076644461,
+   "rho_lag1000kb": 0.5849064554893403,
+   "rho_lag2000kb": 0.3874974887969416
+  }
+ },
+ "tool_versions": {
+  "python": "3.10.20",
+  "numpy": "2.2.6",
+  "pandas": "2.3.3",
+  "pyBigWig": "0.3.26",
+  "pyliftover": "pyliftover 0.4.1",
+  "chain": "data/raw/liftover/hg19ToHg38.over.chain.gz"
+ },
+ "chain_sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d",
+ "outputs": {
+  "rt_bins_grch38_long.parquet": {
+   "sha256": "e42b0ccda84a560bb1daf02725619840ea42cff891224da2d5576c10cd4da337",
+   "bytes": 534485218
+  },
+  "cpg_rt_universe.parquet": {
+   "sha256": "fa4fcd3c2f841a9db9454544103c580dcd87e0ea760e95832d2dc2ec1d90cef6",
+   "bytes": 26311445
+  }
+ }
+}

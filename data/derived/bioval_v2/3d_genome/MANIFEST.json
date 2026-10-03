@@ -1,0 +1,533 @@
+{
+  "axis": "3d_genome",
+  "code_version": "0d228ec9cef39fb25f14289d033caf09da205253",
+  "git_commit": "0d228ec9cef39fb25f14289d033caf09da205253",
+  "params": {
+    "chroms_in_maps": [
+      "chr1",
+      "chr2",
+      "chr3",
+      "chr4",
+      "chr5",
+      "chr6",
+      "chr7",
+      "chr8",
+      "chr9",
+      "chr10",
+      "chr11",
+      "chr12",
+      "chr13",
+      "chr14",
+      "chr15",
+      "chr16",
+      "chr17",
+      "chr18",
+      "chr19",
+      "chr20",
+      "chr21",
+      "chr22",
+      "chrX"
+    ],
+    "cov_quantile": 0.25,
+    "cpg_to_bin": "floor((pos-1)/binsize)",
+    "created": "2026-10-02T18:26:49",
+    "derived_sha256": {
+      "FROZEN.json": "743803ef7275bb00d214e754faac4df15c7dcade4c776b3fa149f45dfc0fe927",
+      "GM12878_HiC_audit.json": "9340dc5be3598c3dc03ee55ce76d32cb35f52089ecfec0edc147026226448142",
+      "GM12878_HiC_compartment_bins_100000.parquet": "b27fa1ffd42df2b7aa9bb91172496140b7f3cedb9c142f0dbb91d4583ed8980d",
+      "GM12878_HiC_compartment_bins_50000.parquet": "372b8e845bbeafb56e022377192ea5fb572291bd269e20344b1321033af0cb26",
+      "GM12878_HiC_compartment_qc.csv": "5f023ffa15d5b3319f85349c82fdd17f158fe80c74f9042defd0650eee016ac9",
+      "GM12878_HiC_cpg_compartment_100000.parquet": "6750d9292eb9c01e77d8a33822ab7a247c495cd90b086c8f51038c5b20f41e89",
+      "GM12878_HiC_cpg_compartment_50000.parquet": "af6c4c917f304c8573ab0c11993aafd8f1d1fa82bba29fadc7b01d3ab59893bc",
+      "H1_MicroC_audit.json": "32b994bb862fbdc2f458645a240d33e562de427a4dbfd4b0e302ffb5c0867073",
+      "H1_MicroC_compartment_bins_100000.parquet": "7ad59bd2e7973edadf69b561152416ec97468d9e2edec5076cdb0484e035547b",
+      "H1_MicroC_compartment_bins_50000.parquet": "52d765cc4ded1184b39bf051d63240771f82e107a769d1f3d663a3901a92e069",
+      "H1_MicroC_compartment_qc.csv": "9a526451cfaa894f14df6151927d2988443bd93ff7c8a875abad71e9250b12f7",
+      "H1_MicroC_cpg_compartment_100000.parquet": "0fcee2c68480e9cc0fcd4dd284d0c10fe78b2c3c2fdf77679e2a5d9301f66883",
+      "H1_MicroC_cpg_compartment_50000.parquet": "7e474a5cf850136dc7ca32f886e8b84fcb802cf7870770ec748cf0cf11ec7596",
+      "H1_MicroC_inter_contacts_1000000.parquet": "c7f698417607f133abeddb98ade240005665ff6a020154dd9b2011b6a09ed213",
+      "H1_MicroC_inter_noncontact_pool_1000000.parquet": "bfabf779db7404087685fe4a594ee2d232d1d71e62eb6092b5c436aa884cfc66",
+      "H1_MicroC_inter_stats.csv": "fd864fb85edbca69b5d65d90c9d14231305ffe0042c88e56958fa6956719956d",
+      "H1_MicroC_intra_bin_cov_10000.parquet": "4137397880022adf61b35461d322e8a7ecfa3b6e4a00d8f5bbbd230aa47068f5",
+      "H1_MicroC_intra_contacts_10000.parquet": "355bff7c5674646ffc700288faa3546abeee774a19462fa7bc041c6036ed8c35",
+      "H1_MicroC_intra_noncontact_pool_10000.parquet": "f2eb25c2bcd985828bf746bdf98c722deb0eb0c59b1a78baabeb9c949b0af75e",
+      "H1_MicroC_intra_stats.csv": "72b22608755e9dd7bd11cbee8ff1a52e3c2bbde0e987b66409e81166a8598399",
+      "HFFc6_MicroC_audit.json": "cd4cf1944450f1d61e4a1f30360840ff538a3f1c161adf227f4b5bc3481a2b62",
+      "HFFc6_MicroC_compartment_bins_100000.parquet": "bc04dfb6b5c256812c3147e27fceeeffcdaa48a0204fda29c179d396fb582c53",
+      "HFFc6_MicroC_compartment_bins_50000.parquet": "3b6e9a14ce91a3283c57879f5a0c4212f0d6782310b39c0f133067f7d0e4d7b7",
+      "HFFc6_MicroC_compartment_qc.csv": "687823232d375de30c547faa10c16aff2dd035dddf564e84573f691324bf6f7f",
+      "HFFc6_MicroC_cpg_compartment_100000.parquet": "1684fe20a0e9d5de0efde6eaa849c4418fe3da5ebc394ce92a7b8b1e9d2fc9c2",
+      "HFFc6_MicroC_cpg_compartment_50000.parquet": "00d503713a4be2e577814824b51359ab91d6f926ea2cf143a8a68d3eebbf8de9",
+      "HFFc6_MicroC_inter_contacts_1000000.parquet": "319bb154f8320ae846670af0f8c0cd1838ca1a1a5455016ac6469eca81c9a23d",
+      "HFFc6_MicroC_inter_noncontact_pool_1000000.parquet": "e66ee470294a7fa9c3ebc21844886d2e628fe6f70e381ff986b1bea29adb42ce",
+      "HFFc6_MicroC_inter_stats.csv": "9a9da8536905eb7b60048ec5190580421a080331dd17563844cc29c6ec2c6292",
+      "HFFc6_MicroC_intra_bin_cov_10000.parquet": "cabf9984c0663b3f35f3b6a5f5c1b7bb02cd189276d9e63f303e4eb9c44d41a9",
+      "HFFc6_MicroC_intra_contacts_10000.parquet": "99e2811795e6ac448b1131cbb704f1286cc51c96535a219df6317f9e994edcf9",
+      "HFFc6_MicroC_intra_noncontact_pool_10000.parquet": "1a0cb93085cf5ea0d55be90bfa275ddbe20231f519a8f6109137409971943f06",
+      "HFFc6_MicroC_intra_stats.csv": "e14800b2bf08109990ad3d0182008acd521857a57ebbe0fae1525cacee66bf82",
+      "assembly_validation.json": "95349508dfec56e5c24ce29dcf5be659c08285ba290b24e4efba86aa0d5bc1cf",
+      "frozen_compartments.report.json": "6743abba22a0fb7aab5fb5b5932bcd31a64dfbae27283206c20f8e50f123404c",
+      "frozen_compartments_GM12878_100kb.parquet": "103234b7ccf2f67bca74df284669e569a4982a0a599c48598f5918cb9ee3b89c",
+      "frozen_compartments_H1_100kb.parquet": "10d7a9280d32b813dae4e026d383d0a2e730da73083df7eb6c82b28e8ca70220",
+      "frozen_compartments_HFFc6_100kb.parquet": "682967d947f326ce507c64eaa4482a1e11537f406d4fa34c36857b70f8d001b4",
+      "frozen_pairs_H1_inter1Mb_seed17.parquet": "06d6b569d3bdc591896ed38cee997695fe80512e1a03bde30f6d60544e9e01b8",
+      "frozen_pairs_H1_inter1Mb_seed17.report.json": "0c7889fa2011fc081c47cab708d522c06273b64e592bad134e59c59ba26aea5c",
+      "frozen_pairs_H1_intra10kb_seed17.parquet": "968e10846bc5d5ec2ab69805f2e5c2ece0fd028d280af1ddc5e516f728fb3b0e",
+      "frozen_pairs_H1_intra10kb_seed17.report.json": "772d0fa7b520355fac5ee081896be98d1307faea3a36844be5bcefc16d8b823a",
+      "frozen_pairs_HFFc6_intra10kb_seed17.parquet": "6e91aa310c3141cc00b6e2eed370a43205dadbe9637c3304b2cc08cf0f728f02",
+      "frozen_pairs_HFFc6_intra10kb_seed17.report.json": "e8ef63f8a4bd1a28992be6948600b6d3f6e20253b3fa9a4504b39e0140bc03df",
+      "hg38_gc_10kb.parquet": "e11a55908ada18b360a4f4ff37d25c3c26aeb970e47812923019069ebd440a20"
+    },
+    "eig_res": [
+      100000,
+      50000
+    ],
+    "fetch_res": [
+      10000,
+      50000,
+      100000,
+      1000000
+    ],
+    "frozen_pairs_and_compartments": "FROZEN.json (produced by freeze_4dn_pairs.py before any embedding metric); roles: H1 primary, HFFc6 sensitivity, GM12878 secondary",
+    "genome_assembly_attr_in_cooler": "unknown",
+    "genome_assembly_evidence": "assembly_validation.json (chrom lengths vs hg38.fa.gz and hg19, 4DN portal genome_assembly, CpG dinucleotide check, E1-GC)",
+    "genome_assembly_verdict": "GRCh38 (inferred+validated)",
+    "independence_note": "No Hi-C/Micro-C/compartment/TAD/loop track among representation inputs (track_contract.tsv: histone, TF, DNase ChIP/seq only); 201 CTCF + 14 RAD21 + 6 SMC3 ChIP-seq tracks are inputs",
+    "inter_min_oe": 2.0,
+    "inter_min_raw": 50,
+    "inter_res": 1000000,
+    "intra_max_bins": 200,
+    "intra_min_bins": 2,
+    "intra_min_oe": 2.0,
+    "intra_min_raw": 8,
+    "intra_res": 10000,
+    "noncontact_max_oe": 0.5,
+    "pool_min": 200,
+    "pool_mult": 10,
+    "qc_notes": "4DN source coolers contain a few duplicated (bin1,bin2) pixel keys; summed. ICE weights from the 4DN mcool used unchanged.",
+    "roles": {
+      "GM12878_HiC": "secondary",
+      "H1_MicroC": "primary",
+      "HFFc6_MicroC": "sensitivity"
+    },
+    "seed": 17,
+    "spearman_flag": 0.2,
+    "tools": {
+      "cooler": "0.10.4",
+      "cooltools": "0.7.1",
+      "numpy": "2.2.6",
+      "pandas": "2.3.3",
+      "python": "3.10.20",
+      "scipy": "1.15.2"
+    }
+  },
+  "sources": [
+    {
+      "accession": "4DNFI9GMP2J8",
+      "build": "GRCh38",
+      "description": "H1-hESC Micro-C merged (Tier 1)",
+      "experiment_set": "4DNES21D8SP8",
+      "extracted_single_resolution_coolers": {
+        "4DNFI9GMP2J8_10000.cool": {
+          "bytes": 1812535311,
+          "sha256": "056ba6ae64aa74992ddf9adbc5a3562179d3b3b9f7d4cbd860754cf464bd9f2d"
+        },
+        "4DNFI9GMP2J8_100000.cool": {
+          "bytes": 674016454,
+          "sha256": "23fe240a850fbe3d1174159d172923e03ef028a1ba46a31780dcd5f16c35f75e"
+        },
+        "4DNFI9GMP2J8_1000000.cool": {
+          "bytes": 15489694,
+          "sha256": "9794bb0fe86f81c26f166b0a9518db2b90fc178c4904e1dd6acea0d7015ba87b"
+        },
+        "4DNFI9GMP2J8_50000.cool": {
+          "bytes": 1067868727,
+          "sha256": "87918d41ecfed88af40cc2efa9c6038b2356503ebed9660486202ed2bcba3d7e"
+        }
+      },
+      "fetched_by": "HTTP range requests (single resolutions only; full-file md5 not verifiable)",
+      "full_mcool_bytes": 13086652234,
+      "full_mcool_md5_portal": "6b9dd3f9388c06325b713597550ae349",
+      "license": "4DN open data (public; no auth)",
+      "resolutions_extracted": [
+        10000,
+        50000,
+        100000,
+        1000000
+      ],
+      "system": "H1_MicroC",
+      "url_open_data": "https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/d13aa1ea-053c-4113-94fe-a1e7ab1dbbab/4DNFI9GMP2J8.mcool",
+      "url_portal": "https://data.4dnucleome.org/files-processed/4DNFI9GMP2J8/"
+    },
+    {
+      "accession": "4DNFI9FVHJZQ",
+      "build": "GRCh38",
+      "description": "HFFc6 Micro-C merged (Tier 1)",
+      "experiment_set": "4DNESWST3UBH",
+      "extracted_single_resolution_coolers": {
+        "4DNFI9FVHJZQ_10000.cool": {
+          "bytes": 1465589295,
+          "sha256": "285932bb291c1e1f1591b13845b0e96c383ac3a8fe54f89c5fb4809ee9a006c2"
+        },
+        "4DNFI9FVHJZQ_100000.cool": {
+          "bytes": 310381596,
+          "sha256": "6210706f393c32d691d43be296b2fd1bd24e58782acc784580aed934ec6269f4"
+        },
+        "4DNFI9FVHJZQ_1000000.cool": {
+          "bytes": 7521339,
+          "sha256": "3854c6fac500626be03ce344165ab393917028fef5304c66dff151f6d0a842f6"
+        },
+        "4DNFI9FVHJZQ_50000.cool": {
+          "bytes": 732220089,
+          "sha256": "dbb72c3afc4c98e9a012e1bb5f8f38ff5fb7b0566a4ab890301780d62bbd98a8"
+        }
+      },
+      "fetched_by": "HTTP range requests (single resolutions only; full-file md5 not verifiable)",
+      "full_mcool_bytes": 11099585140,
+      "full_mcool_md5_portal": "fc6f3601fc82b8006432fea4c8e513ee",
+      "license": "4DN open data (public; no auth)",
+      "resolutions_extracted": [
+        10000,
+        50000,
+        100000,
+        1000000
+      ],
+      "system": "HFFc6_MicroC",
+      "url_open_data": "https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/27bbfb40-0224-427c-be41-398b43d70c48/4DNFI9FVHJZQ.mcool",
+      "url_portal": "https://data.4dnucleome.org/files-processed/4DNFI9FVHJZQ/"
+    },
+    {
+      "accession": "4DNFIXP4QG5B",
+      "build": "GRCh38",
+      "description": "GM12878 in situ Hi-C merged",
+      "experiment_set": "4DNES3JX38V5",
+      "extracted_single_resolution_coolers": {
+        "4DNFIXP4QG5B_100000.cool": {
+          "bytes": 907465400,
+          "sha256": "b00d17949080c51d6b5e5f2df0a1b79d8be345e16f01800646e0e45229eafd7d"
+        },
+        "4DNFIXP4QG5B_50000.cool": {
+          "bytes": 1820983924,
+          "sha256": "854242ac684b816c77daf70396a7252d9d2d8eb5eb8bdf1c54457db8bea4fd1b"
+        }
+      },
+      "fetched_by": "HTTP range requests (single resolutions only; full-file md5 not verifiable)",
+      "full_mcool_bytes": 27408885254,
+      "full_mcool_md5_portal": "a4ff0d005aa78bcd544977b29f152ee6",
+      "license": "4DN open data (public; no auth)",
+      "resolutions_extracted": [
+        50000,
+        100000
+      ],
+      "system": "GM12878_HiC",
+      "url_open_data": "https://4dn-open-data-public.s3.amazonaws.com/fourfront-webprod/wfoutput/d6abea45-b0bb-4154-9854-1d3075b98097/4DNFIXP4QG5B.mcool",
+      "url_portal": "https://data.4dnucleome.org/files-processed/4DNFIXP4QG5B/"
+    }
+  ],
+  "universe_audit": {
+    "GM12878_HiC": {
+      "build_check": {
+        "binsize": 50000,
+        "chr1_len": 248956422,
+        "chroms_match_hg38_fasta": true
+      },
+      "compartment_100000": {
+        "frac_cpg_E1_defined": 0.9996963753584117,
+        "frac_cpg_in_valid_bin": 0.9996963753584117,
+        "n_A": 300171,
+        "n_B": 108104,
+        "n_cpg_no_E1": 124,
+        "n_low_confidence_chroms": 0,
+        "spearman_E1_GC_median": 0.6257680014978078,
+        "spearman_E1_GC_min": 0.3363673376548977
+      },
+      "compartment_50000": {
+        "frac_cpg_E1_defined": 0.9992017610229212,
+        "frac_cpg_in_valid_bin": 0.9992017610229212,
+        "n_A": 299636,
+        "n_B": 108437,
+        "n_cpg_no_E1": 326,
+        "n_low_confidence_chroms": 0,
+        "spearman_E1_GC_median": 0.5905517816898179,
+        "spearman_E1_GC_min": 0.3070552050018288
+      },
+      "files": {
+        "GM12878_HiC_compartment_bins_100000.parquet": {
+          "MB": 0.99,
+          "rows": 30321
+        },
+        "GM12878_HiC_compartment_bins_50000.parquet": {
+          "MB": 2.0,
+          "rows": 60630
+        },
+        "GM12878_HiC_compartment_qc.csv": {
+          "MB": 0.0,
+          "rows": null
+        },
+        "GM12878_HiC_cpg_compartment_100000.parquet": {
+          "MB": 2.68,
+          "rows": 408399
+        },
+        "GM12878_HiC_cpg_compartment_50000.parquet": {
+          "MB": 2.84,
+          "rows": 408399
+        }
+      },
+      "n_universe_chrY_chrM_excluded_from_maps": 0,
+      "system": "GM12878_HiC",
+      "universe_n": 408399
+    },
+    "H1_MicroC": {
+      "build_check": {
+        "binsize": 10000,
+        "chr1_len": 248956422,
+        "chroms_match_hg38_fasta": true
+      },
+      "compartment_100000": {
+        "frac_cpg_E1_defined": 0.998785501433647,
+        "frac_cpg_in_valid_bin": 0.998785501433647,
+        "n_A": 342745,
+        "n_B": 65158,
+        "n_cpg_no_E1": 496,
+        "n_low_confidence_chroms": 0,
+        "spearman_E1_GC_median": 0.7805001517667689,
+        "spearman_E1_GC_min": 0.6692660110460564
+      },
+      "compartment_50000": {
+        "frac_cpg_E1_defined": 0.998596960325564,
+        "frac_cpg_in_valid_bin": 0.998596960325564,
+        "n_A": 343553,
+        "n_B": 64273,
+        "n_cpg_no_E1": 573,
+        "n_low_confidence_chroms": 0,
+        "spearman_E1_GC_median": 0.7452513378551907,
+        "spearman_E1_GC_min": 0.4674896773291267
+      },
+      "files": {
+        "H1_MicroC_compartment_bins_100000.parquet": {
+          "MB": 0.98,
+          "rows": 30321
+        },
+        "H1_MicroC_compartment_bins_50000.parquet": {
+          "MB": 1.98,
+          "rows": 60630
+        },
+        "H1_MicroC_compartment_qc.csv": {
+          "MB": 0.0,
+          "rows": null
+        },
+        "H1_MicroC_cpg_compartment_100000.parquet": {
+          "MB": 2.68,
+          "rows": 408399
+        },
+        "H1_MicroC_cpg_compartment_50000.parquet": {
+          "MB": 2.83,
+          "rows": 408399
+        },
+        "H1_MicroC_inter_contacts_1000000.parquet": {
+          "MB": 0.53,
+          "rows": 33167
+        },
+        "H1_MicroC_inter_noncontact_pool_1000000.parquet": {
+          "MB": 0.08,
+          "rows": 7074
+        },
+        "H1_MicroC_inter_stats.csv": {
+          "MB": 0.01,
+          "rows": null
+        },
+        "H1_MicroC_intra_contacts_10000.parquet": {
+          "MB": 33.33,
+          "rows": 2348800
+        },
+        "H1_MicroC_intra_noncontact_pool_10000.parquet": {
+          "MB": 22.33,
+          "rows": 1677949
+        },
+        "H1_MicroC_intra_stats.csv": {
+          "MB": 0.0,
+          "rows": null
+        }
+      },
+      "inter": {
+        "contact_obs_exp_min": 2.0000033378601074,
+        "est_cpg_pairs_K20": 600155,
+        "est_cpg_pairs_all": 6670853492,
+        "est_pool_cpg_pairs_K20": 141022,
+        "est_pool_cpg_pairs_all": 78919952,
+        "n_contact_bin_pairs": 33167,
+        "n_contact_bin_pairs_cpg_both_sides": 30019,
+        "n_pool_bin_pairs": 7074,
+        "n_pool_cpg_both_sides": 7074,
+        "pool_obs_exp_max": 0.49999815225601196,
+        "res": 1000000
+      },
+      "inter_bins": {
+        "frac_bins_valid": 0.9208278580814717,
+        "frac_cpg_in_valid_bin": 0.9967213435880108,
+        "n_bins_with_cpg": 2691,
+        "res": 1000000
+      },
+      "intra": {
+        "contact_obs_exp_min": 2.000000476837158,
+        "contacts_cpg_both_by_dist_bp": {
+          "(0.0, 100000.0]": 13853,
+          "(100000.0, 500000.0]": 111378,
+          "(1000000.0, 2000000.0]": 97094,
+          "(500000.0, 1000000.0]": 103408
+        },
+        "est_cpg_pairs_K20": 3078680,
+        "est_cpg_pairs_all": 12766143,
+        "est_pool_cpg_pairs_K20": 15245886,
+        "est_pool_cpg_pairs_all": 47931119,
+        "n_contact_bin_pairs": 2348800,
+        "n_contact_bin_pairs_cpg_both_sides": 325733,
+        "n_pool_bin_pairs": 1677949,
+        "n_pool_cpg_both_sides": 1677949,
+        "pool_by_dist_bp": {
+          "(0.0, 100000.0]": 13407,
+          "(100000.0, 500000.0]": 290742,
+          "(1000000.0, 2000000.0]": 829429,
+          "(500000.0, 1000000.0]": 544371
+        },
+        "pool_obs_exp_max": 0.4999997019767761,
+        "res": 10000
+      },
+      "intra_bins": {
+        "frac_bins_valid": 0.9146096848050569,
+        "frac_cpg_in_valid_bin": 0.9989813882991878,
+        "n_bins_with_cpg": 91268,
+        "res": 10000
+      },
+      "n_universe_chrY_chrM_excluded_from_maps": 0,
+      "system": "H1_MicroC",
+      "universe_n": 408399
+    },
+    "HFFc6_MicroC": {
+      "build_check": {
+        "binsize": 10000,
+        "chr1_len": 248956422,
+        "chroms_match_hg38_fasta": true
+      },
+      "compartment_100000": {
+        "frac_cpg_E1_defined": 0.9995690488958102,
+        "frac_cpg_in_valid_bin": 0.9995690488958102,
+        "n_A": 322024,
+        "n_B": 86199,
+        "n_cpg_no_E1": 176,
+        "n_low_confidence_chroms": 0,
+        "spearman_E1_GC_median": 0.5193394057665114,
+        "spearman_E1_GC_min": 0.3762432872435118
+      },
+      "compartment_50000": {
+        "frac_cpg_E1_defined": 0.9989397623402604,
+        "frac_cpg_in_valid_bin": 0.9989397623402604,
+        "n_A": 324822,
+        "n_B": 83144,
+        "n_cpg_no_E1": 433,
+        "n_low_confidence_chroms": 0,
+        "spearman_E1_GC_median": 0.4993060066375189,
+        "spearman_E1_GC_min": 0.3295136758307678
+      },
+      "files": {
+        "HFFc6_MicroC_compartment_bins_100000.parquet": {
+          "MB": 0.98,
+          "rows": 30321
+        },
+        "HFFc6_MicroC_compartment_bins_50000.parquet": {
+          "MB": 1.99,
+          "rows": 60630
+        },
+        "HFFc6_MicroC_compartment_qc.csv": {
+          "MB": 0.0,
+          "rows": null
+        },
+        "HFFc6_MicroC_cpg_compartment_100000.parquet": {
+          "MB": 2.68,
+          "rows": 408399
+        },
+        "HFFc6_MicroC_cpg_compartment_50000.parquet": {
+          "MB": 2.83,
+          "rows": 408399
+        },
+        "HFFc6_MicroC_inter_contacts_1000000.parquet": {
+          "MB": 0.1,
+          "rows": 5970
+        },
+        "HFFc6_MicroC_inter_noncontact_pool_1000000.parquet": {
+          "MB": 0.01,
+          "rows": 178
+        },
+        "HFFc6_MicroC_inter_stats.csv": {
+          "MB": 0.02,
+          "rows": null
+        },
+        "HFFc6_MicroC_intra_contacts_10000.parquet": {
+          "MB": 41.88,
+          "rows": 3046709
+        },
+        "HFFc6_MicroC_intra_noncontact_pool_10000.parquet": {
+          "MB": 28.31,
+          "rows": 2183192
+        },
+        "HFFc6_MicroC_intra_stats.csv": {
+          "MB": 0.0,
+          "rows": null
+        }
+      },
+      "inter": {
+        "contact_obs_exp_min": 2.00006365776062,
+        "est_cpg_pairs_K20": 95378,
+        "est_cpg_pairs_all": 1323238760,
+        "est_pool_cpg_pairs_K20": 3518,
+        "est_pool_cpg_pairs_all": 542027,
+        "n_contact_bin_pairs": 5970,
+        "n_contact_bin_pairs_cpg_both_sides": 4776,
+        "n_pool_bin_pairs": 178,
+        "n_pool_cpg_both_sides": 178,
+        "pool_obs_exp_max": 0.49996936321258545,
+        "res": 1000000
+      },
+      "inter_bins": {
+        "frac_bins_valid": 0.9218134034165572,
+        "frac_cpg_in_valid_bin": 0.9958349555214386,
+        "n_bins_with_cpg": 2691,
+        "res": 1000000
+      },
+      "intra": {
+        "contact_obs_exp_min": 2.0000007152557373,
+        "contacts_cpg_both_by_dist_bp": {
+          "(0.0, 100000.0]": 18294,
+          "(100000.0, 500000.0]": 147528,
+          "(1000000.0, 2000000.0]": 141070,
+          "(500000.0, 1000000.0]": 129951
+        },
+        "est_cpg_pairs_K20": 4124875,
+        "est_cpg_pairs_all": 15620508,
+        "est_pool_cpg_pairs_K20": 19959083,
+        "est_pool_cpg_pairs_all": 65636573,
+        "n_contact_bin_pairs": 3046709,
+        "n_contact_bin_pairs_cpg_both_sides": 436843,
+        "n_pool_bin_pairs": 2183192,
+        "n_pool_cpg_both_sides": 2183192,
+        "pool_by_dist_bp": {
+          "(0.0, 100000.0]": 24712,
+          "(100000.0, 500000.0]": 366597,
+          "(1000000.0, 2000000.0]": 1139663,
+          "(500000.0, 1000000.0]": 652220
+        },
+        "pool_obs_exp_max": 0.49999991059303284,
+        "res": 10000
+      },
+      "intra_bins": {
+        "frac_bins_valid": 0.9193240826883615,
+        "frac_cpg_in_valid_bin": 0.9992115553661982,
+        "n_bins_with_cpg": 91268,
+        "res": 10000
+      },
+      "n_universe_chrY_chrM_excluded_from_maps": 0,
+      "system": "HFFc6_MicroC",
+      "universe_n": 408399
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+ "retrieval_date": "2026-10-02",
+ "source_url": "https://github.com/bdecato/PMD_Paper_Scripts/raw/master/AllPMDs.tar.bz2",
+ "tarball_sha256": "07d45947764621edc9590f4dbe3a6a2d2e79ac770c9c85f0f4e608e8483145ed",
+ "license": "GPL-3.0 (repo LICENSE); paper CC-BY",
+ "citation": "Decato BE et al. 2020 Epigenetics Chromatin 13:42, doi:10.1186/s13072-020-00363-7",
+ "build_in": "hg19 (verified empirically: BUILD_CHECK.json)",
+ "build_out": "GRCh38 (explicit liftover via biological_validation_v2.coordinates.harmonize)",
+ "status": "SECONDARY/EXPLORATORY (derived from WGBS methylation; not a primary endpoint)",
+ "liftover_totals_all_samples": {
+  "n_in": 397664,
+  "n_unmapped": 4749,
+  "n_ambiguous": 0,
+  "n_interval_dropped": 4995,
+  "n_dupe": 0,
+  "n_out": 387252
+ },
+ "liftover_drop_fraction": 0.0245,
+ "n_cpg_in_any_pmd_if_coords_wrongly_treated_as_GRCh38": 293847,
+ "n_human_samples": 157,
+ "n_universe": 408399,
+ "n_cpg_pmd_in_any": 328894,
+ "n_cpg_assessed": 408399,
+ "categories": {
+  "non_TCGA": 110,
+  "TCGA_tumor": 39,
+  "TCGA_matched_healthy": 8
+ },
+ "dependency_flag": "derived from WGBS methylation: confounded with methylation prediction; independent of ENCODE inputs",
+ "tool_versions": {
+  "python": "3.10.20",
+  "pandas": "2.3.3",
+  "liftover": "pyliftover via biological_validation_v2.coordinates.harmonize"
+ },
+ "chain_sha256": "5c0598e500ceb5a78c73086929e8ef993aec309bcafb595139b53d440b125a1d"
+}

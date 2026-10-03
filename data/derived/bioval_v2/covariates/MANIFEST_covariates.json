@@ -1,0 +1,47 @@
+{
+  "n_rows": 408399,
+  "nan_per_column": {
+    "cpg_idx": 0,
+    "chrom": 0,
+    "pos": 0,
+    "context": 0,
+    "cpg_density": 0,
+    "gc_content": 0,
+    "cpg_density_hg38": 0,
+    "tss_dist": 0,
+    "probe_type": 6429
+  },
+  "notes": [],
+  "columns": [
+    "cpg_idx",
+    "chrom",
+    "pos",
+    "context",
+    "cpg_density",
+    "gc_content",
+    "cpg_density_hg38",
+    "tss_dist",
+    "probe_type"
+  ],
+  "sources": {
+    "context": "canonical genomic_context (UCSC cpgIslandExt hg38; island/shore<=2kb/shelf 2-4kb/open_sea)",
+    "cpg_density": "universe CpGs within +-500 bp, self excluded",
+    "cpg_density_hg38": "hg38 CG dinucleotides with C in +-500 bp window, self included",
+    "gc_content": "hg38 fasta, GC fraction over non-N bases in +-500 bp window",
+    "tss_dist": "log10(1+bp) to nearest GENCODE v50 transcript TSS (all transcripts, 388,474 TSS), from regulatory_activity/cpg_enhancer_map.parquet:dist_to_gencode_tss_bp",
+    "probe_type": "Infinium design type I/II from GPL21145 (EPIC v1) platform table, joined by hg38 (chrom,pos) via illumina_probe_grch38.parquet; positions not found there are filled from the EPIC v2 manifest (EPIC-8v2-0_A1.csv, GRCh38 CHR/MAPINFO; agrees with the primary route on 99.98% of overlapping CpGs). Remaining NaN = probe on no locally available manifest (documented, intentionally not imputed)"
+  },
+  "value_counts_probe_type": {
+    "II": 293410,
+    "I": 108560,
+    "NaN": 6429
+  },
+  "value_counts_context": {
+    "open_sea": 142644,
+    "island": 131020,
+    "shore": 97562,
+    "shelf": 37173
+  },
+  "output_sha256": "466428137dcc1a80f998b2dd07a52812b015f239a4a798b12ce77660f69e3997",
+  "git_commit": "0d228ec9cef39fb25f14289d033caf09da205253"
+}

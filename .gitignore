@@ -35,3 +35,6 @@ data/prepared/
 *.npy
 *.npz
 !tests/fixtures/*.npz
+
+# UCSC cpgIslandExt track: fetched deterministically (scripts/fetch_cpgislandext_hg38.py), not versioned
+data/bio_annotations/cpgIslandExt.hg38.txt.gz

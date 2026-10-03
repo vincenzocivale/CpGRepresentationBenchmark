@@ -1,0 +1,506 @@
+{
+ "external_sources_not_versioned": {
+  "data/bio_annotations/cpgIslandExt.hg38.txt.gz": {
+   "acquisition": "python scripts/fetch_cpgislandext_hg38.py (verifies sha256, refuses mismatch)",
+   "bytes": 717984,
+   "license_note": "UCSC: data files freely usable; redistribution limits apply only to some third-party tracks (https://genome.ucsc.edu/license/). Not committed out of caution.",
+   "retrieved": "2026-10-02 (re-downloaded 2026-10-03: byte-identical)",
+   "sha256": "2339f8bad0ec9993211287b319b8d59ddeff30a5010505f649817332ed8222f8",
+   "upstream_last_modified": "Wed, 19 Oct 2022 06:39:38 GMT",
+   "url": "https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/cpgIslandExt.txt.gz",
+   "used_by": [
+    "coordinates.map_genomic_context (8 CpGs without legacy context)",
+    "scripts/build_bioval_v2_covariates.py"
+   ]
+  }
+ },
+ "files": {
+  "3d_genome/FROZEN.json": {
+   "bytes": 5544,
+   "sha256": "743803ef7275bb00d214e754faac4df15c7dcade4c776b3fa149f45dfc0fe927"
+  },
+  "3d_genome/GM12878_HiC_audit.json": {
+   "bytes": 1332,
+   "sha256": "9340dc5be3598c3dc03ee55ce76d32cb35f52089ecfec0edc147026226448142"
+  },
+  "3d_genome/GM12878_HiC_compartment_bins_100000.parquet": {
+   "bytes": 985027,
+   "sha256": "b27fa1ffd42df2b7aa9bb91172496140b7f3cedb9c142f0dbb91d4583ed8980d"
+  },
+  "3d_genome/GM12878_HiC_compartment_bins_50000.parquet": {
+   "bytes": 1997070,
+   "sha256": "372b8e845bbeafb56e022377192ea5fb572291bd269e20344b1321033af0cb26"
+  },
+  "3d_genome/GM12878_HiC_compartment_qc.csv": {
+   "bytes": 4713,
+   "sha256": "5f023ffa15d5b3319f85349c82fdd17f158fe80c74f9042defd0650eee016ac9"
+  },
+  "3d_genome/GM12878_HiC_cpg_compartment_100000.parquet": {
+   "bytes": 2681381,
+   "sha256": "6750d9292eb9c01e77d8a33822ab7a247c495cd90b086c8f51038c5b20f41e89"
+  },
+  "3d_genome/GM12878_HiC_cpg_compartment_50000.parquet": {
+   "bytes": 2835566,
+   "sha256": "af6c4c917f304c8573ab0c11993aafd8f1d1fa82bba29fadc7b01d3ab59893bc"
+  },
+  "3d_genome/H1_MicroC_audit.json": {
+   "bytes": 3420,
+   "sha256": "32b994bb862fbdc2f458645a240d33e562de427a4dbfd4b0e302ffb5c0867073"
+  },
+  "3d_genome/H1_MicroC_compartment_bins_100000.parquet": {
+   "bytes": 977247,
+   "sha256": "7ad59bd2e7973edadf69b561152416ec97468d9e2edec5076cdb0484e035547b"
+  },
+  "3d_genome/H1_MicroC_compartment_bins_50000.parquet": {
+   "bytes": 1981615,
+   "sha256": "52d765cc4ded1184b39bf051d63240771f82e107a769d1f3d663a3901a92e069"
+  },
+  "3d_genome/H1_MicroC_compartment_qc.csv": {
+   "bytes": 4623,
+   "sha256": "9a526451cfaa894f14df6151927d2988443bd93ff7c8a875abad71e9250b12f7"
+  },
+  "3d_genome/H1_MicroC_cpg_compartment_100000.parquet": {
+   "bytes": 2676031,
+   "sha256": "0fcee2c68480e9cc0fcd4dd284d0c10fe78b2c3c2fdf77679e2a5d9301f66883"
+  },
+  "3d_genome/H1_MicroC_cpg_compartment_50000.parquet": {
+   "bytes": 2830068,
+   "sha256": "7e474a5cf850136dc7ca32f886e8b84fcb802cf7870770ec748cf0cf11ec7596"
+  },
+  "3d_genome/H1_MicroC_inter_contacts_1000000.parquet": {
+   "bytes": 525785,
+   "sha256": "c7f698417607f133abeddb98ade240005665ff6a020154dd9b2011b6a09ed213"
+  },
+  "3d_genome/H1_MicroC_inter_noncontact_pool_1000000.parquet": {
+   "bytes": 80141,
+   "sha256": "bfabf779db7404087685fe4a594ee2d232d1d71e62eb6092b5c436aa884cfc66"
+  },
+  "3d_genome/H1_MicroC_inter_stats.csv": {
+   "bytes": 14962,
+   "sha256": "fd864fb85edbca69b5d65d90c9d14231305ffe0042c88e56958fa6956719956d"
+  },
+  "3d_genome/H1_MicroC_intra_bin_cov_10000.parquet": {
+   "bytes": 942806,
+   "sha256": "4137397880022adf61b35461d322e8a7ecfa3b6e4a00d8f5bbbd230aa47068f5"
+  },
+  "3d_genome/H1_MicroC_intra_contacts_10000.parquet": {
+   "bytes": 33327381,
+   "sha256": "355bff7c5674646ffc700288faa3546abeee774a19462fa7bc041c6036ed8c35"
+  },
+  "3d_genome/H1_MicroC_intra_noncontact_pool_10000.parquet": {
+   "bytes": 22326804,
+   "sha256": "f2eb25c2bcd985828bf746bdf98c722deb0eb0c59b1a78baabeb9c949b0af75e"
+  },
+  "3d_genome/H1_MicroC_intra_stats.csv": {
+   "bytes": 1555,
+   "sha256": "72b22608755e9dd7bd11cbee8ff1a52e3c2bbde0e987b66409e81166a8598399"
+  },
+  "3d_genome/HFFc6_MicroC_audit.json": {
+   "bytes": 3450,
+   "sha256": "cd4cf1944450f1d61e4a1f30360840ff538a3f1c161adf227f4b5bc3481a2b62"
+  },
+  "3d_genome/HFFc6_MicroC_compartment_bins_100000.parquet": {
+   "bytes": 982769,
+   "sha256": "bc04dfb6b5c256812c3147e27fceeeffcdaa48a0204fda29c179d396fb582c53"
+  },
+  "3d_genome/HFFc6_MicroC_compartment_bins_50000.parquet": {
+   "bytes": 1993366,
+   "sha256": "3b6e9a14ce91a3283c57879f5a0c4212f0d6782310b39c0f133067f7d0e4d7b7"
+  },
+  "3d_genome/HFFc6_MicroC_compartment_qc.csv": {
+   "bytes": 4757,
+   "sha256": "687823232d375de30c547faa10c16aff2dd035dddf564e84573f691324bf6f7f"
+  },
+  "3d_genome/HFFc6_MicroC_cpg_compartment_100000.parquet": {
+   "bytes": 2679674,
+   "sha256": "1684fe20a0e9d5de0efde6eaa849c4418fe3da5ebc394ce92a7b8b1e9d2fc9c2"
+  },
+  "3d_genome/HFFc6_MicroC_cpg_compartment_50000.parquet": {
+   "bytes": 2833754,
+   "sha256": "00d503713a4be2e577814824b51359ab91d6f926ea2cf143a8a68d3eebbf8de9"
+  },
+  "3d_genome/HFFc6_MicroC_inter_contacts_1000000.parquet": {
+   "bytes": 104859,
+   "sha256": "319bb154f8320ae846670af0f8c0cd1838ca1a1a5455016ac6469eca81c9a23d"
+  },
+  "3d_genome/HFFc6_MicroC_inter_noncontact_pool_1000000.parquet": {
+   "bytes": 9208,
+   "sha256": "e66ee470294a7fa9c3ebc21844886d2e628fe6f70e381ff986b1bea29adb42ce"
+  },
+  "3d_genome/HFFc6_MicroC_inter_stats.csv": {
+   "bytes": 15159,
+   "sha256": "9a9da8536905eb7b60048ec5190580421a080331dd17563844cc29c6ec2c6292"
+  },
+  "3d_genome/HFFc6_MicroC_intra_bin_cov_10000.parquet": {
+   "bytes": 989552,
+   "sha256": "cabf9984c0663b3f35f3b6a5f5c1b7bb02cd189276d9e63f303e4eb9c44d41a9"
+  },
+  "3d_genome/HFFc6_MicroC_intra_contacts_10000.parquet": {
+   "bytes": 41879045,
+   "sha256": "99e2811795e6ac448b1131cbb704f1286cc51c96535a219df6317f9e994edcf9"
+  },
+  "3d_genome/HFFc6_MicroC_intra_noncontact_pool_10000.parquet": {
+   "bytes": 28308897,
+   "sha256": "1a0cb93085cf5ea0d55be90bfa275ddbe20231f519a8f6109137409971943f06"
+  },
+  "3d_genome/HFFc6_MicroC_intra_stats.csv": {
+   "bytes": 1631,
+   "sha256": "e14800b2bf08109990ad3d0182008acd521857a57ebbe0fae1525cacee66bf82"
+  },
+  "3d_genome/MANIFEST.json": {
+   "bytes": 21046,
+   "sha256": "68c87ec90019eb709fb6239d5d2ff31f91e3a93db2a2e5ef9e02ef090e042a28"
+  },
+  "3d_genome/assembly_validation.json": {
+   "bytes": 4474,
+   "sha256": "95349508dfec56e5c24ce29dcf5be659c08285ba290b24e4efba86aa0d5bc1cf"
+  },
+  "3d_genome/audit_GM.log": {
+   "bytes": 1234,
+   "sha256": "68a5040dac3ba1c00454c0bf92d636023d3e38aeb1e69a6e1e4b714f02a57ff7"
+  },
+  "3d_genome/audit_HFF.log": {
+   "bytes": 2887,
+   "sha256": "55cbce385702ad885281e79d900864907597c70b68d035dddd2cf2ce42334272"
+  },
+  "3d_genome/comp_GM.log": {
+   "bytes": 959,
+   "sha256": "deabfd4ec3d574d9ff36e15827b1a2952f62f3c82ab6f986c4503af235ea245e"
+  },
+  "3d_genome/comp_H1.log": {
+   "bytes": 1198,
+   "sha256": "02de7277daeb73b97dd11f0c3d65e18208988905e67aa13bbba9d40de9ae5854"
+  },
+  "3d_genome/comp_HFF.log": {
+   "bytes": 961,
+   "sha256": "772259f5890932f2f8d72d6dbfb1237270dcd0434d7212c98ad49a1c82498664"
+  },
+  "3d_genome/frozen_compartments.report.json": {
+   "bytes": 1130,
+   "sha256": "6743abba22a0fb7aab5fb5b5932bcd31a64dfbae27283206c20f8e50f123404c"
+  },
+  "3d_genome/frozen_compartments_GM12878_100kb.parquet": {
+   "bytes": 2682030,
+   "sha256": "103234b7ccf2f67bca74df284669e569a4982a0a599c48598f5918cb9ee3b89c"
+  },
+  "3d_genome/frozen_compartments_H1_100kb.parquet": {
+   "bytes": 2676680,
+   "sha256": "10d7a9280d32b813dae4e026d383d0a2e730da73083df7eb6c82b28e8ca70220"
+  },
+  "3d_genome/frozen_compartments_HFFc6_100kb.parquet": {
+   "bytes": 2680323,
+   "sha256": "682967d947f326ce507c64eaa4482a1e11537f406d4fa34c36857b70f8d001b4"
+  },
+  "3d_genome/frozen_pairs_H1_inter1Mb_seed17.parquet": {
+   "bytes": 2877142,
+   "sha256": "06d6b569d3bdc591896ed38cee997695fe80512e1a03bde30f6d60544e9e01b8"
+  },
+  "3d_genome/frozen_pairs_H1_inter1Mb_seed17.report.json": {
+   "bytes": 1585,
+   "sha256": "0c7889fa2011fc081c47cab708d522c06273b64e592bad134e59c59ba26aea5c"
+  },
+  "3d_genome/frozen_pairs_H1_intra10kb_seed17.parquet": {
+   "bytes": 152957995,
+   "sha256": "968e10846bc5d5ec2ab69805f2e5c2ece0fd028d280af1ddc5e516f728fb3b0e"
+  },
+  "3d_genome/frozen_pairs_H1_intra10kb_seed17.report.json": {
+   "bytes": 3071,
+   "sha256": "772d0fa7b520355fac5ee081896be98d1307faea3a36844be5bcefc16d8b823a"
+  },
+  "3d_genome/frozen_pairs_HFFc6_intra10kb_seed17.parquet": {
+   "bytes": 211694825,
+   "sha256": "6e91aa310c3141cc00b6e2eed370a43205dadbe9637c3304b2cc08cf0f728f02"
+  },
+  "3d_genome/frozen_pairs_HFFc6_intra10kb_seed17.report.json": {
+   "bytes": 3092,
+   "sha256": "e8ef63f8a4bd1a28992be6948600b6d3f6e20253b3fa9a4504b39e0140bc03df"
+  },
+  "3d_genome/hg38_gc_10kb.parquet": {
+   "bytes": 1607347,
+   "sha256": "e11a55908ada18b360a4f4ff37d25c3c26aeb970e47812923019069ebd440a20"
+  },
+  "3d_genome/inter_H1.log": {
+   "bytes": 461,
+   "sha256": "6bc7e12e14aeab5610eb39bce2a9d19bf957ec2a480bba8e3e35eeb80432cf32"
+  },
+  "3d_genome/inter_HFF.log": {
+   "bytes": 463,
+   "sha256": "4d145091d8cd7a7eba4b78b8dcda4c7ea212c6f4e83f980b8976aa0b98aa8a95"
+  },
+  "3d_genome/intra_H1.log": {
+   "bytes": 6402,
+   "sha256": "51063e286fbe66c24a0e0cee6921ee96ce76084eb1f741ca64bf1da1e8944b73"
+  },
+  "3d_genome/intra_HFF.log": {
+   "bytes": 6547,
+   "sha256": "5e92b12c7888b424319c6db1a62327f6d21b0268579e66c6d609495c93eac533"
+  },
+  "coordinates/MANIFEST_genomic_context.json": {
+   "bytes": 2012,
+   "sha256": "511f05a20fc15ca8e6f5c3f3a77fb860b4284d6ae1bf46d14609436f9507956c"
+  },
+  "coordinates/genomic_context_canonical.parquet": {
+   "bytes": 6572225,
+   "sha256": "5c1eb4c0dc398588316eadf219c653feadfe3de4007f2f9ecf8f8c3ca5528196"
+  },
+  "covariates/MANIFEST_covariates.json": {
+   "bytes": 1711,
+   "sha256": "2485cd61ab5b52fe581940707af0afd9271bce4a0349172f62bdbe85e0bf8dac"
+  },
+  "covariates/universe_covariates.parquet": {
+   "bytes": 6675861,
+   "sha256": "466428137dcc1a80f998b2dd07a52812b015f239a4a798b12ce77660f69e3997"
+  },
+  "external_methylation_programs/MANIFEST.json": {
+   "bytes": 12112,
+   "sha256": "63576a0e28e5883d7beba7c7b33c1c7a148e6ad6d56a8029e58728fcfe307daa"
+  },
+  "external_methylation_programs/aggregate.log": {
+   "bytes": 3512,
+   "sha256": "b1c88a8dbba26bba5b5376ed0fc442a41d686c0924d2eea71dbf602d6a9e31bf"
+  },
+  "external_methylation_programs/celltype_coverage_audit.tsv": {
+   "bytes": 2371,
+   "sha256": "45e339aa45091a88dbfd75f87f25d4a9d4fbf8ceef6940c39678532e389c30d3"
+  },
+  "external_methylation_programs/celltype_coverage_audit_v1.tsv": {
+   "bytes": 2282,
+   "sha256": "13cc95e6cf0b213fa9822a82a64f989ed54c11e616ccd6193205fd202615eef0"
+  },
+  "external_methylation_programs/coverage_summary.json": {
+   "bytes": 427,
+   "sha256": "fb2dd69d7b764e4a162dc19b7ce426d75d00d3bc9d9386db00df7d60c31522c0"
+  },
+  "external_methylation_programs/coverage_summary_v1.json": {
+   "bytes": 403,
+   "sha256": "f3a3cc42b2142be56b7088b2be2cee9dbe3120337db10565c5fc36c0472faae0"
+  },
+  "external_methylation_programs/extract.log": {
+   "bytes": 44151,
+   "sha256": "fde9e9327842aa72b1d11f645a6f47859e12fdbb41b23d21d700616c42a230da"
+  },
+  "external_methylation_programs/extract_stats.json": {
+   "bytes": 47299,
+   "sha256": "5d504ac3bd292def20bbb5d617ecc0018475d57d553e1d5991bffdd29e9c2756"
+  },
+  "external_methylation_programs/frozen_pairs_seed17.parquet": {
+   "bytes": 14054353,
+   "sha256": "fbb9440e066bcf3a8380b3d2b690e1b6b5dc9d6cefd090e70182bbe12e282ce7"
+  },
+  "external_methylation_programs/frozen_pairs_seed17_counts.tsv": {
+   "bytes": 344,
+   "sha256": "ba8ca26edd1fa8fe61173096bd1bef1dea53e31afe83637429dff12b141bd31b"
+  },
+  "external_methylation_programs/frozen_pairs_seed17_sha256.json": {
+   "bytes": 97,
+   "sha256": "1a9e18dcc6c0325444996f5d5b05e1f1152da452e935f86e226aef6c6dc2663b"
+  },
+  "external_methylation_programs/hg38_CpG_index.npz": {
+   "bytes": 57089719,
+   "sha256": "384c315d6e6a5116539c49bdb46a99d172fe06be17f63e486627b5dbd33ead2d"
+  },
+  "external_methylation_programs/loyfer_celltype_beta.h5": {
+   "bytes": 299508788,
+   "sha256": "5ff19407794c2e2280675989a9acedcde8c08ddff0fb7dee2070bbf9c6cec15a"
+  },
+  "external_methylation_programs/loyfer_markers_all_cpgs.parquet": {
+   "bytes": 1502552,
+   "sha256": "6a4676e0e96487c8ae4a9dc315a918cc070d9b4e945dc272594d6e31b09b453c"
+  },
+  "external_methylation_programs/loyfer_markers_paper_lifted_blocks.parquet": {
+   "bytes": 306262,
+   "sha256": "0b7bced6a83483da3d1aac56be5125c1e3673926143b12253ceb7423db2ce8bd"
+  },
+  "external_methylation_programs/loyfer_markers_per_celltype.tsv": {
+   "bytes": 3928,
+   "sha256": "4c848a7c79bfa15a95d712fca386e3668976b1808271c5226b804cd965a86a3a"
+  },
+  "external_methylation_programs/loyfer_markers_reconciled.parquet": {
+   "bytes": 32843,
+   "sha256": "073325a0f472930b77f9e02acd0e46f293655c0056c32923c55e24b9a5ec06e6"
+  },
+  "external_methylation_programs/loyfer_markers_reconciled_per_celltype.tsv": {
+   "bytes": 1078,
+   "sha256": "290b2454fae8601f89e7b8a914ba15cce3b181b405e14b40508ac0813a39d2f0"
+  },
+  "external_methylation_programs/loyfer_markers_universe.parquet": {
+   "bytes": 73446,
+   "sha256": "e026a13c5cb0fd480b04736c4ac1b463d7b55d060831d575d47c333cde17d54e"
+  },
+  "external_methylation_programs/loyfer_profile_similarity_test_by_stratum.tsv": {
+   "bytes": 1192,
+   "sha256": "959973843bd183151f5af822637c1d9cc845279af55d3dfb0cc06d34e1cf66be"
+  },
+  "external_methylation_programs/loyfer_profile_similarity_test_pairs.parquet": {
+   "bytes": 12558938,
+   "sha256": "fb9c5a2cec0f6a3f52505c2812d826b23d0c03d9e2a7e229fe1b415c28236eda"
+  },
+  "external_methylation_programs/loyfer_profile_similarity_test_uniform_intra.json": {
+   "bytes": 183,
+   "sha256": "39e8c8c152c9bcc56a103c48bbacd9143955c23eb788a030b6b739e62a852590"
+  },
+  "external_methylation_programs/loyfer_sample_counts.h5": {
+   "bytes": 421905563,
+   "sha256": "ecd2089cb5dfd6396f7c6fef0f819d0cb68160f441ec4893fc0a8497004b1437"
+  },
+  "external_methylation_programs/manual_decisions.csv": {
+   "bytes": 1593,
+   "sha256": "69d0a657375754a1054bdfb421b32495e8774b31cf11e3141ddd5992dc29fd2e"
+  },
+  "external_methylation_programs/marker_provenance_verdict.json": {
+   "bytes": 2910,
+   "sha256": "22ebb6d348c43dcc774b5271529715a54d1a8e0bedadbb7819dae8fde5821b80"
+  },
+  "external_methylation_programs/marker_reconciliation.json": {
+   "bytes": 4120,
+   "sha256": "a012f0036a29937fd02422c3465feed9e33a38272e3e2074ad0207d7d7b58e71"
+  },
+  "external_methylation_programs/profile_test.log": {
+   "bytes": 1502,
+   "sha256": "3a69dfc7230ef3d3efd50d395a51b9872ff27cd3ebdb60101cc2d17c412e9b1c"
+  },
+  "external_methylation_programs/sample_inventory.tsv": {
+   "bytes": 50001,
+   "sha256": "57a68f563feebdb6492e02abb38b617198db1aeb091e3b355a01bd4cf8de78de"
+  },
+  "external_methylation_programs/sample_inventory_v1_filename_rule.tsv": {
+   "bytes": 41923,
+   "sha256": "956d56f6c1594ae9555874cfeb3b5641fb942fbca8fe2bed94b83b16964acb99"
+  },
+  "external_methylation_programs/sample_provenance.csv": {
+   "bytes": 101468,
+   "sha256": "ddc769440b1a2ff579bcf76a79a862fac5854d1fefcd0bfb20cb7f30428d71dc"
+  },
+  "external_methylation_programs/sample_provenance.parquet": {
+   "bytes": 22195,
+   "sha256": "c1c9ae9d91a7b80179b0c66446ed980ea1d5eca360db404250b59455bb608f6d"
+  },
+  "pmd_decato2020/BUILD_CHECK.json": {
+   "bytes": 952,
+   "sha256": "ef5699280057f37f32c9aa123d377dc238794ee6cdac5dc9f378b260d25e9618"
+  },
+  "pmd_decato2020/MANIFEST_pmd.json": {
+   "bytes": 1417,
+   "sha256": "b8bbdd53d35b9d2459e4534d4af086a9bc9456b28276df9e055ee1002bb090bf"
+  },
+  "pmd_decato2020/coverage_per_chrom.csv": {
+   "bytes": 648,
+   "sha256": "0a71f9f323360b1fd62a22140067e69e6b65cbc63dac941f4fb4bbad9c22498a"
+  },
+  "pmd_decato2020/cpg_pmd_membership_per_sample.parquet": {
+   "bytes": 2567176,
+   "sha256": "99f958596c4e09a69a80c6decb64b1513d5ede2cb57a43e59ba028a9a6878a9d"
+  },
+  "pmd_decato2020/cpg_pmd_summary_universe.parquet": {
+   "bytes": 2466037,
+   "sha256": "06d70eba96d1873c3b39d9ed90f617b10566f693bc1c06e1df131ca4313a7437"
+  },
+  "pmd_decato2020/pmd_samples.csv": {
+   "bytes": 20810,
+   "sha256": "467e1da56c9ff223cb1c42f8dd2dfb1687c1034f27ba0c5cc43d9a66961b9c9c"
+  },
+  "regulatory_activity/CITATIONS.md": {
+   "bytes": 2206,
+   "sha256": "de08ce1480fc6d06a3c27bf5b19b92ba8ac5ea0b9596ef6743790881a9e61799"
+  },
+  "regulatory_activity/FROZEN.json": {
+   "bytes": 11377,
+   "sha256": "e0dba7e8770754608eae1368e04a5f285408005ad7d550e2fb1caff19cdd6e0a"
+  },
+  "regulatory_activity/MANIFEST.json": {
+   "bytes": 10651,
+   "sha256": "9cade60bc37c872314bd6a3545fe8c6ecb33c2a3d4986a51813b322812c74c7e"
+  },
+  "regulatory_activity/activity_collapsed_index.parquet": {
+   "bytes": 24162,
+   "sha256": "4c5d11431d0b37bfa9bde36a373e978aa62ea45fa8d365ad5526834982703ecb"
+  },
+  "regulatory_activity/activity_collapsed_log2tpm.npy": {
+   "bytes": 161503448,
+   "sha256": "97a4e2f66a316f89a34fe84d3494c51b65732829353cfeb49763e56f5631f14d"
+  },
+  "regulatory_activity/activity_sample_index.parquet": {
+   "bytes": 107015,
+   "sha256": "2935c968f6cd77c85d2a8b54f0f167cbb79d93eca07305ea7a22772ee9f6b199"
+  },
+  "regulatory_activity/activity_sample_log2tpm.npy": {
+   "bytes": 231496658,
+   "sha256": "3ac82b94be59bfd7bc4d5ebdf68b9a1cf0414480bb0dc79f716469b4da5da1d9"
+  },
+  "regulatory_activity/audit.json": {
+   "bytes": 3154,
+   "sha256": "18ac3e26e9322874f7c70066d2b9723c7ed5a1ed323dcf06947b506e915eb1c9"
+  },
+  "regulatory_activity/audit_expressed_thresholds.csv": {
+   "bytes": 301,
+   "sha256": "6a96cc2e82ff47e806ca2735788d28a5d7b9ec292aecf103cb379e21e94d7704"
+  },
+  "regulatory_activity/audit_per_chrom.csv": {
+   "bytes": 1538,
+   "sha256": "f902fe0f77bf7df2fa21acf0aa94f743707654ae9731331f95a81cf6b7289b0a"
+  },
+  "regulatory_activity/cpg_enhancer_map.parquet": {
+   "bytes": 9808289,
+   "sha256": "307517a2200853842d806a310079a757927d7638f2447b9f5b00426571f36da9"
+  },
+  "regulatory_activity/enhancers.parquet": {
+   "bytes": 3629831,
+   "sha256": "17dc24b8f5839e9a5bd59abc9a2a6620262e8562ca1717abc5358356378574b8"
+  },
+  "regulatory_activity/frozen_activity_pairs_seed17.parquet": {
+   "bytes": 3990559,
+   "sha256": "4e365148b8680e7c349b6ee69e476cb446d1a7bf1abf0e7b48dfb579c001cb7e"
+  },
+  "regulatory_activity/frozen_enhancer_membership_seed17.parquet": {
+   "bytes": 815621,
+   "sha256": "9f0ed5a8b2ea402db674fc695e848d26ef8028b0e3cfb83821dabe7187d039e8"
+  },
+  "regulatory_activity/frozen_enhancer_membership_seed17_dropped_positives.parquet": {
+   "bytes": 14662,
+   "sha256": "d597259467128c93d5909402bd03bb413f7bb8fb5adc5234f03fd979c92f5e5f"
+  },
+  "regulatory_activity/frozen_enhancer_membership_tss5kpool_seed17.parquet": {
+   "bytes": 273283,
+   "sha256": "3e868f9e3f33113f2dec42638788652948e23ddc44a0bed78abbec957bb7d7ef"
+  },
+  "regulatory_activity/frozen_enhancer_membership_tss5kpool_seed17_dropped_positives.parquet": {
+   "bytes": 124949,
+   "sha256": "d62679b17ec819b807798748d4db27b0c1b1d87336f39b6c378a1651ab84468d"
+  },
+  "regulatory_activity/frozen_enhancer_membership_win500_seed17.parquet": {
+   "bytes": 1773684,
+   "sha256": "54fbe2e264aeba4ef9ed5a6377362cf295752e544c4c366cf2e8fff7e8d98c72"
+  },
+  "regulatory_activity/frozen_enhancer_membership_win500_seed17_dropped_positives.parquet": {
+   "bytes": 31882,
+   "sha256": "88c3646e4558f5e247d22a84b7eb97e43172c58779a737fbe15c75fb79f7a90d"
+  },
+  "replication_domains/FROZEN_ENDPOINT.json": {
+   "bytes": 4771,
+   "sha256": "0ab4a6130d9790ca742a095c04e6236a16a5dc65f007d0f7edd46f98154d1eee"
+  },
+  "replication_domains/MANIFEST.json": {
+   "bytes": 13167,
+   "sha256": "f7c602b0b9badb4beb107404ff3fa838b82de7501f7267d121a270fc063fb016"
+  },
+  "replication_domains/MANIFEST_rt.json": {
+   "bytes": 11394,
+   "sha256": "756e74e05bc736fd43ae5a2e8081675e8120130d11344c792572204b36a70fdf"
+  },
+  "replication_domains/coverage_per_chrom.csv": {
+   "bytes": 871,
+   "sha256": "f299e9e63011cc87affc8cec04645c95f776224059358139ba2284b4878c1fe8"
+  },
+  "replication_domains/cpg_rt_universe.parquet": {
+   "bytes": 26311445,
+   "sha256": "fa4fcd3c2f841a9db9454544103c580dcd87e0ea760e95832d2dc2ec1d90cef6"
+  },
+  "replication_domains/rt_bins_grch38_long.parquet": {
+   "bytes": 534485218,
+   "sha256": "e42b0ccda84a560bb1daf02725619840ea42cff891224da2d5576c10cd4da337"
+  }
+ },
+ "produced_before_any_embedding_metric": true,
+ "purpose": "sha256 of every derived bioval_v2 file at protocol freeze v1 (files themselves are gitignored)",
+ "root": "data/derived/bioval_v2"
+}

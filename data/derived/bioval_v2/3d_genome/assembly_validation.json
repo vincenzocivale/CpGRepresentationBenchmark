@@ -1,0 +1,145 @@
+{
+  "claim": "cooler 'genome-assembly' attribute reads 'unknown'; assembly inferred and validated",
+  "fasta": "data/external/reference/hg38.fa.gz",
+  "hg38_fasta_sha256": "c1dd87068c254eb53d944f71e51d1311964fce8de24d6fc0effc9c61c01527d4",
+  "systems": {
+    "H1_MicroC": {
+      "accession": "4DNFI9GMP2J8",
+      "cooler_attr_genome_assembly": "unknown",
+      "cooler_info_keys": [
+        "bin-size",
+        "bin-type",
+        "creation-date",
+        "format",
+        "format-url",
+        "format-version",
+        "generated-by",
+        "genome-assembly",
+        "metadata",
+        "nbins",
+        "nchroms",
+        "nnz",
+        "sum"
+      ],
+      "chroms_checked": 23,
+      "n_chroms_length_equal_hg38_fasta": 23,
+      "n_chroms_length_equal_hg19": 0,
+      "chr1_len": 248956422,
+      "hg38_chr1_len": 248956422,
+      "hg19_chr1_len": 249250621,
+      "max_abs_len_diff_vs_hg38": 0
+    },
+    "HFFc6_MicroC": {
+      "accession": "4DNFI9FVHJZQ",
+      "cooler_attr_genome_assembly": "unknown",
+      "cooler_info_keys": [
+        "bin-size",
+        "bin-type",
+        "creation-date",
+        "format",
+        "format-url",
+        "format-version",
+        "generated-by",
+        "genome-assembly",
+        "metadata",
+        "nbins",
+        "nchroms",
+        "nnz",
+        "storage-mode",
+        "sum"
+      ],
+      "chroms_checked": 23,
+      "n_chroms_length_equal_hg38_fasta": 23,
+      "n_chroms_length_equal_hg19": 0,
+      "chr1_len": 248956422,
+      "hg38_chr1_len": 248956422,
+      "hg19_chr1_len": 249250621,
+      "max_abs_len_diff_vs_hg38": 0
+    },
+    "GM12878_HiC": {
+      "accession": "4DNFIXP4QG5B",
+      "cooler_attr_genome_assembly": "unknown",
+      "cooler_info_keys": [
+        "bin-size",
+        "bin-type",
+        "creation-date",
+        "format",
+        "format-url",
+        "format-version",
+        "generated-by",
+        "genome-assembly",
+        "metadata",
+        "nbins",
+        "nchroms",
+        "nnz",
+        "sum"
+      ],
+      "chroms_checked": 23,
+      "n_chroms_length_equal_hg38_fasta": 23,
+      "n_chroms_length_equal_hg19": 0,
+      "chr1_len": 248956422,
+      "hg38_chr1_len": 248956422,
+      "hg19_chr1_len": 249250621,
+      "max_abs_len_diff_vs_hg38": 0
+    }
+  },
+  "hg38_fasta_vs_hg19_lengths_equal_count": 0,
+  "4dn_portal_metadata": {
+    "H1_MicroC": {
+      "url": "https://data.4dnucleome.org/files-processed/4DNFI9GMP2J8/?format=json",
+      "genome_assembly": "GRCh38",
+      "status": "released",
+      "file_format": "mcool",
+      "date_created": "2019-02-25T20:17:50.657431+00:00"
+    },
+    "HFFc6_MicroC": {
+      "url": "https://data.4dnucleome.org/files-processed/4DNFI9FVHJZQ/?format=json",
+      "genome_assembly": "GRCh38",
+      "status": "released",
+      "file_format": "mcool",
+      "date_created": "2020-01-21T18:21:27.820256+00:00"
+    },
+    "GM12878_HiC": {
+      "url": "https://data.4dnucleome.org/files-processed/4DNFIXP4QG5B/?format=json",
+      "genome_assembly": "GRCh38",
+      "status": "released",
+      "file_format": "mcool",
+      "date_created": "2018-04-23T16:01:28.292444+00:00"
+    }
+  },
+  "chroms_without_universe_cpgs": [
+    "chrX"
+  ],
+  "cpg_site_consistency_hg38": {
+    "n_universe": 408399,
+    "frac_cpg_dinucleotide_at_position": 1.0,
+    "n_C_of_CG": 408399,
+    "n_G_of_CG_only": 0,
+    "min_per_chrom": 1.0,
+    "note": "universe positions (1-based) examined in hg38.fa; a wrong build would give ~ chance (~1-5%) CpG dinucleotide rate"
+  },
+  "compartment_E1_vs_hg38_GC_spearman": {
+    "H1_MicroC": {
+      "res": 100000,
+      "spearman_E1_GC_median": 0.7805001517667689,
+      "spearman_E1_GC_min": 0.6692660110460564,
+      "n_chroms_below_0p2": 0,
+      "note": "GC track from hg38; coherent E1-GC coupling would not be expected under a coordinate-build mismatch"
+    },
+    "HFFc6_MicroC": {
+      "res": 100000,
+      "spearman_E1_GC_median": 0.5193394057665114,
+      "spearman_E1_GC_min": 0.3762432872435118,
+      "n_chroms_below_0p2": 0,
+      "note": "GC track from hg38; coherent E1-GC coupling would not be expected under a coordinate-build mismatch"
+    },
+    "GM12878_HiC": {
+      "res": 100000,
+      "spearman_E1_GC_median": 0.6257680014978078,
+      "spearman_E1_GC_min": 0.3363673376548977,
+      "n_chroms_below_0p2": 0,
+      "note": "GC track from hg38; coherent E1-GC coupling would not be expected under a coordinate-build mismatch"
+    }
+  },
+  "verdict": "GRCh38 (inferred+validated)"
+}

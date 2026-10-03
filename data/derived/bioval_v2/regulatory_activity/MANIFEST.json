@@ -1,0 +1,284 @@
+{
+  "axis": "regulatory_activity",
+  "code_version": "6389a4664e99d94f2361951f86a54546010b12af",
+  "git_commit": "6389a4664e99d94f2361951f86a54546010b12af",
+  "params": {
+    "activity": "log2(TPM+1), RLE TPM as provided",
+    "bg_dist_bp": 5000,
+    "collapse": "mean log2(TPM+1) per replicate-stripped label",
+    "derived_files": {
+      "activity_collapsed_index.parquet": {
+        "sha256": "4c5d11431d0b37bfa9bde36a373e978aa62ea45fa8d365ad5526834982703ecb"
+      },
+      "activity_collapsed_log2tpm.npy": {
+        "sha256": "97a4e2f66a316f89a34fe84d3494c51b65732829353cfeb49763e56f5631f14d"
+      },
+      "activity_sample_index.parquet": {
+        "sha256": "2935c968f6cd77c85d2a8b54f0f167cbb79d93eca07305ea7a22772ee9f6b199"
+      },
+      "activity_sample_log2tpm.npy": {
+        "sha256": "3ac82b94be59bfd7bc4d5ebdf68b9a1cf0414480bb0dc79f716469b4da5da1d9"
+      },
+      "audit.json": {
+        "sha256": "18ac3e26e9322874f7c70066d2b9723c7ed5a1ed323dcf06947b506e915eb1c9"
+      },
+      "audit_expressed_thresholds.csv": {
+        "sha256": "6a96cc2e82ff47e806ca2735788d28a5d7b9ec292aecf103cb379e21e94d7704"
+      },
+      "audit_per_chrom.csv": {
+        "sha256": "f902fe0f77bf7df2fa21acf0aa94f743707654ae9731331f95a81cf6b7289b0a"
+      },
+      "cpg_enhancer_map.parquet": {
+        "sha256": "307517a2200853842d806a310079a757927d7638f2447b9f5b00426571f36da9"
+      },
+      "enhancers.parquet": {
+        "sha256": "17dc24b8f5839e9a5bd59abc9a2a6620262e8562ca1717abc5358356378574b8"
+      }
+    },
+    "enhancer_set": "FANTOM5 hg38 reprocessed permissive-equivalent (63,285)",
+    "informative_min_samples": 5,
+    "liftover": "none (all sources natively GRCh38)",
+    "row_counts": {
+      "collapsed_groups": 638,
+      "cpg_map": 408399,
+      "enhancers": 63285,
+      "libraries": 1829,
+      "tss_cage": 209374,
+      "tss_gencode": 388474
+    },
+    "tool_versions": {
+      "numpy": "2.2.6",
+      "openpyxl": "3.1.5",
+      "pandas": "2.3.3",
+      "python": "3.10.20"
+    },
+    "tpm_expressed": 1.0,
+    "windows_bp": [
+      500,
+      1000
+    ]
+  },
+  "sources": [
+    {
+      "accession": "",
+      "extra": {
+        "liftover": null,
+        "native_hg38": true
+      },
+      "genome_build_in": "GRCh38",
+      "genome_build_out": "GRCh38",
+      "liftover_chain": "",
+      "liftover_tool": "",
+      "n_rows_in": null,
+      "n_rows_out": null,
+      "name": "F5.hg38.enhancers.bed.gz",
+      "path": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/bioval_v2/regulatory_activity/F5.hg38.enhancers.bed.gz",
+      "retrieval_date": "2026-10-02",
+      "sha256": "fe1f161aeb88ef62243149269549e65989420c35b04c5c96cc6fc5076244afec",
+      "url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/enhancer/F5.hg38.enhancers.bed.gz"
+    },
+    {
+      "accession": "",
+      "extra": {
+        "liftover": null,
+        "native_hg38": true
+      },
+      "genome_build_in": "GRCh38",
+      "genome_build_out": "GRCh38",
+      "liftover_chain": "",
+      "liftover_tool": "",
+      "n_rows_in": null,
+      "n_rows_out": null,
+      "name": "F5.hg38.enhancers.expression.tpm.matrix.gz",
+      "path": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/bioval_v2/regulatory_activity/F5.hg38.enhancers.expression.tpm.matrix.gz",
+      "retrieval_date": "2026-10-02",
+      "sha256": "578ce50e3b5cda2ced84982f4fb23eac2a739024902b5d8d839f33f194080aa8",
+      "url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/enhancer/F5.hg38.enhancers.expression.tpm.matrix.gz"
+    },
+    {
+      "accession": "",
+      "extra": {
+        "liftover": null,
+        "native_hg38": true
+      },
+      "genome_build_in": "GRCh38",
+      "genome_build_out": "GRCh38",
+      "liftover_chain": "",
+      "liftover_tool": "",
+      "n_rows_in": null,
+      "n_rows_out": null,
+      "name": "enhancer_hg38_00README.txt",
+      "path": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/bioval_v2/regulatory_activity/enhancer_hg38_00README.txt",
+      "retrieval_date": "2026-10-02",
+      "sha256": "17581957f1bdb762e69bd8b10804608475dd5ac193fb999eff5c077088363978",
+      "url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/enhancer/00README.txt"
+    },
+    {
+      "accession": "",
+      "extra": {
+        "liftover": null,
+        "native_hg38": true
+      },
+      "genome_build_in": "GRCh38",
+      "genome_build_out": "GRCh38",
+      "liftover_chain": "",
+      "liftover_tool": "",
+      "n_rows_in": null,
+      "n_rows_out": null,
+      "name": "hg38_fair+new_CAGE_peaks_phase1and2.bed.gz",
+      "path": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/bioval_v2/regulatory_activity/hg38_fair+new_CAGE_peaks_phase1and2.bed.gz",
+      "retrieval_date": "2026-10-02",
+      "sha256": "7e007c3e1fd7a2e24404ad9d5a57d27f76cd7920a6fdc1acaa06b5c4fcfcb018",
+      "url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/extra/CAGE_peaks/hg38_fair+new_CAGE_peaks_phase1and2.bed.gz"
+    },
+    {
+      "accession": "",
+      "extra": {
+        "liftover": null,
+        "native_hg38": true
+      },
+      "genome_build_in": "GRCh38",
+      "genome_build_out": "GRCh38",
+      "liftover_chain": "",
+      "liftover_tool": "",
+      "n_rows_in": null,
+      "n_rows_out": null,
+      "name": "Human.sample_name2library_id.txt",
+      "path": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/bioval_v2/regulatory_activity/Human.sample_name2library_id.txt",
+      "retrieval_date": "2026-10-02",
+      "sha256": "335d77fcb12fbfca516f799ec2cd8e92a49f2d39f333229e1b8a22beec378903",
+      "url": "https://fantom.gsc.riken.jp/5/datafiles/latest/extra/Enhancers/Human.sample_name2library_id.txt"
+    },
+    {
+      "accession": "",
+      "extra": {
+        "liftover": null,
+        "native_hg38": true
+      },
+      "genome_build_in": "GRCh38",
+      "genome_build_out": "GRCh38",
+      "liftover_chain": "",
+      "liftover_tool": "",
+      "n_rows_in": null,
+      "n_rows_out": null,
+      "name": "HumanSamples2.0.sdrf.xlsx",
+      "path": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/bioval_v2/regulatory_activity/HumanSamples2.0.sdrf.xlsx",
+      "retrieval_date": "2026-10-02",
+      "sha256": "fb4a091b531dc2f8fc49de034fc88d3cf6ddd0fcd4d487ee31a747aa61683da3",
+      "url": "https://fantom.gsc.riken.jp/5/datafiles/reprocessed/hg38_latest/basic/HumanSamples2.0.sdrf.xlsx"
+    },
+    {
+      "accession": "",
+      "extra": {
+        "liftover": null,
+        "native_hg38": true
+      },
+      "genome_build_in": "GRCh38",
+      "genome_build_out": "GRCh38",
+      "liftover_chain": "",
+      "liftover_tool": "",
+      "n_rows_in": null,
+      "n_rows_out": null,
+      "name": "gencode.v50.annotation.gtf.gz",
+      "path": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/bioval_v2/regulatory_activity/gencode.v50.annotation.gtf.gz",
+      "retrieval_date": "2026-10-02",
+      "sha256": "83fba3e9b03f0b8c958f3595c6c350adc55f468abf8b0e47b6d5284cfe13a453",
+      "url": "http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_50/gencode.v50.annotation.gtf.gz"
+    },
+    {
+      "accession": "",
+      "extra": {
+        "auxiliary": true
+      },
+      "genome_build_in": "",
+      "genome_build_out": "GRCh38",
+      "liftover_chain": "",
+      "liftover_tool": "",
+      "n_rows_in": null,
+      "n_rows_out": null,
+      "name": "Enhancers_latest_00_readme.txt",
+      "path": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/bioval_v2/regulatory_activity/Enhancers_latest_00_readme.txt",
+      "retrieval_date": "2026-10-02",
+      "sha256": "dd697bc43e95427f84d6fafeab4ca98398c34d0bc44f86ffbb522849466a8763",
+      "url": ""
+    },
+    {
+      "accession": "",
+      "extra": {
+        "auxiliary": true
+      },
+      "genome_build_in": "",
+      "genome_build_out": "GRCh38",
+      "liftover_chain": "",
+      "liftover_tool": "",
+      "n_rows_in": null,
+      "n_rows_out": null,
+      "name": "CAGE_peaks_00_readme.txt",
+      "path": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/bioval_v2/regulatory_activity/CAGE_peaks_00_readme.txt",
+      "retrieval_date": "2026-10-02",
+      "sha256": "c25cb7bf28d3ece525575a5da56210f7b76ace62c87172157b561312a751b52d",
+      "url": ""
+    },
+    {
+      "accession": "",
+      "extra": {
+        "auxiliary": true
+      },
+      "genome_build_in": "",
+      "genome_build_out": "GRCh38",
+      "liftover_chain": "",
+      "liftover_tool": "",
+      "n_rows_in": null,
+      "n_rows_out": null,
+      "name": "ff-phase2-170801.obo.txt",
+      "path": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/bioval_v2/regulatory_activity/ff-phase2-170801.obo.txt",
+      "retrieval_date": "2026-10-02",
+      "sha256": "c34a4439696c548a4e19784b9f022ce64094324a8740e760f6baddd30283800c",
+      "url": ""
+    },
+    {
+      "accession": "",
+      "extra": {
+        "auxiliary": true
+      },
+      "genome_build_in": "",
+      "genome_build_out": "GRCh38",
+      "liftover_chain": "",
+      "liftover_tool": "",
+      "n_rows_in": null,
+      "n_rows_out": null,
+      "name": "00MD5SUM.txt",
+      "path": "/data2/home/vcivale/projects/methylation/CpGRepresentationBenchmark/data/external/bioval_v2/regulatory_activity/00MD5SUM.txt",
+      "retrieval_date": "2026-10-02",
+      "sha256": "e61462430d8bcb0069dfd395d0b644ea807fdbcc5cded56f44eadbee739efa65",
+      "url": ""
+    }
+  ],
+  "universe_audit": {
+    "enh_never_expressed": 1751,
+    "frac_bg_enh5k": 0.630084794526921,
+    "frac_bg_enh5k_tss5k": 0.145237867869412,
+    "frac_in_enhancer": 0.030732200617533345,
+    "frac_in_window1000": 0.12965996488727935,
+    "frac_in_window500": 0.07145952854928636,
+    "median_gencode_tss_dist_in_enh": 969.0,
+    "median_gencode_tss_dist_not_in_enh": 564.0,
+    "n_bg_enh5k": 257326,
+    "n_bg_enh5k_tss5k": 59315,
+    "n_collapsed_groups": 638,
+    "n_enhancers": 63285,
+    "n_enhancers_covered_primary": 8245,
+    "n_enhancers_covered_w1000": 21797,
+    "n_enhancers_covered_w500": 15609,
+    "n_in_enhancer": 12551,
+    "n_in_window1000": 52953,
+    "n_in_window500": 29184,
+    "n_libraries": 1829,
+    "n_libraries_unmapped_to_sdrf": 27,
+    "n_universe": 408399,
+    "sparsity_fraction_expressed_ge1_entries": 0.01385988809421895,
+    "sparsity_fraction_zero_tpm_entries": 0.9075152098392144,
+    "tss_cage_n": 209374,
+    "tss_gencode_n": 388474
+  }
+}

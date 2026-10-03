@@ -1,0 +1,44 @@
+{
+ "verdict": "WEAK",
+ "scope": "hg38 GitHub marker files actually used by the benchmark (Atlas.U25.l4.hg38.full.tsv, Markers.U250.hg38.tsv)",
+ "reason": "Paper tables (Nature Suppl. S4A/S4B) are hg19 only. GitHub hg19 files match the paper rows exactly (U25: 953/953; U250: 9288/9288), plus 25/250 Megakaryocyte rows not in the paper. The hg38 files are NOT a liftover of the paper tables: only 67.1% of hg38 U25 blocks and 74.0% of hg38 U250 blocks overlap a same-type paper block lifted to hg38 (atlas values differ from hg19; consistent with markers being recomputed on hg38). Not verifiable as the paper's published tables.",
+ "alternative_set": {
+  "name": "paper S4A/S4B single-type markers lifted hg19->hg38 (UCSC chain, pyliftover), expanded to universe CpGs by position",
+  "provenance_strength": "STRONG for marker identity (published table, 953 U25 / 9288 U250 single-type blocks); lift is ours",
+  "file": "loyfer_markers_reconciled.parquet (marker_source == paper_Suppl_Table_S4A_S4B_hg19_lifted_to_hg38)",
+  "unique_cpgs_in_universe": {
+   "U25": 164,
+   "U250": 1288
+  }
+ },
+ "github_repo": "https://github.com/nloyfer/UXM_deconv",
+ "github_commit": "8d0bb456742ece21802bc8e651e080869c67c944",
+ "github_commit_date": "2023-01-04T14:40:21Z (HEAD of main when queried 2026-10-02)",
+ "files": {
+  "Atlas.U25.l4.hg38.full.tsv": {
+   "url": "https://github.com/nloyfer/UXM_deconv/blob/8d0bb456742ece21802bc8e651e080869c67c944/supplemental/Atlas.U25.l4.hg38.full.tsv",
+   "sha256": "e58fbec4fe6200a311540c6e1a16be901a2d1e9ed9d74b6a57888f2feb635f51"
+  },
+  "Markers.U250.hg38.tsv": {
+   "url": "https://github.com/nloyfer/UXM_deconv/blob/8d0bb456742ece21802bc8e651e080869c67c944/supplemental/Markers.U250.hg38.tsv",
+   "sha256": "f6efef2abae76305eb62036258c06e2fa9304191940e4f94fe9d48b27ace639f"
+  },
+  "hg19_github/Atlas.U25.l4.hg19.full.tsv": {
+   "url": "https://github.com/nloyfer/UXM_deconv/blob/8d0bb456742ece21802bc8e651e080869c67c944/supplemental/Atlas.U25.l4.hg19.full.tsv",
+   "sha256": "c55520621c36bafde9fdb0ddf1d68719bfe3d1e32f639d03df5834657bcaeb86"
+  },
+  "hg19_github/Markers.U250.hg19.tsv": {
+   "url": "https://github.com/nloyfer/UXM_deconv/blob/8d0bb456742ece21802bc8e651e080869c67c944/supplemental/Markers.U250.hg19.tsv",
+   "sha256": "fc35950504d7e7161e870b63575a1c04406691868dce1754eacd8eeb57345baf"
+  },
+  "Loyfer2023_Nature_SuppTables_MOESM4.xlsx": {
+   "url": "https://github.com/nloyfer/UXM_deconv/blob/8d0bb456742ece21802bc8e651e080869c67c944/supplemental/Loyfer2023_Nature_SuppTables_MOESM4.xlsx",
+   "sha256": "b29ff29097f6bc990c81516c5b1fa0b461bff257dbe57c78dca6a622e88a5e7a"
+  }
+ },
+ "unverified": [
+  "exact find_markers thresholds beyond 'l4' (>=4 CpGs) and 25/250 per type",
+  "hg38 marker derivation procedure (not documented in repo)"
+ ],
+ "user_rule": "if not sufficiently strong: WSBS profile similarity PRIMARY, marker-kNN SECONDARY (applied by the doc agent)"
+}
