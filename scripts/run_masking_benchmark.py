@@ -21,7 +21,6 @@ from cpg_repr_benchmark.experiments.run_store import (
     create_run_dir,
     git_revision,
     write_experiment_manifest,
-    write_summary,
 )
 from cpg_repr_benchmark.models.model import MaskedMethylomeReconstructor
 from cpg_repr_benchmark.representations.hdf5_store import HDF5RepresentationStore
@@ -128,54 +127,46 @@ def _evaluate_views(
     panel_size = int(eval_cfg.get("panel_size", cfg["training"]["panel_size"]))
     fractions = [float(x) for x in eval_cfg["mask_fractions"]]
     seed = int(eval_cfg.get("mask_seed", cfg["training"]["seed"]))
-    save_predictions = bool(eval_cfg.get("save_predictions", False))
-    results: dict[str, dict] = {}
     views = {
         "seen": (train_columns, train_columns, "empirical train-patient prior on train loci"),
     }
     if len(heldout_columns):
         views["unseen_locus"] = (train_columns, heldout_columns, "global train-patients x train-loci prior")
-    for view_name, (context_pool, target_pool, prior_policy) in views.items():
-        view_results: dict[str, dict] = {}
-        for fraction in fractions:
-            dataset = MaskingDataset(
-                methylation_h5=matrix_path,
-                representation_store=store,
-                prior_logit_full=prior,
-                sample_indices=test_rows,
-                context_columns=context_pool,
-                target_columns=target_pool,
-                panel_size=panel_size,
-                mask_fractions=[fraction],
-                seed=seed,
-                beta_epsilon=float(cfg["training"].get("beta_epsilon", 1e-4)),
-            )
-            loader = _build_loader(dataset, batch_size=batch_size, num_workers=num_workers, shuffle=False)
-            repeats = int(eval_cfg.get("panel_repeats", 1))
-            if repeats < 1:
-                raise ValueError("panel_repeats must be positive")
-            chunks = []
-            for repeat in range(repeats):
-                dataset.set_epoch(repeat)
-                _, chunk = evaluate_loader(model, loader, device)
-                chunk['panel_repeat'] = np.full(len(chunk['sample_index']), repeat, dtype=np.int64)
-                chunks.append(chunk)
-            outputs = {k: np.concatenate([chunk[k] for chunk in chunks]) for k in chunks[0]}
-            from cpg_repr_benchmark.evaluation.metrics import reconstruction_metrics
-            metrics = reconstruction_metrics(outputs['prediction'], outputs['target'],
-                                             outputs['prior_prediction'],
-                                             target_matrix_column=outputs['target_matrix_column'])
-            key = f"mask_{fraction:.2f}"
-            out_dir = run_dir / "evaluation" / view_name / key
-            out_dir.mkdir(parents=True, exist_ok=True)
-            payload = {**metrics, "mask_fraction": fraction, "view": view_name, "prior_policy": prior_policy,
-                       "patient_view": eval_cfg.get("patient_view", "test"), "panel_repeats": repeats,
-                       "mask_seed": seed}
-            (out_dir / "metrics.json").write_text(json.dumps(payload, indent=2, sort_keys=True, allow_nan=True))
-            if save_predictions:
-                np.savez_compressed(out_dir / "predictions.npz", **outputs)
-            view_results[key] = payload
-        results[view_name] = view_results
+    from cpg_repr_benchmark.evaluation.metrics import reconstruction_metrics
+    from cpg_repr_benchmark.experiments.eval_layout import evaluate_split
+
+    def evaluate_fn(view_name: str, fraction: float):
+        context_pool, target_pool, _ = views[view_name]
+        dataset = MaskingDataset(
+            methylation_h5=matrix_path,
+            representation_store=store,
+            prior_logit_full=prior,
+            sample_indices=test_rows,
+            context_columns=context_pool,
+            target_columns=target_pool,
+            panel_size=panel_size,
+            mask_fractions=[fraction],
+            seed=seed,
+            beta_epsilon=float(cfg["training"].get("beta_epsilon", 1e-4)),
+        )
+        loader = _build_loader(dataset, batch_size=batch_size, num_workers=num_workers, shuffle=False)
+        repeats = int(eval_cfg.get("panel_repeats", 1))
+        if repeats < 1:
+            raise ValueError("panel_repeats must be positive")
+        chunks = []
+        for repeat in range(repeats):
+            dataset.set_epoch(repeat)
+            _, chunk = evaluate_loader(model, loader, device)
+            chunk['panel_repeat'] = np.full(len(chunk['sample_index']), repeat, dtype=np.int64)
+            chunks.append(chunk)
+        outputs = {k: np.concatenate([chunk[k] for chunk in chunks]) for k in chunks[0]}
+        metrics = reconstruction_metrics(outputs['prediction'], outputs['target'],
+                                         outputs['prior_prediction'],
+                                         target_matrix_column=outputs['target_matrix_column'])
+        return metrics, outputs
+
+    # Layout (legacy | split_dirs), overwrite and test-authorization guards live in experiments/eval_layout.py.
+    results = evaluate_split(run_dir, cfg, {name: v[2] for name, v in views.items()}, fractions, evaluate_fn)
     return results
 
 
@@ -192,6 +183,9 @@ def main() -> None:
         raise ValueError('evaluation.patient_view must be validation or test')
     from cpg_repr_benchmark.experiments.guards import enforce_patient_view
     enforce_patient_view(cfg)  # no-op unless evaluation.require_patient_view is set
+    from cpg_repr_benchmark.experiments.eval_layout import authorize_test_split, get_layout
+    if get_layout(cfg) == "split_dirs" and cfg['evaluation'].get('patient_view', 'test') == "test":
+        authorize_test_split()  # fail BEFORE any training/reading: split_dirs test needs matrix authorization + green audit
     seed = int(cfg["training"]["seed"])
     random.seed(seed)
     np.random.seed(seed)
@@ -436,7 +430,8 @@ def main() -> None:
             "evaluation": results,
             "patient_view": cfg['evaluation'].get('patient_view', 'test'),
         }
-        write_summary(run_dir, summary)
+        from cpg_repr_benchmark.experiments.eval_layout import write_split_summary
+        write_split_summary(run_dir, cfg, cfg['evaluation'].get('patient_view', 'test'), summary)
         print(json.dumps(summary, indent=2, allow_nan=True))
 
     store.close()
