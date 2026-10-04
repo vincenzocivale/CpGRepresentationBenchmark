@@ -1,0 +1,177 @@
+{
+  "age_tercile_rule": {
+    "definition": "tercile = (age > q1) + (age > q2), q = numpy linear quantiles 1/3, 2/3 on the FULL cohort; tied ages are never separated",
+    "tercile_sizes": {
+      "0": 228,
+      "1": 212,
+      "2": 216
+    },
+    "thresholds_q1_q2": [
+      58.0,
+      71.0
+    ]
+  },
+  "allocation": "n_test = n_val = floor(0.1*N+0.5) = 66; per-stratum quotas by largest remainder (ties: stratum key order); inside a stratum subjects sorted by subject_id, permuted by default_rng([seed, stratum_rank]); first test, then validation, rest train",
+  "counts": {
+    "test": 66,
+    "train": 524,
+    "validation": 66
+  },
+  "diagnostics": {
+    "age": {
+      "test": {
+        "max": 101.0,
+        "mean": 64.8030303030303,
+        "min": 28.0,
+        "n": 66,
+        "sd": 14.26477069509647
+      },
+      "train": {
+        "max": 96.0,
+        "mean": 63.86832061068702,
+        "min": 19.0,
+        "n": 524,
+        "sd": 14.99827358593582
+      },
+      "validation": {
+        "max": 92.0,
+        "mean": 64.5909090909091,
+        "min": 33.0,
+        "n": 66,
+        "sd": 13.18387975198065
+      }
+    },
+    "age_smd_vs_train": {
+      "test": 0.06386322518221825,
+      "train": 0.0,
+      "validation": 0.051173917047860965
+    },
+    "plate": {
+      "test": {
+        "1": 11,
+        "10": 2,
+        "11": 5,
+        "2": 10,
+        "3": 10,
+        "5": 4,
+        "6": 13,
+        "8": 7,
+        "9": 4
+      },
+      "train": {
+        "1": 67,
+        "10": 15,
+        "11": 71,
+        "2": 70,
+        "3": 52,
+        "5": 77,
+        "6": 65,
+        "8": 66,
+        "9": 41
+      },
+      "validation": {
+        "1": 12,
+        "11": 9,
+        "2": 4,
+        "3": 7,
+        "5": 9,
+        "6": 14,
+        "8": 8,
+        "9": 3
+      }
+    },
+    "sex": {
+      "test": {
+        "F": 34,
+        "M": 32
+      },
+      "train": {
+        "F": 270,
+        "M": 254
+      },
+      "validation": {
+        "F": 34,
+        "M": 32
+      }
+    },
+    "site": {
+      "test": {
+        "Boston": 5,
+        "UCSD": 27,
+        "USC": 14,
+        "Utah": 20
+      },
+      "train": {
+        "Boston": 29,
+        "UCSD": 245,
+        "USC": 107,
+        "Utah": 143
+      },
+      "validation": {
+        "Boston": 1,
+        "UCSD": 32,
+        "USC": 18,
+        "Utah": 15
+      }
+    },
+    "strata_table": {
+      "F_T0": {
+        "test": 11,
+        "total": 109,
+        "train": 87,
+        "validation": 11
+      },
+      "F_T1": {
+        "test": 12,
+        "total": 119,
+        "train": 95,
+        "validation": 12
+      },
+      "F_T2": {
+        "test": 11,
+        "total": 110,
+        "train": 88,
+        "validation": 11
+      },
+      "M_T0": {
+        "test": 12,
+        "total": 119,
+        "train": 95,
+        "validation": 12
+      },
+      "M_T1": {
+        "test": 9,
+        "total": 93,
+        "train": 75,
+        "validation": 9
+      },
+      "M_T2": {
+        "test": 11,
+        "total": 106,
+        "train": 84,
+        "validation": 11
+      }
+    }
+  },
+  "fractions": [
+    0.8,
+    0.1,
+    0.1
+  ],
+  "paths": {
+    "patient_protocol_npz": "data/derived/external_gse40279_v1/patients_external_gse40279_v1.npz"
+  },
+  "schema": "external_gse40279_v1_split_manifest/1",
+  "seed": 20260925,
+  "sha256": {
+    "patient_protocol_npz": "b826db5dec7f790c5f4f57cbca51c7c8224cfcb52102a8761cd99fc2a358328d",
+    "split_csv": "a747aa02d990e4d54a08aa3e604067fb5a224a135213ef7dd692bc60067a2af4"
+  },
+  "stratification": "sex x age tercile (6 strata)",
+  "test_policy": "test row ids are in the protocol file as the loader requires; test beta values are not read before test authorisation (phase 2 runner enforces validation-only views)",
+  "unit": "individual (656 unique subjects)",
+  "validation": {
+    "overlap_between_splits": 0,
+    "partition_and_leakage_checked_by": "cpg_repr_benchmark.encode_atlas.protocol.load_patient_protocol"
+  }
+}

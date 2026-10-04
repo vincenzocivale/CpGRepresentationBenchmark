@@ -1,0 +1,168 @@
+{
+  "arms": {
+    "cpgpt_large_locus": {
+      "dim": 512,
+      "matrix_yaml_sha256": "c08138cd83e08f5015521c2a5d42b88e1834f0670c84906590d9730223d7b71e",
+      "store_h5": "data/cache/representations/cpgpt_locus_large.h5",
+      "store_sha256": "c08138cd83e08f5015521c2a5d42b88e1834f0670c84906590d9730223d7b71e"
+    },
+    "deepcpg_dna_locus": {
+      "dim": 128,
+      "matrix_yaml_sha256": "e7280d5ff14d89a247e4cb3560a952250a3f1fa78daf653b9ec02761389b82b7",
+      "store_h5": "data/cache/representations/deepcpg_dna_locus.h5",
+      "store_sha256": "e7280d5ff14d89a247e4cb3560a952250a3f1fa78daf653b9ec02761389b82b7"
+    },
+    "functional_annotations_pca": {
+      "dim": 256,
+      "matrix_yaml_sha256": "3d99fe5ba4fb88991100f848e1d2c48ad19037c72b8821421b2eb677996e187f",
+      "store_h5": "outputs/encode_atlas_v1/embeddings/full_a18b869b.h5",
+      "store_sha256": "3d99fe5ba4fb88991100f848e1d2c48ad19037c72b8821421b2eb677996e187f"
+    },
+    "regulatory_histone_dnase": {
+      "dim": 256,
+      "matrix_yaml_sha256": "fa3a816338ce2c2ce5669b4be6f5334a44470e2b149395901168dbe673a9fe1e",
+      "store_h5": "data/cache/representations/regulatory_histone_dnase__global_svd256__discovery_chr1_19.h5",
+      "store_sha256": "fa3a816338ce2c2ce5669b4be6f5334a44470e2b149395901168dbe673a9fe1e"
+    }
+  },
+  "budget": {
+    "early_stopping": false,
+    "external_batch_size": 8,
+    "external_n_train": 524,
+    "external_update_budget": 110160,
+    "full_epochs": 1669,
+    "lr_schedule": "constant",
+    "n_epochs_started": 1670,
+    "n_validation_points": 1670,
+    "partial_epoch_updates": 6,
+    "steps_per_epoch": 66,
+    "tcga_epochs": 120,
+    "tcga_n_train": 7342,
+    "tcga_steps_per_epoch": 918,
+    "tcga_total_updates": 110160,
+    "total_updates": 110160,
+    "validation_cadence": "end of every full external epoch and at the final update"
+  },
+  "counts": {
+    "test": 66,
+    "train": 524,
+    "validation": 66
+  },
+  "files": {
+    "cpg_mapping_external_parquet": "data/derived/external_gse40279_v1/cpg_mapping_external.parquet",
+    "dataset_config": "configs/datasets/external_gse40279_v1.yaml",
+    "dataset_h5": "data/derived/external_gse40279_v1/methylation.h5",
+    "locus_protocol_npz": "data/derived/external_gse40279_v1/loci_seen_external_gse40279_v1.npz",
+    "mapping_manifest": "configs/external/gse40279_v1_mapping_manifest.json",
+    "patient_protocol_npz": "data/derived/external_gse40279_v1/patients_external_gse40279_v1.npz",
+    "phenotypes_parquet": "data/derived/external_gse40279_v1/phenotypes.parquet",
+    "split_csv": "configs/external/gse40279_v1_split.csv",
+    "split_manifest": "configs/external/gse40279_v1_split_manifest.json"
+  },
+  "files_sha256": {
+    "cpg_mapping_external_parquet": "69cf859854dc2dbdd69b55fd7d52fadebc3018042c75326fc3f25f4206b6f872",
+    "dataset_config": "8146bd1560eec2abf59c04a686f975dba472a804174414cc35c258fe682aaa17",
+    "dataset_h5": "57f2dc8ada1d20da98a4b35dcc83520aa1a6f4fe9df8e5251d9fc6949ace951e",
+    "locus_protocol_npz": "5d6bf7715bd5a12b0facc31f778d4ba68ce10576c6755158cc316b673fae0d0b",
+    "mapping_manifest": "39fd2976b98de8d246d8039189ba2d07a408603dff449eda702f5c11c4c95d86",
+    "patient_protocol_npz": "b826db5dec7f790c5f4f57cbca51c7c8224cfcb52102a8761cd99fc2a358328d",
+    "phenotypes_parquet": "7e1495415120e2bf64867004ebc0e025c70c96a04fb5514f84419630ac6da91f",
+    "split_csv": "a747aa02d990e4d54a08aa3e604067fb5a224a135213ef7dd692bc60067a2af4",
+    "split_manifest": "4d48bd1b1286e19c434530595d187df23b1f986f9bfb05b7cf9f1b9fa7bbb85a"
+  },
+  "freeze_state": "draft",
+  "locus_seed": 17001,
+  "mask_fractions": [
+    0.15,
+    0.3,
+    0.5,
+    0.7,
+    0.9
+  ],
+  "mask_seed": 17001,
+  "patient_split_seed": 20260925,
+  "phase_a_checkpoints_experiment_B": [
+    {
+      "arm": "cpgpt_large_locus",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_17/20261003T144100Z-5d87d4abf1/checkpoints/best.pt",
+      "best_pt_sha256": "533ad8e0fbeb8aa9abe6be02fc8a4cb324fe31095149008938b34532f6ae5825",
+      "seed": 17
+    },
+    {
+      "arm": "cpgpt_large_locus",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_42/20261003T162814Z-5d02637966/checkpoints/best.pt",
+      "best_pt_sha256": "030449e823cc5dc648e7827f5e29397bf25a8783577be52e5164115dd94506c8",
+      "seed": 42
+    },
+    {
+      "arm": "cpgpt_large_locus",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_97/20261003T162619Z-1b6b1955cf/checkpoints/best.pt",
+      "best_pt_sha256": "79e5aaf24540b8314c307b085e45d4d69222d9fffe42ca23351efc692c8498f5",
+      "seed": 97
+    },
+    {
+      "arm": "deepcpg_dna_locus",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_17/20261003T170325Z-484cd90b96/checkpoints/best.pt",
+      "best_pt_sha256": "6bb38d7c7989725e18ecfc9e58604a902f15b108513982e6c622a12dd2a319da",
+      "seed": 17
+    },
+    {
+      "arm": "deepcpg_dna_locus",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_42/20261003T184733Z-c72b576708/checkpoints/best.pt",
+      "best_pt_sha256": "e69a2211fcfdf769fa9bcd34d92ee3acc8d32ba68759a7ab321dbc28df3f0956",
+      "seed": 42
+    },
+    {
+      "arm": "deepcpg_dna_locus",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_97/20261003T184620Z-a8d0bed5ee/checkpoints/best.pt",
+      "best_pt_sha256": "63c4759e485b7aeb1089f97b926ec63cb330ed735f92fbf3a805eab7614160d6",
+      "seed": 97
+    },
+    {
+      "arm": "functional_annotations_pca",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/functional_annotations_pca/native_frozen/seed_17/20261003T125543Z-b613e17e1b/checkpoints/best.pt",
+      "best_pt_sha256": "3fcb82e2417f2b708590a3f44311c9ef3a62b8a2f6015641766f339a7f1b51af",
+      "seed": 17
+    },
+    {
+      "arm": "functional_annotations_pca",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/functional_annotations_pca/native_frozen/seed_42/20261003T143932Z-de16908eb9/checkpoints/best.pt",
+      "best_pt_sha256": "3b4177845921f976e64135861e76f7e1c24b268b1c3a308a788e6bc73b44206c",
+      "seed": 42
+    },
+    {
+      "arm": "functional_annotations_pca",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/functional_annotations_pca/native_frozen/seed_97/20261003T143856Z-7d1c51659e/checkpoints/best.pt",
+      "best_pt_sha256": "5a948484e9db1e431636db594cf8770ea750c4ebe3fa3ba31591e388b78e3aa8",
+      "seed": 97
+    },
+    {
+      "arm": "regulatory_histone_dnase",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/regulatory_histone_dnase/native_frozen/seed_17/20261003T104748Z-42fa2ea20c/checkpoints/best.pt",
+      "best_pt_sha256": "919f55571d913d3e16a1ca5dc71666be9cf7a1518d0c877b5c3e3cad57e0f0fc",
+      "seed": 17
+    },
+    {
+      "arm": "regulatory_histone_dnase",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/regulatory_histone_dnase/native_frozen/seed_42/20261003T125220Z-c3094ff18d/checkpoints/best.pt",
+      "best_pt_sha256": "4c7c12bcce508eea1859e74bc2233dbd0095902b2d7256bf54383392184ef9f6",
+      "seed": 42
+    },
+    {
+      "arm": "regulatory_histone_dnase",
+      "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/regulatory_histone_dnase/native_frozen/seed_97/20261003T125220Z-a8447bb840/checkpoints/best.pt",
+      "best_pt_sha256": "8bc886bb2863820dfc8997ff429dc3aee15afa0901215179cac33b4bde33163a",
+      "seed": 97
+    }
+  ],
+  "protocol_doc": "docs/EXTERNAL_RECONSTRUCTION_PROTOCOL.md",
+  "schema": "external_gse40279_v1_freeze_manifest/1",
+  "seeds": [
+    17,
+    42,
+    97
+  ],
+  "selection_mask_fraction": 0.5,
+  "test_set_authorized": false,
+  "universe_size": 408017
+}

@@ -1,0 +1,2366 @@
+{
+  "assertions": {
+    "beta_in_0_1": true,
+    "cohort_coordinates_unique": true,
+    "join_exact_no_offset": true,
+    "mapped_cpg_idx_unique": true,
+    "n_mapped_plus_unmapped_equals_universe": true,
+    "no_nan_in_universe_columns": true,
+    "phenotype_rows_follow_matrix_axis": true,
+    "registry_equals_loci_seen_universe": true,
+    "registry_order_equals_tcga_matrix_axis": true,
+    "runner_read_axis_ok": true,
+    "sex_age_complete": true,
+    "sex_values": true,
+    "source_cpg_idx_equals_chrom_1e9_plus_pos": true,
+    "subject_ids_unique": true,
+    "written_beta_bitwise_equal_source": true
+  },
+  "beta": {
+    "n_nan": 0,
+    "n_out_of_0_1": 0,
+    "nan_policy": "NO NaN expected; asserted 0 NaN in the written matrix (runner would otherwise skip NaN in panels and drop loci without finite train values)",
+    "renormalisation": "none (bitwise copy, verified)"
+  },
+  "cohort": {
+    "multi_probe_policy": "nanmean across probes at the same coordinate (already applied in the prepared file; beta untouched here)",
+    "n_mapped_loci_with_multiple_probes": 9,
+    "n_probes_on_mapped_loci": 408026,
+    "n_samples": 656,
+    "n_source_loci": 472985,
+    "n_source_probes": 473034,
+    "n_unique_subjects": 656,
+    "probe_status_counts": {
+      "mapped_duplicate_coordinate": 66,
+      "mapped_unique": 472952,
+      "missing_illumina_crosswalk": 16
+    }
+  },
+  "column_order": "benchmark universe order (array_cpg_map.parquet raw_cpg_row) restricted to covered loci",
+  "id_system": "benchmark/TCGA global cpg_idx (MethylProphet); the cohort file uses coordinate-native chrom*1e9+pos (GRCh38, 1-based cytosine); joined on exact (chr,pos), no offset, no tolerance. The new matrix /cpg_idx is the benchmark global cpg_idx so every frozen store matches by id.",
+  "locus_protocol": {
+    "heldout_fraction": 0.0,
+    "n_heldout_cpg_idx": 0,
+    "n_train_cpg_idx": 408017,
+    "path": "data/derived/external_gse40279_v1/loci_seen_external_gse40279_v1.npz",
+    "policy": "genome-wide seen-only (CLAUDE.md); all universe loci -> train; 849 all-zero-embedding regulatory loci KEPT (identical for all arms)",
+    "seed": 17001
+  },
+  "runtime_seconds": 52.8,
+  "schema": "external_gse40279_v1_mapping_manifest/1",
+  "sha256": {
+    "input_array_cpg_map_parquet": "ac80ce63580bb40ea7e818c4a8b2b610192465159562612bca195b8141e3d4e7",
+    "input_beta_h5": "f9a7ddc90856f20046c50ae81f6bebbe7a939e1a6500140050d98f2254850537",
+    "input_cpg_mapping_parquet": "c70283e42ca7614bba1e92e87839c001cfa1d8a2e05e62102f0f5142edda83c1",
+    "input_loci_seen_tcga_npz": "f135a589d4e9c5b7527a81275b3ec943efbae6a479c46bc0907e67adcbf9d07a",
+    "input_phenotypes_parquet": "a453735266f04ba60c7025af8c61ac2d191e3f710508c72f3a364ff0d0ab531e",
+    "output_cpg_mapping_external_parquet": "69cf859854dc2dbdd69b55fd7d52fadebc3018042c75326fc3f25f4206b6f872",
+    "output_locus_protocol_npz": "5d6bf7715bd5a12b0facc31f778d4ba68ce10576c6755158cc316b673fae0d0b",
+    "output_methylation_h5": "57f2dc8ada1d20da98a4b35dcc83520aa1a6f4fe9df8e5251d9fc6949ace951e",
+    "output_phenotypes_parquet": "7e1495415120e2bf64867004ebc0e025c70c96a04fb5514f84419630ac6da91f"
+  },
+  "universe": {
+    "n_benchmark": 408399,
+    "n_mapped": 408017,
+    "n_mapped_chr1_19": 388233,
+    "n_mapped_chr20_22": 19784,
+    "n_unmapped": 382
+  },
+  "unmapped_loci": {
+    "reason": "no cohort probe at this exact (chr,pos): locus absent from the GSE40279 450K array content",
+    "records": [
+      {
+        "chr": "chr16",
+        "cpg_idx": 6093360,
+        "pos": 579015,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8757929,
+        "pos": 51927667,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6017485,
+        "pos": 5071150,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr22",
+        "cpg_idx": 12281149,
+        "pos": 44329185,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 7400919,
+        "pos": 821134,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17626410,
+        "pos": 16509214,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21164558,
+        "pos": 11720249,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9064945,
+        "pos": 113759342,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1989481,
+        "pos": 65111713,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19158052,
+        "pos": 29975687,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6102076,
+        "pos": 58511442,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17823171,
+        "pos": 180969076,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr21",
+        "cpg_idx": 11796698,
+        "pos": 37667475,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1995763,
+        "pos": 65422756,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6886290,
+        "pos": 45074065,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr13",
+        "cpg_idx": 3720488,
+        "pos": 26476375,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8804220,
+        "pos": 55384604,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 5672960,
+        "pos": 11742868,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 735021,
+        "pos": 46786221,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 396868,
+        "pos": 132744437,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13925214,
+        "pos": 52532296,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15569394,
+        "pos": 66038965,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9633499,
+        "pos": 197201469,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9227716,
+        "pos": 152795791,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 14066833,
+        "pos": 68774667,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8777944,
+        "pos": 53194281,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 5795652,
+        "pos": 235189,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16967744,
+        "pos": 82900730,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8115600,
+        "pos": 1269251,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6433401,
+        "pos": 86596824,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15648277,
+        "pos": 75608032,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 7249424,
+        "pos": 7562122,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 18433014,
+        "pos": 10390864,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6447615,
+        "pos": 87392171,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6786800,
+        "pos": 37406985,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10197060,
+        "pos": 26001343,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16470990,
+        "pos": 1977503,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17316093,
+        "pos": 131635119,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5131308,
+        "pos": 45142087,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 763292,
+        "pos": 50675018,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8457892,
+        "pos": 36032682,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8072936,
+        "pos": 10636466,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13944077,
+        "pos": 54724425,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15725438,
+        "pos": 8727502,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19162061,
+        "pos": 30914607,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21454377,
+        "pos": 1549712,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8064478,
+        "pos": 10315840,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9960854,
+        "pos": 228445816,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20854441,
+        "pos": 76515963,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19565165,
+        "pos": 81753921,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15367442,
+        "pos": 46694205,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr18",
+        "cpg_idx": 7735475,
+        "pos": 48410051,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1876671,
+        "pos": 55663676,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16882313,
+        "pos": 732264,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr13",
+        "cpg_idx": 4199675,
+        "pos": 98827478,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6384779,
+        "pos": 84186023,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 7423205,
+        "pos": 83071086,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5247612,
+        "pos": 60003939,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10243469,
+        "pos": 28919338,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 735022,
+        "pos": 46786224,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21665829,
+        "pos": 38231365,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10010850,
+        "pos": 2326027,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9509788,
+        "pos": 181088678,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13014756,
+        "pos": 174682398,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17786996,
+        "pos": 178839174,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20064019,
+        "pos": 143380085,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169344,
+        "pos": 32638668,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13532186,
+        "pos": 235763073,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21373722,
+        "pos": 141084922,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17187370,
+        "pos": 113272307,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17220502,
+        "pos": 1179213,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 7304961,
+        "pos": 7833965,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5342970,
+        "pos": 69397516,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr13",
+        "cpg_idx": 3613018,
+        "pos": 112838245,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 2889055,
+        "pos": 27780733,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9349522,
+        "pos": 162710330,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 12482049,
+        "pos": 108508120,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13979098,
+        "pos": 593391,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr20",
+        "cpg_idx": 11306018,
+        "pos": 45894670,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4575961,
+        "pos": 56579613,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 18799134,
+        "pos": 149864233,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4562869,
+        "pos": 55027077,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16659600,
+        "pos": 4135439,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169345,
+        "pos": 32638857,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20854444,
+        "pos": 76516355,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169186,
+        "pos": 32586143,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 2990244,
+        "pos": 4165121,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 14894152,
+        "pos": 170869905,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 847922,
+        "pos": 62245271,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19070773,
+        "pos": 20401713,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15119945,
+        "pos": 195546486,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 5862453,
+        "pos": 28846658,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21384961,
+        "pos": 1417141,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20965866,
+        "pos": 93231203,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17415041,
+        "pos": 140664957,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 18526362,
+        "pos": 113903859,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19159126,
+        "pos": 30197875,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21806697,
+        "pos": 54559138,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 18859594,
+        "pos": 155437892,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169133,
+        "pos": 32558483,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 18953941,
+        "pos": 163636120,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9735044,
+        "pos": 20634184,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17823208,
+        "pos": 180987906,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr21",
+        "cpg_idx": 11891029,
+        "pos": 44914407,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 2256351,
+        "pos": 8826115,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr20",
+        "cpg_idx": 11101830,
+        "pos": 2840281,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6786798,
+        "pos": 37406977,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 8990882,
+        "pos": 1067284,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4499215,
+        "pos": 46651830,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 5990777,
+        "pos": 48610109,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5400624,
+        "pos": 74994282,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15614191,
+        "pos": 71541655,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5109859,
+        "pos": 42732966,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19171459,
+        "pos": 33164404,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17584960,
+        "pos": 159331895,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10220821,
+        "pos": 27551898,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13255130,
+        "pos": 206085284,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21677311,
+        "pos": 39523073,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6427286,
+        "pos": 86298207,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169399,
+        "pos": 32665180,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5423146,
+        "pos": 77134377,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 19709744,
+        "pos": 101126324,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10547268,
+        "pos": 53129808,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1558022,
+        "pos": 1391863,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 5669663,
+        "pos": 11586428,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 382663,
+        "pos": 13217274,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 2398945,
+        "pos": 106987397,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19013418,
+        "pos": 1684234,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 14887150,
+        "pos": 170181809,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 14331238,
+        "pos": 101574042,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6724978,
+        "pos": 3049239,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16209023,
+        "pos": 159104239,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21860544,
+        "pos": 61122898,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 2549674,
+        "pos": 119595227,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6894460,
+        "pos": 46821419,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 3058393,
+        "pos": 49189091,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 7373081,
+        "pos": 8118837,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 5668914,
+        "pos": 1155018,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 5897240,
+        "pos": 30787962,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8941633,
+        "pos": 9938455,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20227124,
+        "pos": 157615717,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15544636,
+        "pos": 62876250,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 14104465,
+        "pos": 7202097,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10467640,
+        "pos": 45304976,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 3073130,
+        "pos": 50129842,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21703936,
+        "pos": 42196476,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169178,
+        "pos": 32584573,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4875857,
+        "pos": 92100617,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6856512,
+        "pos": 43361230,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10168268,
+        "pos": 247286508,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 3152944,
+        "pos": 56228274,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15368994,
+        "pos": 46864833,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5166018,
+        "pos": 50355386,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6487716,
+        "pos": 89053892,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 2073451,
+        "pos": 69658377,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4299490,
+        "pos": 105154021,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 12463354,
+        "pos": 106265798,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1996692,
+        "pos": 65476675,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 14016698,
+        "pos": 63049895,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 342028,
+        "pos": 129767025,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9407106,
+        "pos": 169586535,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6850319,
+        "pos": 42901095,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 2925809,
+        "pos": 31959445,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr13",
+        "cpg_idx": 3773713,
+        "pos": 31846914,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169889,
+        "pos": 32827805,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr20",
+        "cpg_idx": 11574338,
+        "pos": 63864096,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4639173,
+        "pos": 64541923,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21261866,
+        "pos": 1290303,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13827810,
+        "pos": 42166928,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15787107,
+        "pos": 98732874,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9292702,
+        "pos": 157137465,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9040560,
+        "pos": 111499710,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9278156,
+        "pos": 156289200,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4288353,
+        "pos": 104588099,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9227721,
+        "pos": 152797420,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15415226,
+        "pos": 49903486,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16942620,
+        "pos": 80203563,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10249146,
+        "pos": 29271771,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 14250120,
+        "pos": 9111020,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16657204,
+        "pos": 4110329,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13690037,
+        "pos": 27779557,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21816511,
+        "pos": 55773150,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20815386,
+        "pos": 73721905,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4755332,
+        "pos": 76538402,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 19982567,
+        "pos": 134317226,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6970386,
+        "pos": 52160043,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9122623,
+        "pos": 11982536,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1876660,
+        "pos": 55649542,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13475565,
+        "pos": 231530589,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 15956287,
+        "pos": 123505768,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 2172108,
+        "pos": 773106,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13027931,
+        "pos": 176132776,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 2158824,
+        "pos": 76211279,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6630590,
+        "pos": 19378569,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr18",
+        "cpg_idx": 7985582,
+        "pos": 76822072,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr9",
+        "cpg_idx": 22394145,
+        "pos": 127423541,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 3445557,
+        "pos": 9402884,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4765767,
+        "pos": 77321265,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1500892,
+        "pos": 130220017,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 727159,
+        "pos": 45154779,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16199367,
+        "pos": 1578466,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr9",
+        "cpg_idx": 22428212,
+        "pos": 129171994,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 7162540,
+        "pos": 69245000,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6696832,
+        "pos": 28598554,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 12966641,
+        "pos": 169733788,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr9",
+        "cpg_idx": 22418852,
+        "pos": 128702709,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13494711,
+        "pos": 233014335,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr9",
+        "cpg_idx": 22761036,
+        "pos": 35096260,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13637113,
+        "pos": 242006245,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr20",
+        "cpg_idx": 11162686,
+        "pos": 34112690,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr9",
+        "cpg_idx": 22158317,
+        "pos": 101399207,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 14513098,
+        "pos": 125213112,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 14235160,
+        "pos": 88127508,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16427079,
+        "pos": 185638929,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20223698,
+        "pos": 157470944,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8568846,
+        "pos": 42196822,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19157902,
+        "pos": 2989881,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8233209,
+        "pos": 18189963,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr9",
+        "cpg_idx": 22394144,
+        "pos": 127423175,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10364270,
+        "pos": 3748116,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20570528,
+        "pos": 47499938,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 208535,
+        "pos": 119651348,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4588613,
+        "pos": 58243999,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1876621,
+        "pos": 55603601,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1614318,
+        "pos": 1997017,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8880747,
+        "pos": 663394,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15287817,
+        "pos": 37969411,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169169,
+        "pos": 32584172,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169130,
+        "pos": 32558183,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 228038,
+        "pos": 121500819,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 12787919,
+        "pos": 144516209,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169126,
+        "pos": 32555359,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21472806,
+        "pos": 17801329,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15011534,
+        "pos": 184604590,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr21",
+        "cpg_idx": 11784773,
+        "pos": 36708226,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1636083,
+        "pos": 2264849,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 2710038,
+        "pos": 130265691,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4282823,
+        "pos": 104159083,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 12478664,
+        "pos": 10812601,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 2036057,
+        "pos": 67442562,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10284803,
+        "pos": 31938868,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17622940,
+        "pos": 1645687,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169174,
+        "pos": 32584375,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 18507703,
+        "pos": 111482477,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4320726,
+        "pos": 21058192,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9408465,
+        "pos": 169734091,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 124291,
+        "pos": 112356691,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10062723,
+        "pos": 236735574,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6350724,
+        "pos": 81484648,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 19980874,
+        "pos": 134127288,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6160182,
+        "pos": 660921,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9500526,
+        "pos": 180232004,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9003205,
+        "pos": 108192927,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr13",
+        "cpg_idx": 3739959,
+        "pos": 28139315,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 3174221,
+        "pos": 57628627,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10653593,
+        "pos": 63662080,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1618059,
+        "pos": 20363708,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr13",
+        "cpg_idx": 3651483,
+        "pos": 19782781,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21677307,
+        "pos": 39522916,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 3330638,
+        "pos": 77119840,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr20",
+        "cpg_idx": 11358512,
+        "pos": 49571619,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15227082,
+        "pos": 3038937,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 7237503,
+        "pos": 75087792,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17155109,
+        "pos": 108749717,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19016628,
+        "pos": 168625672,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19018227,
+        "pos": 168729491,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16056480,
+        "pos": 139015880,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 2158820,
+        "pos": 76211194,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19173136,
+        "pos": 33406393,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 7423215,
+        "pos": 83073660,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19109597,
+        "pos": 24646266,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 19724955,
+        "pos": 101916847,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 610384,
+        "pos": 3130287,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15320500,
+        "pos": 41962356,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20992367,
+        "pos": 97024886,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17823174,
+        "pos": 180970332,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20854442,
+        "pos": 76516245,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19163212,
+        "pos": 31308657,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13195733,
+        "pos": 200306681,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4316886,
+        "pos": 20683336,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19162930,
+        "pos": 31196966,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16973681,
+        "pos": 8343428,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10469959,
+        "pos": 45490974,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8633278,
+        "pos": 45886246,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13883933,
+        "pos": 47177147,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1695015,
+        "pos": 31372238,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4320823,
+        "pos": 21066782,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6462239,
+        "pos": 88010895,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4541555,
+        "pos": 52361087,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20814504,
+        "pos": 73683635,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 595248,
+        "pos": 30047636,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15779862,
+        "pos": 97822601,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr22",
+        "cpg_idx": 12195514,
+        "pos": 38569929,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr20",
+        "cpg_idx": 11354403,
+        "pos": 49277322,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20817666,
+        "pos": 73842641,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21434193,
+        "pos": 144351910,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr20",
+        "cpg_idx": 11565372,
+        "pos": 63552571,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 19735357,
+        "pos": 102464677,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 144735,
+        "pos": 114100521,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15142429,
+        "pos": 197029844,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15304268,
+        "pos": 39779835,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 18526361,
+        "pos": 113903848,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4229491,
+        "pos": 100945305,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10281888,
+        "pos": 31763220,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17202984,
+        "pos": 115545048,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8843691,
+        "pos": 57633630,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13323527,
+        "pos": 215311525,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 15156741,
+        "pos": 20186330,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr3",
+        "cpg_idx": 14797933,
+        "pos": 156675807,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17220406,
+        "pos": 1179044,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4309032,
+        "pos": 19026223,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 3367122,
+        "pos": 82358934,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10188458,
+        "pos": 25266564,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr11",
+        "cpg_idx": 1684885,
+        "pos": 2992571,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20645184,
+        "pos": 55072154,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5374298,
+        "pos": 72686030,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr20",
+        "cpg_idx": 11304545,
+        "pos": 45813002,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20011754,
+        "pos": 137886204,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9227717,
+        "pos": 152796000,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169121,
+        "pos": 32552838,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5499110,
+        "pos": 85515524,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 9125105,
+        "pos": 120341455,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 15958327,
+        "pos": 123772982,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6747501,
+        "pos": 32281348,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 17024262,
+        "pos": 88960223,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21248602,
+        "pos": 127223591,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 15891170,
+        "pos": 113209561,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13343377,
+        "pos": 217489427,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19015529,
+        "pos": 168555168,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr18",
+        "cpg_idx": 7756118,
+        "pos": 50282705,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 6784811,
+        "pos": 36641918,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr14",
+        "cpg_idx": 4309127,
+        "pos": 19434723,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19247275,
+        "pos": 387171,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 7253023,
+        "pos": 75779730,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16385997,
+        "pos": 182448124,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8082056,
+        "pos": 10989231,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 13610471,
+        "pos": 24047582,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr20",
+        "cpg_idx": 11408282,
+        "pos": 52972319,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5569446,
+        "pos": 92393448,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16310544,
+        "pos": 173171311,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19414162,
+        "pos": 57172157,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8797076,
+        "pos": 5510299,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10156323,
+        "pos": 246428821,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr20",
+        "cpg_idx": 11208882,
+        "pos": 37179637,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 112206,
+        "pos": 110871696,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20667251,
+        "pos": 56787802,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 3325016,
+        "pos": 76545128,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 3089153,
+        "pos": 51324324,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17590423,
+        "pos": 159987359,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16105599,
+        "pos": 145541017,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 14000933,
+        "pos": 61537309,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20341246,
+        "pos": 25006246,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 168678,
+        "pos": 116620858,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19167394,
+        "pos": 32130337,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8139152,
+        "pos": 13762657,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5406558,
+        "pos": 75456080,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 3147495,
+        "pos": 55927998,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 12491973,
+        "pos": 109275742,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr4",
+        "cpg_idx": 16172592,
+        "pos": 15395664,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 12989985,
+        "pos": 172104024,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr12",
+        "cpg_idx": 2896056,
+        "pos": 2877713,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19168515,
+        "pos": 32329893,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr1",
+        "cpg_idx": 10350644,
+        "pos": 36446886,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17823224,
+        "pos": 181002512,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr8",
+        "cpg_idx": 21186693,
+        "pos": 119874744,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6188839,
+        "pos": 67936081,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17682498,
+        "pos": 170791680,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17948009,
+        "pos": 3339467,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8740292,
+        "pos": 50804844,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 5763232,
+        "pos": 2081717,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5172772,
+        "pos": 50943530,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr9",
+        "cpg_idx": 22365552,
+        "pos": 125200202,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr7",
+        "cpg_idx": 20837051,
+        "pos": 7533162,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr6",
+        "cpg_idx": 19169021,
+        "pos": 32522235,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr10",
+        "cpg_idx": 58115,
+        "pos": 104055685,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr5",
+        "cpg_idx": 17682408,
+        "pos": 170783582,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr17",
+        "cpg_idx": 7357768,
+        "pos": 80600892,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr2",
+        "cpg_idx": 12450634,
+        "pos": 105241558,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr19",
+        "cpg_idx": 8721135,
+        "pos": 49897457,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr16",
+        "cpg_idx": 6431390,
+        "pos": 86513332,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr20",
+        "cpg_idx": 11287290,
+        "pos": 44311332,
+        "reason": "unmapped_absent_from_cohort_array"
+      },
+      {
+        "chr": "chr15",
+        "cpg_idx": 5173592,
+        "pos": 51077729,
+        "reason": "unmapped_absent_from_cohort_array"
+      }
+    ]
+  }
+}

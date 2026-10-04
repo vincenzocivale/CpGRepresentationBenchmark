@@ -1,0 +1,27 @@
+# External reconstruction confirmation cohort (GSE40279, whole blood, Illumina 450K). FROZEN-v1 inputs: see
+# configs/external/gse40279_v1_freeze_manifest.json and docs/EXTERNAL_RECONSTRUCTION_PROTOCOL.md.
+# The masking runner reads the `dataset:` block of each run config (not this file); the phase-2 run configs copy
+# name / methylation_h5 / cpg_registry / patient_protocol / patient_split_seed verbatim from `runner_dataset_block`.
+name: external_gse40279_v1
+accession: GSE40279
+platform: Illumina HumanMethylation450 BeadChip
+sample_type: whole blood
+reference_build: GRCh38
+cpg_namespace: MethylProphet_global_cpg_idx   # benchmark global cpg_idx; source file chrom*1e9+pos joined on exact (chr,pos)
+methylation_h5: data/derived/external_gse40279_v1/methylation.h5
+phenotypes_parquet: data/derived/external_gse40279_v1/phenotypes.parquet
+cpg_registry: data/cpg/registries/array_cpg_map.parquet
+patient_protocol: data/derived/external_gse40279_v1/patients_external_gse40279_v1.npz
+patient_split_seed: 20260925
+patient_split: [0.80, 0.10, 0.10]
+split_csv: configs/external/gse40279_v1_split.csv
+locus_protocol: data/derived/external_gse40279_v1/loci_seen_external_gse40279_v1.npz   # experiment.locus_split.protocol_path
+locus_split: {heldout_fraction: 0.0, seed: 17001}
+mapping_manifest: configs/external/gse40279_v1_mapping_manifest.json
+runner_dataset_block:
+  name: external_gse40279_v1
+  methylation_h5: data/derived/external_gse40279_v1/methylation.h5
+  cpg_registry: data/cpg/registries/array_cpg_map.parquet
+  patient_split: [0.8, 0.1, 0.1]
+  patient_protocol: data/derived/external_gse40279_v1/patients_external_gse40279_v1.npz
+  patient_split_seed: 20260925
