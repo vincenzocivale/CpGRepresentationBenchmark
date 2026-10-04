@@ -304,6 +304,11 @@ def _runner():
 
 def test_runner_refuses_test_and_incomplete_and_never_launches(monkeypatch, capsys):
     mod = _runner()
+    # the runner skips jobs that already have a .done marker, so the expected listing depends on real run state:
+    # compute what is still pending instead of assuming a fresh checkout
+    logs = mod.ROOT / mod.cm.OUTPUT_ROOT / "logs"
+    arms = ["regulatory_histone_dnase", "functional_annotations_pca", "cpgpt_large_locus", "deepcpg_dna_locus"]
+    pending = [f"{a}__seed{s}" for s in (17, 42, 97) for a in arms if not (logs / f"{a}__seed{s}.done").exists()]
     launched = []
     monkeypatch.setattr(mod.subprocess, "run", lambda *a, **k: launched.append(a))
     # test split: refused (not authorized), also with the escape hatch
@@ -314,7 +319,8 @@ def test_runner_refuses_test_and_incomplete_and_never_launches(monkeypatch, caps
     # escape hatch: dry-run lists available arms only
     assert mod.main(["run", "--dry-run", "--allow-incomplete-validation-only"]) == 0
     out = capsys.readouterr().out
-    assert out.count("would run [main]") == 12 and "modern_sequence" not in out.split("would run")[1]
+    would = [x for x in out.splitlines() if x.startswith("would run")]
+    assert len(would) == len(pending) and not any("modern_sequence" in x for x in would)
     assert launched == []
     # PHASE A: no escape-hatch flag needed; exactly the 12 runs of the 4 fully registered arms, seed-major, nothing launched
     capsys.readouterr()
@@ -322,7 +328,6 @@ def test_runner_refuses_test_and_incomplete_and_never_launches(monkeypatch, caps
     out = capsys.readouterr().out
     lines = [x for x in out.splitlines() if x.startswith("would run")]
     names = [Path(x.split()[-1]).stem for x in lines]
-    arms = ["regulatory_histone_dnase", "functional_annotations_pca", "cpgpt_large_locus", "deepcpg_dna_locus"]
-    assert names == [f"{a}__seed{s}" for s in (17, 42, 97) for a in arms]
+    assert names == pending
     assert mod.main(["run", "--phase", "A", "--split", "test", "--dry-run"]) == 2
     assert launched == []
