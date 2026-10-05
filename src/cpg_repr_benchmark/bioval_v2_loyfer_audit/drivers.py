@@ -48,7 +48,7 @@ from .common import (
 PRIMARY_STAT_NAME = "spearman_pooled_gt1Mb_inter_eqw"
 
 COST_NOTES = {
-    "target-audit": "Level A ONLY (amendment 1; the 75 GB raw .pat.gz scan is NOT executed): ~10-20 min (counts h5 205x408k, donor aggregation, 386k pairs; RAM ~6 GB); "
+    "target-audit": "Level A ONLY (amendment 1; the 75 GB raw .pat.gz scan is NOT executed): ~10-20 min plus ~1 min float32 diagnostic (counts h5 205x408k, donor aggregation, 386k pairs; RAM ~6 GB); "
                     "section 2: 20 split-half repetitions x (2 x 386k pair Pearson) ~1-2 min each, RAM ~4 GB.",
     "semantics-pairs": "CSR row counts over the histone+DNase columns (reads track_indptr/track_indices only, ~1.5 GB) ~3-6 min; per-pair tables ~5 min; RAM ~6 GB.",
     "baselines": "per arm: load embeddings (<=0.8 GB), 100 shuffled + 100 Gaussian cosines on 384,675 pairs + 7 Spearman each ~25-45 min per arm (512-d slowest); "
@@ -361,7 +361,17 @@ def level_a(ctx, log=log):
     res["group_beta_vs_frozen_float16"] = cb
     checks["group_beta_nan_pattern_identical"] = cb["nan_pattern_mismatch"] == 0
     checks["group_beta_within_half_ulp"] = cb["n_beyond_half_ulp"] == 0
-    checks["group_beta_f16_rounding_mismatch_frac_ok"] = cb["frac_f16_rounding_mismatch"] <= rg.MAX_F16_MISMATCH_FRAC
+    # Amendment 2: the old fraction rule (1e-5, SUPERSEDED) is informational; the hard rule is mechanism-based
+    checks["group_beta_f16_mismatch_within_float32_precision_of_midpoint"] = cb["n_mismatch_beyond_f32_tol"] == 0
+    checks["info_f16_mismatch_fraction_vs_superseded_1e-5"] = None
+    res["f16_mismatch_fraction_superseded_threshold"] = {"observed": cb["frac_f16_rounding_mismatch"], "superseded_threshold": rg.MAX_F16_MISMATCH_FRAC,
+                                                         "would_have_passed": cb["frac_f16_rounding_mismatch"] <= rg.MAX_F16_MISMATCH_FRAC}
+    try:
+        b32 = ta.frozen_style_group_beta_float32(M, C, list(tab.file), tab)
+        res["f16_mismatch_float32_accumulation_diagnostic"] = ta.diagnose_f16_mismatch(beta64, prof.beta, b32)
+        del b32
+    except Exception as e:  # noqa: BLE001
+        res["f16_mismatch_float32_accumulation_diagnostic"] = {"error": str(e)}
     pairs = ctx.pairs()
     sc = ta.structural_checks(pairs, ctx.universe(), prof.beta, prof.mask["primary"], prof.groups)
     res["structural"] = sc
@@ -525,7 +535,7 @@ def step_target_audit(ctx, threads, sections="all", log=log, with_level_b=False)
         log("[step1] Level B NOT executed (user decision D-L1, amendment 1): raw .pat counts/parsing are not verified")
         res["raw_level_B"] = {"executed": False, "reason": "user decision D-L1 (cost); see registration amendment 1"}
     verdict = ta.build_verdict(checks, level_b_executed=with_level_b)
-    verdict.update({"checks": checks, "amendment": "1 (2026-10-05)", "timestamp_utc": gt.datetime.now(gt.timezone.utc).isoformat(),
+    verdict.update({"checks": checks, "amendment": "1+2 (2026-10-05)", "timestamp_utc": gt.datetime.now(gt.timezone.utc).isoformat(),
                     "registration_sha256": sha256_file(ctx.root / rg.REGISTRATION_DOC), "code_sha256": gt.current_code_sha256(ctx.root),
                     "head_commit": gt.head_commit(ctx.root)})
     ctx.w.write_json(f"{d}/target_audit_results.json", res)

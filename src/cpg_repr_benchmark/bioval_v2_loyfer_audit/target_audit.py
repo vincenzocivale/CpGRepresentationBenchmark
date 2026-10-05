@@ -121,7 +121,19 @@ def compare_beta(beta64, beta16, mask=None):
             "max_abs_diff": float(d.max()) if d.size else 0.0,
             "max_diff_in_ulp": float((d / ulp).max()) if d.size else 0.0,
             "n_beyond_half_ulp": int((d > rg.TOL_BETA_ULP_FRAC * ulp + 1e-6).sum()),
-            "n_f16_rounding_mismatch": mism, "frac_f16_rounding_mismatch": mism / max(int(ok.sum()), 1)}
+            "n_f16_rounding_mismatch": mism, "frac_f16_rounding_mismatch": mism / max(int(ok.sum()), 1),
+            **_mismatch_mechanism(a[ok], rounded, b[ok])}
+
+
+def _mismatch_mechanism(a, rounded, frozen):
+    """Amendment 2: relative distance of the float64 beta to the nearest float16 rounding midpoint, for the cells whose rounding differs
+    from the frozen float16; a cell is 'unexplained' if that distance exceeds the float32-precision tolerance."""
+    m = rounded != frozen
+    if not m.any():
+        return {"mismatch_midpoint_rel_max": 0.0, "mismatch_midpoint_ulp_max": 0.0, "n_mismatch_beyond_f32_tol": 0}
+    d_ulp, d_rel = f16_midpoint_distance(a[m])
+    return {"mismatch_midpoint_rel_max": float(d_rel.max()), "mismatch_midpoint_ulp_max": float(d_ulp.max()),
+            "n_mismatch_beyond_f32_tol": int((d_rel > rg.F16_MIDPOINT_REL_TOL).sum())}
 
 
 def pearson_loop(P, ia, ib, min_shared=rg.MIN_SHARED):
@@ -315,3 +327,70 @@ def build_verdict(checks: dict, level_b_executed: bool = False) -> dict:
         verdict = rg.VERDICT_PASS_WITH_B if level_b_executed else rg.VERDICT_PASS
     return {"verdict": verdict, "failed_checks": failed, "n_hard_checks": len(hard), "level": "A+B" if level_b_executed else rg.VERDICT_LEVEL,
             "raw_level_B_executed": bool(level_b_executed), "caveat": None if level_b_executed else rg.VERDICT_CAVEAT}
+
+
+# ---------------------------------------------------------------------------------------------- float16 rounding-boundary mechanism (Amendment 2)
+def f16_midpoint_distance(x):
+    """For float64 values x: distance (in float16 ULP of x, and relative) to the NEAREST float16 rounding midpoint
+    (midpoint between round_f16(x) and its neighbour on the side of x). 0 = exactly on a tie; 0.5 = exactly representable."""
+    x = np.asarray(x, np.float64)
+    r = x.astype(np.float16)
+    r64 = r.astype(np.float64)
+    nb = np.where(x >= r64, np.nextafter(r, np.float16(np.inf)), np.nextafter(r, np.float16(-np.inf))).astype(np.float64)
+    mid = (r64 + nb) / 2.0
+    ulp = np.abs(nb - r64)
+    d = np.abs(x - mid)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        return d / ulp, d / np.abs(x)
+
+
+def frozen_style_group_beta_float32(M, C, files, table: pd.DataFrame, min_cov: int = rg.MIN_COV):
+    """Diagnostic re-implementation of the accumulation order/precision of the frozen aggregation (read from, never importing,
+    scripts/bioval_v2/loyfer_aggregate.py): per-sample beta and sums in float32; donors in sorted order, samples in file-name order;
+    returns float32 group betas (N, G) with NaN where no valid donor."""
+    order = np.argsort(np.asarray(files))
+    pos = {f: i for i, f in enumerate(files)}
+    Mf, Cf = M.astype(np.float32), C.astype(np.float32)
+    valid = Cf >= min_cov
+    B = np.where(valid, Mf / np.maximum(Cf, 1), np.nan).astype(np.float32)
+    groups = sorted(table.group.unique())
+    N = M.shape[1]
+    out = np.full((N, len(groups)), np.nan, np.float32)
+    t = table.assign(i=table.file.map(pos)).sort_values("file")
+    for gi, g in enumerate(groups):
+        sub = t[t.group == g]
+        ix = sub.i.to_numpy()
+        pats = sub.donor.astype(str).to_numpy()
+        nv = np.zeros(N, np.int32)
+        s = np.zeros(N, np.float32)
+        for p in sorted(set(pats)):
+            jx = ix[pats == p]
+            v = valid[jx]
+            k = v.sum(0)
+            dv = np.where(k > 0, np.where(v, B[jx], 0).sum(0) / np.maximum(k, 1), 0)
+            nv += (k > 0)
+            s += dv.astype(np.float32)
+        out[:, gi] = np.where(nv > 0, s / np.maximum(nv, 1), np.nan)
+    del order
+    return out
+
+
+def diagnose_f16_mismatch(beta64, beta16_frozen, beta32_recon):
+    """Mechanism of the cells where round_f16(beta_f64) != frozen float16."""
+    a = np.asarray(beta64, np.float64)
+    b = np.asarray(beta16_frozen, np.float64)
+    ok = ~np.isnan(a) & ~np.isnan(b)
+    mism = ok & (a.astype(np.float16).astype(np.float64) != b)
+    ci, gi = np.nonzero(mism)
+    d_ulp, d_rel = f16_midpoint_distance(a[mism])
+    f32_f16 = np.asarray(beta32_recon).astype(np.float16).astype(np.float64)
+    explained = f32_f16[mism] == b[mism]
+    all_equal = (f32_f16[ok] == b[ok])
+    return {"n_cells": int(ok.sum()), "n_mismatch": int(mism.sum()),
+            "mismatch_distance_to_midpoint_ulp": {"max": float(d_ulp.max()) if len(d_ulp) else 0.0, "median": float(np.median(d_ulp)) if len(d_ulp) else 0.0,
+                                                  "q99": float(np.quantile(d_ulp, 0.99)) if len(d_ulp) else 0.0},
+            "mismatch_distance_to_midpoint_relative": {"max": float(d_rel.max()) if len(d_rel) else 0.0},
+            "float32_accumulation_reproduces_frozen_cells": int(all_equal.sum()), "float32_accumulation_fails_cells": int((~all_equal).sum()),
+            "mismatch_cells_explained_by_float32_accumulation": int(explained.sum()),
+            "per_group_mismatch": np.bincount(gi, minlength=a.shape[1]).tolist(), "n_distinct_cpgs": len(np.unique(ci)),
+            "max_mismatches_in_one_cpg": int(np.bincount(ci).max()) if len(ci) else 0}

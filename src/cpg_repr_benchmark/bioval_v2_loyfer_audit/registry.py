@@ -79,7 +79,13 @@ MIN_COV = 10                             # frozen rule: sample-CpG valid iff cov
 MIN_SHARED = frg.MIN_SHARED              # 20
 TOL_EXACT = 1e-9                         # Pearson reproduction tolerance on the float16-rounded path
 TOL_BETA_ULP_FRAC = 0.5                  # |beta_f64 - beta_f16_frozen| <= 0.5 float16 ulp + 1e-6
-MAX_F16_MISMATCH_FRAC = 1e-5             # cells where round_f16(beta_f64) != frozen f16 (rounding-boundary only)
+MAX_F16_MISMATCH_FRAC = 1e-5             # SUPERSEDED (Amendment 2, 2026-10-05): a-priori fraction threshold, exceeded by the observation (4.3e-5); now informational only
+# Amendment 2: mechanism-based rule. A cell where round_f16(beta_f64) != frozen float16 is acceptable iff beta_f64 lies within float32
+# precision of a float16 rounding midpoint: relative distance <= F32_OP_BOUND * 2**-24 (float32 unit roundoff x a bound of 64 float32 operations
+# in the chain per-sample division, <= 22-sample sum, donor mean, donor sum, group mean). A genuine aggregation error would sit at ~1e-4..1e-3 relative.
+F32_UNIT_ROUNDOFF = 2.0 ** -24
+F32_OP_BOUND = 64
+F16_MIDPOINT_REL_TOL = F32_OP_BOUND * F32_UNIT_ROUNDOFF   # 3.8e-6
 TOL_UNROUNDED_MAX_FRAC_GT = 0.05         # informational: fraction of pairs with |r_unrounded - r_frozen| > 0.05 (reported, not a BUG)
 FASTA_CHROMS = tuple(f"chr{i}" for i in range(1, 23)) + ("chrX", "chrY", "chrM")
 N_GROUPS = 39

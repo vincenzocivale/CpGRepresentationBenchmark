@@ -127,6 +127,36 @@ def test_pearson_loop_equals_vectorised_and_compare_beta():
     assert ta.compare_beta(b64, bad)["n_beyond_half_ulp"] == 1
 
 
+def test_f16_midpoint_mechanism_amendment2():
+    lo = np.float16(0.5)
+    hi = np.nextafter(lo, np.float16(1.0))
+    mid = (float(lo) + float(hi)) / 2
+    d_ulp, d_rel = ta.f16_midpoint_distance(np.array([mid, mid * (1 + 1e-7), float(lo)]))
+    assert d_ulp[0] == 0 and d_rel[1] == pytest.approx(1e-7, rel=0.05) and d_ulp[2] == pytest.approx(0.5)
+    # frozen value computed in float32 landed on the other side of the midpoint: explained (within float32 precision) -> no failure
+    x = np.array([[mid * (1 + 1e-7)]])
+    frozen = np.array([[float(lo)]])           # round_f16(x) = hi, frozen = lo
+    c = ta.compare_beta(x, frozen)
+    assert c["n_f16_rounding_mismatch"] == 1 and c["n_mismatch_beyond_f32_tol"] == 0
+    # a mismatch far from any midpoint (0.3 ulp from it) is NOT explained -> would give FAIL
+    far = np.array([[mid + 0.3 * (float(hi) - float(lo))]])
+    c2 = ta.compare_beta(far, np.array([[float(lo)]]))
+    assert c2["n_f16_rounding_mismatch"] == 1 and c2["n_mismatch_beyond_f32_tol"] == 1
+    assert rg.F16_MIDPOINT_REL_TOL == pytest.approx(64 * 2.0 ** -24)
+    v = ta.build_verdict({"group_beta_f16_mismatch_within_float32_precision_of_midpoint": c2["n_mismatch_beyond_f32_tol"] == 0})
+    assert v["verdict"] == "FAIL"
+    assert ta.build_verdict({"group_beta_f16_mismatch_within_float32_precision_of_midpoint": True, "info_f16_mismatch_fraction_vs_superseded_1e-5": None})["verdict"] == "PASS_LEVEL_A"
+    # float32-accumulation diagnostic reproduces float32-computed betas exactly on a synthetic world
+    rng = np.random.default_rng(12)
+    files, tab, M, C = _fake_counts(rng, N=300)
+    b32 = ta.frozen_style_group_beta_float32(M, C, files, tab)
+    D, V, donors = ta.donor_betas(M, C, files, tab)
+    b64, _, _ = ta.group_betas(D, V, donors)
+    assert np.nanmax(np.abs(b32 - b64)) < 1e-6 and (np.isnan(b32) == np.isnan(b64)).all()
+    dg = ta.diagnose_f16_mismatch(b64, b32.astype(np.float16), b32)
+    assert dg["n_mismatch"] <= dg["n_cells"] and dg["float32_accumulation_fails_cells"] == 0
+
+
 def test_subset_indices_deterministic_and_stratified():
     strat = np.repeat(np.array(rg.STRATA), [50, 60, 70, 80, 90, 100])
     pairs = pd.DataFrame({"stratum": strat})
