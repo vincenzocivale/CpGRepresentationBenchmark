@@ -1,0 +1,159 @@
+{
+ "registry_file": "bio_task_registry.csv",
+ "format": "long: one row per task x representation x metric (x stat)",
+ "columns": {
+  "row_id": "1-based row index (deterministic sort)",
+  "suite": "result family (v2_frozen, v2_sensitivity, v2_exploratory_posthoc, legacy_bio_validation, umap_neighborhood, encode_ewas_matched_single_draw, encode_exp5_base, encode_exp5_probe, encode_exp2_decodability, encode_co_methylation)",
+  "task_id": "suite/endpoint; unique task key used by the matrix, audit and coverage files",
+  "task_name": "endpoint / set name as in the results file",
+  "stat_name": "exact statistic name in the source file (or derived name)",
+  "stat_class": "class attached to the stat in the source (primary/secondary/sensitivity/descriptive/...)",
+  "is_headline": "true for the stat that represents the task in bio_task_matrix.csv (primary_stat or the AUROC/mean-AUC; r2 companions)",
+  "biological_family": "vocabulary: genomic locus identity | regulatory activity | disease/pathology | aging | environmental exposure | 3D genome | replication timing | methylation program | other",
+  "target_source": "provenance of the target labels",
+  "target_description": "what is predicted/retrieved",
+  "positive_n": "number of positives (blank when not applicable/unknown)",
+  "negative_n": "number of negatives/controls",
+  "n_items": "items entering the statistic (as recorded)",
+  "background_sampling": "how negatives/background were obtained",
+  "matching_covariates": "covariates matched between positives and negatives",
+  "split_strategy": "CV / blocking scheme",
+  "representation_raw": "arm id exactly as in the results file",
+  "representation_id": "normalized id: regulatory_histone_dnase_v1 | cpgpt_large_locus | deepcpg_dna_locus | functional_annotations_pca [legacy] | other:*",
+  "representation_variant": "native 512D vs compact 256D, store variant, etc.",
+  "representation_dim": "embedding width (blank for raw feature subsets)",
+  "is_main_panel": "true only for the three main-panel arms in their native form (candidate 256D SVD, CpGPT-large native 512D, DeepCpG native 128D)",
+  "proxy_for": "main-panel arm this non-panel variant approximates (blank if none)",
+  "classifier_probe": "model, regularisation and tuning scheme",
+  "metric": "vocabulary: AUROC | AUPRC | Spearman | Pearson | R2 | MAE | MSE | accuracy | F1 | precision | recall | enrichment | neighbor_hit_rate | neighbor_fraction | random_fraction | delta_cosine | mean_neighbor_correlation | mean_matched_correlation | correlation_gap",
+  "score": "metric value as stored (never imputed; blank = undefined)",
+  "ci_lo": "lower CI bound",
+  "ci_hi": "upper CI bound",
+  "ci_definition": "mandatory when a CI is present",
+  "seed": "seed(s) recorded",
+  "source_file": "repo-relative result file",
+  "source_sha256": "sha256 of source_file at build time",
+  "aux_source_files": "other files consulted (semicolon-separated)",
+  "git_commit_recorded": "repo head recorded by the run manifest (v2 only)",
+  "protocol_tag": "frozen protocol git tag if any",
+  "status": "vocabulary: frozen | preregistered | exploratory | discovery-campaign | legacy-unregistered",
+  "endpoint_class": "class in source protocol (primary/secondary/sensitivity/exploratory/campaign_*/legacy_*)",
+  "circularity_level": "circularity applicable to THIS row's representation: INDEPENDENT | PARTIALLY_RELATED | SOURCE_RETENTION",
+  "circularity_vs_candidate": "w.r.t. regulatory_histone_dnase_v1 inputs (histone + DNase tracks)",
+  "circularity_vs_functional_legacy": "w.r.t. functional_annotations_pca inputs (tracks + 23 dense columns)",
+  "circularity_vs_sequence": "w.r.t. sequence foundation-model inputs (reference sequence)",
+  "notes": "caveats specific to the row"
+ },
+ "enumerations": {
+  "biological_family": [
+   "genomic locus identity",
+   "regulatory activity",
+   "disease/pathology",
+   "aging",
+   "environmental exposure",
+   "3D genome",
+   "replication timing",
+   "methylation program",
+   "other"
+  ],
+  "status": [
+   "frozen",
+   "preregistered",
+   "exploratory",
+   "discovery-campaign",
+   "legacy-unregistered"
+  ],
+  "circularity_level": [
+   "INDEPENDENT",
+   "PARTIALLY_RELATED",
+   "SOURCE_RETENTION"
+  ],
+  "circularity_vs_candidate": [
+   "INDEPENDENT",
+   "PARTIALLY_RELATED",
+   "SOURCE_RETENTION"
+  ],
+  "circularity_vs_functional_legacy": [
+   "INDEPENDENT",
+   "PARTIALLY_RELATED",
+   "SOURCE_RETENTION"
+  ],
+  "circularity_vs_sequence": [
+   "INDEPENDENT",
+   "PARTIALLY_RELATED",
+   "SOURCE_RETENTION"
+  ],
+  "metric": [
+   "AUROC",
+   "AUPRC",
+   "Spearman",
+   "Pearson",
+   "R2",
+   "MAE",
+   "MSE",
+   "accuracy",
+   "F1",
+   "precision",
+   "recall",
+   "enrichment",
+   "neighbor_hit_rate",
+   "neighbor_fraction",
+   "random_fraction",
+   "delta_cosine",
+   "mean_neighbor_correlation",
+   "mean_matched_correlation",
+   "correlation_gap"
+  ],
+  "rigor_grade": [
+   "MAIN_QUALITY",
+   "SUPPLEMENTARY_ONLY",
+   "PROBLEMATIC"
+  ],
+  "coverage": [
+   "HAVE",
+   "PROXY_VARIANT_ONLY",
+   "MISSING"
+  ],
+  "main_panel": [
+   "regulatory_histone_dnase_v1",
+   "cpgpt_large_locus",
+   "deepcpg_dna_locus"
+  ]
+ },
+ "family_mapping_rules": {
+  "genomic locus identity": "CpG context classes, conservation, genomic proximity",
+  "regulatory activity": "FANTOM5 enhancer membership/activity",
+  "disease/pathology": "EWAS disease/cancer sets",
+  "aging": "age EWAS and clock CpG sets",
+  "environmental exposure": "smoking, BMI",
+  "3D genome": "Micro-C contacts, compartments",
+  "replication timing": "RT consensus, PMD",
+  "methylation program": "Loyfer cell-type profiles/markers, mean beta, co-methylation",
+  "other": "unused"
+ },
+ "files": {
+  "bio_task_registry.csv": "2130 rows",
+  "bio_task_paired_contrasts.csv": "853 rows (paired deltas as published; never constructed here)",
+  "bio_task_coverage_matrix.csv": "116 rows task x main-panel coverage (HAVE/PROXY_VARIANT_ONLY/MISSING)",
+  "bio_task_matrix.csv": "104 rows (headline stat per task; wide)",
+  "per_task_audit.csv": "122 rows fairness audit + rigor grade",
+  "bio_task_inventory.csv": "experiment-level inventory",
+  "unscored_tasks.csv": "probes that errored / lacked support (no score)",
+  "manifests/input_files_sha256.json": "sha256 of every provenance file"
+ },
+ "matrix_columns": {
+  "{arm}__{metric}[__ci_lo|__ci_hi]": "arm in cand|cpgpt|deepcpg|funcleg; metric in auroc|auprc|spearman|r2|enrichment; AUPRC has no CI",
+  "{metric}__ci_definition": "CI definition for that metric's intervals",
+  "coverage_{cand|cpgpt|deepcpg}": "HAVE | PROXY_VARIANT_ONLY | MISSING",
+  "proxy_arm_* / proxy_metric_* / proxy_value_*": "proxy variant used when the main arm is missing (headline metric only)",
+  "candidate_minus_{cpgpt|deepcpg|funcleg}__{metric}[__ci_lo|__ci_hi|__ci_definition]": "paired delta exactly as published (blank: none)",
+  "delta_flag": "'no paired CI available' when no published paired delta exists for the task"
+ },
+ "conventions": {
+  "circularity_level": "per-row, for the row's own representation",
+  "scores": "never invented; blanks where undefined or not computed",
+  "legacy_AUC": "legacy bio_validation AUROC is the mean of fold AUROCs",
+  "legacy_functional_variants": "functional_annotations_pca appears in two store variants (campaign full SVD256 vs older PCA store)"
+ },
+ "excluded": "outputs/biological_validation_v2/**/loyfer_failure_audit (exploratory, in progress) not read"
+}

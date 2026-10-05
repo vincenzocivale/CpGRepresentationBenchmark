@@ -1,0 +1,33 @@
+suite,arm,task,reason
+encode_ewas_matched_single_draw,nan,ewas_atlas_ovarian_cancer,insufficient_matched_support
+encode_ewas_matched_single_draw,nan,ewas_catalog_coronary_heart_disease,insufficient_matched_support
+encode_ewas_matched_single_draw,nan,ewas_catalog_schizophrenia,insufficient_matched_support
+encode_exp5_base,all,ewas_atlas_ovarian_cancer,NOT EVALUABLE (matched pairs 28 < 100 or <5 chromosomes)
+encode_exp5_base,all,ewas_catalog_coronary_heart_disease,NOT EVALUABLE (matched pairs 49 < 100 or <5 chromosomes)
+encode_exp5_base,all,ewas_catalog_schizophrenia,NOT EVALUABLE (matched pairs 28 < 100 or <5 chromosomes)
+encode_exp5_probe,all,ewas_atlas_ovarian_cancer,NOT EVALUABLE (matched pairs 27 < 100 or <5 chromosomes)
+encode_exp5_probe,all,ewas_catalog_coronary_heart_disease,NOT EVALUABLE (matched pairs 45 < 100 or <5 chromosomes)
+encode_exp5_probe,all,ewas_catalog_schizophrenia,NOT EVALUABLE (matched pairs 24 < 100 or <5 chromosomes)
+legacy_bio_validation,methylgpt_locus,known_set/ewas_catalog_coronary_heart_disease,membership too small/large for a balanced probe
+legacy_bio_validation,methylgpt_locus,known_set/ewas_catalog_schizophrenia,membership too small/large for a balanced probe
+legacy_bio_validation,methylgpt_locus_medium,known_set/ewas_catalog_coronary_heart_disease,membership too small/large for a balanced probe
+legacy_bio_validation,methylgpt_locus_medium,known_set/ewas_catalog_schizophrenia,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,all,all probes errored (chr1-only atlas; stale set names)
+legacy_bio_validation,ntv3_pre,coef/hannum_clock,too few overlapping CpGs for a regression probe
+legacy_bio_validation,ntv3_pre,coef/horvath_clock,too few overlapping CpGs for a regression probe
+legacy_bio_validation,ntv3_pre,coef/phastcons100way,too few overlapping CpGs for a regression probe
+legacy_bio_validation,ntv3_pre,coef/phenoage_clock,too few overlapping CpGs for a regression probe
+legacy_bio_validation,ntv3_pre,known_set/ewas_catalog_age,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/ewas_catalog_bmi,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/ewas_catalog_breast_cancer,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/ewas_catalog_colorectal_cancer,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/ewas_catalog_lung_cancer,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/ewas_catalog_ovarian_cancer,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/ewas_catalog_pancreatic_cancer,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/ewas_catalog_prostate_cancer,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/ewas_catalog_rheumatoid_arthritis,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/ewas_catalog_schizophrenia,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/ewas_catalog_smoking,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/hannum_clock,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/horvath_clock,membership too small/large for a balanced probe
+legacy_bio_validation,ntv3_pre,known_set/phenoage_clock,membership too small/large for a balanced probe

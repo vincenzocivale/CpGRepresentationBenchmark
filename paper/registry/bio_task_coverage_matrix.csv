@@ -1,0 +1,117 @@
+task_id,suite,regulatory_histone_dnase_v1,regulatory_histone_dnase_v1__proxy,cpgpt_large_locus,cpgpt_large_locus__proxy,deepcpg_dna_locus,deepcpg_dna_locus__proxy,functional_annotations_pca_legacy
+encode_co_methylation/far_neighbour_correlation,encode_co_methylation,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/ewas_atlas_colorectal_cancer,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/ewas_atlas_prostate_cancer,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/ewas_catalog_age,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/ewas_catalog_bmi,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/ewas_catalog_breast_cancer,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/ewas_catalog_lung_cancer,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/ewas_catalog_rheumatoid_arthritis,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/ewas_catalog_sle,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/ewas_catalog_smoking,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/ewas_catalog_type2_diabetes,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/hannum_clock,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/horvath_clock,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_ewas_matched_single_draw/phenoage_clock,encode_ewas_matched_single_draw,PROXY_VARIANT_ONLY,add/assay/Histone ChIP-seq,PROXY_VARIANT_ONLY,fm/cpgpt_locus_large,MISSING,,HAVE
+encode_exp2_decodability/mean_beta,encode_exp2_decodability,PROXY_VARIANT_ONLY,raw::Histone | alone,HAVE,,HAVE,,HAVE
+encode_exp5_base/ewas_atlas_colorectal_cancer,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/ewas_atlas_prostate_cancer,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/ewas_catalog_age,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/ewas_catalog_bmi,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/ewas_catalog_breast_cancer,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/ewas_catalog_lung_cancer,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/ewas_catalog_rheumatoid_arthritis,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/ewas_catalog_sle,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/ewas_catalog_smoking,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/ewas_catalog_type2_diabetes,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/hannum_clock,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/horvath_clock,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_base/phenoage_clock,encode_exp5_base,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/ewas_atlas_colorectal_cancer,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/ewas_atlas_prostate_cancer,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/ewas_catalog_age,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/ewas_catalog_bmi,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/ewas_catalog_breast_cancer,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/ewas_catalog_lung_cancer,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/ewas_catalog_rheumatoid_arthritis,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/ewas_catalog_sle,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/ewas_catalog_smoking,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/ewas_catalog_type2_diabetes,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/hannum_clock,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/horvath_clock,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+encode_exp5_probe/phenoage_clock,encode_exp5_probe,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/coef/hannum_clock,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/coef/horvath_clock,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/coef/phastcons100way,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/coef/phenoage_clock,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/context/island,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/context/open_sea,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/context/shelf,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/context/shore,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_atlas_colorectal_cancer,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_atlas_ovarian_cancer,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_atlas_prostate_cancer,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_catalog_age,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_catalog_bmi,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_catalog_breast_cancer,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_catalog_coronary_heart_disease,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_catalog_lung_cancer,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_catalog_rheumatoid_arthritis,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_catalog_schizophrenia,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_catalog_sle,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_catalog_smoking,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/ewas_catalog_type2_diabetes,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/hannum_clock,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/horvath_clock,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/known_set/phenoage_clock,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+legacy_bio_validation/locality,legacy_bio_validation,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/ewas_atlas_colorectal_cancer/native,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/ewas_atlas_colorectal_cancer/pca,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/ewas_atlas_colorectal_cancer/umap,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/ewas_atlas_prostate_cancer/native,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/ewas_atlas_prostate_cancer/pca,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/ewas_atlas_prostate_cancer/umap,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/island/native,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/island/pca,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/island/umap,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/open_sea/native,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/open_sea/pca,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/open_sea/umap,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/shelf/native,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/shelf/pca,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/shelf/umap,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/shore/native,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/shore/pca,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+umap_neighborhood/shore/umap,umap_neighborhood,MISSING,,HAVE,,HAVE,,HAVE
+v2_exploratory_posthoc/B3_ridge__centered__all_cpgs,v2_exploratory_posthoc,HAVE,,HAVE,,HAVE,,HAVE
+v2_exploratory_posthoc/B3_ridge__centered__variable_cpgs,v2_exploratory_posthoc,HAVE,,HAVE,,HAVE,,HAVE
+v2_exploratory_posthoc/B3_ridge__level__all_cpgs,v2_exploratory_posthoc,HAVE,,HAVE,,HAVE,,HAVE
+v2_exploratory_posthoc/B3_ridge__level__variable_cpgs,v2_exploratory_posthoc,HAVE,,HAVE,,HAVE,,HAVE
+v2_exploratory_posthoc/B3_ridge__raw__all_cpgs,v2_exploratory_posthoc,HAVE,,HAVE,,HAVE,,HAVE
+v2_exploratory_posthoc/B3_ridge__raw__variable_cpgs,v2_exploratory_posthoc,HAVE,,HAVE,,HAVE,,HAVE
+v2_exploratory_posthoc/exploratory_similarity,v2_exploratory_posthoc,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/compartment_E1_probe_GM12878_100kb,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/compartment_E1_probe_H1_100kb,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/fantom5_activity_similarity,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/fantom5_membership,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/fantom5_membership__tss5k_pool,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/fantom5_membership__win500,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/loyfer_marker_knn,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/loyfer_profile,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/microc_H1_inter1Mb,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/microc_H1_intra10kb,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/microc_HFFc6_intra10kb,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/pmd_probe,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_frozen/rt_consensus,v2_frozen,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/compartment_E1_probe_GM12878_50kb,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/compartment_E1_probe_H1_50kb,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/fantom5_activity_cat_cell_lines,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/fantom5_activity_cat_primary_cells,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/fantom5_activity_cat_tissues,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/fantom5_activity_sample_level,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/fantom5_membership_N1,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/fantom5_membership_N10,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/fantom5_membership_N20,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/fantom5_membership_N3,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/loyfer_drop_single_sample_groups,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE
+v2_sensitivity/loyfer_mask_lenient,v2_sensitivity,HAVE,,HAVE,,HAVE,,HAVE

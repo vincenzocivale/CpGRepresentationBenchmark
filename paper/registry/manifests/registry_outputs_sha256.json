@@ -1,0 +1,13 @@
+{
+ "paper/registry/bio_task_coverage_matrix.csv": "4adf7983929e5bfaeacdf559658b87a37be85336f6d69d9c2dc68e9a07d5fdbb",
+ "paper/registry/bio_task_inventory.csv": "ade538b6fdb789a19f1b40398ff5ecb26b6b0050088292af42fe5da342e6c54c",
+ "paper/registry/bio_task_matrix.csv": "a7bc37be94d44c65090f9cc3f6299ca8f333078b0a0041146cac44f6ea19a4ac",
+ "paper/registry/bio_task_paired_contrasts.csv": "d665514e40c4f92fbe9ffd6bf679455b727242c7691112c4311a42172347f92e",
+ "paper/registry/bio_task_registry.csv": "6d685a77ed9c09c32d2627f1fd4fce56e2bb502f922bf5827acdb3eb63a2e425",
+ "paper/registry/bio_task_registry.json": "ac87315652cc93368b4a64578bc58ee0d5f958531332050b83c3f263e266cf6e",
+ "paper/registry/manifests/input_files_sha256.json": "184a26f9801cf20be20b74ab73586583fd1eda8172f2d629f1f2145d64a76d84",
+ "paper/registry/per_task_audit.csv": "ccca2b1c0a51e5cd3f0098244ee0b9db255040c77ae7451a8cbfefade3ce1a38",
+ "paper/registry/unscored_tasks.csv": "5e14e590dd53b2bfea8dd0fed9a221174b028bbf9d7b44e20a45efdd326c73fc",
+ "paper/scripts/build_bio_task_registry.py": "1fbcdb5a74c9a8b7bf936b9117c35b76b3a31e3a13dbfa36e0e3b91eb2eebc0e",
+ "paper/scripts/validate_registry.py": "06e1ae8faabda1f4f5f995e76c425139a685074ae6e4771fe517e757ae2366f2"
+}
