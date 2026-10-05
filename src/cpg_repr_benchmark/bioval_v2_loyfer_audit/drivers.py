@@ -1115,9 +1115,25 @@ def _j(ctx, rel):
     return json.loads(p.read_text())
 
 
-def _contrast_from_reps(ctx, step_dir, fn_a, key_a, fn_b, key_b, sign=1):
-    ra, rb = np.load(ctx.out_root / step_dir / fn_a), np.load(ctx.out_root / step_dir / fn_b)
-    return ra[key_a], rb[key_b]
+def load_baselines_aggregate(ctx, with_contrasts=True):
+    """Bugfix 1 (2026-10-05): step 5 is launched one arm per process, so `baselines.json` only holds the LAST arm that ran (each process
+    overwrote it) and its cross-arm keys were never written. The authoritative per-arm results are `arm_<arm>.json` (+ `reps_<arm>.npz`);
+    this loader rebuilds the aggregate from them (arm id keys = registry ARMS) and recomputes the cross-arm summary exactly as step_baselines
+    would have done in a single process. Reads only; never writes."""
+    from cpg_repr_benchmark.bioval_v2_launch.block_bootstrap import contrast
+    d = rg.STEP_DIRS["baselines"]
+    agg = _j(ctx, f"{d}/baselines.json")
+    agg = {k: v for k, v in agg.items() if k != "arms"}
+    agg["arms"] = {a: _j(ctx, f"{d}/arm_{a}.json") for a in rg.ARMS}
+    fz = {a: agg["arms"][a]["frozen_primary"] for a in rg.ARMS}
+    un = {a: agg["arms"][a]["unrounded_target_pooled"]["value"] for a in rg.ARMS}
+    agg["ordering_frozen_target"] = sorted(fz, key=lambda k: -fz[k])
+    agg["ordering_unrounded_target"] = sorted(un, key=lambda k: -un[k])
+    agg["precision_order_changed"] = agg["ordering_frozen_target"] != agg["ordering_unrounded_target"]
+    if with_contrasts:
+        reps = {a: np.load(ctx.out_root / d / f"reps_{a}.npz")["native"] for a in rg.ARMS}
+        agg["contrasts_native"] = {c: contrast(fz[rg.CANDIDATE], reps[rg.CANDIDATE], fz[c], reps[c]) for c in rg.ARMS if c != rg.CANDIDATE}
+    return agg
 
 
 def step_report_inputs(ctx, log=log):
@@ -1125,7 +1141,7 @@ def step_report_inputs(ctx, log=log):
     s1 = _j(ctx, rg.VERDICT_FILE)
     relj = _j(ctx, f"{rg.STEP_DIRS['target-audit']}/reliability.json")["donors_ge2"]["summary"]
     sem = _j(ctx, f"{rg.STEP_DIRS['semantics-pairs']}/semantics_pairs.json")
-    bs = _j(ctx, f"{rg.STEP_DIRS['baselines']}/baselines.json")
+    bs = load_baselines_aggregate(ctx, with_contrasts=False)
     rv = _j(ctx, f"{rg.STEP_DIRS['raw-vs-svd']}/raw_vs_svd.json")
     cand = rg.CANDIDATE
     null_hi = bs["arms"][cand]["null_hi"]

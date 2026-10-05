@@ -597,3 +597,31 @@ def test_gate_refuses_level_b_flag():
     assert not checks["level_b_not_requested"].ok
     checks = {c.name: c for c in gt.run_gate(ROOT, rg.ARMS, gt.audit_root(ROOT), "target-audit", skip_heavy=True)}
     assert checks["level_b_not_requested"].ok
+
+
+def test_bugfix1_baselines_aggregate_from_per_arm_files(tmp_path):
+    """Regression (Bugfix 1): baselines.json written by the last per-arm process holds one arm only; the aggregate must come from
+    the per-arm files and be keyed by the registry arm ids (incl. the candidate)."""
+    from types import SimpleNamespace
+
+    from cpg_repr_benchmark.bioval_v2_loyfer_audit import drivers as dr
+    d = tmp_path / rg.STEP_DIRS["baselines"]
+    d.mkdir(parents=True)
+    rng = np.random.default_rng(0)
+    vals = {"regulatory_histone_dnase_v1": -0.05, "functional_annotations_pca": -0.02, "cpgpt_large_locus": 0.10, "deepcpg_dna_locus": 0.08}
+    for a, v in vals.items():
+        (d / f"arm_{a}.json").write_text(json.dumps({"frozen_primary": v, "null_hi": 0.01, "unrounded_minus_frozen": 0.001,
+                                                     "unrounded_target_pooled": {"value": v + 0.001}}))
+        np.savez(d / f"reps_{a}.npz", native=v + rng.normal(0, 0.01, 50))
+    (d / "baselines.json").write_text(json.dumps({"covariate_baselines": {}, "arms": {"deepcpg_dna_locus": {}}}))   # last process only
+    ctx = SimpleNamespace(out_root=tmp_path)
+    agg = dr.load_baselines_aggregate(ctx)
+    assert set(agg["arms"]) == set(rg.ARMS) and agg["arms"][rg.CANDIDATE]["null_hi"] == 0.01
+    assert agg["ordering_frozen_target"][0] == "cpgpt_large_locus" and agg["precision_order_changed"] is False
+    assert set(agg["contrasts_native"]) == set(rg.COMPARATORS) | {rg.LEGACY_CONTROL}
+    (d / "arm_functional_annotations_pca.json").write_text(json.dumps({"frozen_primary": -0.02, "null_hi": 0.01, "unrounded_minus_frozen": -0.2,
+                                                                         "unrounded_target_pooled": {"value": -0.22}}))
+    assert dr.load_baselines_aggregate(ctx, with_contrasts=False)["precision_order_changed"] is True
+    (d / "arm_deepcpg_dna_locus.json").unlink()
+    with pytest.raises(SystemExit):
+        dr.load_baselines_aggregate(ctx, with_contrasts=False)           # a missing arm file is an explicit failure
