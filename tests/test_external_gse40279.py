@@ -14,7 +14,13 @@ import yaml
 
 from cpg_repr_benchmark.encode_atlas.protocol import load_patient_protocol
 from cpg_repr_benchmark.external import freeze
-from cpg_repr_benchmark.external.budget import external_schedule, steps_per_epoch, total_updates
+from cpg_repr_benchmark.external.budget import (
+    SUPERSEDED_BUDGET,
+    epoch_budget,
+    external_schedule,
+    steps_per_epoch,
+    total_updates,
+)
 from cpg_repr_benchmark.external.io import sha256_file
 from cpg_repr_benchmark.external.mapping import exact_coordinate_join
 from cpg_repr_benchmark.external.split import age_tercile_thresholds, age_terciles, stratified_split
@@ -128,6 +134,23 @@ def test_budget_arithmetic():
         external_schedule(0, 66)
 
 
+def test_amended_epoch_budget():
+    assert steps_per_epoch(524, 8) == 66 and 524 % 8 == 4  # 65 batches of 8 + one of 4
+    b = epoch_budget(524, 8, 120)
+    assert b == {"epochs": 120, "max_updates": None, "early_stopping": False, "batch_size": 8,
+                 "updates_per_epoch": 66, "total_updates": 7920, "validation_points": 120}
+    assert b["total_updates"] == 66 * 120 and b["total_updates"] % b["updates_per_epoch"] == 0  # no partial epoch
+    assert 7920 / 110160 == pytest.approx(0.0719, abs=1e-4)
+    with pytest.raises(ValueError):
+        epoch_budget(524, 8, 0)
+
+
+def test_superseded_budget_flagged_never_executed():
+    assert SUPERSEDED_BUDGET["executed"] is False and SUPERSEDED_BUDGET["updates"] == 110160
+    assert (SUPERSEDED_BUDGET["epochs_full"], SUPERSEDED_BUDGET["partial_updates"]) == (1669, 6)
+    assert epoch_budget(524, 8, 120)["total_updates"] != SUPERSEDED_BUDGET["updates"]
+
+
 def test_partial_epoch_prefix_determinism():
     """The sampler's batch sequence for an epoch is a function of (seed, epoch) only, so stopping after 6 batches of the
     last epoch yields exactly the first 6 batches of the full epoch."""
@@ -238,6 +261,48 @@ def test_verifier_detects_wrong_counts_and_budget(tmp_path):
     repo2 = _synthetic_repo(tmp_path / "b")
     np.savez_compressed(repo2 / freeze.TCGA_PATIENTS_REL, train=np.arange(7000), validation=np.arange(10), test=np.arange(10))
     assert "budget_tcga_recomputed" in _fails(repo2)
+
+
+def _tamper_budget(tmp_path, **changes):
+    repo = _synthetic_repo(tmp_path)
+    mp = repo / freeze.MANIFEST_REL
+    m = json.loads(mp.read_text())
+    m["budget"].update(changes)
+    mp.write_text(json.dumps(m))
+    return _fails(repo)
+
+
+def test_manifest_budget_amended_and_green(tmp_path):
+    repo = _synthetic_repo(tmp_path)
+    m = json.loads((repo / freeze.MANIFEST_REL).read_text())
+    assert m["protocol_version"] == "v1.1" and m["freeze_state"] == "draft" and m["test_set_authorized"] is False
+    assert m["budget"]["total_updates"] == 7920 and m["budget"]["validation_points"] == 120
+    assert m["superseded_budget"]["executed"] is False and m["amendment"]["id"] == "AMENDMENT 1"
+    assert not _fails(repo)
+
+
+@pytest.mark.parametrize("changes,check", [
+    ({"epochs": 121}, "budget_epochs_120"),
+    ({"max_updates": 7920}, "budget_max_updates_null"),
+    ({"early_stopping": True}, "budget_early_stopping_false"),
+    ({"updates_per_epoch": 65}, "budget_updates_per_epoch_66"),
+    ({"total_updates": 7919}, "budget_total_updates_7920"),
+    ({"validation_points": 1670}, "budget_validation_points_120"),
+    ({"best_rule": "min, ties->last"}, "budget_tie_rule_documented"),
+])
+def test_verifier_fails_if_budget_tampered(tmp_path, changes, check):
+    assert check in _tamper_budget(tmp_path, **changes)
+
+
+def test_verifier_fails_if_superseded_budget_active(tmp_path):
+    f = _tamper_budget(tmp_path, total_updates=110160, epochs=1669, validation_points=1670, updates_per_epoch=66)
+    assert "budget_not_superseded_value" in f and "budget_total_updates_7920" in f
+    repo = _synthetic_repo(tmp_path / "c")
+    mp = repo / freeze.MANIFEST_REL
+    m = json.loads(mp.read_text())
+    m["superseded_budget"]["executed"] = True
+    mp.write_text(json.dumps(m))
+    assert "superseded_budget_flagged_never_executed" in _fails(repo)
 
 
 def test_verifier_detects_authorized_test_and_missing(tmp_path):

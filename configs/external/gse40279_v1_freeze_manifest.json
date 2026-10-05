@@ -1,4 +1,13 @@
 {
+  "amendment": {
+    "changed": "training budget: equal-update (110,160 updates) replaced by equal-epoch (120 epochs, 7,920 updates)",
+    "date": "2026-10-05",
+    "from_version": "v1.0 (commit 2343a79, tag external-recon-protocol-freeze-v1)",
+    "id": "AMENDMENT 1",
+    "kind": "pre-run (no external run executed before it)",
+    "rationale": "equal updates gave 1,669 epochs + 6 updates over 524 subjects, far more per-patient exposures than TCGA; the amended budget keeps the number of epochs equal to TCGA; absolute update count deliberately not matched",
+    "to_version": "v1.1"
+  },
   "arms": {
     "cpgpt_large_locus": {
       "dim": 512,
@@ -26,22 +35,22 @@
     }
   },
   "budget": {
+    "batch_size": 8,
+    "best_rule": "strict_min_val_mse@0.50, ties->first epoch",
     "early_stopping": false,
-    "external_batch_size": 8,
+    "epochs": 120,
     "external_n_train": 524,
-    "external_update_budget": 110160,
-    "full_epochs": 1669,
     "lr_schedule": "constant",
-    "n_epochs_started": 1670,
-    "n_validation_points": 1670,
-    "partial_epoch_updates": 6,
-    "steps_per_epoch": 66,
+    "max_updates": null,
     "tcga_epochs": 120,
     "tcga_n_train": 7342,
     "tcga_steps_per_epoch": 918,
     "tcga_total_updates": 110160,
-    "total_updates": 110160,
-    "validation_cadence": "end of every full external epoch and at the final update"
+    "total_updates": 7920,
+    "update_ratio_external_over_tcga": 0.0719,
+    "updates_per_epoch": 66,
+    "validation_cadence": "end of each of the 120 epochs (validation MSE @ mask 0.50)",
+    "validation_points": 120
   },
   "counts": {
     "test": 66,
@@ -156,6 +165,8 @@
     }
   ],
   "protocol_doc": "docs/EXTERNAL_RECONSTRUCTION_PROTOCOL.md",
+  "protocol_doc_sha256": "8fccae9ac8cf0cc5857d16f8386b72c8758dfb09c661dd4b0213b575c1cf024f",
+  "protocol_version": "v1.1",
   "schema": "external_gse40279_v1_freeze_manifest/1",
   "seeds": [
     17,
@@ -163,6 +174,14 @@
     97
   ],
   "selection_mask_fraction": 0.5,
+  "superseded_budget": {
+    "epochs_full": 1669,
+    "executed": false,
+    "partial_updates": 6,
+    "status": "SUPERSEDED by AMENDMENT 1 (pre-run); never executed",
+    "updates": 110160,
+    "validation_points": 1670
+  },
   "test_set_authorized": false,
   "universe_size": 408017
 }

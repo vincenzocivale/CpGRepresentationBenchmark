@@ -8,9 +8,26 @@ import h5py
 import numpy as np
 import yaml
 
-from .budget import external_schedule, steps_per_epoch, total_updates
+from .budget import (
+    EXTERNAL_EPOCHS,
+    SUPERSEDED_BUDGET,
+    epoch_budget,
+    external_schedule,
+    steps_per_epoch,
+    total_updates,
+)
 from .io import sha256_file
 
+PROTOCOL_REL = "docs/EXTERNAL_RECONSTRUCTION_PROTOCOL.md"
+PROTOCOL_VERSION = "v1.1"
+BEST_RULE = "strict_min_val_mse@0.50, ties->first epoch"
+AMENDMENT = {
+    "id": "AMENDMENT 1", "date": "2026-10-05", "kind": "pre-run (no external run executed before it)",
+    "from_version": "v1.0 (commit 2343a79, tag external-recon-protocol-freeze-v1)", "to_version": "v1.1",
+    "changed": "training budget: equal-update (110,160 updates) replaced by equal-epoch (120 epochs, 7,920 updates)",
+    "rationale": "equal updates gave 1,669 epochs + 6 updates over 524 subjects, far more per-patient exposures than TCGA; "
+                 "the amended budget keeps the number of epochs equal to TCGA; absolute update count deliberately not matched",
+}
 MANIFEST_REL = "configs/external/gse40279_v1_freeze_manifest.json"
 ARMS = ("regulatory_histone_dnase", "functional_annotations_pca", "cpgpt_large_locus", "deepcpg_dna_locus")
 SEEDS = (17, 42, 97)
@@ -66,23 +83,29 @@ def phase_a_checkpoints(repo: Path) -> list[dict]:
 def build_manifest(repo: Path) -> dict:
     tc = tcga_update_budget(repo)
     sched = external_schedule(tc["tcga_total_updates"], steps_per_epoch(EXPECTED_COUNTS["train"], BATCH_SIZE))
-    sched = {k: v for k, v in sched.items() if k != "validation_points"}
+    sup = {"updates": sched["total_updates"], "epochs_full": sched["full_epochs"],
+           "partial_updates": sched["partial_epoch_updates"], "validation_points": sched["n_validation_points"],
+           "executed": False, "status": "SUPERSEDED by AMENDMENT 1 (pre-run); never executed"}
     arms = arm_stores(repo)
     for a in ARMS:
         arms[a]["store_sha256"] = arms[a]["matrix_yaml_sha256"]
     return {
         "schema": "external_gse40279_v1_freeze_manifest/1",
-        "protocol_doc": "docs/EXTERNAL_RECONSTRUCTION_PROTOCOL.md",
+        "protocol_doc": PROTOCOL_REL,
+        "protocol_doc_sha256": sha256_file(repo / PROTOCOL_REL) if (repo / PROTOCOL_REL).exists() else None,
+        "protocol_version": PROTOCOL_VERSION,
+        "amendment": AMENDMENT,
         "freeze_state": "draft",
         "test_set_authorized": False,
         "files_sha256": {k: sha256_file(repo / v) for k, v in FILES.items()},
         "files": FILES,
         "counts": EXPECTED_COUNTS,
         "universe_size": EXPECTED_UNIVERSE,
-        "budget": {**tc, "external_batch_size": BATCH_SIZE, "external_n_train": EXPECTED_COUNTS["train"],
-                   "external_update_budget": tc["tcga_total_updates"], **sched,
-                   "validation_cadence": "end of every full external epoch and at the final update",
-                   "lr_schedule": "constant", "early_stopping": False},
+        "budget": {**epoch_budget(EXPECTED_COUNTS["train"], BATCH_SIZE, EXTERNAL_EPOCHS),
+                   "best_rule": BEST_RULE, "lr_schedule": "constant", "external_n_train": EXPECTED_COUNTS["train"],
+                   **tc, "update_ratio_external_over_tcga": round(7920 / tc["tcga_total_updates"], 4),
+                   "validation_cadence": "end of each of the 120 epochs (validation MSE @ mask 0.50)"},
+        "superseded_budget": sup,
         "seeds": list(SEEDS), "mask_seed": MASK_SEED, "patient_split_seed": SPLIT_SEED, "locus_seed": MASK_SEED,
         "mask_fractions": [0.15, 0.30, 0.50, 0.70, 0.90], "selection_mask_fraction": 0.50,
         "arms": arms,
@@ -147,16 +170,33 @@ def verify(repo: Path, manifest_path: Path | None = None, *, check_stores: bool 
         chk("universe_equals_matrix_axis", np.array_equal(np.sort(tr), np.sort(ids)))
     except Exception as e:  # noqa: BLE001
         chk("split_locus_checks", False, repr(e))
-    # budget constant
+    # budget (AMENDMENT 1: epoch-based; the superseded 110,160-update budget must not be active)
     try:
         tc = tcga_update_budget(repo)
         b = m["budget"]
-        sch = external_schedule(tc["tcga_total_updates"], steps_per_epoch(EXPECTED_COUNTS["train"], BATCH_SIZE))
+        eb = epoch_budget(EXPECTED_COUNTS["train"], BATCH_SIZE, EXTERNAL_EPOCHS)
         chk("budget_tcga_recomputed", tc["tcga_total_updates"] == b["tcga_total_updates"] == 110160, tc["tcga_total_updates"])
-        chk("budget_external_equals_tcga", b["external_update_budget"] == tc["tcga_total_updates"])
-        chk("budget_schedule", (sch["full_epochs"], sch["partial_epoch_updates"], sch["n_validation_points"]) ==
-            (b["full_epochs"], b["partial_epoch_updates"], b["n_validation_points"]) == (1669, 6, 1670),
-            (sch["full_epochs"], sch["partial_epoch_updates"], sch["n_validation_points"]))
+        chk("budget_epochs_120", b.get("epochs") == 120 == eb["epochs"], b.get("epochs"))
+        chk("budget_max_updates_null", "max_updates" in b and b["max_updates"] is None, b.get("max_updates", "absent"))
+        chk("budget_early_stopping_false", b.get("early_stopping") is False)
+        chk("budget_batch_size_8", b.get("batch_size") == 8 == BATCH_SIZE)
+        chk("budget_updates_per_epoch_66", b.get("updates_per_epoch") == 66 == eb["updates_per_epoch"], b.get("updates_per_epoch"))
+        chk("budget_total_updates_7920", b.get("total_updates") == 7920 == eb["total_updates"] == 66 * 120, b.get("total_updates"))
+        chk("budget_validation_points_120", b.get("validation_points") == 120 == eb["validation_points"], b.get("validation_points"))
+        chk("budget_tie_rule_documented", b.get("best_rule") == BEST_RULE, b.get("best_rule"))
+        chk("budget_not_superseded_value", b.get("total_updates") != SUPERSEDED_BUDGET["updates"]
+            and b.get("epochs") != SUPERSEDED_BUDGET["epochs_full"] and b.get("validation_points") != SUPERSEDED_BUDGET["validation_points"])
+        sb = m.get("superseded_budget", {})
+        chk("superseded_budget_flagged_never_executed", sb.get("updates") == 110160 and sb.get("epochs_full") == 1669
+            and sb.get("partial_updates") == 6 and sb.get("executed") is False, sb)
+        chk("protocol_version_v1_1", m.get("protocol_version") == PROTOCOL_VERSION, m.get("protocol_version"))
+        am = m.get("amendment", {})
+        chk("amendment_recorded", am.get("id") == "AMENDMENT 1" and am.get("date") == "2026-10-05"
+            and "pre-run" in am.get("kind", ""), am.get("id"))
+        if m.get("protocol_doc_sha256") is not None:
+            pd = repo / m.get("protocol_doc", PROTOCOL_REL)
+            got = sha256_file(pd) if pd.exists() else "missing"
+            chk("protocol_doc_sha256", got == m["protocol_doc_sha256"], got[:16])
         chk("seeds_mask", m["seeds"] == list(SEEDS) and m["mask_seed"] == MASK_SEED)
     except Exception as e:  # noqa: BLE001
         chk("budget", False, repr(e))
