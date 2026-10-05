@@ -215,14 +215,38 @@ def test_run_transfer_refuses_on_failed_gate_and_dry_run_lists_12_or_fewer(world
     assert T.run_transfer(Path("."), "B_strict", dry_run=True, gate_checks=[], out=lines.append) == 0
     listing = [l for l in lines if l.endswith("checkpoint(s): " + l.split("checkpoint(s): ")[-1]) and "checkpoint(s)" in l]
     assert any("regulatory_histone_dnase#17" in l for l in listing)
-    n12 = [l for l in listing if l.startswith("12 checkpoint(s)")]
-    assert n12
+    n9 = [l for l in listing if l.startswith("9 checkpoint(s)")]
+    assert n9
 
 
-def test_real_manifest_lists_12_checkpoints_in_arm_order():
+def test_real_manifest_lists_12_checkpoints_default_scope_is_the_9_main_arm_ones():
     root = Path(__file__).resolve().parents[1]
     man = json.loads((root / "configs/external/gse40279_v1_freeze_manifest.json").read_text())
-    js = T.jobs(man)
-    assert len(js) == 12
-    assert [(c["arm"], c["seed"]) for c in js][:4] == [("regulatory_histone_dnase", 17), ("functional_annotations_pca", 17),
-                                                       ("cpgpt_large_locus", 17), ("deepcpg_dna_locus", 17)]
+    assert len(man["phase_a_checkpoints_experiment_B"]) == 12          # all hashes stay recorded (and audited)
+    js = T.jobs(man)                                                    # AMENDMENT 2 default: 3 main arms x 3 seeds
+    assert len(js) == 9 and {c["arm"] for c in js} == {"regulatory_histone_dnase", "cpgpt_large_locus", "deepcpg_dna_locus"}
+    assert [(c["arm"], c["seed"]) for c in js][:3] == [("regulatory_histone_dnase", 17), ("cpgpt_large_locus", 17), ("deepcpg_dna_locus", 17)]
+    assert all(c["role"] == "main" for c in js)
+    leg = T.jobs(man, include_legacy=True)
+    assert len(leg) == 12 and sum(c["role"] == "legacy_sensitivity_control" for c in leg) == 3
+    assert [(c["arm"], c["seed"]) for c in leg][:4] == [("regulatory_histone_dnase", 17), ("functional_annotations_pca", 17),
+                                                        ("cpgpt_large_locus", 17), ("deepcpg_dna_locus", 17)]
+    with pytest.raises(ValueError):
+        T.jobs(man, only=["functional_annotations_pca"])                # legacy arm needs the explicit flag
+    assert [c["arm"] for c in T.jobs(man, only=["functional_annotations_pca"], include_legacy=True)] == ["functional_annotations_pca"] * 3
+    assert T.arm_role("functional_annotations_pca") == "legacy_sensitivity_control" and T.arm_role("cpgpt_large_locus") == "main"
+
+
+def test_transfer_cli_default_dry_run_lists_9_and_legacy_flag_is_explicit():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("_run_tr", Path(__file__).resolve().parents[1] / "scripts/run_external_transfer.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    help_text = mod.__doc__
+    assert "--include-legacy" in help_text and "3 MAIN arms" in help_text and "legacy_sensitivity_control" in help_text
+    lines = []
+    assert T.run_transfer(Path(__file__).resolve().parents[1], "B_strict", dry_run=True, gate_checks=[], out=lines.append) == 0
+    assert any(l.startswith("9 checkpoint(s)") and "functional_annotations_pca" not in l for l in lines)
+    lines = []
+    assert T.run_transfer(Path(__file__).resolve().parents[1], "B_strict", dry_run=True, gate_checks=[], include_legacy=True, out=lines.append) == 0
+    assert any(l.startswith("12 checkpoint(s)") for l in lines)

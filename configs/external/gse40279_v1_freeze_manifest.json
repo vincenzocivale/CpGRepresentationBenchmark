@@ -8,6 +8,18 @@
     "rationale": "equal updates gave 1,669 epochs + 6 updates over 524 subjects, far more per-patient exposures than TCGA; the amended budget keeps the number of epochs equal to TCGA; absolute update count deliberately not matched",
     "to_version": "v1.1"
   },
+  "amendment_2": {
+    "changed": "main comparator panel and comparison structure: functional_annotations_pca demoted to legacy_sensitivity_control; primary comparison = candidate vs cpgpt_large_locus (single contrast); secondary = candidate vs deepcpg_dna_locus; B scope = 3 main arms; one-shot test plan",
+    "date": "2026-10-05",
+    "decided_after_validation_A_results": true,
+    "external_test_data_read_before_amendment": false,
+    "from_version": "v1.1 (tag external-recon-protocol-freeze-v1.1)",
+    "id": "AMENDMENT 2",
+    "kind": "pre-B, pre-test (Experiment A validation results HAD been seen; no external TEST data was read)",
+    "not_pre_registered_before_A": true,
+    "rationale": "functional_annotations_pca belongs to the legacy functional representation with a different feature contract (stated by the user)",
+    "to_version": "v1.2"
+  },
   "arms": {
     "cpgpt_large_locus": {
       "dim": 512,
@@ -52,10 +64,67 @@
     "validation_cadence": "end of each of the 120 epochs (validation MSE @ mask 0.50)",
     "validation_points": 120
   },
+  "comparisons": {
+    "descriptive": {
+      "contrast": "deepcpg_dna_locus - cpgpt_large_locus",
+      "inferential": false,
+      "label": "descriptive secondary, outside every inferential comparison"
+    },
+    "equivalence_margin": null,
+    "equivalence_or_non_inferiority_claims": false,
+    "primary": {
+      "candidate": "regulatory_histone_dnase",
+      "comparator": "cpgpt_large_locus",
+      "contrast": "cpgpt_large_locus - regulatory_histone_dnase",
+      "inferential": true,
+      "mask_fraction": 0.5,
+      "metric": "mse",
+      "multiplicity_adjustment": "none needed (single contrast)",
+      "n_contrasts": 1,
+      "uncertainty": "paired bootstrap patients x 1 Mb genomic blocks, 2000 replicates, seed 17, per seed"
+    },
+    "secondary": {
+      "candidate": "regulatory_histone_dnase",
+      "comparator": "deepcpg_dna_locus",
+      "contrast": "deepcpg_dna_locus - regulatory_histone_dnase",
+      "inferential": true,
+      "label": "secondary",
+      "mask_fraction": 0.5,
+      "metric": "mse",
+      "multiplicity_adjustment": "none (reported with its paired CI, labelled secondary)",
+      "uncertainty": "paired bootstrap patients x 1 Mb genomic blocks, 2000 replicates, seed 17, per seed"
+    },
+    "secondary_metrics": [
+      "mae",
+      "mas_pcc",
+      "mac_pcc"
+    ]
+  },
   "counts": {
     "test": 66,
     "train": 524,
     "validation": 66
+  },
+  "experiment_B_scope": {
+    "arms": [
+      "regulatory_histone_dnase",
+      "cpgpt_large_locus",
+      "deepcpg_dna_locus"
+    ],
+    "legacy_default": "excluded (only via an explicit --include-legacy, labelled; not planned)",
+    "modes": [
+      "B_strict",
+      "B_recalibrated"
+    ],
+    "n_checkpoints": 9,
+    "results_may_modify": "nothing (not Experiment A, not the protocol, not the arms tested)",
+    "seeds": [
+      17,
+      42,
+      97
+    ],
+    "split": "validation",
+    "test": "NOT planned: B on test is not part of this endgame unless separately authorized"
   },
   "files": {
     "cpg_mapping_external_parquet": "data/derived/external_gse40279_v1/cpg_mapping_external.parquet",
@@ -80,7 +149,23 @@
     "split_manifest": "4d48bd1b1286e19c434530595d187df23b1f986f9bfb05b7cf9f1b9fa7bbb85a"
   },
   "freeze_state": "draft",
+  "legacy_sensitivity_control": {
+    "arms": [
+      "functional_annotations_pca"
+    ],
+    "evaluated_on_test": "yes if technically simple, as a separately labelled block; never in the main inferential family",
+    "in_main_inferential_comparison": false,
+    "may_change_main_claim": false,
+    "may_select_representation": false,
+    "reason": "belongs to the legacy functional representation with a different feature contract (user rationale)",
+    "role": "legacy_sensitivity_control"
+  },
   "locus_seed": 17001,
+  "main_panel": [
+    "regulatory_histone_dnase",
+    "cpgpt_large_locus",
+    "deepcpg_dna_locus"
+  ],
   "mask_fractions": [
     0.15,
     0.3,
@@ -95,78 +180,90 @@
       "arm": "cpgpt_large_locus",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_17/20261003T144100Z-5d87d4abf1/checkpoints/best.pt",
       "best_pt_sha256": "533ad8e0fbeb8aa9abe6be02fc8a4cb324fe31095149008938b34532f6ae5825",
+      "role": "main",
       "seed": 17
     },
     {
       "arm": "cpgpt_large_locus",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_42/20261003T162814Z-5d02637966/checkpoints/best.pt",
       "best_pt_sha256": "030449e823cc5dc648e7827f5e29397bf25a8783577be52e5164115dd94506c8",
+      "role": "main",
       "seed": 42
     },
     {
       "arm": "cpgpt_large_locus",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_97/20261003T162619Z-1b6b1955cf/checkpoints/best.pt",
       "best_pt_sha256": "79e5aaf24540b8314c307b085e45d4d69222d9fffe42ca23351efc692c8498f5",
+      "role": "main",
       "seed": 97
     },
     {
       "arm": "deepcpg_dna_locus",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_17/20261003T170325Z-484cd90b96/checkpoints/best.pt",
       "best_pt_sha256": "6bb38d7c7989725e18ecfc9e58604a902f15b108513982e6c622a12dd2a319da",
+      "role": "main",
       "seed": 17
     },
     {
       "arm": "deepcpg_dna_locus",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_42/20261003T184733Z-c72b576708/checkpoints/best.pt",
       "best_pt_sha256": "e69a2211fcfdf769fa9bcd34d92ee3acc8d32ba68759a7ab321dbc28df3f0956",
+      "role": "main",
       "seed": 42
     },
     {
       "arm": "deepcpg_dna_locus",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_97/20261003T184620Z-a8d0bed5ee/checkpoints/best.pt",
       "best_pt_sha256": "63c4759e485b7aeb1089f97b926ec63cb330ed735f92fbf3a805eab7614160d6",
+      "role": "main",
       "seed": 97
     },
     {
       "arm": "functional_annotations_pca",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/functional_annotations_pca/native_frozen/seed_17/20261003T125543Z-b613e17e1b/checkpoints/best.pt",
       "best_pt_sha256": "3fcb82e2417f2b708590a3f44311c9ef3a62b8a2f6015641766f339a7f1b51af",
+      "role": "legacy_sensitivity_control",
       "seed": 17
     },
     {
       "arm": "functional_annotations_pca",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/functional_annotations_pca/native_frozen/seed_42/20261003T143932Z-de16908eb9/checkpoints/best.pt",
       "best_pt_sha256": "3b4177845921f976e64135861e76f7e1c24b268b1c3a308a788e6bc73b44206c",
+      "role": "legacy_sensitivity_control",
       "seed": 42
     },
     {
       "arm": "functional_annotations_pca",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/functional_annotations_pca/native_frozen/seed_97/20261003T143856Z-7d1c51659e/checkpoints/best.pt",
       "best_pt_sha256": "5a948484e9db1e431636db594cf8770ea750c4ebe3fa3ba31591e388b78e3aa8",
+      "role": "legacy_sensitivity_control",
       "seed": 97
     },
     {
       "arm": "regulatory_histone_dnase",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/regulatory_histone_dnase/native_frozen/seed_17/20261003T104748Z-42fa2ea20c/checkpoints/best.pt",
       "best_pt_sha256": "919f55571d913d3e16a1ca5dc71666be9cf7a1518d0c877b5c3e3cad57e0f0fc",
+      "role": "main",
       "seed": 17
     },
     {
       "arm": "regulatory_histone_dnase",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/regulatory_histone_dnase/native_frozen/seed_42/20261003T125220Z-c3094ff18d/checkpoints/best.pt",
       "best_pt_sha256": "4c7c12bcce508eea1859e74bc2233dbd0095902b2d7256bf54383392184ef9f6",
+      "role": "main",
       "seed": 42
     },
     {
       "arm": "regulatory_histone_dnase",
       "best_pt": "outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/regulatory_histone_dnase/native_frozen/seed_97/20261003T125220Z-a8447bb840/checkpoints/best.pt",
       "best_pt_sha256": "8bc886bb2863820dfc8997ff429dc3aee15afa0901215179cac33b4bde33163a",
+      "role": "main",
       "seed": 97
     }
   ],
   "protocol_doc": "docs/EXTERNAL_RECONSTRUCTION_PROTOCOL.md",
-  "protocol_doc_sha256": "8fccae9ac8cf0cc5857d16f8386b72c8758dfb09c661dd4b0213b575c1cf024f",
-  "protocol_version": "v1.1",
+  "protocol_doc_sha256": "d9ea8ed8dfe8e6789c03a9a7788b3df404a6692e5f75de8481502141a2dc1fc6",
+  "protocol_version": "v1.2",
   "schema": "external_gse40279_v1_freeze_manifest/1",
   "seeds": [
     17,
@@ -181,6 +278,40 @@
     "status": "SUPERSEDED by AMENDMENT 1 (pre-run); never executed",
     "updates": 110160,
     "validation_points": 1670
+  },
+  "test_one_shot": true,
+  "test_plan": {
+    "authorization_tag": "external-recon-test-authorization-v1",
+    "checkpoints": {
+      "legacy_sensitivity_control": 3,
+      "main": 9,
+      "source": "the best.pt of the 12 Experiment A runs, selected on validation"
+    },
+    "forbidden_after_test": [
+      "tuning",
+      "checkpoint re-selection",
+      "retraining",
+      "mask or panel changes",
+      "repetition of the test evaluation"
+    ],
+    "mask_fractions": [
+      0.15,
+      0.3,
+      0.5,
+      0.7,
+      0.9
+    ],
+    "n_subjects": 66,
+    "one_shot": true,
+    "recorded": [
+      "checkpoint sha256",
+      "split and locus-universe hashes",
+      "protocol and authorization tag commits",
+      "timestamp",
+      "authorization state",
+      "arm role (main | legacy_sensitivity_control)"
+    ],
+    "split": "test"
   },
   "test_set_authorized": false,
   "universe_size": 408017

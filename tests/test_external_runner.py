@@ -262,9 +262,12 @@ def test_git_checks_pass_then_each_failure(tmp_path):
     assert "amendment_commit_ancestor_of_HEAD" in _failed(G.check_git(repo, **{**kw, "tag": "T2", "amendment_prefix": side}))
 
 
-def test_real_repo_has_the_protocol_tag_and_ancestor():
-    out = {c.name: c.ok for c in G.check_git(ROOT, require_clean_code=False)}
+def test_real_repo_has_the_historic_protocol_tags_and_ancestors():
+    # v1.1 (AMENDMENT 1) is historic and must stay where it was; the v1.2 tag is created by the orchestrator (tolerated as absent here)
+    out = {c.name: c.ok for c in G.check_git(ROOT, tag=G.TAG_V1_1, amendment_prefix=G.V1_1_COMMIT_PREFIX, require_clean_code=False,
+                                             frozen_tracked=())}
     assert out["protocol_tag_present"] and out["amendment_commit_is_tag"] and out["amendment_commit_ancestor_of_HEAD"]
+    assert G.TAG_V1_2 == "external-recon-protocol-freeze-v1.2" and G.TAG_AUTH == "external-recon-test-authorization-v1"
 
 
 def test_output_root_guard(tmp_path):

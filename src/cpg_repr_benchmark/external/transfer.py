@@ -1,4 +1,8 @@
-"""Experiment B (secondary): TCGA -> GSE40279 transfer of the 12 frozen phase-A checkpoints (protocol v1.1, section 10).
+"""Experiment B (secondary): TCGA -> GSE40279 transfer of the frozen phase-A checkpoints (protocol v1.2, AMENDMENT 2).
+
+SCOPE (AMENDMENT 2): the DEFAULT arms are the three MAIN arms (regulatory_histone_dnase, cpgpt_large_locus, deepcpg_dna_locus) x 3 seeds
+= 9 checkpoints, VALIDATION split only. `functional_annotations_pca` is a `legacy_sensitivity_control` and is excluded unless
+`include_legacy=True` (CLI `--include-legacy`; its outputs carry `arm_role: legacy_sensitivity_control`). B on test is not planned.
 
 NO external training of any kind: the TCGA `best.pt` (sha256-verified against the freeze manifest) is loaded unchanged into
 `MaskedMethylomeReconstructor(raw_locus_dim=store.dim, 256, 256, 256, 512)`, the arm's own store is mapped onto the external matrix
@@ -27,7 +31,7 @@ import h5py
 import numpy as np
 
 from . import gate as G
-from .freeze import MANIFEST_REL
+from .freeze import ARMS, LEGACY_ARMS, MAIN_ARMS, MANIFEST_REL
 from .io import sha256_file
 
 MODES = ("B_strict", "B_recalibrated")
@@ -53,12 +57,20 @@ def done_marker(repo: Path, mode: str, arm: str, seed: int) -> Path:
     return run_dir_for(repo, mode, arm, seed) / "transfer.done"
 
 
-def jobs(manifest: dict, seeds=None, only=None, arm_order=None) -> list[dict]:
-    """The 12 frozen checkpoints, seed-major in the Experiment-A arm order."""
-    from .freeze import ARMS
+def arm_role(arm: str) -> str:
+    return "main" if arm in MAIN_ARMS else "legacy_sensitivity_control"
+
+
+def jobs(manifest: dict, seeds=None, only=None, arm_order=None, include_legacy: bool = False) -> list[dict]:
+    """The frozen checkpoints, seed-major in the Experiment-A arm order. Default = the 9 MAIN-arm checkpoints; the legacy functional
+    checkpoints are returned only with `include_legacy` (an explicit request for a legacy arm without it is refused)."""
     entries = {(c["arm"], int(c["seed"])): c for c in manifest["phase_a_checkpoints_experiment_B"]}
-    return [entries[(a, s)] for s in (seeds or manifest["seeds"]) for a in (arm_order or ARMS)
-            if (only is None or a in only) and (a, s) in entries]
+    allowed = set(MAIN_ARMS) | (set(LEGACY_ARMS) if include_legacy else set())
+    if only is not None and set(only) - allowed:
+        raise ValueError(f"arms {sorted(set(only) - allowed)} are not in the Experiment B scope (main arms only; legacy needs include_legacy)")
+    order = arm_order or ARMS
+    return [entries[(a, s)] for s in (seeds or manifest["seeds"]) for a in order
+            if a in allowed and (only is None or a in only) and (a, s) in entries]
 
 
 # ----------------------------------------------------------------------------- checkpoint + prior artifacts
@@ -234,8 +246,8 @@ def load_frozen_model(ckpt_path: Path, raw_dim: int, model_cfg: dict | None = No
 
 
 def run_transfer(repo: Path, mode: str, *, split: str = "validation", seeds=None, only=None, dry_run: bool = False, device: str = "auto",
-                 gate_checks: list | None = None, out=print) -> int:
-    """Gate (scope B) -> evaluate the 12 checkpoints. Returns 2 when refused. Never trains. Test split only if authorized."""
+                 gate_checks: list | None = None, out=print, include_legacy: bool = False) -> int:
+    """Gate (scope B) -> evaluate the 9 main-arm checkpoints (12 with include_legacy). Returns 2 when refused. Never trains. Test split only if authorized."""
     import torch
 
     from cpg_repr_benchmark.data.methylation import read_axis
@@ -250,7 +262,7 @@ def run_transfer(repo: Path, mode: str, *, split: str = "validation", seeds=None
     for c in bad:
         out("  " + c.line())
     out(f"GATE (transfer {mode}, {split}): {'OPEN' if not bad else 'REFUSED'}")
-    todo = jobs(manifest, seeds=seeds, only=only)
+    todo = jobs(manifest, seeds=seeds, only=only, include_legacy=include_legacy)
     out(f"{len(todo)} checkpoint(s): " + ", ".join(f"{c['arm']}#{c['seed']}" for c in todo))
     if dry_run:
         return 0 if not bad else 3
@@ -297,12 +309,12 @@ def run_transfer(repo: Path, mode: str, *, split: str = "validation", seeds=None
         rd.mkdir(parents=True, exist_ok=True)
         evaluate_model(run_dir=rd, model=model, store=store, matrix_path=matrix, prior=prior, rows=rows, columns=pool, split=split,
                        device=dev, authorize=authorize)
-        man = {"experiment": "B", "mode": mode, "arm": arm, "seed": seed, "split": split, "weights_updated": False,
+        man = {"experiment": "B", "mode": mode, "arm": arm, "arm_role": arm_role(arm), "seed": seed, "split": split, "weights_updated": False,
                "checkpoint": str(ckpt), "checkpoint_epoch": ckpt_epoch, "checkpoint_sha256": entry["best_pt_sha256"],
                "store_sha256": manifest["arms"][arm]["store_sha256"], "patient_protocol_sha256": manifest["files_sha256"]["patient_protocol_npz"],
                "locus_protocol_sha256": manifest["files_sha256"]["locus_protocol_npz"], "matrix_h5_sha256": manifest["files_sha256"]["dataset_h5"],
                "universe_size": len(pool), "n_eval_patients": len(rows), "prior": pinfo,
-               "protocol_tag": G.TAG_V1_1, "test_read": split == "test", "wall_clock_seconds": round(time.time() - t0, 1)}
+               "protocol_tag": G.TAG_V1_2, "test_read": split == "test", "wall_clock_seconds": round(time.time() - t0, 1)}
         (rd / MANIFEST_NAME).write_text(json.dumps(man, indent=2, sort_keys=True, default=str))
         done_marker(repo, mode, arm, seed).write_text("done\n")
         store.close()

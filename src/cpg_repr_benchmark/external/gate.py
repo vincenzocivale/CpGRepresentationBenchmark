@@ -16,12 +16,16 @@ import h5py
 import numpy as np
 
 from .budget import EXTERNAL_EPOCHS, epoch_budget
-from .freeze import MANIFEST_REL, PROTOCOL_REL
+from .freeze import MANIFEST_REL, PROTOCOL_REL, TAG_AUTHORIZATION
 from .io import sha256_file
 
 TAG_V1 = "external-recon-protocol-freeze-v1"
 TAG_V1_1 = "external-recon-protocol-freeze-v1.1"
-AMENDMENT_COMMIT_PREFIX = "da02b78"
+TAG_V1_2 = "external-recon-protocol-freeze-v1.2"   # AMENDMENT 2; created by the orchestrator's dated commit (pending until then)
+TAG_AUTH = TAG_AUTHORIZATION                       # external-recon-test-authorization-v1; created BEFORE the first test read
+AMENDMENT_COMMIT_PREFIX = "da02b78"                # historic v1.1 commit (still verified by the pre-test audit)
+V1_1_COMMIT_PREFIX = AMENDMENT_COMMIT_PREFIX
+V1_COMMIT_PREFIX = "2343a79"
 OUTPUT_ROOT_REL = "outputs/external_reconstruction_v1"
 # The output root must be inside OUTPUT_ROOT_REL and never inside / equal to one of these (GuardedWriter-like refusal).
 FROZEN_PATHS = (
@@ -32,11 +36,25 @@ FROZEN_PATHS = (
 # Files unchanged since the protocol tag (frozen artifacts that live in git).
 FROZEN_TRACKED = (PROTOCOL_REL, MANIFEST_REL, "configs/external", "configs/frozen",
                   "configs/experiments/regulatory_confirmation_matrix")
+# Test phase: the promotion commit (freeze_state final + authorization) legitimately changes the manifest (and the protocol record); these
+# are compared against the AUTHORIZATION tag, everything else frozen is still compared against the v1.2 protocol tag.
+PROMOTED_FILES = (PROTOCOL_REL, MANIFEST_REL)
+FROZEN_TRACKED_TEST_PHASE = tuple(p for p in FROZEN_TRACKED if p not in PROMOTED_FILES and p != "configs/external") + (
+    ("configs/external", f":(exclude){MANIFEST_REL}"),)   # a tuple entry = several git pathspecs for one check
 # Implementation files that must be committed AND clean before launch (the launch gate refuses otherwise).
 REQUIRED_COMMITTED = (
     "src/cpg_repr_benchmark/external/gate.py",
     "src/cpg_repr_benchmark/external/runner.py",
     "src/cpg_repr_benchmark/external/transfer.py",
+    "src/cpg_repr_benchmark/external/freeze.py",
+    "src/cpg_repr_benchmark/external/test_eval.py",
+    "src/cpg_repr_benchmark/external/pretest_audit.py",
+    "scripts/audit_external_pretest.py",
+    "scripts/build_external_freeze_manifest.py",
+    "scripts/verify_external_freeze.py",
+    "tests/test_external_pretest.py",
+    "tests/test_external_test_eval.py",
+    "tests/test_external_gse40279.py",
     "src/cpg_repr_benchmark/training/engine.py",
     "src/cpg_repr_benchmark/experiments/eval_layout.py",
     "scripts/run_masking_benchmark.py",
@@ -253,7 +271,7 @@ def _git(repo: Path, *args: str) -> subprocess.CompletedProcess:
     return subprocess.run(["git", *args], cwd=repo, text=True, capture_output=True, check=False)
 
 
-def check_git(repo: Path, *, tag: str = TAG_V1_1, amendment_prefix: str = AMENDMENT_COMMIT_PREFIX,
+def check_git(repo: Path, *, tag: str = TAG_V1_2, amendment_prefix: str | None = None,
               required: Iterable[str] = REQUIRED_COMMITTED, frozen_tracked: Iterable[str] = FROZEN_TRACKED,
               require_clean_code: bool = True) -> list[Check]:
     repo = Path(repo)
@@ -261,13 +279,15 @@ def check_git(repo: Path, *, tag: str = TAG_V1_1, amendment_prefix: str = AMENDM
     r = _git(repo, "rev-parse", "-q", "--verify", f"refs/tags/{tag}^{{commit}}")
     tag_commit = r.stdout.strip() if r.returncode == 0 else None
     out.append(Check("protocol_tag_present", bool(tag_commit), f"{tag} -> {(tag_commit or 'missing')[:10]}"))
-    out.append(Check("amendment_commit_is_tag", bool(tag_commit) and tag_commit.startswith(amendment_prefix),
-                     f"tag commit {(tag_commit or '-')[:10]} vs amendment {amendment_prefix}"))
+    if amendment_prefix:   # historic tags carry a known commit; the v1.2 tag is created later, so no prefix is pinned for it
+        out.append(Check("amendment_commit_is_tag", bool(tag_commit) and tag_commit.startswith(amendment_prefix),
+                         f"tag commit {(tag_commit or '-')[:10]} vs amendment {amendment_prefix}"))
     anc = bool(tag_commit) and _git(repo, "merge-base", "--is-ancestor", tag_commit, "HEAD").returncode == 0
     out.append(Check("amendment_commit_ancestor_of_HEAD", anc))
     if tag_commit:
-        changed = [p for p in frozen_tracked if _git(repo, "diff", "--quiet", tag_commit, "--", p).returncode != 0]
-        dirty = [p for p in frozen_tracked if _git(repo, "status", "--porcelain", "--", p).stdout.strip()]
+        specs = [(p,) if isinstance(p, str) else tuple(p) for p in frozen_tracked]
+        changed = [sp[0] for sp in specs if _git(repo, "diff", "--quiet", tag_commit, "--", *sp).returncode != 0]
+        dirty = [sp[0] for sp in specs if _git(repo, "status", "--porcelain", "--", *sp).stdout.strip()]
         out.append(Check("frozen_files_unchanged_since_tag", not changed and not dirty,
                          f"changed={changed} dirty={dirty}" if (changed or dirty) else "unchanged"))
     else:
@@ -286,6 +306,38 @@ def check_git(repo: Path, *, tag: str = TAG_V1_1, amendment_prefix: str = AMENDM
     return out
 
 
+def check_authorization_tag(repo: Path, *, manifest_rel: str = MANIFEST_REL, protocol_rel: str = PROTOCOL_REL,
+                            protocol_tag: str = TAG_V1_2, auth_tag: str = TAG_AUTH) -> list[Check]:
+    """Test phase only: the dated promotion commit must be TAGGED (`external-recon-test-authorization-v1`) and be an ancestor of HEAD,
+    descend from the v1.2 protocol tag, hold a manifest that says final + authorized, and manifest + protocol doc must be unchanged
+    (and clean) since it. Read-only git queries."""
+    repo = Path(repo)
+
+    def commit(tag):
+        r = _git(repo, "rev-parse", "-q", "--verify", f"refs/tags/{tag}^{{commit}}")
+        return r.stdout.strip() if r.returncode == 0 else None
+    ac, pc = commit(auth_tag), commit(protocol_tag)
+    out = [Check("authorization_tag_present", bool(ac), f"{auth_tag} -> {(ac or 'missing')[:10]}"),
+           Check("protocol_v1_2_tag_present", bool(pc), f"{protocol_tag} -> {(pc or 'missing')[:10]}")]
+    if not ac:
+        return out
+    out.append(Check("authorization_tag_ancestor_of_HEAD", _git(repo, "merge-base", "--is-ancestor", ac, "HEAD").returncode == 0))
+    out.append(Check("authorization_tag_descends_from_protocol_tag",
+                     bool(pc) and pc != ac and _git(repo, "merge-base", "--is-ancestor", pc, ac).returncode == 0))
+    shown = _git(repo, "show", f"{ac}:{manifest_rel}")
+    try:
+        m = json.loads(shown.stdout)
+        ok = m.get("freeze_state") == "final" and m.get("test_set_authorized") is True
+    except Exception:  # noqa: BLE001
+        ok = False
+    out.append(Check("authorization_tag_manifest_final_and_authorized", ok))
+    changed = [p for p in (manifest_rel, protocol_rel) if _git(repo, "diff", "--quiet", ac, "--", p).returncode != 0]
+    dirty = [p for p in (manifest_rel, protocol_rel) if _git(repo, "status", "--porcelain", "--", p).stdout.strip()]
+    out.append(Check("authorized_state_unchanged_since_authorization_tag", not changed and not dirty,
+                     f"changed={changed} dirty={dirty}" if (changed or dirty) else "unchanged"))
+    return out
+
+
 # ----------------------------------------------------------------------------- validation-phase test protection
 def check_no_test_artifacts(repo: Path, split: str = "validation") -> list[Check]:
     """Validation phase: no evaluation/test directory anywhere under the external output root."""
@@ -299,7 +351,7 @@ def check_no_test_artifacts(repo: Path, split: str = "validation") -> list[Check
 # ----------------------------------------------------------------------------- composition
 def run_gate(repo: Path, *, split: str = "validation", scope: str = "A", manifest_path: Path | None = None,
              verify_fn: Callable | None = None, git: bool = True, heavy: bool = True,
-             amendment_prefix: str = AMENDMENT_COMMIT_PREFIX, required: Iterable[str] = REQUIRED_COMMITTED) -> list[Check]:
+             amendment_prefix: str | None = None, required: Iterable[str] = REQUIRED_COMMITTED) -> list[Check]:
     """All gate checks. scope 'A' = Experiment A (adds the config checks); scope 'B' = transfer (no per-run configs)."""
     repo = Path(repo)
     try:
@@ -310,7 +362,7 @@ def run_gate(repo: Path, *, split: str = "validation", scope: str = "A", manifes
     if scope not in ("A", "B"):
         return out + [Check("scope_known", False, scope)]
     out += check_state(manifest, split=split)
-    out.append(Check("protocol_version_v1_1", manifest.get("protocol_version") == "v1.1", str(manifest.get("protocol_version"))))
+    out.append(Check("protocol_version_v1_2", manifest.get("protocol_version") == "v1.2", str(manifest.get("protocol_version"))))
     if verify_fn is None:
         from .freeze import verify as verify_fn
     res = verify_fn(repo, Path(manifest_path) if manifest_path else None)
@@ -330,7 +382,11 @@ def run_gate(repo: Path, *, split: str = "validation", scope: str = "A", manifes
         out.append(Check("gate_inputs_readable", False, repr(e)))
     out += check_no_test_artifacts(repo, split)
     if git:
-        out += check_git(repo, amendment_prefix=amendment_prefix, required=required)
+        if split == "test":
+            out += check_git(repo, amendment_prefix=amendment_prefix, required=required, frozen_tracked=FROZEN_TRACKED_TEST_PHASE)
+            out += check_authorization_tag(repo)
+        else:
+            out += check_git(repo, amendment_prefix=amendment_prefix, required=required)
     return out
 
 

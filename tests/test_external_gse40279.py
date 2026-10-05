@@ -275,10 +275,71 @@ def _tamper_budget(tmp_path, **changes):
 def test_manifest_budget_amended_and_green(tmp_path):
     repo = _synthetic_repo(tmp_path)
     m = json.loads((repo / freeze.MANIFEST_REL).read_text())
-    assert m["protocol_version"] == "v1.1" and m["freeze_state"] == "draft" and m["test_set_authorized"] is False
+    assert m["protocol_version"] == "v1.2" and m["freeze_state"] == "draft" and m["test_set_authorized"] is False
     assert m["budget"]["total_updates"] == 7920 and m["budget"]["validation_points"] == 120
-    assert m["superseded_budget"]["executed"] is False and m["amendment"]["id"] == "AMENDMENT 1"
+    assert m["superseded_budget"]["executed"] is False and m["amendment"]["id"] == "AMENDMENT 1"   # amendment 1 stays visible
+    assert m["amendment_2"]["id"] == "AMENDMENT 2" and m["amendment_2"]["decided_after_validation_A_results"] is True
+    assert m["amendment_2"]["external_test_data_read_before_amendment"] is False
     assert not _fails(repo)
+
+
+def test_manifest_amendment_2_structure(tmp_path):
+    repo = _synthetic_repo(tmp_path)
+    m = json.loads((repo / freeze.MANIFEST_REL).read_text())
+    assert m["main_panel"] == ["regulatory_histone_dnase", "cpgpt_large_locus", "deepcpg_dna_locus"]
+    assert m["legacy_sensitivity_control"]["arms"] == ["functional_annotations_pca"]
+    assert m["legacy_sensitivity_control"]["in_main_inferential_comparison"] is False
+    cp = m["comparisons"]
+    assert cp["primary"]["comparator"] == "cpgpt_large_locus" and cp["primary"]["n_contrasts"] == 1
+    assert cp["secondary"]["comparator"] == "deepcpg_dna_locus" and cp["descriptive"]["inferential"] is False
+    assert cp["equivalence_margin"] is None and cp["equivalence_or_non_inferiority_claims"] is False
+    assert m["experiment_B_scope"]["n_checkpoints"] == 9 and m["experiment_B_scope"]["arms"] == m["main_panel"]
+    assert m["test_one_shot"] is True and m["test_plan"]["authorization_tag"] == "external-recon-test-authorization-v1"
+    assert m["test_plan"]["checkpoints"] == {"main": 9, "legacy_sensitivity_control": 3,
+                                              "source": "the best.pt of the 12 Experiment A runs, selected on validation"}
+    assert m["budget"]["total_updates"] == 7920 and m["seeds"] == [17, 42, 97]       # budget/seeds untouched
+    assert sum(c["role"] == "main" for c in m["phase_a_checkpoints_experiment_B"]) == 9
+
+
+@pytest.mark.parametrize("path,value,check", [
+    (("main_panel",), ["regulatory_histone_dnase", "functional_annotations_pca", "cpgpt_large_locus"], "main_panel_three_arms"),
+    (("legacy_sensitivity_control", "in_main_inferential_comparison"), True, "legacy_control_functional_outside_main"),
+    (("legacy_sensitivity_control", "may_change_main_claim"), True, "legacy_control_functional_outside_main"),
+    (("comparisons", "primary", "comparator"), "functional_annotations_pca", "comparisons_structure"),
+    (("comparisons", "primary", "n_contrasts"), 2, "comparisons_structure"),
+    (("comparisons", "descriptive", "inferential"), True, "comparisons_structure"),
+    (("comparisons", "equivalence_margin"), 0.015, "no_equivalence_margin"),
+    (("amendment_2", "decided_after_validation_A_results"), False, "amendment_2_disclosure_decided_after_A_validation"),
+    (("amendment_2", "external_test_data_read_before_amendment"), True, "amendment_2_disclosure_decided_after_A_validation"),
+    (("experiment_B_scope", "n_checkpoints"), 12, "experiment_B_scope_3_main_arms_9_checkpoints"),
+    (("experiment_B_scope", "split"), "test", "experiment_B_scope_3_main_arms_9_checkpoints"),
+    (("test_one_shot",), False, "test_one_shot"),
+    (("test_plan", "authorization_tag"), "other", "test_one_shot"),
+    (("protocol_version",), "v1.1", "protocol_version_v1_2"),
+    (("freeze_state",), "final", "test_authorization_consistent"),
+])
+def test_verifier_fails_if_amendment_2_tampered(tmp_path, path, value, check):
+    repo = _synthetic_repo(tmp_path)
+    mp = repo / freeze.MANIFEST_REL
+    m = json.loads(mp.read_text())
+    d = m
+    for k in path[:-1]:
+        d = d[k]
+    d[path[-1]] = value
+    mp.write_text(json.dumps(m))
+    assert check in _fails(repo)
+
+
+def test_verifier_accepts_final_authorized_but_not_mixed_states(tmp_path):
+    repo = _synthetic_repo(tmp_path)
+    mp = repo / freeze.MANIFEST_REL
+    m = json.loads(mp.read_text())
+    m["freeze_state"], m["test_set_authorized"] = "final", True
+    mp.write_text(json.dumps(m))
+    assert "test_authorization_consistent" not in _fails(repo)
+    m["freeze_state"], m["test_set_authorized"] = "draft", True
+    mp.write_text(json.dumps(m))
+    assert "test_authorization_consistent" in _fails(repo)
 
 
 @pytest.mark.parametrize("changes,check", [
@@ -310,7 +371,7 @@ def test_verifier_detects_authorized_test_and_missing(tmp_path):
     m = json.loads((repo / freeze.MANIFEST_REL).read_text())
     m["test_set_authorized"] = True
     (repo / freeze.MANIFEST_REL).write_text(json.dumps(m))
-    assert "test_set_authorized_false" in _fails(repo)
+    assert "test_authorization_consistent" in _fails(repo)       # authorized while still draft
     os.remove(repo / freeze.FILES["dataset_h5"])
     assert "sha256:dataset_h5" in _fails(repo)
     shutil.rmtree(repo / "configs")

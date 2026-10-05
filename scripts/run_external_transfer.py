@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Experiment B (SECONDARY, exploratory): TCGA -> GSE40279 transfer of the 12 frozen phase-A best.pt checkpoints (no training).
+"""Experiment B (SECONDARY, exploratory): TCGA -> GSE40279 transfer of the frozen phase-A best.pt checkpoints (no training).
+Protocol v1.2 / AMENDMENT 2: default scope = the 3 MAIN arms x 3 seeds = 9 checkpoints, VALIDATION split; functional_annotations_pca
+(legacy_sensitivity_control) is excluded unless --include-legacy (labelled arm_role legacy_sensitivity_control; not planned).
 
   run_external_transfer.py --mode B_strict|B_recalibrated|both [--split validation|test] [--only ARM...] [--seeds S...] [--dry-run]
-                           [--device auto|cpu|cuda]
+                           [--device auto|cpu|cuda] [--include-legacy]
 
 B_strict        original TCGA prior (prior_logit.npy of the checkpoint's own TCGA run), nothing external anywhere.
 B_recalibrated  frozen decoder/adapter, prior recomputed from the 524 external TRAIN subjects only.
@@ -29,12 +31,14 @@ def main(argv=None) -> int:
     p.add_argument("--only", nargs="+")
     p.add_argument("--seeds", nargs="+", type=int)
     p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--include-legacy", action="store_true", help="also transfer the legacy functional checkpoints (labelled; not planned)")
     p.add_argument("--device", default="auto")
     a = p.parse_args(argv)
     os.nice(10)
     rc = 0
     for mode in (T.MODES if a.mode == "both" else (a.mode,)):
-        rc = max(rc, T.run_transfer(ROOT, mode, split=a.split, seeds=a.seeds, only=a.only, dry_run=a.dry_run, device=a.device))
+        rc = max(rc, T.run_transfer(ROOT, mode, split=a.split, seeds=a.seeds, only=a.only, dry_run=a.dry_run, device=a.device,
+                                    include_legacy=a.include_legacy))
     return rc
 
 

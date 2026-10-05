@@ -304,27 +304,11 @@ def mask_seed_ok(cfg: dict) -> bool:
     return cfg["evaluation"]["mask_seed"] == MASK_SEED
 
 
-def evaluate_test_all(repo: Path, *, popen=subprocess.run, out=print) -> int:
-    """TEST evaluation of the 12 finished validation runs (best.pt, evaluate mode). Refused unless the manifest is final AND
-    test_set_authorized AND every gate check is green. Never part of the validation phase; never run by tooling on its own."""
-    repo = Path(repo)
-    checks = G.run_gate(repo, split="test", scope="A")
-    bad = G.failures(checks)
-    for c in bad:
-        out("  " + c.line())
-    if bad:
-        out(f"GATE (test): REFUSED ({len(bad)} failing check(s)); the external TEST split stays locked")
-        return 2
-    for arm, seed in jobs():
-        mk = read_marker(repo, arm, seed)
-        if mk is None:
-            raise RuntimeError(f"{arm}/seed{seed}: validation run not finished; test evaluation needs all 12 validation runs")
-        rd = Path(mk["run_dir"])
-        cfg_path = rd / "evaluation" / "external_test_config.yaml"
-        cfg_path.parent.mkdir(parents=True, exist_ok=True)
-        cfg_path.write_text(yaml.safe_dump(make_test_config(arm, seed, repo, rd), sort_keys=False))
-        rc = popen([sys.executable, str(repo / "scripts/run_masking_benchmark.py"), "--config", str(cfg_path), "--mode", "evaluate",
-                    "--run-dir", str(rd)], cwd=repo, env={**os.environ, "PYTHONPATH": str(repo / "src")}, check=False).returncode
-        if rc:
-            raise RuntimeError(f"test evaluation failed ({arm}, seed {seed})")
-    return 0
+def evaluate_test_all(repo: Path, *, include_legacy: bool = False, confirm_one_shot: bool = False, resume_completed: bool = False,
+                      device: str = "cuda", out=print, **kw) -> int:
+    """ONE-SHOT TEST evaluation (protocol v1.2): 9 main runs, plus the 3 legacy functional runs with `include_legacy`. Implemented in
+    `external/test_eval.py` (in-process, hash-verified, no retraining/reselection, writes only evaluation/test/). Refused unless the
+    manifest is final + test_set_authorized, the authorization tag exists and the gate is green. Never run by tooling on its own."""
+    from .test_eval import evaluate_test_all as _impl
+    return _impl(repo, include_legacy=include_legacy, confirm_one_shot=confirm_one_shot, resume_completed=resume_completed,
+                 device=device, out=out, **kw)

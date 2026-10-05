@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Runner of the FROZEN external reconstruction confirmation on GSE40279 (protocol v1.1, docs/EXTERNAL_RECONSTRUCTION_PROTOCOL.md).
+"""Runner of the FROZEN external reconstruction confirmation on GSE40279 (protocol v1.2, docs/EXTERNAL_RECONSTRUCTION_PROTOCOL.md).
 
   generate [--keep-last-checkpoint]   write the 12 per-run configs (4 arms x seeds 17/42/97) to configs/experiments/external_confirmation/
   validate                            no-training check: configs == builder, diff vs the TCGA configs only in the declared fields
@@ -9,7 +9,11 @@
                                       --dry-run lists the plan and launches nothing. --split test / --test are REFUSED unless the
                                       manifest is final + test_set_authorized + all-green (and are not part of the validation phase).
   status                              progress of the 12 runs (reads markers / confirmation_status.json only)
-  test-eval                           TEST evaluation of the finished runs; refused unless final + authorized + green gate
+  test-eval [--include-legacy] [--confirm-one-shot] [--resume-completed] [--device cuda|cpu]
+                                      ONE-SHOT TEST evaluation of the frozen best.pt (9 main runs; +3 legacy functional runs with
+                                      --include-legacy). Refused unless freeze_state final + test_set_authorized + green gate (incl. the
+                                      protocol v1.2 and `external-recon-test-authorization-v1` tags) + --confirm-one-shot. Writes only
+                                      <run>/evaluation/test/; refuses if it exists. Protocol v1.2 / AMENDMENT 2.
 
 This script never launches anything unless `run` is called without --dry-run AND the gate is green.
 """
@@ -83,7 +87,8 @@ def cmd_status(a) -> int:
 
 
 def cmd_test_eval(a) -> int:
-    return R.evaluate_test_all(ROOT)
+    return R.evaluate_test_all(ROOT, include_legacy=a.include_legacy, confirm_one_shot=a.confirm_one_shot,
+                               resume_completed=a.resume_completed, device=a.device)
 
 
 def main(argv=None) -> int:
@@ -107,7 +112,12 @@ def main(argv=None) -> int:
     r.add_argument("--dry-run", action="store_true")
     r.set_defaults(fn=cmd_run)
     sub.add_parser("status").set_defaults(fn=cmd_status)
-    sub.add_parser("test-eval").set_defaults(fn=cmd_test_eval)
+    te = sub.add_parser("test-eval")
+    te.add_argument("--include-legacy", action="store_true", help="also evaluate the 3 legacy_sensitivity_control functional runs (labelled)")
+    te.add_argument("--confirm-one-shot", action="store_true", help="required: the test evaluation is never repeated")
+    te.add_argument("--resume-completed", action="store_true", help="skip runs whose evaluation/test is complete (never overwrites)")
+    te.add_argument("--device", default="cuda")
+    te.set_defaults(fn=cmd_test_eval)
     a = p.parse_args(argv)
     if a.cmd == "run" and a.seeds and not set(a.seeds) <= set(R.SEEDS):
         p.error(f"--seeds must be a subset of {list(R.SEEDS)}")

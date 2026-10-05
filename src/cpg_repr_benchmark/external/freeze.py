@@ -19,9 +19,9 @@ from .budget import (
 from .io import sha256_file
 
 PROTOCOL_REL = "docs/EXTERNAL_RECONSTRUCTION_PROTOCOL.md"
-PROTOCOL_VERSION = "v1.1"
+PROTOCOL_VERSION = "v1.2"
 BEST_RULE = "strict_min_val_mse@0.50, ties->first epoch"
-AMENDMENT = {
+AMENDMENT = {   # AMENDMENT 1 record, kept verbatim (manifest key `amendment`); AMENDMENT 2 is `amendment_2` below
     "id": "AMENDMENT 1", "date": "2026-10-05", "kind": "pre-run (no external run executed before it)",
     "from_version": "v1.0 (commit 2343a79, tag external-recon-protocol-freeze-v1)", "to_version": "v1.1",
     "changed": "training budget: equal-update (110,160 updates) replaced by equal-epoch (120 epochs, 7,920 updates)",
@@ -29,7 +29,62 @@ AMENDMENT = {
                  "the amended budget keeps the number of epochs equal to TCGA; absolute update count deliberately not matched",
 }
 MANIFEST_REL = "configs/external/gse40279_v1_freeze_manifest.json"
-ARMS = ("regulatory_histone_dnase", "functional_annotations_pca", "cpgpt_large_locus", "deepcpg_dna_locus")
+ARMS = ("regulatory_histone_dnase", "functional_annotations_pca", "cpgpt_large_locus", "deepcpg_dna_locus")   # Experiment A trained set (frozen order)
+# AMENDMENT 2 (v1.2): main comparator panel of the paper; `regulatory_histone_dnase` is the repo id of `regulatory_histone_dnase_v1`.
+CANDIDATE = "regulatory_histone_dnase"
+MAIN_ARMS = ("regulatory_histone_dnase", "cpgpt_large_locus", "deepcpg_dna_locus")
+LEGACY_ARMS = ("functional_annotations_pca",)
+PRIMARY_COMPARATOR = "cpgpt_large_locus"
+SECONDARY_COMPARATOR = "deepcpg_dna_locus"
+TAG_AUTHORIZATION = "external-recon-test-authorization-v1"
+AMENDMENT_2_DATE = "2026-10-05"
+COMPARISONS = {
+    "primary": {"contrast": "cpgpt_large_locus - regulatory_histone_dnase", "candidate": CANDIDATE, "comparator": PRIMARY_COMPARATOR,
+                "metric": "mse", "mask_fraction": 0.5, "inferential": True, "n_contrasts": 1,
+                "multiplicity_adjustment": "none needed (single contrast)",
+                "uncertainty": "paired bootstrap patients x 1 Mb genomic blocks, 2000 replicates, seed 17, per seed"},
+    "secondary": {"contrast": "deepcpg_dna_locus - regulatory_histone_dnase", "candidate": CANDIDATE, "comparator": SECONDARY_COMPARATOR,
+                  "metric": "mse", "mask_fraction": 0.5, "inferential": True, "label": "secondary",
+                  "multiplicity_adjustment": "none (reported with its paired CI, labelled secondary)",
+                  "uncertainty": "paired bootstrap patients x 1 Mb genomic blocks, 2000 replicates, seed 17, per seed"},
+    "descriptive": {"contrast": "deepcpg_dna_locus - cpgpt_large_locus", "inferential": False,
+                    "label": "descriptive secondary, outside every inferential comparison"},
+    "secondary_metrics": ["mae", "mas_pcc", "mac_pcc"],
+    "equivalence_margin": None,
+    "equivalence_or_non_inferiority_claims": False,
+}
+LEGACY_SENSITIVITY_CONTROL = {
+    "arms": list(LEGACY_ARMS), "role": "legacy_sensitivity_control", "in_main_inferential_comparison": False,
+    "may_select_representation": False, "may_change_main_claim": False,
+    "reason": "belongs to the legacy functional representation with a different feature contract (user rationale)",
+    "evaluated_on_test": "yes if technically simple, as a separately labelled block; never in the main inferential family",
+}
+EXPERIMENT_B_SCOPE = {
+    "arms": list(MAIN_ARMS), "seeds": [17, 42, 97], "n_checkpoints": 9, "modes": ["B_strict", "B_recalibrated"],
+    "split": "validation", "test": "NOT planned: B on test is not part of this endgame unless separately authorized",
+    "legacy_default": "excluded (only via an explicit --include-legacy, labelled; not planned)",
+    "results_may_modify": "nothing (not Experiment A, not the protocol, not the arms tested)",
+}
+TEST_PLAN = {
+    "one_shot": True, "split": "test", "n_subjects": 66, "mask_fractions": [0.15, 0.30, 0.50, 0.70, 0.90],
+    "checkpoints": {"main": 9, "legacy_sensitivity_control": 3, "source": "the best.pt of the 12 Experiment A runs, selected on validation"},
+    "authorization_tag": TAG_AUTHORIZATION,
+    "recorded": ["checkpoint sha256", "split and locus-universe hashes", "protocol and authorization tag commits", "timestamp",
+                 "authorization state", "arm role (main | legacy_sensitivity_control)"],
+    "forbidden_after_test": ["tuning", "checkpoint re-selection", "retraining", "mask or panel changes", "repetition of the test evaluation"],
+}
+AMENDMENT_2 = {
+    "id": "AMENDMENT 2", "date": AMENDMENT_2_DATE, "from_version": "v1.1 (tag external-recon-protocol-freeze-v1.1)", "to_version": "v1.2",
+    "kind": "pre-B, pre-test (Experiment A validation results HAD been seen; no external TEST data was read)",
+    "decided_after_validation_A_results": True,
+    "external_test_data_read_before_amendment": False,
+    "changed": "main comparator panel and comparison structure: functional_annotations_pca demoted to legacy_sensitivity_control; "
+               "primary comparison = candidate vs cpgpt_large_locus (single contrast); secondary = candidate vs deepcpg_dna_locus; "
+               "B scope = 3 main arms; one-shot test plan",
+    "rationale": "functional_annotations_pca belongs to the legacy functional representation with a different feature contract "
+                 "(stated by the user)",
+    "not_pre_registered_before_A": True,
+}
 SEEDS = (17, 42, 97)
 MASK_SEED = 17001
 SPLIT_SEED = 20260925
@@ -75,7 +130,8 @@ def phase_a_checkpoints(repo: Path) -> list[dict]:
     for r in st["runs"]:
         run_dir = Path(r["run_dir"])
         rel = run_dir.relative_to(repo) if run_dir.is_absolute() else run_dir
-        out.append({"arm": r["arm"], "seed": int(r["seed"]), "best_pt": str(rel / "checkpoints" / "best.pt"),
+        out.append({"arm": r["arm"], "seed": int(r["seed"]), "role": "main" if r["arm"] in MAIN_ARMS else "legacy_sensitivity_control",
+                    "best_pt": str(rel / "checkpoints" / "best.pt"),
                     "best_pt_sha256": r["best_pt_sha256"]})
     return sorted(out, key=lambda x: (x["arm"], x["seed"]))
 
@@ -95,6 +151,13 @@ def build_manifest(repo: Path) -> dict:
         "protocol_doc_sha256": sha256_file(repo / PROTOCOL_REL) if (repo / PROTOCOL_REL).exists() else None,
         "protocol_version": PROTOCOL_VERSION,
         "amendment": AMENDMENT,
+        "amendment_2": AMENDMENT_2,
+        "main_panel": list(MAIN_ARMS),
+        "legacy_sensitivity_control": LEGACY_SENSITIVITY_CONTROL,
+        "comparisons": COMPARISONS,
+        "experiment_B_scope": EXPERIMENT_B_SCOPE,
+        "test_one_shot": True,
+        "test_plan": TEST_PLAN,
         "freeze_state": "draft",
         "test_set_authorized": False,
         "files_sha256": {k: sha256_file(repo / v) for k, v in FILES.items()},
@@ -128,7 +191,9 @@ def verify(repo: Path, manifest_path: Path | None = None, *, check_stores: bool 
     except Exception as e:  # noqa: BLE001
         return [("manifest_readable", False, repr(e))]
     chk("manifest_readable", True)
-    chk("test_set_authorized_false", m.get("test_set_authorized") is False)
+    # draft/false until the dated promotion commit; then final/true. Any mixed state is unsafe.
+    chk("test_authorization_consistent", (m.get("freeze_state"), m.get("test_set_authorized")) in (("draft", False), ("final", True)),
+        f"freeze_state={m.get('freeze_state')!r} test_set_authorized={m.get('test_set_authorized')!r}")
     chk("freeze_state_valid", m.get("freeze_state") in ("draft", "final"), m.get("freeze_state"))
     for k, rel in m.get("files", {}).items():
         p = repo / rel
@@ -189,10 +254,41 @@ def verify(repo: Path, manifest_path: Path | None = None, *, check_stores: bool 
         sb = m.get("superseded_budget", {})
         chk("superseded_budget_flagged_never_executed", sb.get("updates") == 110160 and sb.get("epochs_full") == 1669
             and sb.get("partial_updates") == 6 and sb.get("executed") is False, sb)
-        chk("protocol_version_v1_1", m.get("protocol_version") == PROTOCOL_VERSION, m.get("protocol_version"))
+        chk("protocol_version_v1_2", m.get("protocol_version") == PROTOCOL_VERSION == "v1.2", m.get("protocol_version"))
         am = m.get("amendment", {})
         chk("amendment_recorded", am.get("id") == "AMENDMENT 1" and am.get("date") == "2026-10-05"
             and "pre-run" in am.get("kind", ""), am.get("id"))
+        a2 = m.get("amendment_2", {})
+        chk("amendment_2_recorded", a2.get("id") == "AMENDMENT 2" and a2.get("date") == AMENDMENT_2_DATE and a2.get("to_version") == "v1.2"
+            and "pre-test" in a2.get("kind", ""), a2.get("id"))
+        chk("amendment_2_disclosure_decided_after_A_validation", a2.get("decided_after_validation_A_results") is True
+            and a2.get("external_test_data_read_before_amendment") is False and a2.get("not_pre_registered_before_A") is True
+            and bool(a2.get("rationale")))
+        chk("main_panel_three_arms", m.get("main_panel") == list(MAIN_ARMS) and CANDIDATE in m["main_panel"], m.get("main_panel"))
+        lg = m.get("legacy_sensitivity_control", {})
+        chk("legacy_control_functional_outside_main", lg.get("arms") == list(LEGACY_ARMS) and lg.get("role") == "legacy_sensitivity_control"
+            and lg.get("in_main_inferential_comparison") is False and lg.get("may_select_representation") is False
+            and lg.get("may_change_main_claim") is False and not set(lg.get("arms", [])) & set(m.get("main_panel", [])), lg.get("arms"))
+        cp = m.get("comparisons", {})
+        chk("comparisons_structure", cp.get("primary", {}).get("comparator") == PRIMARY_COMPARATOR
+            and cp["primary"].get("candidate") == CANDIDATE and cp["primary"].get("n_contrasts") == 1 and cp["primary"].get("inferential") is True
+            and cp.get("secondary", {}).get("comparator") == SECONDARY_COMPARATOR and cp["secondary"].get("inferential") is True
+            and cp.get("descriptive", {}).get("inferential") is False
+            and cp["primary"].get("metric") == "mse" and cp["primary"].get("mask_fraction") == 0.5
+            and cp.get("secondary_metrics") == ["mae", "mas_pcc", "mac_pcc"], "primary/secondary/descriptive")
+        chk("no_equivalence_margin", cp.get("equivalence_margin") is None and cp.get("equivalence_or_non_inferiority_claims") is False)
+        chk("functional_not_in_any_inferential_comparison", "functional_annotations_pca" not in
+            {cp.get("primary", {}).get("comparator"), cp.get("secondary", {}).get("comparator")} | set(m.get("main_panel", [])))
+        eb = m.get("experiment_B_scope", {})
+        b_arms = {c["arm"] for c in m.get("phase_a_checkpoints_experiment_B", []) if c.get("role") == "main"}
+        chk("experiment_B_scope_3_main_arms_9_checkpoints", eb.get("arms") == list(MAIN_ARMS) and eb.get("n_checkpoints") == 9
+            and eb.get("split") == "validation" and "NOT planned" in eb.get("test", "") and b_arms == set(MAIN_ARMS)
+            and sum(c.get("role") == "main" for c in m.get("phase_a_checkpoints_experiment_B", [])) == 9, eb.get("arms"))
+        tp = m.get("test_plan", {})
+        chk("test_one_shot", m.get("test_one_shot") is True and tp.get("one_shot") is True and tp.get("n_subjects") == 66
+            and tp.get("checkpoints", {}).get("main") == 9 and tp["checkpoints"].get("legacy_sensitivity_control") == 3
+            and tp.get("authorization_tag") == TAG_AUTHORIZATION and tp.get("mask_fractions") == [0.15, 0.30, 0.50, 0.70, 0.90]
+            and bool(tp.get("forbidden_after_test")), tp.get("authorization_tag"))
         if m.get("protocol_doc_sha256") is not None:
             pd = repo / m.get("protocol_doc", PROTOCOL_REL)
             got = sha256_file(pd) if pd.exists() else "missing"
