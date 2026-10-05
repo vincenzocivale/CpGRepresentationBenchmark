@@ -1,0 +1,51 @@
+# EWAS-v2 protocol spec v1 (execution spec; replaces ewas_v2_spec_draft.yaml, which stays untouched). Human text: docs/EWAS_V2_REGISTRATION.md.
+# FROZEN when the registration commit is tagged `ewas-v2-protocol-freeze-v1`. Decisions of 2026-10-05 marked "decision by orchestrator, flagged for user review".
+spec_version: v1
+state_at_authoring: DESIGN_ARTIFACTS_BUILT   # DRAFT -> DESIGN_ARTIFACTS_BUILT -> FROZEN (derived: tag + committed registration) -> EXECUTED -> REPORTED (outputs/ewas_v2/<tag>/state.json)
+freeze_tag: ewas-v2-protocol-freeze-v1
+registration_doc: docs/EWAS_V2_REGISTRATION.md
+design_manifest: configs/ewas_v2/manifest_v1.json
+design_dir: data/derived/ewas_v2_v1            # git-ignored; every file sha256-pinned in the manifest
+out_root: outputs/ewas_v2/ewas-v2-protocol-freeze-v1
+purpose: "Does the embedding recognise EWAS hits (MAIN: technical matching) and still do so after controlling for coarse genomic context (S1)?"
+no_tuning_on_results: true
+report_both_directions: true
+no_task_selection_by_results: true
+universe: {n_cpg: 408399, registry: outputs/encode_atlas_v1/loci.parquet, covariates: data/derived/bioval_v2/covariates/universe_covariates.parquet,
+           join_key: cpg_idx, set_id_space: "canonical id = encode_many(chr, pos) (known-set .npy); store id = loci.cpg_idx"}
+arms:   # native dimension, as extracted; sha256 equals configs/experiments/regulatory_confirmation_matrix/matrix.yaml
+  regulatory_histone_dnase_v1: {role: main_candidate, dim: 256, dtype: float32, store: data/cache/representations/regulatory_histone_dnase__global_svd256__discovery_chr1_19.h5, sha256: fa3a816338ce2c2ce5669b4be6f5334a44470e2b149395901168dbe673a9fe1e, frozen_manifest: configs/frozen/regulatory_histone_dnase_v1.json}
+  cpgpt_large_locus: {role: main_primary_comparator, dim: 512, dtype: float16, store: data/cache/representations/cpgpt_locus_large.h5, sha256: c08138cd83e08f5015521c2a5d42b88e1834f0670c84906590d9730223d7b71e}
+  deepcpg_dna_locus: {role: main_secondary_comparator, dim: 128, dtype: float16, store: data/cache/representations/deepcpg_dna_locus.h5, sha256: e7280d5ff14d89a247e4cb3560a952250a3f1fa78daf653b9ec02761389b82b7}
+  functional_annotations_pca: {role: supplementary_legacy, dim: 256, dtype: float16, store: outputs/encode_atlas_v1/embeddings/full_a18b869b.h5, sha256: 3d99fe5ba4fb88991100f848e1d2c48ad19037c72b8821421b2eb677996e187f, label: "legacy campaign full SVD-256"}
+excluded_arms: [histone_plus_context, functional_pca_biovalidation_legacy_store, "any add/assay/Histone proxy variant"]
+tasks:
+  families: {exposure: [ewas_catalog_smoking, ewas_catalog_bmi], aging: [ewas_catalog_age, horvath_clock, phenoage_clock, hannum_clock],
+             disease: [ewas_atlas_colorectal_cancer, ewas_atlas_prostate_cancer, ewas_catalog_breast_cancer, ewas_catalog_lung_cancer, ewas_catalog_rheumatoid_arthritis, ewas_catalog_sle, ewas_catalog_type2_diabetes, ewas_catalog_coronary_heart_disease, ewas_atlas_ovarian_cancer, ewas_catalog_schizophrenia]}
+  set_files: data/bio_annotations/known_sets/<task>.npy     # sha256 pinned in configs/exp5_candidate_completion/exp5_pins.json and in the design manifest
+  tier_rule: {main_quality: ">=200 matched positives (MAIN matching)", exploratory: "100-199", insufficient: "<100"}
+  tiers_main: {main_quality: [ewas_atlas_colorectal_cancer, ewas_atlas_prostate_cancer, ewas_catalog_age, ewas_catalog_bmi, ewas_catalog_breast_cancer, ewas_catalog_lung_cancer, ewas_catalog_rheumatoid_arthritis, ewas_catalog_smoking, horvath_clock, phenoage_clock],
+               exploratory: [ewas_catalog_sle], insufficient: [ewas_atlas_ovarian_cancer, ewas_catalog_coronary_heart_disease, ewas_catalog_schizophrenia, ewas_catalog_type2_diabetes, hannum_clock]}
+  overlap_rule: {containment_threshold: 0.5, universe_members: true, handling: "tag non_independent_of <partner>; report both; family summary primary scope counts only independent tasks (a non-independent task is counted once, through its partner)",
+                 expected: {ewas_catalog_lung_cancer: ewas_catalog_smoking, ewas_catalog_rheumatoid_arthritis: ewas_catalog_age, ewas_catalog_type2_diabetes: ewas_catalog_bmi}}
+background:
+  main: {exact: [chromosome, infinium_type_I_II], ratio: "1:1", cap: none, seed: 17, rng: "numpy default_rng(17) per task", order: "strata sorted by (chrom,type); positives in sorted universe-row order; backgrounds without replacement",
+         excluded: "members of ANY of the 16 sets (union) and the task's own set; backgrounds need a known probe type", unknown_probe_type_positives: "dropped and counted"}
+  s1: {exact: [chromosome, infinium_type, island_class(island/shore/shelf/open_sea)], nn_columns: [gc_content, cpg_density_hg38, tss_dist(log10, as stored)], standardization: "mean/sd over probe-known universe rows (ddof 0)",
+       distance: euclidean, caliper_sd: 0.25, without_replacement: true, order: "positives of a stratum in default_rng(17).permutation order; ties by smaller row", unmatched: "dropped and counted; own tier"}
+  s2: dropped        # circular ENCODE-breadth diagnostic not run (decision by orchestrator)
+  stability_draws: dropped   # seeds 18-27 not run (decision by orchestrator); could be a declared amendment
+folds: {map: "biological_validation_v2.splits.chromosome_blocked_folds(chr1..chr22, 5, seed=17)", n_outer: 5, pair_in_one_fold: true}
+probe: {model: LogisticRegression, penalty: l2, solver: lbfgs, class_weight: null, max_iter: 10000, C_grid: [0.001, 0.01, 0.1, 1.0, 10.0],
+        C_selection: "nested: per outer fold, leave-one-outer-train-fold-out inner CV on the outer-train rows only; mean inner AUROC; ties -> smaller C; refit on the outer-train rows",
+        scaler: "StandardScaler (ddof 0) fit on the outer-train rows only", scores: "OOF decision_function, float64, stored", n_fits_per_task_design: 105,
+        implementation: "bioval_v2_launch.chrom_probes.logistic_blocked_cv (imported, unmodified)", convergence: "n_iter_max and n_nonconverged_fits recorded per endpoint; contrasts refuse non-converged fits unless --allow-nonconverged (then flagged)"}
+metrics: {primary: auroc, primary_companion: matched_pair_concordance, sensitivity_only: auprc}
+zero_rows: {policy: "candidate zero rows kept as valid features; identical backgrounds for all arms; counts of all-zero rows among positives and backgrounds per task, arm, design reported"}
+uncertainty: {scheme: "paired chromosome-block bootstrap; bioval_v2_launch.block_bootstrap.BlockBootstrap(names=sorted chr1..chr22, B=1000, seed=17); block weights = multiplicity; pairs never split; same draws for every arm/task/metric/design",
+              ci: "95% percentile", p: "two-sided bootstrap p with (1+k)/(1+B) floor (descriptive)", multiplicity: "NONE (descriptive; no adjustment, no Holm gating)"}
+contrasts: {primary: "candidate - cpgpt_large_locus", secondary: "candidate - deepcpg_dna_locus", supplementary: "candidate - functional_annotations_pca (legacy)", sign: "positive = candidate better", pooling: none, aggregate_score: none}
+family_summary: {counts: [candidate_better(CI>0), candidate_worse(CI<0), spans_zero], by: [design, contrast, metric, family, tier, scope(independent|all)], primary_scope: "independent, main-quality tier"}
+gate: [registration_committed_clean, code_committed_clean, protocol_tag, design_files_unchanged_since_tag, design_artifacts_hashes, registered_store_identities, store_sha256_and_coverage, out_root, no_tcga_protocol_or_loyfer_audit_input, state_machine]
+outputs: "outputs/ewas_v2/<tag>/{state.json, arms/<arm>/<task>/{oof.parquet,endpoint.json}, arms/<arm>/arm_manifest.json, sensitivity_S1/arms/<arm>/<task>/..., endpoints/<task>.json, sensitivity_S1/{endpoints,contrasts.csv}, contrasts.csv, family_summary.csv, bootstrap_manifest.json, report_inputs/}"
+caveats_unverified: [ewas_cohort_overlap_with_TCGA_GEO, ewas_download_dates]

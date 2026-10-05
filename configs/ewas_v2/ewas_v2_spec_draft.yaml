@@ -1,0 +1,88 @@
+# EWAS-v2 protocol spec: DRAFT (not frozen). Human text: docs/EWAS_V2_PROTOCOL_DRAFT.md. Decisions of 2026-10-05.
+spec_version: draft-0
+state: DRAFT                     # DRAFT -> DESIGN_ARTIFACTS_BUILT -> FROZEN -> EXECUTED -> REPORTED
+freeze_tag_proposed: ewas-v2-protocol-freeze-v1
+design_scaffold: scripts/ewas_v2/ewas_v2_design.py
+purpose: "Does the embedding recognise EWAS hits (main) and still do so after controlling for coarse genomic context (sensitivity)?"
+no_tuning_on_results: true
+report_both_directions: true     # CpGPT may win age/clocks, candidate smoking/disease: all shown
+universe: {n_cpg: 408399, registry: outputs/encode_atlas_v1/loci.parquet, chromosomes: chr1-chr22,
+           covariates: data/derived/bioval_v2/covariates/universe_covariates.parquet,   # JOIN BY cpg_idx (row order differs from the registry)
+           covariate_columns: [chrom, pos, context, cpg_density, gc_content, cpg_density_hg38, tss_dist, probe_type]}
+arms:                            # native, as extracted; no re-optimisation
+  main:
+    - {id: regulatory_histone_dnase_v1, dim: 256, store: data/cache/representations/regulatory_histone_dnase__global_svd256__discovery_chr1_19.h5, frozen_manifest: configs/frozen/regulatory_histone_dnase_v1.json}
+    - {id: cpgpt_large_locus, dim: 512, store: data/cache/representations/cpgpt_locus_large.h5}
+    - {id: deepcpg_dna_locus, dim: 128, store: data/cache/representations/deepcpg_dna_locus.h5}
+  supplementary:
+    - {id: functional_annotations_pca, dim: 256, store: outputs/encode_atlas_v1/embeddings/full_a18b869b.h5, label: "legacy campaign full SVD-256 (supplementary)"}
+  never: [functional_pca_biovalidation_legacy_store, "add/assay/Histone ChIP-seq (proxy_not_candidate in main)"]
+zero_row_policy: "keep the 849 all-zero candidate rows; identical backgrounds; report the count of zero rows among positives and backgrounds per task"
+task_sets:                       # source npy under data/bio_annotations/known_sets/; N = in-universe positives, probe-type-known positives in brackets
+  ewas:
+    - {id: ewas_catalog_smoking, family: environmental exposure, source: "EWAS Catalog bulk, p<1e-7", n_universe: 7889, n_known_probe: 7781}
+    - {id: ewas_catalog_bmi, family: environmental exposure, source: "EWAS Catalog bulk, p<1e-7", n_universe: 24190, n_known_probe: 23816}
+    - {id: ewas_catalog_age, family: aging, source: "EWAS Catalog bulk, p<1e-7", n_universe: 2194, n_known_probe: 2169}
+    - {id: ewas_atlas_colorectal_cancer, family: disease/pathology, source: "EWAS Atlas curated (no p cutoff)", n_universe: 7830, n_known_probe: 7708}
+    - {id: ewas_atlas_prostate_cancer, family: disease/pathology, source: "EWAS Atlas curated (no p cutoff)", n_universe: 7663, n_known_probe: 7560}
+    - {id: ewas_catalog_breast_cancer, family: disease/pathology, source: "EWAS Catalog bulk, p<1e-7", n_universe: 502, n_known_probe: 498}
+    - {id: ewas_catalog_lung_cancer, family: disease/pathology, source: "EWAS Catalog bulk, p<1e-7", n_universe: 242, n_known_probe: 240, non_independent_of: ewas_catalog_smoking}
+    - {id: ewas_catalog_rheumatoid_arthritis, family: disease/pathology, source: "EWAS Catalog bulk, p<1e-7", n_universe: 238, n_known_probe: 236, non_independent_of: ewas_catalog_age}
+    - {id: ewas_catalog_sle, family: disease/pathology, source: "Lanata 2022 Arthritis Rheumatol, Suppl Table S3 (single study)", n_universe: 139, n_known_probe: 134}
+    - {id: ewas_catalog_type2_diabetes, family: disease/pathology, source: "Cardona 2022 Diabetologia ESM Table 5 (meta-analysis, 5 cohorts)", n_universe: 71, n_known_probe: 68, non_independent_of: ewas_catalog_bmi}
+    - {id: ewas_catalog_coronary_heart_disease, family: disease/pathology, source: "Agha 2019 Circulation, Tables 2+3", n_universe: 49, n_known_probe: 49}
+    - {id: ewas_atlas_ovarian_cancer, family: disease/pathology, source: "EWAS Atlas curated", n_universe: 28, n_known_probe: 27}
+    - {id: ewas_catalog_schizophrenia, family: disease/pathology, source: "EWAS Catalog bulk, p<1e-7", n_universe: 28, n_known_probe: 28}
+  clocks:                        # separate AGING-CLOCK family (coefficient tables from biolearn: Horvath 2013, Hannum 2013, Levine 2018 PhenoAge)
+    - {id: horvath_clock, n_universe: 344, n_known_probe: 336}
+    - {id: phenoage_clock, n_universe: 498, n_known_probe: 492}
+    - {id: hannum_clock, n_universe: 64, n_known_probe: 63}
+  not_available: [alcohol, sex, GrimAge, per-tissue EWAS sets]   # no set exists in the repo; adding any requires a new, frozen source before the freeze
+  versions: "set npy files pinned by sha256 in configs/exp5_candidate_completion/exp5_pins.json (known_sets_sha256); EWAS Catalog / Atlas download dates NOT recorded in the repo [UNVERIFIED]"
+support_rule: {main_quality: ">=200 matched positives", exploratory: "100-199", insufficient: "<100", basis: "N only, computed on the frozen MAIN matching before any embedding is read", all_in_supplementary: true}
+expected_tiers_from_n: {main_quality: [ewas_catalog_smoking, ewas_catalog_bmi, ewas_catalog_age, ewas_atlas_colorectal_cancer, ewas_atlas_prostate_cancer, ewas_catalog_breast_cancer, ewas_catalog_lung_cancer, ewas_catalog_rheumatoid_arthritis, horvath_clock, phenoage_clock],
+                        exploratory: [ewas_catalog_sle], insufficient: [ewas_catalog_type2_diabetes, hannum_clock, ewas_catalog_coronary_heart_disease, ewas_atlas_ovarian_cancer, ewas_catalog_schizophrenia],
+                        note: "indicative (probe-type-known counts); the frozen list is recomputed from the frozen backgrounds"}
+overlap_rule:
+  statement: "A set is non_independent when >=50% of its universe members lie in a larger set (fixed a priori, embedding-free)."
+  handling: "report both sets, tag the smaller one non_independent with its partner, never pool them in family summaries counted as independent evidence (the family summary counts the non_independent task once, with its partner)"
+  set_difference_sensitivity: "analyse set minus partner only if the difference reaches the exploratory threshold (>=100); expected: lung-smoking 17, T2D-BMI 6, RA-age 91 -> none qualifies"
+  expected_flags: [{small: ewas_catalog_lung_cancer, large: ewas_catalog_smoking, containment: 0.93}, {small: ewas_catalog_rheumatoid_arthritis, large: ewas_catalog_age, containment: 0.618}, {small: ewas_catalog_type2_diabetes, large: ewas_catalog_bmi, containment: 0.915}]
+  clocks: "clocks stay a separate family; Horvath-PhenoAge share 40 CpGs, Horvath-Hannum 6, Hannum-PhenoAge 6: reported, not flagged"
+background:
+  scope: "ONE frozen background per task, shared by ALL arms; built from technical covariates only, with no embedding, no beta, no result loaded"
+  universe_exclusion: "any CpG that is a member of ANY set of the panel (union 46,092 CpGs) is never a background candidate"
+  ratio: "1:1 (k=1) primary [open question: k>1]"
+  main_matching: {exact: [chromosome, infinium_probe_type_I_II], dropped: "positives with unknown probe type (6,429 universe CpGs have none)", cap_on_pairs: "none [open question]", seed: 17, draws: 1,
+                  draw_order: "strata sorted by (chromosome, type); positives sorted by row; numpy default_rng(17); without replacement"}
+  not_used_in_main: [CpG context, gene region, GC, CpG density, TSS distance, ENCODE breadth/any ENCODE-derived value]   # inputs (explicit or implicit) of compared representations
+  stability_check: "10 further frozen draws (seeds 18..27) for supplementary SD across draws; primary = seed 17 only; draws are not replicates"
+sensitivity:
+  S1_context_matched: {matching: "exact: chromosome, probe type, island/shore/shelf/open-sea; nearest neighbour without replacement on standardized (gc_content, cpg_density_hg38, log10 tss_dist) within the exact stratum; caliper 0.25 SD",
+                       source: "universe_covariates.parquet", unmatched_positives: "dropped and counted; report N and tier of the sensitivity separately; the main tier is unchanged",
+                       purpose: "separates recognition of EWAS hits from recognition of coarse genomic context"}
+  S2_encode_breadth_diagnostic: {matching: "S1 + core-breadth decile", label: "CIRCULAR for the candidate and functional (ENCODE-derived); diagnostic only, never a conclusion"}
+  S3_beta_variance: {status: "NOT proposed by default (uses TCGA-discovery patient betas on the label side; never test betas)", open_question: true}
+probe:
+  folds: "outer = frozen chromosome->fold map chromosome_blocked_folds(22 chromosomes, 5, seed 17) (src/cpg_repr_benchmark/biological_validation_v2/splits.py); a pair always lies in one fold"
+  preprocessing: "StandardScaler fit on the outer-train fold only; no other transform; features float32; zero rows kept"
+  classifier: "LogisticRegression, L2, lbfgs, max_iter 2000; C in {1e-4,1e-3,1e-2,1e-1,1,10,100}"
+  C_selection: "inner leave-one-frozen-fold-out CV on the outer-train folds only; criterion = pooled inner AUROC; ties -> smaller C; same grid and rule for every arm"
+  scores: "pooled out-of-fold scores per task and arm; stored (float32) for AUROC, concordance and AUPRC"
+metrics: {primary: AUROC, co_primary: matched_pair_concordance, sensitivity_only: AUPRC}
+matched_pair_concordance: "per pair: 1 if score(EWAS CpG) > score(matched background CpG), 0.5 tie, else 0; mean over pairs"
+uncertainty:
+  scheme: "paired chromosome-block bootstrap: ONE shared draw table (B=1000, seed 17, 22 blocks, drawn with numpy default_rng(17).integers(0,22,(B,22))); same resampled chromosomes for every arm, task and metric"
+  caveat: "22 blocks: coarse CIs; blocks with no pairs for a task contribute nothing"
+  ci: "95% percentile; raw two-sided bootstrap p with (1+k)/(1+B) floor"
+contrasts: {primary: "candidate - cpgpt_large_locus", secondary: "candidate - deepcpg_dna_locus", supplementary: "candidate - functional_annotations_pca (legacy)", sign: "positive = candidate better", per_task: true, pooled_across_tasks: false, aggregate_score: none}
+family_summary: "per family x contrast x metric: number of tasks with CI>0, CI<0, CI containing 0 (main-quality tasks only; exploratory listed separately; non_independent tasks counted with their partner)"
+multiplicity: "descriptive: raw p and CI; Holm within family x contrast for AUROC reported as a supplementary column, no claim is gated on it [open question]"
+sensitivity_reading: "per task and arm report AUROC(main), AUROC(S1) and their difference; sign agreement of the candidate - CpGPT contrast between main and S1; no pre-set attenuation threshold"
+gate_before_freeze:
+  - set npy sha256, frozen task list, tiers and background pair files exist and are hashed WITHOUT any embedding having been read
+  - candidate frozen manifest status candidate_frozen; store sha256 equal to the manifest; CpGPT / DeepCpG / functional store sha256 recorded
+  - registration document committed clean; protocol tag created; working tree clean in src/, scripts/ewas_v2, configs/ewas_v2
+  - the draft's design parameters are fixed before the exp5_candidate_completion results are inspected (or the registration states that they were seen)
+outputs: outputs/ewas_v2/<freeze_tag>/{sets,backgrounds,folds,arms/<arm>/<task>/oof.parquet,endpoints/<task>.json,contrasts.csv,family_summary.csv,sensitivity_S1/,manifest.json}
+forbidden_paths: [loyfer_failure_audit]
