@@ -1,0 +1,33 @@
+# exp5_candidate_completion: machine-readable spec (SCAFFOLD, not run). See docs/EXP5_CANDIDATE_COMPLETION_PLAN.md
+name: exp5_candidate_completion
+status_label: "discovery-campaign completion (exp5 protocol, not preregistered main evidence)"
+decisions_date: 2026-10-05
+script: scripts/followup/exp5_candidate_completion.py
+pins: configs/exp5_candidate_completion/exp5_pins.json
+registration_doc_required_committed: docs/EXP5_CANDIDATE_COMPLETION_REGISTRATION.md   # NOT created yet
+candidate:
+  id: regulatory_histone_dnase_v1
+  frozen_manifest: configs/frozen/regulatory_histone_dnase_v1.json
+  store_h5: data/cache/representations/regulatory_histone_dnase__global_svd256__discovery_chr1_19.h5
+  dim: 256
+comparators_from_stored_exp5_oof:      # NOT re-trained; stored OOF scores are read (hash-pinned)
+  - cpgpt_large_native512
+  - deepcpg_hcc_native128
+  - functional_256                     # campaign full SVD-256, supplementary legacy
+exp5_protocol_reused_verbatim:
+  matching_seeds: [17001, 17002, 17003, 17004, 17005, 17006, 17007, 17008, 17009, 17010, 17011, 17012, 17013, 17014, 17015, 17016, 17017, 17018, 17019, 17020]
+  variants: [base, probe]
+  max_pairs: 2000
+  classifier: "StandardScaler (fold-wise) + LogisticRegression(C=1, max_iter=2000)"
+  folds: "GroupKFold(5) by chromosome on sorted pair rows"
+  bootstrap: {replicates: 10000, scheme: "draw one matching seed uniformly, resample pairs with replacement within chromosome; same indices for every arm", rng_seed: "20260929 + k, k = index of (variant,set) in sorted EVALUABLE list"}
+  pvalue: "2*min(P(d<=0),P(d>=0)) with 1/(B+1) floor; BH across sets within variant x comparison"
+comparisons: [[regulatory_histone_dnase_v1, cpgpt_large_native512], [regulatory_histone_dnase_v1, deepcpg_hcc_native128], [regulatory_histone_dnase_v1, functional_256]]   # delta = candidate - comparator
+metrics:
+  primary: AUROC
+  co_primary: matched_pair_concordance      # share of pairs with score(EWAS) > score(matched background); ties 0.5; mean over pairs, then over 20 draws
+  sensitivity_only: AUPRC                   # point estimate over draws; prevalence 0.5 by construction
+support_tier_rule: {main_quality: ">=200 matched positives", exploratory: "100-199", insufficient: "<100"}   # N only, fixed before results
+sets: from outputs/encode_atlas_v1/followup/exp5/evaluable_sets.csv   # 13 evaluable; ovarian, CHD, schizophrenia skipped (no matched support)
+outputs_root: outputs/exp5_candidate_completion/        # NEW directory; never inside outputs/encode_atlas_v1/followup/exp5
+forbidden_paths: [loyfer_failure_audit]

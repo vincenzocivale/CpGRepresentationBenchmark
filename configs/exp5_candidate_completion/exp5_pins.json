@@ -1,0 +1,43 @@
+{
+ "candidate": {
+  "compressor_manifest_hash": "eb0c08bd6b0ff099dad744523bdb4f5d4f9538e84fe504545917f819985ee6bd",
+  "frozen_manifest": "configs/frozen/regulatory_histone_dnase_v1.json",
+  "frozen_manifest_sha256": "0a6d9c4f2b6f2a05f47669489705e9cad5dd0d17e813f2d9b1383fe959277a70",
+  "store_h5": "data/cache/representations/regulatory_histone_dnase__global_svd256__discovery_chr1_19.h5",
+  "store_h5_sha256": "fa3a816338ce2c2ce5669b4be6f5334a44470e2b149395901168dbe673a9fe1e"
+ },
+ "created": "2026-10-05 (scaffold; not a freeze)",
+ "exp5_definition": {
+  "draws": "20 matching seeds 17001..17020; stage-2 rng_seed = 20260929 + k, k = index of (variant,set) in sorted EVALUABLE list; B=10000",
+  "folds": "GroupKFold(5) by chromosome on sorted pair rows; stored as 'fold' in oof_predictions.parquet",
+  "pairs": "deterministic function of (known set npy, strata = chr x context x gene region x core-breadth decile [functional store dense cols], seeds 17001..17020, <=2000 pairs, probe variant adds Infinium type); stored as (cpg_idx, pair_id, match_seed) in oof_predictions.parquet"
+ },
+ "exp5_files_sha256": {
+  "outputs/encode_atlas_v1/followup/exp5/evaluable_sets.csv": "7c2504ba104cdb1a085ca38978b2085f85b4a58a367c3382ea946cd7decc5350",
+  "outputs/encode_atlas_v1/followup/exp5/matching_summary_per_seed.csv": "a64c5b3bb54bf880b59c5bd20d02805527732b6504f4faf3d457f34fb7ccb33b",
+  "outputs/encode_atlas_v1/followup/exp5/oof_predictions.parquet": "ba9ee74b1a49944a377a1494ecaaa6430404162fbed5d0a10f7edc8a5806cf81",
+  "outputs/encode_atlas_v1/followup/exp5/probe_type_annotation.parquet": "f26a3338524ce96e1d40b08c66c042be9d3fa7d3eed5b32830919c9e37207d96",
+  "outputs/encode_atlas_v1/followup/exp5/probe_type_balance.csv": "d4484a0f69b902f9055e1f6229dbb5dab4f7ed4eeb87234dcaf0020fba68ef8b",
+  "outputs/encode_atlas_v1/followup/exp5/protocol.json": "201e01c3b94e40ff65f2da8966493c5a61e0c9be0fa0abd4c989d4f7dab9aae1",
+  "outputs/encode_atlas_v1/followup/exp5/summary_auc_delta.csv": "ec213c25e26888c93578976f219428e27e14e75c2ab0e7c1ed00bfbee23e5662"
+ },
+ "known_sets_sha256": {
+  "data/bio_annotations/known_sets/ewas_atlas_colorectal_cancer.npy": "bbdc08bd915d1bfdb789834e818e8ddb8dda0daa7fa8ef1c7aa0ca40495a4185",
+  "data/bio_annotations/known_sets/ewas_atlas_ovarian_cancer.npy": "2393c783cb4de9cc7041da2462673e3b17bd60e490571c00f7617d176696272e",
+  "data/bio_annotations/known_sets/ewas_atlas_prostate_cancer.npy": "84f0d68a086144e19070b59169dd0d903926093828b732de4a2b05c2ed077141",
+  "data/bio_annotations/known_sets/ewas_catalog_age.npy": "c7835e36dff34cfb7fb40f36aaf858aa0bf19b6915e8f47b215808ef27441345",
+  "data/bio_annotations/known_sets/ewas_catalog_bmi.npy": "e0f5df9b42987553435b8cedf953023dde1f75026f5e3a602d39739297a5080d",
+  "data/bio_annotations/known_sets/ewas_catalog_breast_cancer.npy": "d4f7a0660ad9fffb6fb90355cca06921884d11397a6976e5147bcd3ba89f5556",
+  "data/bio_annotations/known_sets/ewas_catalog_coronary_heart_disease.npy": "98af9b94a4202622e4595dd005f52710c303ae8f88ea168ef6d26567353b7adc",
+  "data/bio_annotations/known_sets/ewas_catalog_lung_cancer.npy": "88427ccc5b813ad1b5345abaf43a9e02fde1290041e4d1fb507316442e516931",
+  "data/bio_annotations/known_sets/ewas_catalog_rheumatoid_arthritis.npy": "4096874f60a0a821999d6501f88727ad954d1bea6d699ba0c51fc3c81c23cbc4",
+  "data/bio_annotations/known_sets/ewas_catalog_schizophrenia.npy": "748685a2da1272c75c984b1b6cb2de1d2916675815af132af6996b3fa46ef74c",
+  "data/bio_annotations/known_sets/ewas_catalog_sle.npy": "2195a65efa82e16828e1e089a4f1cd5ef6c1ad5a14002f5e49268860aa74bffd",
+  "data/bio_annotations/known_sets/ewas_catalog_smoking.npy": "ab7fd6beccaec6ad308fd095bf7fa0e41739c9a6961881e12385701196b036b3",
+  "data/bio_annotations/known_sets/ewas_catalog_type2_diabetes.npy": "c33be4fd89f2f431f0335a847f56531bb788338000a13659b9952949468c3172",
+  "data/bio_annotations/known_sets/hannum_clock.npy": "afeed304be7112a75d0af7f3b35f2ee8eaacfe0a7925342bec7625eb704c2003",
+  "data/bio_annotations/known_sets/horvath_clock.npy": "9e97b1343576c7ba3da4745c9abebdc65af7257646f752708d00d01e394aed3a",
+  "data/bio_annotations/known_sets/phenoage_clock.npy": "a56e09ef10c8af4ad7342fba70cfe832c68ae833808f314c0068c0c17f110107"
+ },
+ "purpose": "Hash pins for exp5_candidate_completion: the exp5 pairs/folds/draws are defined by code + these inputs; any change aborts the run."
+}
