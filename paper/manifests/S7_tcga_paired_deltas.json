@@ -1,0 +1,49 @@
+{
+ "name": "S7_tcga_paired_deltas",
+ "kind": "figure",
+ "title": "TCGA per-seed paired deltas, all fractions",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [
+  {
+   "path": "outputs/regulatory_confirmation_v1/analysis/paired_contrasts.csv",
+   "sha256": "e3cc91f0f41254c0b95cd651bea7c937514a4d9a1ae5bede1b9b0c9e792416bf"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S7_tcga_paired_deltas_paired.csv",
+   "sha256": "d6e7f21647104dae3271da01d3eef22d6142a1d6bb1e79b91a2d1b3556c27af3",
+   "n_rows": 45,
+   "columns": {
+    "seed": "seed",
+    "mask_fraction": "masking fraction",
+    "comparator": "comparator (reference = candidate)",
+    "relative_pct": "100*(comparator - candidate)/candidate MSE",
+    "ci_lo_pct": "paired 95% CI lower (patient x 1 Mb block bootstrap, 2000 rep.)",
+    "ci_hi_pct": "upper",
+    "n_patients": "patients",
+    "n_blocks": "blocks"
+   },
+   "filters": "paired_contrasts.csv metric=mse"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "paired_contrasts.csv metric=mse"
+ ],
+ "caption_statistic_definitions": [
+  "CI paired bootstrap, per seed"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S7_tcga_paired_deltas.md",
+  "paper/figures/S7_tcga_paired_deltas.pdf",
+  "paper/figures/S7_tcga_paired_deltas.png",
+  "paper/figures/S7_tcga_paired_deltas.svg"
+ ],
+ "generated_utc": "2026-10-05T12:35:00+00:00"
+}

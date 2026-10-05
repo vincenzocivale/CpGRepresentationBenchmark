@@ -1,0 +1,1 @@
+**Supplementary Figure S7. TCGA Phase A: per-seed paired relative MSE differences at all masking fractions.** (comparator - candidate)/candidate with 95% CI from the paired patient x 1 Mb block bootstrap (2,000 replicates; bootstrap seed = training seed). Panel C is the legacy Functional PCA sensitivity control (negative values favour the control).

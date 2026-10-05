@@ -1,0 +1,86 @@
+{
+ "name": "table1_datasets",
+ "kind": "table",
+ "title": "Datasets and evaluation protocols",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_tables.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {
+  "bioval-v2-protocol-freeze-v1": "27d8bce1b2ce391cb4ffb0d89eb15660710c2b33",
+  "external-recon-test-authorization-v1": "2b79f6071f3a597bbe82f70e7fcf2233b3ce947e"
+ },
+ "source_result_files": [
+  {
+   "path": "configs/external/gse40279_v1_freeze_manifest.json",
+   "sha256": "2447a9685da19c59aee59827c969f299ad11fcbce92b4babb7c0d3c4cff1dc0a"
+  },
+  {
+   "path": "configs/external/gse40279_v1_mapping_manifest.json",
+   "sha256": "39fd2976b98de8d246d8039189ba2d07a408603dff449eda702f5c11c4c95d86"
+  },
+  {
+   "path": "configs/external/gse40279_v1_split_manifest.json",
+   "sha256": "4d48bd1b1286e19c434530595d187df23b1f986f9bfb05b7cf9f1b9fa7bbb85a"
+  },
+  {
+   "path": "data/derived/bioval_v2/external_methylation_programs/coverage_summary.json",
+   "sha256": "fb2dd69d7b764e4a162dc19b7ce426d75d00d3bc9d9386db00df7d60c31522c0"
+  },
+  {
+   "path": "outputs/biological_validation_v2/bioval-v2-protocol-freeze-v1/regulatory_histone_dnase_v1/endpoints/rt_consensus.json",
+   "sha256": "00e6b9d23d68d95661085b12a5ab65411508dfd2268dc438a58b4e78d6e803f2"
+  },
+  {
+   "path": "outputs/biological_validation_v2/bioval-v2-protocol-freeze-v1/regulatory_histone_dnase_v1/run_manifest.json",
+   "sha256": "40f00f71ec3486be60dc7b4b23cd0a8f428814932a3229ec373a09c2661bc843"
+  },
+  {
+   "path": "outputs/regulatory_confirmation_v1/analysis/paired_contrasts.csv",
+   "sha256": "e3cc91f0f41254c0b95cd651bea7c937514a4d9a1ae5bede1b9b0c9e792416bf"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/tables/table1_datasets.csv",
+   "sha256": "eab13081414e5ea2d751bf5f96f896fe157b8e339450281fabf308009b80828b",
+   "n_rows": 6,
+   "columns": {
+    "Dataset": "Dataset",
+    "Tissue": "Tissue",
+    "N": "N",
+    "Platform": "Platform",
+    "Train/val/test": "Train/val/test",
+    "CpG overlap": "CpG overlap",
+    "Role": "Role",
+    "Test status": "Test status"
+   },
+   "filters": ""
+  }
+ ],
+ "filters_and_metrics_used": [
+  "see script"
+ ],
+ "caption_statistic_definitions": [
+  "counts only; no inference"
+ ],
+ "qa_checks": [
+  {
+   "label": "TCGA N train+val+test",
+   "expected": 9178.0,
+   "computed": 9178.0,
+   "tol": 0.0,
+   "pass": true,
+   "expected_source": "docs 7342/918/918"
+  }
+ ],
+ "notes": [
+  "source: doc values: TCGA test N (918) and 450K platform; GSE40279 platform; Loyfer/Micro-C/FANTOM5/RT platform and tissue descriptors; FANTOM5 membership N/overlap (no machine-readable source found)."
+ ],
+ "missing_results": [],
+ "outputs": [
+  "paper/tables/table1_datasets.csv",
+  "paper/tables/table1_datasets.tex",
+  "paper/tables/table1_datasets_with_source.csv"
+ ],
+ "generated_utc": "2026-10-05T12:34:50+00:00"
+}

@@ -1,0 +1,68 @@
+{
+ "name": "S14_loyfer_exploratory_posthoc",
+ "kind": "figure",
+ "title": "EXPLORATORY POST-HOC Loyfer diagnostics",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {
+  "bioval-v2-protocol-freeze-v1": "27d8bce1b2ce391cb4ffb0d89eb15660710c2b33"
+ },
+ "source_result_files": [
+  {
+   "path": "outputs/biological_validation_v2/bioval-v2-protocol-freeze-v1/exploratory_posthoc_loyfer/geometry_within_arm_deltas.csv",
+   "sha256": "94bdc0253527b1db8d6a3f7588397aea4a4b9bf6a453450184428b26517fff18"
+  },
+  {
+   "path": "outputs/biological_validation_v2/bioval-v2-protocol-freeze-v1/exploratory_posthoc_loyfer/ridge_summary_by_arm.csv",
+   "sha256": "8ea1e1958524a730ea8b0ee2a651bb16978716f7a3106900c19615b6ab9fc26c"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S14_loyfer_exploratory_posthoc_geometry.csv",
+   "sha256": "1d6d05fbc2a659d44bfe9662f0da4f560c49486ee1b553e39d60ba10d52ff451",
+   "n_rows": 12,
+   "columns": {
+    "arm": "arm",
+    "geometry": "centered_cosine / pc1_removed_cosine / neg_euclidean",
+    "delta": "within-arm geometry minus cosine, Spearman over all pairs (EXPLORATORY POST-HOC)",
+    "ci_lo": "bootstrap CI lower",
+    "ci_hi": "upper",
+    "p": "raw p (no Holm)",
+    "B_eff": "bootstrap replicates"
+   },
+   "filters": "geometry_within_arm_deltas.csv cell=all stat_family=spearman"
+  },
+  {
+   "path": "paper/source_data/S14_loyfer_exploratory_posthoc_ridge.csv",
+   "sha256": "90cc6e15b5425293b5b04f213d2e31ae14ec4522d4da8b5dd2e2c142b60c09ac",
+   "n_rows": 24,
+   "columns": {
+    "arm": "arm",
+    "target": "raw / centered / level",
+    "subset": "all_cpgs / variable_cpgs",
+    "r2_global": "ridge R^2 (global)",
+    "r2_macro": "ridge R^2 (macro)"
+   },
+   "filters": "ridge_summary_by_arm.csv kind=model"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "exploratory_posthoc_loyfer/geometry_within_arm_deltas.csv cell=all, stat_family=spearman",
+  "ridge_summary_by_arm.csv kind=model"
+ ],
+ "caption_statistic_definitions": [
+  "exploratory post-hoc; descriptive; no multiplicity control"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S14_loyfer_exploratory_posthoc.md",
+  "paper/figures/S14_loyfer_exploratory_posthoc.pdf",
+  "paper/figures/S14_loyfer_exploratory_posthoc.png",
+  "paper/figures/S14_loyfer_exploratory_posthoc.svg"
+ ],
+ "generated_utc": "2026-10-05T12:35:09+00:00"
+}

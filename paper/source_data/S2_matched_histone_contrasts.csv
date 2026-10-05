@@ -1,0 +1,4 @@
+contrast,baseline,alternative,seed,rel_pct,lo,hi,n_patients,n_blocks
+matched_assay_identity,control/non_histone_prevalence_matched,control/histone_prevalence_matched,17,-3.21312384946662,-3.7042436438714264,-2.7602655560600673,918,2691
+matched_assay_identity,control/non_histone_prevalence_matched,control/histone_prevalence_matched,42,-3.2716998186212596,-3.745068771233427,-2.8038150135333524,918,2691
+matched_assay_identity,control/non_histone_prevalence_matched,control/histone_prevalence_matched,97,-3.00014877932472,-3.480180355347879,-2.511876385635941,918,2691

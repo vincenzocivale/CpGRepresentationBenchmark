@@ -1,0 +1,46 @@
+{
+ "name": "S5_training_curves",
+ "kind": "figure",
+ "title": "3-seed family selection training curves",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [
+  {
+   "path": "outputs/regulatory_confirm_v1/analysis/validation_curves_all_runs.csv",
+   "sha256": "bd25c12a874803e5624512f517342d4aa910a9a03aaf96138068f507bdb028cc"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S5_training_curves_curves.csv",
+   "sha256": "867295484b352376473d9279a207c1834729ffc44a0443198b2ae68a849ebf75",
+   "n_rows": 720,
+   "columns": {
+    "arm": "arm",
+    "seed": "seed",
+    "epoch": "epoch (0-based)",
+    "validation_mse": "validation MSE@0.50 at epoch end",
+    "validation_mae": "validation MAE"
+   },
+   "filters": "validation_curves_all_runs.csv, all rows"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "validation_curves_all_runs.csv all rows"
+ ],
+ "caption_statistic_definitions": [
+  "curves are validation MSE at epoch end; no CI"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S5_training_curves.md",
+  "paper/figures/S5_training_curves.pdf",
+  "paper/figures/S5_training_curves.png",
+  "paper/figures/S5_training_curves.svg"
+ ],
+ "generated_utc": "2026-10-05T12:34:57+00:00"
+}

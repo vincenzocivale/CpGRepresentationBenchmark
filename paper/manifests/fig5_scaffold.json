@@ -1,0 +1,29 @@
+{
+ "name": "fig5_scaffold",
+ "kind": "figure",
+ "title": "Loyfer mechanism (scaffold, pending audit)",
+ "status": "PLACEHOLDER",
+ "plotting_script": "paper/scripts/make_fig5_scaffold.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [],
+ "source_data_tables": [],
+ "filters_and_metrics_used": [],
+ "caption_statistic_definitions": [
+  "none (scaffold)"
+ ],
+ "qa_checks": [],
+ "notes": [
+  "Scaffold: no result file was read; the Loyfer failure-audit directory was not accessed."
+ ],
+ "missing_results": [
+  "Loyfer failure audit outputs (exploratory post-hoc audit in progress/paused)"
+ ],
+ "outputs": [
+  "paper/captions/fig5_scaffold.md",
+  "paper/figures/fig5_scaffold.pdf",
+  "paper/figures/fig5_scaffold.png",
+  "paper/figures/fig5_scaffold.svg"
+ ],
+ "generated_utc": "2026-10-05T12:34:49+00:00"
+}

@@ -1,0 +1,1 @@
+**Supplementary Figure S10. GSE40279 training convergence: validation MSE@50% vs epoch for every arm and seed (120 epochs).** Line style encodes seed (solid/dashed/dotted: 17/42/97). (B) zoom with truncated y-axis. Only validation values are shown.

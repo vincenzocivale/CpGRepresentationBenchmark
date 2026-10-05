@@ -1,0 +1,65 @@
+{
+ "name": "S2_matched_histone",
+ "kind": "figure",
+ "title": "Matched histone vs non-histone",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [
+  {
+   "path": "outputs/encode_atlas_v1/focused_contrasts.csv",
+   "sha256": "2b44b0f32eafdac7413ab063f75ccee7649a744765d5f75532bb474f9c1139e5"
+  },
+  {
+   "path": "outputs/encode_atlas_v1/reconstruction_metrics.csv",
+   "sha256": "a10556dd58f6d6f40f77e78cef69635ab688ec2533be38b9f10f551bfa9da1f9"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S2_matched_histone_contrasts.csv",
+   "sha256": "449b29c20ab7da705cd8f13b95786d289e5405ddeb0b0cc1b69cbd439fd809a3",
+   "n_rows": 3,
+   "columns": {
+    "contrast": "focused contrast name",
+    "baseline": "baseline arm",
+    "alternative": "alternative arm",
+    "seed": "seed",
+    "rel_pct": "100*(alternative - baseline)/baseline MSE@50% (paired; negative favours alternative)",
+    "lo": "paired 95% CI lower",
+    "hi": "upper",
+    "n_patients": "patients",
+    "n_blocks": "1 Mb blocks"
+   },
+   "filters": "focused_contrasts.csv contrast in ['matched_assay_identity']"
+  },
+  {
+   "path": "paper/source_data/S2_matched_histone_mse.csv",
+   "sha256": "516fb935c845f8b20a6e75a49c94bb45a4282d3e3b64542ee1cad5372b612499",
+   "n_rows": 9,
+   "columns": {
+    "arm": "arm",
+    "seed": "seed",
+    "mse": "MSE@50% masking, confirm stage"
+   },
+   "filters": "reconstruction_metrics.csv confirm/seen/mask_0.50"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "focused_contrasts.csv: ['matched_assay_identity']"
+ ],
+ "caption_statistic_definitions": [
+  "paired 95% CI: patient x 1 Mb block bootstrap, 2000 replicates; per seed; seeds = optimisation replicates"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S2_matched_histone.md",
+  "paper/figures/S2_matched_histone.pdf",
+  "paper/figures/S2_matched_histone.png",
+  "paper/figures/S2_matched_histone.svg"
+ ],
+ "generated_utc": "2026-10-05T12:34:53+00:00"
+}

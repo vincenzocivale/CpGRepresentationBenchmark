@@ -1,0 +1,61 @@
+{
+ "name": "S1_encode_campaign",
+ "kind": "figure",
+ "title": "Full ENCODE attribution campaign",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [
+  {
+   "path": "outputs/encode_atlas_v1/paired_comparisons.csv",
+   "sha256": "11c0f9d9802af1c21ad084418569f3f96d47559fe22695323f1f4a4d0cc0dcf4"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S1_encode_campaign_discovery.csv",
+   "sha256": "d67ce7fc5182287b765a996d18d400eae9a87485f4854e22ae8387a1fde0ac59",
+   "n_rows": 30,
+   "columns": {
+    "arm": "campaign arm id",
+    "family": "arm family (arms.json)",
+    "seed": "seed",
+    "rel_pct": "100*(arm - full)/full MSE@50% (paired)",
+    "lo": "paired 95% CI lower (patient x 1 Mb block bootstrap)",
+    "hi": "upper",
+    "n_patients": "patients",
+    "n_blocks": "blocks"
+   },
+   "filters": "paired_comparisons.csv stage=discovery, view=seen, ood=False"
+  },
+  {
+   "path": "paper/source_data/S1_encode_campaign_confirm.csv",
+   "sha256": "8296dcfd7bc3235d29a30c74d81fb4b5ffa1ba116bc77bf82eab3b127329fbde",
+   "n_rows": 12,
+   "columns": {
+    "arm": "campaign arm id",
+    "family": "arm family (arms.json)",
+    "rel_pct_mean": "mean over 3 confirm-stage seeds of rel_pct",
+    "n_seeds": "number of seeds"
+   },
+   "filters": "stage=confirm, mean over seeds"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "paired_comparisons.csv view=seen, ood=False; stage discovery (points) and confirm (diamonds)"
+ ],
+ "caption_statistic_definitions": [
+  "paired relative delta vs full; CI bootstrap patient x 1Mb block"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S1_encode_campaign.md",
+  "paper/figures/S1_encode_campaign.pdf",
+  "paper/figures/S1_encode_campaign.png",
+  "paper/figures/S1_encode_campaign.svg"
+ ],
+ "generated_utc": "2026-10-05T12:34:52+00:00"
+}

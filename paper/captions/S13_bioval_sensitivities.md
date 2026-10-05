@@ -1,0 +1,1 @@
+**Supplementary Figure/Table S13. Frozen biological sensitivity analyses.** Per-row verdict of each pre-registered sensitivity relative to the frozen primary conclusion (CONFIRMS / CHANGES / INCONCLUSIVE). Five items were not executed because they require new pre-registration or new artifacts (label NOT_EXECUTED_REQUIRES_NEW_PREREGISTRATION_OR_ARTIFACTS).

@@ -1,0 +1,13 @@
+arm,family,rel_pct_mean,n_seeds
+add/assay/Histone ChIP-seq,assay,2.2798862121066903,3
+add/target/H3K4me3,target,11.44762135075206,3
+balanced_assays/17,coverage_control,2.5874445998938964,3
+cluster_representatives,redundancy,-0.12259695585624668,3
+context_only,control,27.731253027763575,3
+control/histone_prevalence_matched,coverage_control,6.610941698397173,3
+control/non_histone_prevalence_matched,coverage_control,10.091762680146628,3
+drop/assay/Histone ChIP-seq,assay,9.24584807009491,3
+drop_preserve_breadth/assay/Histone ChIP-seq,assay,8.904638970221564,3
+fm/cpgpt_locus_large,fm_control,14.268606707874591,3
+fm/deepcpg_dna_locus,fm_control,25.624033750172476,3
+only/target/H3K4me3,target,12.154055403466534,3

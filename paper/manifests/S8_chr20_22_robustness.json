@@ -1,0 +1,70 @@
+{
+ "name": "S8_chr20_22_robustness",
+ "kind": "figure",
+ "title": "chr20-22 out-of-fit robustness",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [
+  {
+   "path": "outputs/regulatory_family_screen_v1/analysis/diagnostic_strata_contrasts.csv",
+   "sha256": "31a7d9a9f854d10a074794b59f3dbce3d971bf3e8ba2c248724924a26c25488c"
+  },
+  {
+   "path": "outputs/regulatory_family_screen_v1/analysis/mse_by_fit_scope.csv",
+   "sha256": "13c444bb0d87833d090f9176316e1f0dddfb36a48ddf64fb07a58a1b7732b233"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S8_chr20_22_robustness_mse_by_scope.csv",
+   "sha256": "519e054ede39f66096888832823f5c3ed8e9ee992939833d16bd3a6b84702115",
+   "n_rows": 8,
+   "columns": {
+    "arm": "family-screen arm",
+    "group": "in_fit_chr1_19 / out_of_fit_chr20_22",
+    "mse": "validation MSE@0.5",
+    "n_pairs": "pairs",
+    "n_loci": "loci"
+   },
+   "filters": "mse_by_fit_scope.csv"
+  },
+  {
+   "path": "paper/source_data/S8_chr20_22_robustness_contrasts.csv",
+   "sha256": "9cb840cb2c76766b1f11fc791a7d71e29f5708ef16f24824a021ff6388d2a3b5",
+   "n_rows": 6,
+   "columns": {
+    "group": "fit scope",
+    "reference": "reference arm",
+    "alternative": "alternative arm",
+    "relative": "100*(alt-ref)/ref MSE",
+    "rel_ci_lo": "paired CI lower (%)",
+    "rel_ci_hi": "upper (%)",
+    "n_pairs": "pairs",
+    "n_blocks": "blocks"
+   },
+   "filters": "diagnostic_strata_contrasts.csv diagnostic=fit_scope metric=mse"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "mse_by_fit_scope.csv; diagnostic_strata_contrasts.csv diagnostic=fit_scope metric=mse"
+ ],
+ "caption_statistic_definitions": [
+  "CI paired bootstrap patient x 1Mb block"
+ ],
+ "qa_checks": [],
+ "notes": [
+  "MISSING: no per-chromosome source exists for TCGA Phase A (regulatory_confirmation_v1/analysis has no chromosome-stratified file); S8 uses the 1-seed family screen only."
+ ],
+ "missing_results": [
+  "TCGA Phase A per-chromosome (chr20-22) analysis (no machine-readable source)"
+ ],
+ "outputs": [
+  "paper/captions/S8_chr20_22_robustness.md",
+  "paper/figures/S8_chr20_22_robustness.pdf",
+  "paper/figures/S8_chr20_22_robustness.png",
+  "paper/figures/S8_chr20_22_robustness.svg"
+ ],
+ "generated_utc": "2026-10-05T12:35:00+00:00"
+}

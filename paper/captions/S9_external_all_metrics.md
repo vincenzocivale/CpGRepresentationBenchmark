@@ -1,0 +1,1 @@
+**Supplementary Figure S9. GSE40279: all metrics vs masking fraction, validation split (row A, used for model selection) and one-shot independent test split (row B).** Lines: seed mean; dots: seeds; dashed grey: legacy control. MSE/MAE axes from zero.

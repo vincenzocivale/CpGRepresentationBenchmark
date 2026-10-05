@@ -1,0 +1,48 @@
+{
+ "name": "S6_tcga_all_metrics",
+ "kind": "figure",
+ "title": "TCGA all metrics x masking fraction",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [
+  {
+   "path": "outputs/regulatory_confirmation_v1/analysis/per_run_metrics.csv",
+   "sha256": "6a34b4e1b993480f727d13ae13ebea87069f23b3da8959d44568db707a4a16ee"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S6_tcga_all_metrics_metrics.csv",
+   "sha256": "fb276f4b14ef3fce25c578733bc59113ddaf3d3af7013eeac9b07b1747d49c4d",
+   "n_rows": 60,
+   "columns": {
+    "arm": "arm",
+    "seed": "seed",
+    "mask_fraction": "masking fraction",
+    "mse": "validation MSE",
+    "mae": "validation MAE",
+    "mas_pcc": "MAS-PCC (patient-level)",
+    "mac_pcc": "MAC-PCC (locus-level)"
+   },
+   "filters": "per_run_metrics.csv all rows (incl. legacy control)"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "per_run_metrics.csv"
+ ],
+ "caption_statistic_definitions": [
+  "mean over 3 seeds; dots = seeds"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S6_tcga_all_metrics.md",
+  "paper/figures/S6_tcga_all_metrics.pdf",
+  "paper/figures/S6_tcga_all_metrics.png",
+  "paper/figures/S6_tcga_all_metrics.svg"
+ ],
+ "generated_utc": "2026-10-05T12:34:58+00:00"
+}

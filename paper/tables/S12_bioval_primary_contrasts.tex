@@ -1,0 +1,24 @@
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lllllllllll}
+\toprule
+comparator & endpoint & stat & ref\_value & comp\_value & delta & ci\_lo & ci\_hi & p & holm\_p\_adjusted & supports\_regulatory \\
+\midrule
+functional\_annotations\_pca & loyfer\_profile & spearman\_pooled\_gt1Mb\_inter\_eqw & -0.0628 & -0.0381 & -0.0247 & -0.0284 & -0.0213 & 0.002 & 0.008 & False \\
+functional\_annotations\_pca & microc\_H1\_intra10kb & auroc\_contact\_vs\_noncontact & 0.5685 & 0.5676 & 0.0008 & -0.0003 & 0.0021 & 0.1598 & 0.1598 & False \\
+functional\_annotations\_pca & fantom5\_membership & auroc\_oof\_bg\_enh5k & 0.833 & 0.8497 & -0.0167 & -0.0201 & -0.013 & 0.002 & 0.008 & False \\
+functional\_annotations\_pca & rt\_consensus & spearman\_oof\_consensus & 0.7031 & 0.718 & -0.0149 & -0.0176 & -0.0119 & 0.002 & 0.008 & False \\
+cpgpt\_large\_locus & loyfer\_profile & spearman\_pooled\_gt1Mb\_inter\_eqw & -0.0628 & 0.1065 & -0.1693 & -0.181 & -0.1578 & 0.002 & 0.008 & False \\
+cpgpt\_large\_locus & microc\_H1\_intra10kb & auroc\_contact\_vs\_noncontact & 0.5685 & 0.5314 & 0.037 & 0.0281 & 0.0473 & 0.002 & 0.008 & True \\
+cpgpt\_large\_locus & fantom5\_membership & auroc\_oof\_bg\_enh5k & 0.833 & 0.7008 & 0.1322 & 0.123 & 0.1411 & 0.002 & 0.008 & True \\
+cpgpt\_large\_locus & rt\_consensus & spearman\_oof\_consensus & 0.7031 & 0.4864 & 0.2167 & 0.1964 & 0.2343 & 0.002 & 0.008 & True \\
+deepcpg\_dna\_locus & loyfer\_profile & spearman\_pooled\_gt1Mb\_inter\_eqw & -0.0628 & 0.1155 & -0.1782 & -0.1929 & -0.1627 & 0.002 & 0.008 & False \\
+deepcpg\_dna\_locus & microc\_H1\_intra10kb & auroc\_contact\_vs\_noncontact & 0.5685 & 0.5025 & 0.066 & 0.0554 & 0.0769 & 0.002 & 0.008 & True \\
+deepcpg\_dna\_locus & fantom5\_membership & auroc\_oof\_bg\_enh5k & 0.833 & 0.6229 & 0.2101 & 0.1976 & 0.2232 & 0.002 & 0.008 & True \\
+deepcpg\_dna\_locus & rt\_consensus & spearman\_oof\_consensus & 0.7031 & 0.3594 & 0.3438 & 0.3076 & 0.3758 & 0.002 & 0.008 & True \\
+\bottomrule
+\end{tabular}
+\caption{Primary biological-validation contrasts (candidate minus comparator), Holm-adjusted p values.}
+\label{tab:s12}
+\end{table}

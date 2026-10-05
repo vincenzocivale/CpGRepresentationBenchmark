@@ -1,0 +1,5 @@
+cohort,comparator,mean_relative_pct,min_pct,max_pct
+TCGA (Phase A validation),cpgpt_large_locus,12.77262479171232,12.68093666403019,12.91312638313387
+GSE40279 (independent test),cpgpt_large_locus,1.82258528412182,1.64778808974222,1.93284645875128
+TCGA (Phase A validation),deepcpg_dna_locus,32.74008152685066,32.70490492657688,32.780941188969884
+GSE40279 (independent test),deepcpg_dna_locus,6.128367533155029,6.02662945640818,6.24514442239619

@@ -1,0 +1,5 @@
+arm,mse,mae,best_epoch,n_epochs,protocol,seed
+regulatory_histone,0.0169252287596464,0.0817857608199119,28,30,family_screen_1seed_batch32_30ep,17
+regulatory_histone_dnase,0.0166801363229751,0.080397255718708,29,30,family_screen_1seed_batch32_30ep,17
+regulatory_histone_tf,0.0167980007827281,0.0810346156358718,28,30,family_screen_1seed_batch32_30ep,17
+regulatory_clean,0.0166334845125675,0.0804018825292587,29,30,family_screen_1seed_batch32_30ep,17

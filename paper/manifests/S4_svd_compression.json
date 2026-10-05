@@ -1,0 +1,77 @@
+{
+ "name": "S4_svd_compression",
+ "kind": "figure",
+ "title": "SVD energy and effective rank",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [
+  {
+   "path": "outputs/regulatory_compression_reports/report.json",
+   "sha256": "c93af19ecb33b063a689f1eaaf23ee0eed2661463c633cd4e27e7810d277a509"
+  },
+  {
+   "path": "outputs/regulatory_compression_reports/report.md",
+   "sha256": "65ef6a8ea8e750886e371652ddafb52688aade1cbaf11accac7b044556b9c577"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S4_svd_compression_summary.csv",
+   "sha256": "f83157e7000178b1e990c720e7555b8b12fa7f503441b4f2c3c03b4e58013bd0",
+   "n_rows": 3,
+   "columns": {
+    "feature_set": "feature set (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "n_features": "n features (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "dim": "dim (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "energy_explained_256": "energy explained 256 (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "variance_explained_256": "variance explained 256 (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "pr_uncentered": "pr uncentered (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "entropy_rank_uncentered": "entropy rank uncentered (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "pr_centered": "pr centered (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "entropy_rank_centered": "entropy rank centered (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "block_energy_histone": "block energy histone (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "block_energy_tf": "block energy tf (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "block_energy_accessibility": "block energy accessibility (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "input_share_histone": "input share histone (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "input_share_tf": "input share tf (compression report.json; global SVD-256, discovery chr1-19 fit)",
+    "input_share_accessibility": "input share accessibility (compression report.json; global SVD-256, discovery chr1-19 fit)"
+   },
+   "filters": "report.json embeddings *__global_svd256__discovery_chr1_19"
+  },
+  {
+   "path": "paper/source_data/S4_svd_compression_cumulative_energy.csv",
+   "sha256": "1e0c207a1d05bb931c3947668d54d0d55c5f46a5dc17ee7c856e630b324fff49",
+   "n_rows": 768,
+   "columns": {
+    "feature_set": "feature set",
+    "component": "SVD component (1-based)",
+    "cumulative_energy": "cumulative energy_per_component / total_energy"
+   },
+   "filters": "report.json energy_per_component"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "report.json: global_svd256 discovery_chr1_19 embeddings"
+ ],
+ "caption_statistic_definitions": [
+  "energy fraction = sum energy_per_component / total_energy",
+  "PR = participation ratio of squared singular values",
+  "descriptive; no inference"
+ ],
+ "qa_checks": [],
+ "notes": [
+  "The compression report does not contain the frozen Histone+DNase (2,492-track) set: only histone, clean and all-experimental global SVD-256 sets are available; Histone+DNase compression statistics would need a new report (not run)."
+ ],
+ "missing_results": [
+  "compression statistics for the frozen regulatory_histone_dnase feature set (not in report.json)"
+ ],
+ "outputs": [
+  "paper/captions/S4_svd_compression.md",
+  "paper/figures/S4_svd_compression.pdf",
+  "paper/figures/S4_svd_compression.png",
+  "paper/figures/S4_svd_compression.svg"
+ ],
+ "generated_utc": "2026-10-05T12:34:55+00:00"
+}

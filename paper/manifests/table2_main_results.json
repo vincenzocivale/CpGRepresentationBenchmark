@@ -1,0 +1,83 @@
+{
+ "name": "table2_main_results",
+ "kind": "table",
+ "title": "Main reconstruction results",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_tables.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {
+  "external-recon-protocol-freeze-v1.2": "1a50b033c3bc1edfd1a12c862c18a592fc707840",
+  "external-recon-test-authorization-v1": "2b79f6071f3a597bbe82f70e7fcf2233b3ce947e"
+ },
+ "source_result_files": [
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/A_v1.2/test/legacy_sensitivity_control_contrast_across_seeds.csv",
+   "sha256": "6619e19937f0ad8ca6170dc5214017d6cac05b4f599600c3f00c7e2daab077bc"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/A_v1.2/test/per_run_metrics.csv",
+   "sha256": "ef9e5dcec4b95fc545c452b12fe91315cb72d329aecf91796dad23aa405f29d0"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/A_v1.2/test/primary_contrast_across_seeds.csv",
+   "sha256": "996b4c99d02cf001ee19376be45dc511a52d5ff8685ea194727922c3bbbe7bff"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/A_v1.2/test/secondary_contrast_across_seeds.csv",
+   "sha256": "a98db26c9cace734418503f4958c32e892e5cd7560bfd2a158e1429bc48c2829"
+  },
+  {
+   "path": "outputs/regulatory_confirmation_v1/analysis/across_seeds_summary.csv",
+   "sha256": "1c5a44df2c440382dc32c214228218340869116494f2e9fe909d84dab80baa69"
+  },
+  {
+   "path": "outputs/regulatory_confirmation_v1/analysis/per_run_metrics.csv",
+   "sha256": "6a34b4e1b993480f727d13ae13ebea87069f23b3da8959d44568db707a4a16ee"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/tables/table2_main_results.csv",
+   "sha256": "616976f30770aec00bff35ed8e3c6baa9d2375a2a6842f6fa02f5d5eacd68378",
+   "n_rows": 8,
+   "columns": {
+    "Cohort": "cohort/split (never averaged together)",
+    "Block": "main comparators vs legacy sensitivity control (separate block; excluded from main claims)",
+    "Representation": "arm",
+    "MSE": "mean \u00b1 sample SD over seeds 17/42/97 at 50% masking",
+    "MAE": "same",
+    "MAS-PCC": "same (patient-level Pearson over masked loci)",
+    "MAC-PCC": "same (locus-level Pearson)",
+    "Rel. \u0394MSE vs candidate (%)": "100*mean over seeds of per-seed paired (arm - candidate)/candidate MSE@0.50 (across_seeds files)"
+   },
+   "filters": ""
+  }
+ ],
+ "filters_and_metrics_used": [
+  "TCGA per_run_metrics mask_fraction=0.5; across_seeds_summary mse@0.5",
+  "A_v1.2/test per_run_metrics mask 0.5; primary/secondary/legacy contrast across_seeds mse@0.5"
+ ],
+ "caption_statistic_definitions": [
+  "mean +- sample SD (ddof=1) over 3 seeds",
+  "relative delta definition as in column description"
+ ],
+ "qa_checks": [
+  {
+   "label": "TCGA candidate MSE@0.5",
+   "expected": 0.014784,
+   "computed": 0.014783917926251833,
+   "tol": 1e-05,
+   "pass": true,
+   "expected_source": "brief"
+  }
+ ],
+ "notes": [
+  "Block option chosen: legacy Functional PCA is a clearly marked separate block ('legacy sensitivity control') within each cohort, so main comparators and the control are never mixed in a single block; legacy row is excluded from main-claim figures."
+ ],
+ "missing_results": [],
+ "outputs": [
+  "paper/tables/table2_main_results.csv",
+  "paper/tables/table2_main_results.tex"
+ ],
+ "generated_utc": "2026-10-05T12:34:50+00:00"
+}

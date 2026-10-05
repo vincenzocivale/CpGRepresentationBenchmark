@@ -1,0 +1,9 @@
+Cohort,Block,Representation,MSE,MAE,MAS-PCC,MAC-PCC,Rel. ΔMSE vs candidate (%)
+TCGA validation (Phase A),main,Histone+DNase (candidate),0.014784 ± 0.000009,0.07492 ± 0.00014,0.94437 ± 0.00005,0.3687 ± 0.0039,ref.
+TCGA validation (Phase A),main,CpGPT-large,0.016672 ± 0.000010,0.08074 ± 0.00024,0.93694 ± 0.00004,0.3198 ± 0.0042,+12.77
+TCGA validation (Phase A),main,DeepCpG-DNA,0.019624 ± 0.000009,0.09025 ± 0.00018,0.92576 ± 0.00003,0.2388 ± 0.0010,+32.74
+TCGA validation (Phase A),legacy sensitivity control,Functional PCA (legacy control),0.014707 ± 0.000011,0.07476 ± 0.00001,0.94465 ± 0.00005,0.3720 ± 0.0014,-0.52
+GSE40279 independent test,main,Histone+DNase (candidate),0.0013135 ± 0.0000013,0.02180 ± 0.00002,0.99544 ± 0.00000,0.2690 ± 0.0037,ref.
+GSE40279 independent test,main,CpGPT-large,0.0013375 ± 0.0000009,0.02201 ± 0.00002,0.99535 ± 0.00000,0.2546 ± 0.0023,+1.82
+GSE40279 independent test,main,DeepCpG-DNA,0.0013940 ± 0.0000013,0.02266 ± 0.00002,0.99520 ± 0.00001,0.2060 ± 0.0015,+6.13
+GSE40279 independent test,legacy sensitivity control,Functional PCA (legacy control),0.0013120 ± 0.0000011,0.02181 ± 0.00004,0.99545 ± 0.00000,0.2693 ± 0.0112,-0.12

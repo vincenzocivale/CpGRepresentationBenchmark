@@ -1,0 +1,93 @@
+{
+ "name": "S12_bioval_complete",
+ "kind": "figure",
+ "title": "Complete biological validation including legacy Functional PCA",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {
+  "bioval-v2-protocol-freeze-v1": "27d8bce1b2ce391cb4ffb0d89eb15660710c2b33"
+ },
+ "source_result_files": [
+  {
+   "path": "outputs/biological_validation_v2/bioval-v2-protocol-freeze-v1/report/summary_contrasts.csv",
+   "sha256": "1ce7b551f36ab4f4ddc88b73f59bf56f1c61a9e8a9c429b1d91d9d355b3f88b3"
+  },
+  {
+   "path": "outputs/biological_validation_v2/bioval-v2-protocol-freeze-v1/report/summary_primary.csv",
+   "sha256": "02be8b1985ede684c73e6c0bb1867bc06d7fbd33e58ceb34fc483b2813930f99"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S12_bioval_complete_primary.csv",
+   "sha256": "db83664904074f8a07f056ff667ab9f4cd2b50353e9c3b9172015235c050fcb2",
+   "n_rows": 16,
+   "columns": {
+    "endpoint": "primary endpoint",
+    "arm": "arm",
+    "value": "point estimate",
+    "ci_lo": "frozen 95% bootstrap CI lower",
+    "ci_hi": "upper"
+   },
+   "filters": "summary_primary.csv all rows"
+  },
+  {
+   "path": "paper/source_data/S12_bioval_complete_primary_contrasts.csv",
+   "sha256": "02c2a604f08ae61b2fb3520476f054874c27622263565f94336344ae24ecd2c2",
+   "n_rows": 12,
+   "columns": {
+    "comparator": "comparator arm (reference = candidate regulatory_histone_dnase_v1)",
+    "endpoint": "endpoint",
+    "stat": "statistic",
+    "ref_value": "candidate value",
+    "comp_value": "comparator value",
+    "delta": "candidate - comparator",
+    "ci_lo": "frozen paired 95% bootstrap CI lower",
+    "ci_hi": "upper",
+    "p": "raw permutation/bootstrap p",
+    "holm_p_adjusted": "Holm-adjusted p over the 12-contrast primary family",
+    "supports_regulatory": "frozen flag: contrast supports the candidate"
+   },
+   "filters": "summary_contrasts.csv stat_class=primary"
+  },
+  {
+   "path": "paper/tables/S12_bioval_primary_contrasts.csv",
+   "sha256": "20f180ff36fddc578dc7781b22eb727e29b4411e481b99365501d82a94355433",
+   "n_rows": 12,
+   "columns": {
+    "comparator": "comparator",
+    "endpoint": "endpoint",
+    "stat": "stat",
+    "ref_value": "ref_value",
+    "comp_value": "comp_value",
+    "delta": "delta",
+    "ci_lo": "ci_lo",
+    "ci_hi": "ci_hi",
+    "p": "p",
+    "holm_p_adjusted": "holm_p_adjusted",
+    "supports_regulatory": "supports_regulatory"
+   },
+   "filters": ""
+  }
+ ],
+ "filters_and_metrics_used": [
+  "summary_primary.csv all arms; summary_contrasts.csv stat_class=primary"
+ ],
+ "caption_statistic_definitions": [
+  "CI frozen paired bootstrap (1000 replicates, seed 17)",
+  "delta = candidate - comparator"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S12_bioval_complete.md",
+  "paper/figures/S12_bioval_complete.pdf",
+  "paper/figures/S12_bioval_complete.png",
+  "paper/figures/S12_bioval_complete.svg",
+  "paper/tables/S12_bioval_primary_contrasts.csv",
+  "paper/tables/S12_bioval_primary_contrasts.tex"
+ ],
+ "generated_utc": "2026-10-05T12:35:07+00:00"
+}

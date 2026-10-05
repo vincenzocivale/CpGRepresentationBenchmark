@@ -1,0 +1,13 @@
+comparator,endpoint,stat,ref_value,comp_value,delta,ci_lo,ci_hi,p,holm_p_adjusted,supports_regulatory
+functional_annotations_pca,loyfer_profile,spearman_pooled_gt1Mb_inter_eqw,-0.0628,-0.0381,-0.0247,-0.0284,-0.0213,0.002,0.008,False
+functional_annotations_pca,microc_H1_intra10kb,auroc_contact_vs_noncontact,0.5685,0.5676,0.0008,-0.0003,0.0021,0.1598,0.1598,False
+functional_annotations_pca,fantom5_membership,auroc_oof_bg_enh5k,0.833,0.8497,-0.0167,-0.0201,-0.013,0.002,0.008,False
+functional_annotations_pca,rt_consensus,spearman_oof_consensus,0.7031,0.718,-0.0149,-0.0176,-0.0119,0.002,0.008,False
+cpgpt_large_locus,loyfer_profile,spearman_pooled_gt1Mb_inter_eqw,-0.0628,0.1065,-0.1693,-0.181,-0.1578,0.002,0.008,False
+cpgpt_large_locus,microc_H1_intra10kb,auroc_contact_vs_noncontact,0.5685,0.5314,0.037,0.0281,0.0473,0.002,0.008,True
+cpgpt_large_locus,fantom5_membership,auroc_oof_bg_enh5k,0.833,0.7008,0.1322,0.123,0.1411,0.002,0.008,True
+cpgpt_large_locus,rt_consensus,spearman_oof_consensus,0.7031,0.4864,0.2167,0.1964,0.2343,0.002,0.008,True
+deepcpg_dna_locus,loyfer_profile,spearman_pooled_gt1Mb_inter_eqw,-0.0628,0.1155,-0.1782,-0.1929,-0.1627,0.002,0.008,False
+deepcpg_dna_locus,microc_H1_intra10kb,auroc_contact_vs_noncontact,0.5685,0.5025,0.066,0.0554,0.0769,0.002,0.008,True
+deepcpg_dna_locus,fantom5_membership,auroc_oof_bg_enh5k,0.833,0.6229,0.2101,0.1976,0.2232,0.002,0.008,True
+deepcpg_dna_locus,rt_consensus,spearman_oof_consensus,0.7031,0.3594,0.3438,0.3076,0.3758,0.002,0.008,True

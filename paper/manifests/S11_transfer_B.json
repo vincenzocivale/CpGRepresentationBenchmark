@@ -1,0 +1,86 @@
+{
+ "name": "S11_transfer_B",
+ "kind": "figure",
+ "title": "TCGA to GSE40279 transfer (validation only)",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {
+  "external-recon-protocol-freeze-v1.2": "1a50b033c3bc1edfd1a12c862c18a592fc707840"
+ },
+ "source_result_files": [
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/B_recalibrated_v1.2/validation/per_run_metrics.csv",
+   "sha256": "99fd2de4f24c31902faa1736c80275b9bf6a095f053e34a2641e54e94b971b77"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/B_recalibrated_v1.2/validation/primary_contrast_per_seed.csv",
+   "sha256": "3711663f35268684d9906e80f26636839d2df5ed99669c94ecaf05166801f00d"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/B_recalibrated_v1.2/validation/secondary_contrast_per_seed.csv",
+   "sha256": "4d76e9b52f2266894b5b1d06bbaf2ecab0e80c09c3f55400aba1c3fdbd9a200b"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/B_strict_v1.2/validation/per_run_metrics.csv",
+   "sha256": "9b21692826d476f1e46a5e764612272bf8c4e3de5133f2b5454ea8d5fa559ec5"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/B_strict_v1.2/validation/primary_contrast_per_seed.csv",
+   "sha256": "801e98e1774a271b8e0f99043963b4e53024f5bd4994b4b3c3c17bd8624811ad"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/B_strict_v1.2/validation/secondary_contrast_per_seed.csv",
+   "sha256": "287cb57980725d45a0e343b6ba2fb69e4d0367da7e23b6847da11cfd5fbc7b6d"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S11_transfer_B_metrics.csv",
+   "sha256": "c81180a692eb00e851e6011437b6269319df8056be4117e7f5bd8887fd87dc1e",
+   "n_rows": 90,
+   "columns": {
+    "variant": "B-strict or B-recalibrated",
+    "arm": "arm",
+    "seed": "seed",
+    "mask_fraction": "masking fraction",
+    "mse": "MSE",
+    "mae": "MAE",
+    "mas_pcc": "MAS-PCC",
+    "mac_pcc": "MAC-PCC"
+   },
+   "filters": "B_*_v1.2/validation/per_run_metrics.csv"
+  },
+  {
+   "path": "paper/source_data/S11_transfer_B_contrasts.csv",
+   "sha256": "6b9252a3609144a0643c32419ceff97404b5ccd62c3cf7c8939695565c340462",
+   "n_rows": 12,
+   "columns": {
+    "variant": "variant",
+    "block": "primary (CpGPT) / secondary (DeepCpG)",
+    "comparator": "comparator",
+    "seed": "seed",
+    "relative_pct": "100*(comparator-candidate)/candidate MSE@0.5",
+    "ci_lo_pct": "paired 95% CI lower",
+    "ci_hi_pct": "upper"
+   },
+   "filters": "validation split; mask 0.5; mse"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "B_strict_v1.2 and B_recalibrated_v1.2 validation per_run_metrics; primary/secondary contrasts per seed at mask 0.5 mse"
+ ],
+ "caption_statistic_definitions": [
+  "paired 95% CI individuals x 1Mb blocks, 2000 replicates"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S11_transfer_B.md",
+  "paper/figures/S11_transfer_B.pdf",
+  "paper/figures/S11_transfer_B.png",
+  "paper/figures/S11_transfer_B.svg"
+ ],
+ "generated_utc": "2026-10-05T12:35:06+00:00"
+}

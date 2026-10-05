@@ -1,0 +1,67 @@
+{
+ "name": "S13_bioval_sensitivities",
+ "kind": "figure",
+ "title": "Frozen biological sensitivities",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {
+  "bioval-v2-protocol-freeze-v1": "27d8bce1b2ce391cb4ffb0d89eb15660710c2b33"
+ },
+ "source_result_files": [
+  {
+   "path": "outputs/biological_validation_v2/bioval-v2-protocol-freeze-v1/sensitivity/SUMMARY.csv",
+   "sha256": "dfb93ea6979823b3ac8da04d29768f4c1cdfb5eff3ccee170634fcb6ae0406da"
+  },
+  {
+   "path": "outputs/biological_validation_v2/bioval-v2-protocol-freeze-v1/sensitivity/SUMMARY.json",
+   "sha256": "f00e605fb0ef371bc05ae751573fea5dfff84b204d0e4b7fd0d86f0bf5b1df52"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S13_bioval_sensitivities_verdicts.csv",
+   "sha256": "87fd97a08ed6b63835b55f10154ebc6c45c3a3a19824a4e4e74298cfff303220",
+   "n_rows": 17,
+   "columns": {
+    "item": "sensitivity item id",
+    "status": "done, or truncated reason it was not run (SUMMARY.csv)",
+    "protocol_status": "protocol status (SUMMARY.csv)",
+    "final_status": "verdict CONFIRMS/CHANGES/INCONCLUSIVE for executed rows; NOT_EXECUTED_REQUIRES_NEW_PREREGISTRATION_OR_ARTIFACTS otherwise",
+    "ordering_identical": "arm ordering identical to primary (executed rows)"
+   },
+   "filters": "sensitivity/SUMMARY.csv all rows"
+  },
+  {
+   "path": "paper/tables/S13_bioval_sensitivities.csv",
+   "sha256": "87fd97a08ed6b63835b55f10154ebc6c45c3a3a19824a4e4e74298cfff303220",
+   "n_rows": 17,
+   "columns": {
+    "item": "item",
+    "status": "status",
+    "protocol_status": "protocol_status",
+    "final_status": "final_status",
+    "ordering_identical": "ordering_identical"
+   },
+   "filters": ""
+  }
+ ],
+ "filters_and_metrics_used": [
+  "sensitivity/SUMMARY.csv"
+ ],
+ "caption_statistic_definitions": [
+  "verdict as computed by the frozen sensitivity runner"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S13_bioval_sensitivities.md",
+  "paper/figures/S13_bioval_sensitivities.pdf",
+  "paper/figures/S13_bioval_sensitivities.png",
+  "paper/figures/S13_bioval_sensitivities.svg",
+  "paper/tables/S13_bioval_sensitivities.csv",
+  "paper/tables/S13_bioval_sensitivities.tex"
+ ],
+ "generated_utc": "2026-10-05T12:35:08+00:00"
+}

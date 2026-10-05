@@ -1,0 +1,56 @@
+{
+ "name": "S9_external_all_metrics",
+ "kind": "figure",
+ "title": "GSE40279 all metrics x masking: validation and test",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {
+  "external-recon-protocol-freeze-v1.2": "1a50b033c3bc1edfd1a12c862c18a592fc707840",
+  "external-recon-test-authorization-v1": "2b79f6071f3a597bbe82f70e7fcf2233b3ce947e"
+ },
+ "source_result_files": [
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/A_v1.2/test/per_run_metrics.csv",
+   "sha256": "ef9e5dcec4b95fc545c452b12fe91315cb72d329aecf91796dad23aa405f29d0"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/A_v1.2/validation/per_run_metrics.csv",
+   "sha256": "1ef20425c9cbc9272f53d7fcd378a92f3d616fae50607410fa5f5092284a198b"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S9_external_all_metrics_metrics.csv",
+   "sha256": "fbe283be38ee9d7a90805db2a7ab1bd4505bef947a3d862db19d7cc627a22fd1",
+   "n_rows": 120,
+   "columns": {
+    "split": "validation or test (separate rows of panels)",
+    "arm": "arm",
+    "seed": "seed",
+    "mask_fraction": "masking fraction",
+    "mse": "MSE",
+    "mae": "MAE",
+    "mas_pcc": "MAS-PCC",
+    "mac_pcc": "MAC-PCC"
+   },
+   "filters": "A_v1.2/{validation,test}/per_run_metrics.csv"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "A_v1.2 validation and test per_run_metrics"
+ ],
+ "caption_statistic_definitions": [
+  "mean over seeds, dots seeds"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S9_external_all_metrics.md",
+  "paper/figures/S9_external_all_metrics.pdf",
+  "paper/figures/S9_external_all_metrics.png",
+  "paper/figures/S9_external_all_metrics.svg"
+ ],
+ "generated_utc": "2026-10-05T12:35:03+00:00"
+}

@@ -1,0 +1,65 @@
+{
+ "name": "S3_h3k4me3",
+ "kind": "figure",
+ "title": "H3K4me3 and histone-mark attribution",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [
+  {
+   "path": "outputs/encode_atlas_v1/focused_contrasts.csv",
+   "sha256": "2b44b0f32eafdac7413ab063f75ccee7649a744765d5f75532bb474f9c1139e5"
+  },
+  {
+   "path": "outputs/encode_atlas_v1/reconstruction_metrics.csv",
+   "sha256": "a10556dd58f6d6f40f77e78cef69635ab688ec2533be38b9f10f551bfa9da1f9"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S3_h3k4me3_contrasts.csv",
+   "sha256": "af6b70959b02701bae114721e40f7bf176a70b342d3235854b27b91c390f89c7",
+   "n_rows": 6,
+   "columns": {
+    "contrast": "focused contrast name",
+    "baseline": "baseline arm",
+    "alternative": "alternative arm",
+    "seed": "seed",
+    "rel_pct": "100*(alternative - baseline)/baseline MSE@50% (paired; negative favours alternative)",
+    "lo": "paired 95% CI lower",
+    "hi": "upper",
+    "n_patients": "patients",
+    "n_blocks": "1 Mb blocks"
+   },
+   "filters": "focused_contrasts.csv contrast in ['h3k4me3_increment', 'histone_sufficiency']"
+  },
+  {
+   "path": "paper/source_data/S3_h3k4me3_mse.csv",
+   "sha256": "7e01409d60e5513e0d958652e97020bb6c4d29b8b4378e383b7293a32b7b4b79",
+   "n_rows": 15,
+   "columns": {
+    "arm": "arm",
+    "seed": "seed",
+    "mse": "MSE@50% masking, confirm stage"
+   },
+   "filters": "reconstruction_metrics.csv confirm/seen/mask_0.50"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "focused_contrasts.csv: ['h3k4me3_increment', 'histone_sufficiency']"
+ ],
+ "caption_statistic_definitions": [
+  "paired 95% CI: patient x 1 Mb block bootstrap, 2000 replicates; per seed; seeds = optimisation replicates"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S3_h3k4me3.md",
+  "paper/figures/S3_h3k4me3.pdf",
+  "paper/figures/S3_h3k4me3.png",
+  "paper/figures/S3_h3k4me3.svg"
+ ],
+ "generated_utc": "2026-10-05T12:34:54+00:00"
+}

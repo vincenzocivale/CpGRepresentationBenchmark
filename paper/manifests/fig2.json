@@ -1,0 +1,145 @@
+{
+ "name": "fig2",
+ "kind": "figure",
+ "title": "TCGA reconstruction (Phase A, frozen validation)",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_fig2.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [
+  {
+   "path": "outputs/regulatory_confirmation_v1/analysis/across_seeds_summary.csv",
+   "sha256": "1c5a44df2c440382dc32c214228218340869116494f2e9fe909d84dab80baa69"
+  },
+  {
+   "path": "outputs/regulatory_confirmation_v1/analysis/paired_contrasts.csv",
+   "sha256": "e3cc91f0f41254c0b95cd651bea7c937514a4d9a1ae5bede1b9b0c9e792416bf"
+  },
+  {
+   "path": "outputs/regulatory_confirmation_v1/analysis/per_run_metrics.csv",
+   "sha256": "6a34b4e1b993480f727d13ae13ebea87069f23b3da8959d44568db707a4a16ee"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/fig2_A.csv",
+   "sha256": "46d5cc549639436af768fbe4f5c515db9aa8671f817643c4245d74cd58299300",
+   "n_rows": 45,
+   "columns": {
+    "arm": "arm id",
+    "seed": "seed",
+    "mask_fraction": "masking fraction",
+    "mse": "validation MSE (TCGA, Phase A, best.pt by val MSE@0.50)"
+   },
+   "filters": "per_run_metrics.csv, main arms, 5 fractions x 3 seeds"
+  },
+  {
+   "path": "paper/source_data/fig2_B.csv",
+   "sha256": "72c0f3012589c84e5bd28aa6269c57be0f1217af89dadf1c56e2ffe1357e8542",
+   "n_rows": 40,
+   "columns": {
+    "comparator": "comparator arm",
+    "mask_fraction": "masking fraction",
+    "seed": "seed; -1 = mean over 3 seeds of the per-seed relative differences (across_seeds_summary.mean_relative)",
+    "relative_pct": "100*(comparator - candidate)/candidate MSE; positive = candidate lower error",
+    "ci_lo_pct": "lower bound paired 95% CI (patient x 1 Mb block bootstrap, 2000 replicates, bootstrap seed = seed)",
+    "ci_hi_pct": "upper bound",
+    "mean_over_seeds_pct": "duplicate of relative_pct on the mean row"
+   },
+   "filters": "paired_contrasts.csv metric=mse, comparator in {cpgpt, deepcpg}; across_seeds_summary.csv metric=mse"
+  },
+  {
+   "path": "paper/source_data/fig2_C.csv",
+   "sha256": "48bf2885a11313deeb97c4d99548f54fb4ff071f936d9075172065397a740aa1",
+   "n_rows": 9,
+   "columns": {
+    "arm": "arm id",
+    "seed": "seed",
+    "mask_fraction": "0.5",
+    "mse": "validation MSE at 50% masking",
+    "mean": "mean over 3 seeds",
+    "sd": "sample SD (ddof=1) over 3 seeds"
+   },
+   "filters": "mask_fraction=0.5"
+  },
+  {
+   "path": "paper/source_data/fig2_D.csv",
+   "sha256": "c2af98bcc46251a29106240d2374b49e0bd1701b1f254467e30ad838e8fc507c",
+   "n_rows": 8,
+   "columns": {
+    "comparator": "comparator arm",
+    "mask_fraction": "masking fraction",
+    "seed": "seed; -1 = mean over 3 seeds of the per-seed relative differences (across_seeds_summary.mean_relative)",
+    "relative_pct": "100*(comparator - candidate)/candidate MSE; positive = candidate lower error",
+    "ci_lo_pct": "lower bound paired 95% CI (patient x 1 Mb block bootstrap, 2000 replicates, bootstrap seed = seed)",
+    "ci_hi_pct": "upper bound",
+    "mean_over_seeds_pct": "duplicate of relative_pct on the mean row"
+   },
+   "filters": "mask_fraction=0.5 rows of panel B table"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "per_run_metrics.csv: arms main x seeds 17/42/97 x fractions 0.15..0.9",
+  "paired_contrasts.csv: metric=mse, reference=regulatory_histone_dnase, comparators cpgpt/deepcpg",
+  "across_seeds_summary.csv: metric=mse"
+ ],
+ "caption_statistic_definitions": [
+  "relative delta=(comparator-candidate)/candidate",
+  "CI: paired patient x 1 Mb block bootstrap, 2000 replicates, per seed",
+  "SD: sample SD of 3 seed values"
+ ],
+ "qa_checks": [
+  {
+   "label": "TCGA MSE@0.50 regulatory_histone_dnase",
+   "expected": 0.014784,
+   "computed": 0.014783917926251833,
+   "tol": 1e-05,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "TCGA MSE@0.50 cpgpt_large_locus",
+   "expected": 0.016672,
+   "computed": 0.0166722058008114,
+   "tol": 1e-05,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "TCGA MSE@0.50 deepcpg_dna_locus",
+   "expected": 0.019624,
+   "computed": 0.019624183575312266,
+   "tol": 1e-05,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "TCGA rel dMSE@0.50 mean cpgpt_large_locus (%)",
+   "expected": 12.8,
+   "computed": 12.77262479171232,
+   "tol": 0.1,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "TCGA rel dMSE@0.50 mean deepcpg_dna_locus (%)",
+   "expected": 32.7,
+   "computed": 32.74008152685066,
+   "tol": 0.1,
+   "pass": true,
+   "expected_source": "brief"
+  }
+ ],
+ "notes": [
+  "rel dMSE@0.50 cpgpt_large_locus: mean of per-seed relatives = 12.773% vs ratio of seed-mean MSEs = 12.773% (both reported by definition; plotted = mean of per-seed relatives)",
+  "rel dMSE@0.50 deepcpg_dna_locus: mean of per-seed relatives = 32.740% vs ratio of seed-mean MSEs = 32.740% (both reported by definition; plotted = mean of per-seed relatives)"
+ ],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/fig2.md",
+  "paper/figures/fig2.pdf",
+  "paper/figures/fig2.png",
+  "paper/figures/fig2.svg"
+ ],
+ "generated_utc": "2026-10-05T12:34:42+00:00"
+}

@@ -1,0 +1,7 @@
+contrast,baseline,alternative,seed,rel_pct,lo,hi,n_patients,n_blocks
+histone_sufficiency,context_only,add/assay/Histone ChIP-seq,17,-19.98537007677828,-20.702424398746082,-19.233997751285578,918,2691
+h3k4me3_increment,context_only,add/target/H3K4me3,17,-12.68651831521057,-13.309083530758375,-12.057436975621938,918,2691
+histone_sufficiency,context_only,add/assay/Histone ChIP-seq,42,-19.82707740200423,-20.545257372272108,-19.07212587439316,918,2691
+h3k4me3_increment,context_only,add/target/H3K4me3,42,-12.79677948684485,-13.434915546386858,-12.169650713264312,918,2691
+histone_sufficiency,context_only,add/assay/Histone ChIP-seq,97,-19.96471204176174,-20.70559419515671,-19.209292592550646,918,2691
+h3k4me3_increment,context_only,add/target/H3K4me3,97,-12.761756025803962,-13.380013784961116,-12.14026145861005,918,2691

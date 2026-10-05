@@ -1,0 +1,9 @@
+arm,group,mse,n_pairs,n_loci
+regulatory_histone,in_fit_chr1_19,0.0170212423862429,893935,348755
+regulatory_histone,out_of_fit_chr20_22,0.0150632631368072,46097,17836
+regulatory_histone_dnase,in_fit_chr1_19,0.0167710858115086,893935,348755
+regulatory_histone_dnase,out_of_fit_chr20_22,0.0149163857075769,46097,17836
+regulatory_histone_tf,in_fit_chr1_19,0.0168916724702142,893935,348755
+regulatory_histone_tf,out_of_fit_chr20_22,0.0149814730899196,46097,17836
+regulatory_clean,in_fit_chr1_19,0.016724269286853,893935,348755
+regulatory_clean,out_of_fit_chr20_22,0.0148729395520123,46097,17836

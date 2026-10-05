@@ -1,0 +1,7 @@
+group,reference,alternative,relative,rel_ci_lo,rel_ci_hi,n_pairs,n_blocks
+in_fit_chr1_19,regulatory_histone,regulatory_histone_dnase,-1.46967283076882,-1.7652421217631002,-1.18523191764486,893935,2561
+out_of_fit_chr20_22,regulatory_histone,regulatory_histone_dnase,-0.9750704673465499,-1.9947154906792002,0.07944422339093,46097,126
+in_fit_chr1_19,regulatory_histone,regulatory_histone_tf,-0.7612247871573,-0.92930311951807,-0.5855387502973199,893935,2561
+out_of_fit_chr20_22,regulatory_histone,regulatory_histone_tf,-0.54297695125191,-1.28683757933667,0.17711212198044,46097,126
+in_fit_chr1_19,regulatory_histone,regulatory_clean,-1.74472046477918,-2.0373045882348397,-1.4503696141617899,893935,2561
+out_of_fit_chr20_22,regulatory_histone,regulatory_clean,-1.26349505692727,-2.4004601373028502,-0.18155868780022,46097,126

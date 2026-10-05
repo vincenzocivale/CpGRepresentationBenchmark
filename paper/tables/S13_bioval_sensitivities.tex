@@ -1,0 +1,29 @@
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lllll}
+\toprule
+item & status & protocol\_status & final\_status & ordering\_identical \\
+\midrule
+loyfer\_mask\_lenient & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+loyfer\_drop\_single\_sample\_groups & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+compartment\_E1\_probe\_H1\_50kb & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+compartment\_E1\_probe\_GM12878\_50kb & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+fantom5\_membership\_N1 & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+fantom5\_membership\_N3 & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+fantom5\_membership\_N10 & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+fantom5\_membership\_N20 & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+fantom5\_activity\_sample\_level & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+fantom5\_activity\_cat\_cell\_lines & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+fantom5\_activity\_cat\_primary\_cells & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+fantom5\_activity\_cat\_tissues & done & RUNNABLE\_FROM\_FROZEN & CONFIRMS & True \\
+fourdn\_K\_per\_bin\_pair & not runnable: needs freeze\_4dn\_pairs with K != 20 (K values not specif & REQUIRES\_NEW\_ARTIFACT & NOT\_EXECUTED\_REQUIRES\_NEW\_PREREGISTRATION\_OR\_ARTIFACTS &  \\
+fantom5\_chromatin\_covariate\_matching & not runnable: needs a new matching (freeze\_fantom5\_matching) with chro & REQUIRES\_NEW\_ARTIFACT & NOT\_EXECUTED\_REQUIRES\_NEW\_PREREGISTRATION\_OR\_ARTIFACTS &  \\
+fourdn\_distance\_only\_covariate\_baseline & not runnable: protocol: 'confronto con baseline di sola distanza/covar & PROTOCOL\_AMBIGUOUS & NOT\_EXECUTED\_REQUIRES\_NEW\_PREREGISTRATION\_OR\_ARTIFACTS &  \\
+rt\_gc\_cpgdensity\_tss\_residualisation & not runnable: covariate table is frozen, but residualisation model/whi & PROTOCOL\_AMBIGUOUS & NOT\_EXECUTED\_REQUIRES\_NEW\_PREREGISTRATION\_OR\_ARTIFACTS &  \\
+rt\_normal\_vs\_tumour\_lines & not runnable: normal/tumour assignment of the 15 UW lines is not froze & PROTOCOL\_AMBIGUOUS & NOT\_EXECUTED\_REQUIRES\_NEW\_PREREGISTRATION\_OR\_ARTIFACTS &  \\
+\bottomrule
+\end{tabular}
+\caption{Frozen biological sensitivity analyses. Executed rows: verdict relative to the frozen primary; the five remaining items were not executed.}
+\label{tab:s13}
+\end{table}

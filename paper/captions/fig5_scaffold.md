@@ -1,0 +1,1 @@
+**Figure 5 (scaffold). Mechanism of the Loyfer long-range methylation-program result.** EXPLORATORY - pending Loyfer audit. Panels (to be populated from the final audit): (A) frozen native cosine; (B) raw Histone+DNase similarity; (C) SVD/native geometry; (D) PC-removal/centering diagnostic; (E) out-of-fold predicted methylation-profile similarity. No numbers are shown.

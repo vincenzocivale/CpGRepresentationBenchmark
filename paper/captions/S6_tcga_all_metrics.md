@@ -1,0 +1,1 @@
+**Supplementary Figure S6. TCGA Phase A validation: all metrics vs masking fraction.** Lines: seed mean; dots: seeds 17/42/97. Dashed grey: legacy Functional PCA sensitivity control. MSE and MAE axes start at zero; correlation panels use a data-range axis.

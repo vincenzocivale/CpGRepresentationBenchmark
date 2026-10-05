@@ -1,0 +1,187 @@
+{
+ "name": "fig3",
+ "kind": "figure",
+ "title": "GSE40279 independent confirmation (one-shot test)",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_fig3.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {
+  "external-recon-protocol-freeze-v1.2": "1a50b033c3bc1edfd1a12c862c18a592fc707840",
+  "external-recon-test-authorization-v1": "2b79f6071f3a597bbe82f70e7fcf2233b3ce947e"
+ },
+ "source_result_files": [
+  {
+   "path": "configs/external/gse40279_v1_freeze_manifest.json",
+   "sha256": "2447a9685da19c59aee59827c969f299ad11fcbce92b4babb7c0d3c4cff1dc0a"
+  },
+  {
+   "path": "configs/external/gse40279_v1_split_manifest.json",
+   "sha256": "4d48bd1b1286e19c434530595d187df23b1f986f9bfb05b7cf9f1b9fa7bbb85a"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/A_v1.2/test/per_run_metrics.csv",
+   "sha256": "ef9e5dcec4b95fc545c452b12fe91315cb72d329aecf91796dad23aa405f29d0"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/A_v1.2/test/primary_contrast_across_seeds.csv",
+   "sha256": "996b4c99d02cf001ee19376be45dc511a52d5ff8685ea194727922c3bbbe7bff"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/A_v1.2/test/primary_contrast_per_seed.csv",
+   "sha256": "9b1cd42562c47554455208aac4802797ed06f8730707e7e16ca8711c6d2ef60a"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/A_v1.2/test/secondary_contrast_across_seeds.csv",
+   "sha256": "a98db26c9cace734418503f4958c32e892e5cd7560bfd2a158e1429bc48c2829"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/analysis/A_v1.2/test/secondary_contrast_per_seed.csv",
+   "sha256": "53df12414054cbd05e624588ab6ac226d21b91a1b3c465977d53849512983106"
+  },
+  {
+   "path": "outputs/regulatory_confirmation_v1/analysis/across_seeds_summary.csv",
+   "sha256": "1c5a44df2c440382dc32c214228218340869116494f2e9fe909d84dab80baa69"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/fig3_A_split.csv",
+   "sha256": "651bc4f69167a3ade0cf7837c990901f213f0f514f551096d62731678ecdc381",
+   "n_rows": 4,
+   "columns": {
+    "split": "split name",
+    "n_individuals": "unique individuals (configs/external/gse40279_v1_split_manifest.json counts)"
+   },
+   "filters": "counts block"
+  },
+  {
+   "path": "paper/source_data/fig3_B.csv",
+   "sha256": "bb28a1493c5b27d208c6733745c979f06f21d1e2b3f7e0d4e8a87620b5b4815a",
+   "n_rows": 45,
+   "columns": {
+    "arm": "arm",
+    "seed": "seed",
+    "mask_fraction": "masking fraction",
+    "mse": "GSE40279 TEST MSE (one-shot, frozen best.pt)",
+    "n_pairs": "evaluated pairs"
+   },
+   "filters": "A_v1.2/test/per_run_metrics.csv, main arms"
+  },
+  {
+   "path": "paper/source_data/fig3_C.csv",
+   "sha256": "fa84c03a1ba429bd3c2594e84a0d205dc0507415790d3f08106b6c8492e08a0b",
+   "n_rows": 8,
+   "columns": {
+    "block": "registered role: primary (CpGPT) / secondary (DeepCpG)",
+    "comparator": "comparator arm",
+    "seed": "seed; -1 = mean over seeds of the per-seed relative differences",
+    "relative_pct": "100*(comparator - candidate)/candidate MSE@0.50, TEST split",
+    "ci_lo_pct": "paired 95% CI lower (patient x 1 Mb block bootstrap, 2000 replicates, 66 test individuals)",
+    "ci_hi_pct": "upper",
+    "ci_includes_zero": "True if CI contains 0",
+    "n_patients": "individuals resampled",
+    "n_blocks": "genomic blocks resampled"
+   },
+   "filters": "mask_fraction=0.5, metric=mse, test split; primary_/secondary_contrast_per_seed.csv, across_seeds"
+  },
+  {
+   "path": "paper/source_data/fig3_D.csv",
+   "sha256": "12865a522e676052fb1473081fdf46e5338ef33b9b312114610bb3f135cc44cc",
+   "n_rows": 4,
+   "columns": {
+    "cohort": "cohort/split",
+    "comparator": "comparator arm",
+    "mean_relative_pct": "100*mean over seeds of (comparator-candidate)/candidate MSE@0.50",
+    "min_pct": "min over seeds",
+    "max_pct": "max over seeds"
+   },
+   "filters": "TCGA: regulatory_confirmation_v1 across_seeds_summary mse@0.5; GSE40279: test contrasts @0.5"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "A_v1.2/test per_run_metrics (main arms); primary_/secondary_contrast_per_seed & across_seeds at mask_fraction=0.5, metric=mse",
+  "TCGA regulatory_confirmation_v1/analysis/across_seeds_summary.csv mse@0.5"
+ ],
+ "caption_statistic_definitions": [
+  "CI: paired 95% bootstrap, individuals x 1 Mb blocks, 2000 replicates",
+  "relative delta=(comparator-candidate)/candidate",
+  "bars in 3D = min/max across seeds"
+ ],
+ "qa_checks": [
+  {
+   "label": "GSE40279 individuals total = 656",
+   "expected": 656.0,
+   "computed": 656.0,
+   "tol": 0.0,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "train=524",
+   "expected": 524.0,
+   "computed": 524.0,
+   "tol": 0.0,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "val=66",
+   "expected": 66.0,
+   "computed": 66.0,
+   "tol": 0.0,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "test=66",
+   "expected": 66.0,
+   "computed": 66.0,
+   "tol": 0.0,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "external test rel dMSE@0.50 CpGPT (%)",
+   "expected": 1.82,
+   "computed": 1.82258528412182,
+   "tol": 0.01,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "external test rel dMSE@0.50 DeepCpG (%)",
+   "expected": 6.13,
+   "computed": 6.128367533155029,
+   "tol": 0.01,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "TCGA CpGPT %",
+   "expected": 12.8,
+   "computed": 12.77262479171232,
+   "tol": 0.1,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "TCGA DeepCpG %",
+   "expected": 32.7,
+   "computed": 32.74008152685066,
+   "tol": 0.1,
+   "pass": true,
+   "expected_source": "brief"
+  }
+ ],
+ "notes": [
+  "1/3 per-seed CIs of the primary (CpGPT) contrast include 0 at 0.50"
+ ],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/fig3.md",
+  "paper/figures/fig3.pdf",
+  "paper/figures/fig3.png",
+  "paper/figures/fig3.svg"
+ ],
+ "generated_utc": "2026-10-05T12:34:45+00:00"
+}

@@ -1,0 +1,4 @@
+endpoint,arm,value,ci_lo,ci_hi,null_reference
+fantom5_membership,regulatory_histone_dnase_v1,0.8330058991738545,0.8255295229269338,0.8395554890855499,0.5
+fantom5_membership,cpgpt_large_locus,0.7008207492687842,0.6929002813729233,0.710700481044102,0.5
+fantom5_membership,deepcpg_dna_locus,0.6228563346379374,0.6107233515681214,0.6347789142122249,0.5

@@ -1,0 +1,189 @@
+{
+ "name": "fig4",
+ "kind": "figure",
+ "title": "Biological characterisation (frozen primary endpoints)",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_fig4.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {
+  "bioval-v2-protocol-freeze-v1": "27d8bce1b2ce391cb4ffb0d89eb15660710c2b33"
+ },
+ "source_result_files": [
+  {
+   "path": "outputs/biological_validation_v2/bioval-v2-protocol-freeze-v1/report/summary_primary.csv",
+   "sha256": "02be8b1985ede684c73e6c0bb1867bc06d7fbd33e58ceb34fc483b2813930f99"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/fig4_A.csv",
+   "sha256": "dcb1d01532f530aa6b868e762ec02734c6faf65a0ed241d6708954472234fc16",
+   "n_rows": 3,
+   "columns": {
+    "endpoint": "frozen primary endpoint id",
+    "arm": "arm id",
+    "value": "point estimate on the full frozen pair/locus set",
+    "ci_lo": "frozen 95% bootstrap CI lower",
+    "ci_hi": "upper",
+    "null_reference": "chance/null value shown as dotted line (AUROC 0.5; Spearman 0)"
+   },
+   "filters": "summary_primary.csv endpoint=microc_H1_intra10kb, 3 main arms (legacy Functional PCA row omitted: Supplement S12)"
+  },
+  {
+   "path": "paper/source_data/fig4_B.csv",
+   "sha256": "e17b1617940f8498a26822398d6c9b2a2c9a05d22f99256784b494193cd36abf",
+   "n_rows": 3,
+   "columns": {
+    "endpoint": "frozen primary endpoint id",
+    "arm": "arm id",
+    "value": "point estimate on the full frozen pair/locus set",
+    "ci_lo": "frozen 95% bootstrap CI lower",
+    "ci_hi": "upper",
+    "null_reference": "chance/null value shown as dotted line (AUROC 0.5; Spearman 0)"
+   },
+   "filters": "summary_primary.csv endpoint=fantom5_membership, 3 main arms (legacy Functional PCA row omitted: Supplement S12)"
+  },
+  {
+   "path": "paper/source_data/fig4_C.csv",
+   "sha256": "10175c5b71d460bc2414f25a28cb48525be925354b033fc9d99cf56f9282fb43",
+   "n_rows": 3,
+   "columns": {
+    "endpoint": "frozen primary endpoint id",
+    "arm": "arm id",
+    "value": "point estimate on the full frozen pair/locus set",
+    "ci_lo": "frozen 95% bootstrap CI lower",
+    "ci_hi": "upper",
+    "null_reference": "chance/null value shown as dotted line (AUROC 0.5; Spearman 0)"
+   },
+   "filters": "summary_primary.csv endpoint=rt_consensus, 3 main arms (legacy Functional PCA row omitted: Supplement S12)"
+  },
+  {
+   "path": "paper/source_data/fig4_D.csv",
+   "sha256": "e86ddac3895a21880e21544b5601180b41bc6c3a676b0ecfdb3c4ce730943d2d",
+   "n_rows": 3,
+   "columns": {
+    "endpoint": "frozen primary endpoint id",
+    "arm": "arm id",
+    "value": "point estimate on the full frozen pair/locus set",
+    "ci_lo": "frozen 95% bootstrap CI lower",
+    "ci_hi": "upper",
+    "null_reference": "chance/null value shown as dotted line (AUROC 0.5; Spearman 0)"
+   },
+   "filters": "summary_primary.csv endpoint=loyfer_profile, 3 main arms (legacy Functional PCA row omitted: Supplement S12)"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "summary_primary.csv: endpoints microc_H1_intra10kb, fantom5_membership, rt_consensus, loyfer_profile; arms regulatory_histone_dnase_v1, cpgpt_large_locus, deepcpg_dna_locus"
+ ],
+ "caption_statistic_definitions": [
+  "CI = frozen 95% bootstrap (paired patient/locus/pair-level bootstrap as registered; 1000 replicates per run_manifest n_bootstrap)",
+  "no multiplicity annotations in figure; Holm-adjusted contrasts in S12"
+ ],
+ "qa_checks": [
+  {
+   "label": "microc_H1_intra10kb regulatory_histone_dnase_v1",
+   "expected": 0.5685,
+   "computed": 0.5684567253539629,
+   "tol": 0.0006,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  },
+  {
+   "label": "microc_H1_intra10kb cpgpt_large_locus",
+   "expected": 0.531,
+   "computed": 0.5314451543713142,
+   "tol": 0.0006,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  },
+  {
+   "label": "microc_H1_intra10kb deepcpg_dna_locus",
+   "expected": 0.503,
+   "computed": 0.5024592047313597,
+   "tol": 0.0006,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  },
+  {
+   "label": "fantom5_membership regulatory_histone_dnase_v1",
+   "expected": 0.833,
+   "computed": 0.8330058991738545,
+   "tol": 0.0006,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  },
+  {
+   "label": "fantom5_membership cpgpt_large_locus",
+   "expected": 0.701,
+   "computed": 0.7008207492687842,
+   "tol": 0.0006,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  },
+  {
+   "label": "fantom5_membership deepcpg_dna_locus",
+   "expected": 0.623,
+   "computed": 0.6228563346379374,
+   "tol": 0.0006,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  },
+  {
+   "label": "rt_consensus regulatory_histone_dnase_v1",
+   "expected": 0.703,
+   "computed": 0.7031356576164252,
+   "tol": 0.0006,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  },
+  {
+   "label": "rt_consensus cpgpt_large_locus",
+   "expected": 0.486,
+   "computed": 0.4863894095995796,
+   "tol": 0.0006,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  },
+  {
+   "label": "rt_consensus deepcpg_dna_locus",
+   "expected": 0.359,
+   "computed": 0.3593548382824478,
+   "tol": 0.0006,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  },
+  {
+   "label": "loyfer_profile regulatory_histone_dnase_v1",
+   "expected": -0.063,
+   "computed": -0.0627924534563434,
+   "tol": 0.0012,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  },
+  {
+   "label": "loyfer_profile cpgpt_large_locus",
+   "expected": 0.107,
+   "computed": 0.1064766427636588,
+   "tol": 0.0012,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  },
+  {
+   "label": "loyfer_profile deepcpg_dna_locus",
+   "expected": 0.116,
+   "computed": 0.1154555687008892,
+   "tol": 0.0012,
+   "pass": true,
+   "expected_source": "brief (rounded)"
+  }
+ ],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/fig4.md",
+  "paper/figures/fig4.pdf",
+  "paper/figures/fig4.png",
+  "paper/figures/fig4.svg"
+ ],
+ "generated_utc": "2026-10-05T12:34:47+00:00"
+}

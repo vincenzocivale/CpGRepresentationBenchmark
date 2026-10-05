@@ -1,0 +1,356 @@
+{
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "n_items": 22,
+ "items": {
+  "S10_external_convergence": {
+   "kind": "figure",
+   "title": "GSE40279 validation MSE vs epoch",
+   "status": "ok",
+   "manifest": "paper/manifests/S10_external_convergence.json",
+   "outputs": {
+    "paper/captions/S10_external_convergence.md": "c3bf71f1f5e467216020df43374e3d223d659b9f3f3c9da65df006aa239146bf",
+    "paper/figures/S10_external_convergence.pdf": "cae5ca2c7e0671c4993da1068d8ecbe98844bb435e6e02e1e483442931f0d842",
+    "paper/figures/S10_external_convergence.png": "c06f28a09bc215c3eb167fadca87a50fbd206e60e0f57b9bba8c121506b63f45",
+    "paper/figures/S10_external_convergence.svg": "9714df35b516342ef1b8566683eead9e0add9c7a41f6af7830a5d1e68060bd2f"
+   },
+   "source_tables": {
+    "paper/source_data/S10_external_convergence_history.csv": "0c27d5937968c64e97cb971a472b0f8ebad21e1494c38be688a5c758101a1d16"
+   }
+  },
+  "S11_transfer_B": {
+   "kind": "figure",
+   "title": "TCGA to GSE40279 transfer (validation only)",
+   "status": "ok",
+   "manifest": "paper/manifests/S11_transfer_B.json",
+   "outputs": {
+    "paper/captions/S11_transfer_B.md": "b4dc518ebe18215a57b8320cc6cb5e0f89d0acaeb32142cd7819f3ace95237c7",
+    "paper/figures/S11_transfer_B.pdf": "4aa6ba9e43228b632a547a7d26ec57daa6eea907bff5ca922879d8010ddfaf75",
+    "paper/figures/S11_transfer_B.png": "5e97291b42b97aaa5b014ea3130dd378dc1f6048a1b7b83379fc841db9e44033",
+    "paper/figures/S11_transfer_B.svg": "d96388593cdf31714b20c877caccca992a344b7f3663fca805d986daeeabd088"
+   },
+   "source_tables": {
+    "paper/source_data/S11_transfer_B_metrics.csv": "c81180a692eb00e851e6011437b6269319df8056be4117e7f5bd8887fd87dc1e",
+    "paper/source_data/S11_transfer_B_contrasts.csv": "6b9252a3609144a0643c32419ceff97404b5ccd62c3cf7c8939695565c340462"
+   }
+  },
+  "S12_bioval_complete": {
+   "kind": "figure",
+   "title": "Complete biological validation including legacy Functional PCA",
+   "status": "ok",
+   "manifest": "paper/manifests/S12_bioval_complete.json",
+   "outputs": {
+    "paper/captions/S12_bioval_complete.md": "97411d28b9d1c7a0e90f083a42927ed7f4c46652f7c3e03fe2a3a0b4ac8ace50",
+    "paper/figures/S12_bioval_complete.pdf": "c44d49f1b45d52b9a2ad8649cce6baa89b2006f3f1772878e57bbe83d3d1457c",
+    "paper/figures/S12_bioval_complete.png": "739c2ffc3eb8c7ec3d119d9bea2917b5c35ec82346c6ebf8060f8d81739a9db3",
+    "paper/figures/S12_bioval_complete.svg": "a30eed37bbec4e1afeb54a713bb6fc931ef5e077900c6731f6c6b7d1a524f855",
+    "paper/tables/S12_bioval_primary_contrasts.csv": "20f180ff36fddc578dc7781b22eb727e29b4411e481b99365501d82a94355433",
+    "paper/tables/S12_bioval_primary_contrasts.tex": "70b472637971e2f5ab47ead1646a358fba89b5fdb80780423ad8d268677ed0db"
+   },
+   "source_tables": {
+    "paper/source_data/S12_bioval_complete_primary.csv": "db83664904074f8a07f056ff667ab9f4cd2b50353e9c3b9172015235c050fcb2",
+    "paper/source_data/S12_bioval_complete_primary_contrasts.csv": "02c2a604f08ae61b2fb3520476f054874c27622263565f94336344ae24ecd2c2",
+    "paper/tables/S12_bioval_primary_contrasts.csv": "20f180ff36fddc578dc7781b22eb727e29b4411e481b99365501d82a94355433"
+   }
+  },
+  "S13_bioval_sensitivities": {
+   "kind": "figure",
+   "title": "Frozen biological sensitivities",
+   "status": "ok",
+   "manifest": "paper/manifests/S13_bioval_sensitivities.json",
+   "outputs": {
+    "paper/captions/S13_bioval_sensitivities.md": "4bcb6ba1d4620d6cdc883c8e60e2ba5cc41a3be50e31edd9de91bddeb3f5dcec",
+    "paper/figures/S13_bioval_sensitivities.pdf": "b0a66f946f4460c89511d342704027d21591ac06397be6cd7ba98d5ab528690f",
+    "paper/figures/S13_bioval_sensitivities.png": "8e22479d1265f9d9c45a32783762b5420c7a846a80c7dee1ec2b9e29badac88a",
+    "paper/figures/S13_bioval_sensitivities.svg": "ec2b37134ea62208ca7fd800dc15d75065ec59b5f080366eddf15329ef7b145e",
+    "paper/tables/S13_bioval_sensitivities.csv": "87fd97a08ed6b63835b55f10154ebc6c45c3a3a19824a4e4e74298cfff303220",
+    "paper/tables/S13_bioval_sensitivities.tex": "0d3a52548e31de039647a744cc186348e4f60a1a26cd180ad2107917d7020b24"
+   },
+   "source_tables": {
+    "paper/source_data/S13_bioval_sensitivities_verdicts.csv": "87fd97a08ed6b63835b55f10154ebc6c45c3a3a19824a4e4e74298cfff303220",
+    "paper/tables/S13_bioval_sensitivities.csv": "87fd97a08ed6b63835b55f10154ebc6c45c3a3a19824a4e4e74298cfff303220"
+   }
+  },
+  "S14_loyfer_exploratory_posthoc": {
+   "kind": "figure",
+   "title": "EXPLORATORY POST-HOC Loyfer diagnostics",
+   "status": "ok",
+   "manifest": "paper/manifests/S14_loyfer_exploratory_posthoc.json",
+   "outputs": {
+    "paper/captions/S14_loyfer_exploratory_posthoc.md": "0ca5aff5ef238309ca8b6465da3a06a90e2c67466dc34b7eb9f7c2719b5e1d8d",
+    "paper/figures/S14_loyfer_exploratory_posthoc.pdf": "b91304b06111b55faf1241d464340c23acaec7ff8bd74d3b38ca663004220103",
+    "paper/figures/S14_loyfer_exploratory_posthoc.png": "147e50ee4bb536ae03af1649cc1e5ad7a1af59a55ac82628a6dfade02c848e4b",
+    "paper/figures/S14_loyfer_exploratory_posthoc.svg": "61dd04bbec10d7edc79ca0583e646be9cf4f57504f574810441204661c17cecd"
+   },
+   "source_tables": {
+    "paper/source_data/S14_loyfer_exploratory_posthoc_geometry.csv": "1d6d05fbc2a659d44bfe9662f0da4f560c49486ee1b553e39d60ba10d52ff451",
+    "paper/source_data/S14_loyfer_exploratory_posthoc_ridge.csv": "90cc6e15b5425293b5b04f213d2e31ae14ec4522d4da8b5dd2e2c142b60c09ac"
+   }
+  },
+  "S1_encode_campaign": {
+   "kind": "figure",
+   "title": "Full ENCODE attribution campaign",
+   "status": "ok",
+   "manifest": "paper/manifests/S1_encode_campaign.json",
+   "outputs": {
+    "paper/captions/S1_encode_campaign.md": "1d341b047f4d970b934afeb9e6bdd1a0a3e26a11583ac6f2929086ad84e80d6f",
+    "paper/figures/S1_encode_campaign.pdf": "83031d275353b7de117b1eee31104dc9da59c5d38871f2730a0077572334afe2",
+    "paper/figures/S1_encode_campaign.png": "554a0c0449aa7ce2a9790d80da4c5f908f1b94eb4f390b828f405567128f76e4",
+    "paper/figures/S1_encode_campaign.svg": "a7971541e4554ffa65c5a4b92fe296e5479b0f7e717093514d292d3daad9dfd1"
+   },
+   "source_tables": {
+    "paper/source_data/S1_encode_campaign_discovery.csv": "d67ce7fc5182287b765a996d18d400eae9a87485f4854e22ae8387a1fde0ac59",
+    "paper/source_data/S1_encode_campaign_confirm.csv": "8296dcfd7bc3235d29a30c74d81fb4b5ffa1ba116bc77bf82eab3b127329fbde"
+   }
+  },
+  "S2_matched_histone": {
+   "kind": "figure",
+   "title": "Matched histone vs non-histone",
+   "status": "ok",
+   "manifest": "paper/manifests/S2_matched_histone.json",
+   "outputs": {
+    "paper/captions/S2_matched_histone.md": "87589e4c0fc532eb4df6d54dd77956a1357c21e2c6431191c325337ed8640b4b",
+    "paper/figures/S2_matched_histone.pdf": "1bb096a446ac2bac4812423a2d15e2a601289769a75216140fca16e5872f2be8",
+    "paper/figures/S2_matched_histone.png": "23d232bbb298ac6071e1d10df94f1907d6223ce4976ff99dd8781db3e952edc0",
+    "paper/figures/S2_matched_histone.svg": "f63ebc85ed918d9005f9b41d8d8fa0271c0a598a02b249371f46a7437b3f8c3b"
+   },
+   "source_tables": {
+    "paper/source_data/S2_matched_histone_contrasts.csv": "449b29c20ab7da705cd8f13b95786d289e5405ddeb0b0cc1b69cbd439fd809a3",
+    "paper/source_data/S2_matched_histone_mse.csv": "516fb935c845f8b20a6e75a49c94bb45a4282d3e3b64542ee1cad5372b612499"
+   }
+  },
+  "S3_h3k4me3": {
+   "kind": "figure",
+   "title": "H3K4me3 and histone-mark attribution",
+   "status": "ok",
+   "manifest": "paper/manifests/S3_h3k4me3.json",
+   "outputs": {
+    "paper/captions/S3_h3k4me3.md": "0432e07455ca01887b8e8fc67158ac5dfd4d529c84dab13255209e9bef9b3dcd",
+    "paper/figures/S3_h3k4me3.pdf": "1b0a34ed590b92dcea60cc2a7f5abfc1561ba1c5258f1841ca729101e32fb507",
+    "paper/figures/S3_h3k4me3.png": "3a2c961994a6b8d4df4f41d9969560558395224431e5d8f383cddbe074f80574",
+    "paper/figures/S3_h3k4me3.svg": "56b41da758f9401b347e347ac65eec6ace65cf1b11c41973f911bb742478894d"
+   },
+   "source_tables": {
+    "paper/source_data/S3_h3k4me3_contrasts.csv": "af6b70959b02701bae114721e40f7bf176a70b342d3235854b27b91c390f89c7",
+    "paper/source_data/S3_h3k4me3_mse.csv": "7e01409d60e5513e0d958652e97020bb6c4d29b8b4378e383b7293a32b7b4b79"
+   }
+  },
+  "S4_svd_compression": {
+   "kind": "figure",
+   "title": "SVD energy and effective rank",
+   "status": "ok",
+   "manifest": "paper/manifests/S4_svd_compression.json",
+   "outputs": {
+    "paper/captions/S4_svd_compression.md": "66220001eafaced9ac88f89bd61045a55ec5e4a3c45ded861c92b1ab30a4da52",
+    "paper/figures/S4_svd_compression.pdf": "2adba91394f45bd7daedd0b36bdde2481a359647b3582c61c7102f28bd88ba1c",
+    "paper/figures/S4_svd_compression.png": "30f0d44307342025658909de406cc355cf0df4c5f2c97ec32224393a4e1697a9",
+    "paper/figures/S4_svd_compression.svg": "07acb4a1a40351701c1c5774cde4582c2eee2f20ec6c47e0a28d8971a79cb1a9"
+   },
+   "source_tables": {
+    "paper/source_data/S4_svd_compression_summary.csv": "f83157e7000178b1e990c720e7555b8b12fa7f503441b4f2c3c03b4e58013bd0",
+    "paper/source_data/S4_svd_compression_cumulative_energy.csv": "1e0c207a1d05bb931c3947668d54d0d55c5f46a5dc17ee7c856e630b324fff49"
+   }
+  },
+  "S5_training_curves": {
+   "kind": "figure",
+   "title": "3-seed family selection training curves",
+   "status": "ok",
+   "manifest": "paper/manifests/S5_training_curves.json",
+   "outputs": {
+    "paper/captions/S5_training_curves.md": "357202739ff6e4cf0e1ec0ad5954a6381bab0822a7d7845853927129cfa70fcb",
+    "paper/figures/S5_training_curves.pdf": "37eb1f786881b05ff37318507579ed2b27ca3d33370ff7b1ecb09a0c6a2aada8",
+    "paper/figures/S5_training_curves.png": "a03ac4c497f2b1c5a13ab05e6eecb7311197b8410447ef63633d9df4acd536ed",
+    "paper/figures/S5_training_curves.svg": "165d25110691ea7dc616a63ce0e402814606fd8744eb8ceb027de7fee373a33d"
+   },
+   "source_tables": {
+    "paper/source_data/S5_training_curves_curves.csv": "867295484b352376473d9279a207c1834729ffc44a0443198b2ae68a849ebf75"
+   }
+  },
+  "S6_tcga_all_metrics": {
+   "kind": "figure",
+   "title": "TCGA all metrics x masking fraction",
+   "status": "ok",
+   "manifest": "paper/manifests/S6_tcga_all_metrics.json",
+   "outputs": {
+    "paper/captions/S6_tcga_all_metrics.md": "044c56443b33af44a5c6a5e7d22cb3e0d14451b5c8bbf0ecd8a0035b8b68b0c8",
+    "paper/figures/S6_tcga_all_metrics.pdf": "3dc42f6909f5d531ccf5ebb39591aba7c47355d13729fd3081cdf9b4378cb981",
+    "paper/figures/S6_tcga_all_metrics.png": "9e85d992a2bc054a1b03ab72bd8e42920abca4487da0da3a4eb0c7bd08ef9591",
+    "paper/figures/S6_tcga_all_metrics.svg": "cb5a0a6e77e12c0d27cbe8102255b67947b75592734f738425071d8fd25bb200"
+   },
+   "source_tables": {
+    "paper/source_data/S6_tcga_all_metrics_metrics.csv": "fb276f4b14ef3fce25c578733bc59113ddaf3d3af7013eeac9b07b1747d49c4d"
+   }
+  },
+  "S7_tcga_paired_deltas": {
+   "kind": "figure",
+   "title": "TCGA per-seed paired deltas, all fractions",
+   "status": "ok",
+   "manifest": "paper/manifests/S7_tcga_paired_deltas.json",
+   "outputs": {
+    "paper/captions/S7_tcga_paired_deltas.md": "85c897e2c98ae3e670c7145e54200e56ab95098e9243b1b1857df5e180c637b2",
+    "paper/figures/S7_tcga_paired_deltas.pdf": "ee6bfa1ddf78c558cfaabaf424bfe0c3f2ff8561f45590e30559d0569a8bcad3",
+    "paper/figures/S7_tcga_paired_deltas.png": "08b4c4b165d58bd2344ccf6a5a5dbe227889022d5d5931967d153763dd62a742",
+    "paper/figures/S7_tcga_paired_deltas.svg": "233b6f9c977282a923f85f71f361c4a8cb88f1041f24d4485dcc18f07536bec6"
+   },
+   "source_tables": {
+    "paper/source_data/S7_tcga_paired_deltas_paired.csv": "d6e7f21647104dae3271da01d3eef22d6142a1d6bb1e79b91a2d1b3556c27af3"
+   }
+  },
+  "S8_chr20_22_robustness": {
+   "kind": "figure",
+   "title": "chr20-22 out-of-fit robustness",
+   "status": "ok",
+   "manifest": "paper/manifests/S8_chr20_22_robustness.json",
+   "outputs": {
+    "paper/captions/S8_chr20_22_robustness.md": "b2c75974506778e5915436aa5c5cf5f481448411a563ca2d0cb5b3407b051b3d",
+    "paper/figures/S8_chr20_22_robustness.pdf": "856233bcfc2d9bd41c554759f04d8813cdb8bff87baaa8a4e6e3208233eb0b09",
+    "paper/figures/S8_chr20_22_robustness.png": "691430064fc3ce6a54c9d75836f5a02df0922acde0ff92601f2391844c5cdcce",
+    "paper/figures/S8_chr20_22_robustness.svg": "8b5930f797e4db736f99086f37fb4faae68a5a50ccf3c7b342a8d5d058e82ccc"
+   },
+   "source_tables": {
+    "paper/source_data/S8_chr20_22_robustness_mse_by_scope.csv": "519e054ede39f66096888832823f5c3ed8e9ee992939833d16bd3a6b84702115",
+    "paper/source_data/S8_chr20_22_robustness_contrasts.csv": "9cb840cb2c76766b1f11fc791a7d71e29f5708ef16f24824a021ff6388d2a3b5"
+   }
+  },
+  "S9_external_all_metrics": {
+   "kind": "figure",
+   "title": "GSE40279 all metrics x masking: validation and test",
+   "status": "ok",
+   "manifest": "paper/manifests/S9_external_all_metrics.json",
+   "outputs": {
+    "paper/captions/S9_external_all_metrics.md": "2b91a5f1c79e198a9cd701334ab7e8b8ac685078af9e746baec4170ccaa1f3b2",
+    "paper/figures/S9_external_all_metrics.pdf": "dce49f6baa3756de785480b2bd7add5edca433dbe482a82e47469d903315f8c8",
+    "paper/figures/S9_external_all_metrics.png": "d4d91a22741ce2c2d55978987fa4e1e39d99452d6a6d08624b28b8ae27db1708",
+    "paper/figures/S9_external_all_metrics.svg": "39160879d8c0ecfa49b5fa5988fee23fa42982ebc037dd24ea8b0f6cb4e43983"
+   },
+   "source_tables": {
+    "paper/source_data/S9_external_all_metrics_metrics.csv": "fbe283be38ee9d7a90805db2a7ab1bd4505bef947a3d862db19d7cc627a22fd1"
+   }
+  },
+  "S_final_loyfer_audit_placeholder": {
+   "kind": "figure",
+   "title": "Loyfer audit (pending)",
+   "status": "PLACEHOLDER",
+   "manifest": "paper/manifests/S_final_loyfer_audit_placeholder.json",
+   "outputs": {
+    "paper/captions/S_final_loyfer_audit_placeholder.md": "3f57d9a5555decfeeac9c869b172b2f670bbb359ef71b2218efad57a41b13ada",
+    "paper/figures/S_final_loyfer_audit_placeholder.pdf": "34b0523e846b9497a24185e81d2098f0f8020d958315dbf9f56561449b6cb6b1",
+    "paper/figures/S_final_loyfer_audit_placeholder.png": "7a812f1e77eba6a8e6e09e421aa7eaafb79a89f3d2dacfeb6c1673bd92cfe958",
+    "paper/figures/S_final_loyfer_audit_placeholder.svg": "c46bc068395b88edc26321d3a618cc7909af03e9e8cb4ad9918292e51a6ef2d8"
+   },
+   "source_tables": {}
+  },
+  "fig1": {
+   "kind": "figure",
+   "title": "Regulatory representation design, family attribution and family selection",
+   "status": "ok",
+   "manifest": "paper/manifests/fig1.json",
+   "outputs": {
+    "paper/captions/fig1.md": "371a7ae9d356c27f9c3a89e6f592aafb0c9eef53cbd8ed9129719b3d0dff3282",
+    "paper/figures/fig1.pdf": "89237ed435472387e69b8693a589725b2f570e8993a7b870ae8b78a9a01475fb",
+    "paper/figures/fig1.png": "3080949e9c42bf18cd4fc7549028e52688d98a5d8e92604520e845e048eb1654",
+    "paper/figures/fig1.svg": "589c582d99c3d15596765c732af99f5c80f72d9b3d700e7eaf641da10bd39c1c"
+   },
+   "source_tables": {
+    "paper/source_data/fig1_A_counts.csv": "f18ecdfb1c01a77c7f7caaa7b6fd13581ea5f8d2514351748c6a5a3b2f689fc7",
+    "paper/source_data/fig1_B.csv": "631b185f3e980db1caee35427e14dfa7f313327154ac9fbef630ab11b0a34c49",
+    "paper/source_data/fig1_C_family_screen.csv": "88c21b4c17844587f2020679052376d34f03b5fb5845b3a972302eb06a117dcc",
+    "paper/source_data/fig1_C_confirmation.csv": "158702f98c5b1370ef5f42b0a7d1c579ee08f29bc807f5be5d715dd7081631b7",
+    "paper/source_data/fig1_D.csv": "63605a3a89db11a8eecbfde8281df2a7d43dac1d06cc69f44ba1207670e81877"
+   }
+  },
+  "fig2": {
+   "kind": "figure",
+   "title": "TCGA reconstruction (Phase A, frozen validation)",
+   "status": "ok",
+   "manifest": "paper/manifests/fig2.json",
+   "outputs": {
+    "paper/captions/fig2.md": "52e4c1420d7c23f7be54cee737bddc2193d6e6a8b38fe4a1c3464414c4ae7045",
+    "paper/figures/fig2.pdf": "dd0b33086f81984ec549cfb065b1dae9b38cffa0766711b96c5db88e8020cd2c",
+    "paper/figures/fig2.png": "dd98272eb9801b39c158546a16bc87778b2f0da7c6c7d44742a8845b8cdabb8d",
+    "paper/figures/fig2.svg": "b1330e8da6e148ce2917c48d4acee22ab25599728decbc5d00e8f7102bd138b2"
+   },
+   "source_tables": {
+    "paper/source_data/fig2_A.csv": "46d5cc549639436af768fbe4f5c515db9aa8671f817643c4245d74cd58299300",
+    "paper/source_data/fig2_B.csv": "72c0f3012589c84e5bd28aa6269c57be0f1217af89dadf1c56e2ffe1357e8542",
+    "paper/source_data/fig2_C.csv": "48bf2885a11313deeb97c4d99548f54fb4ff071f936d9075172065397a740aa1",
+    "paper/source_data/fig2_D.csv": "c2af98bcc46251a29106240d2374b49e0bd1701b1f254467e30ad838e8fc507c"
+   }
+  },
+  "fig3": {
+   "kind": "figure",
+   "title": "GSE40279 independent confirmation (one-shot test)",
+   "status": "ok",
+   "manifest": "paper/manifests/fig3.json",
+   "outputs": {
+    "paper/captions/fig3.md": "a52c432dccbd03b555107836141d25b5dba2c6c047d60e0eed666101ba0fb9cb",
+    "paper/figures/fig3.pdf": "701148b0be12483241a655670f4022b2fe3f4b7ea0259d93420de7bc4a878bfe",
+    "paper/figures/fig3.png": "c6a89620ccf4074e0ecfc153e557fa482ca7269406f7316a82aa438bb0903ee1",
+    "paper/figures/fig3.svg": "01fec6be995262b3b9bbcbf430f6d5844dcb8ad7d8612b616f974e4d7bbbfd23"
+   },
+   "source_tables": {
+    "paper/source_data/fig3_A_split.csv": "651bc4f69167a3ade0cf7837c990901f213f0f514f551096d62731678ecdc381",
+    "paper/source_data/fig3_B.csv": "bb28a1493c5b27d208c6733745c979f06f21d1e2b3f7e0d4e8a87620b5b4815a",
+    "paper/source_data/fig3_C.csv": "fa84c03a1ba429bd3c2594e84a0d205dc0507415790d3f08106b6c8492e08a0b",
+    "paper/source_data/fig3_D.csv": "12865a522e676052fb1473081fdf46e5338ef33b9b312114610bb3f135cc44cc"
+   }
+  },
+  "fig4": {
+   "kind": "figure",
+   "title": "Biological characterisation (frozen primary endpoints)",
+   "status": "ok",
+   "manifest": "paper/manifests/fig4.json",
+   "outputs": {
+    "paper/captions/fig4.md": "24ad3b3b92e3f011b6597c3b23ef4fcfff1713126b0d3af64715f42304c45a54",
+    "paper/figures/fig4.pdf": "aa2d8a436681e41ddd1c9a7d445bc6ca88abcdb3c916f21a8e743b5f60b21089",
+    "paper/figures/fig4.png": "9c1ce576b0f7a7e3b00b5a23b19a9259dd3fb9f04ca1d9492d9621b720657dcc",
+    "paper/figures/fig4.svg": "bbc7aea8c12322e91190c95d9282e620230c46b91af56d34bef13df49acb15df"
+   },
+   "source_tables": {
+    "paper/source_data/fig4_A.csv": "dcb1d01532f530aa6b868e762ec02734c6faf65a0ed241d6708954472234fc16",
+    "paper/source_data/fig4_B.csv": "e17b1617940f8498a26822398d6c9b2a2c9a05d22f99256784b494193cd36abf",
+    "paper/source_data/fig4_C.csv": "10175c5b71d460bc2414f25a28cb48525be925354b033fc9d99cf56f9282fb43",
+    "paper/source_data/fig4_D.csv": "e86ddac3895a21880e21544b5601180b41bc6c3a676b0ecfdb3c4ce730943d2d"
+   }
+  },
+  "fig5_scaffold": {
+   "kind": "figure",
+   "title": "Loyfer mechanism (scaffold, pending audit)",
+   "status": "PLACEHOLDER",
+   "manifest": "paper/manifests/fig5_scaffold.json",
+   "outputs": {
+    "paper/captions/fig5_scaffold.md": "f562f033f01412c70f07e0f05dcde611210747bf27688a60619481903f9cd391",
+    "paper/figures/fig5_scaffold.pdf": "54ea59ae5a6215b461cc17cc6783ca10d3e9778c199f70fa8d28b781b07b2246",
+    "paper/figures/fig5_scaffold.png": "e744835d5750374522fb529d6dde04c094af5d25f223b9182a1b7d43e0a92122",
+    "paper/figures/fig5_scaffold.svg": "88038163845ffee12d29baf4a5c3d08370ac843b6b344c70d6ddf602c524c69d"
+   },
+   "source_tables": {}
+  },
+  "table1_datasets": {
+   "kind": "table",
+   "title": "Datasets and evaluation protocols",
+   "status": "ok",
+   "manifest": "paper/manifests/table1_datasets.json",
+   "outputs": {
+    "paper/tables/table1_datasets.csv": "eab13081414e5ea2d751bf5f96f896fe157b8e339450281fabf308009b80828b",
+    "paper/tables/table1_datasets.tex": "4f8a4fa234a076c25d354ecc444131d1a71d14b8b3f4b36d5fdf45a333fe4f31",
+    "paper/tables/table1_datasets_with_source.csv": "bde3e702925ab4aa876881cc7745b30d0e8eb430099fbb15f0a3c1649fd58b82"
+   },
+   "source_tables": {
+    "paper/tables/table1_datasets.csv": "eab13081414e5ea2d751bf5f96f896fe157b8e339450281fabf308009b80828b"
+   }
+  },
+  "table2_main_results": {
+   "kind": "table",
+   "title": "Main reconstruction results",
+   "status": "ok",
+   "manifest": "paper/manifests/table2_main_results.json",
+   "outputs": {
+    "paper/tables/table2_main_results.csv": "616976f30770aec00bff35ed8e3c6baa9d2375a2a6842f6fa02f5d5eacd68378",
+    "paper/tables/table2_main_results.tex": "35e94c7e8b96c3f5e525c30212c9f6cb7c3d8d229d1349eb04fcbba392568969"
+   },
+   "source_tables": {
+    "paper/tables/table2_main_results.csv": "616976f30770aec00bff35ed8e3c6baa9d2375a2a6842f6fa02f5d5eacd68378"
+   }
+  }
+ }
+}

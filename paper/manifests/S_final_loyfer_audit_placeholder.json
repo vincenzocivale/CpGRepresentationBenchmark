@@ -1,0 +1,25 @@
+{
+ "name": "S_final_loyfer_audit_placeholder",
+ "kind": "figure",
+ "title": "Loyfer audit (pending)",
+ "status": "PLACEHOLDER",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [],
+ "source_data_tables": [],
+ "filters_and_metrics_used": [],
+ "caption_statistic_definitions": [],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [
+  "Loyfer failure audit final outputs"
+ ],
+ "outputs": [
+  "paper/captions/S_final_loyfer_audit_placeholder.md",
+  "paper/figures/S_final_loyfer_audit_placeholder.pdf",
+  "paper/figures/S_final_loyfer_audit_placeholder.png",
+  "paper/figures/S_final_loyfer_audit_placeholder.svg"
+ ],
+ "generated_utc": "2026-10-05T12:35:09+00:00"
+}

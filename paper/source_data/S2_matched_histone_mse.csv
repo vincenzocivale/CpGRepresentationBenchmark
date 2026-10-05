@@ -1,0 +1,10 @@
+arm,seed,mse
+full,17,0.015607938170433
+control/histone_prevalence_matched,17,0.0166361778974533
+full,42,0.0156096685677766
+full,97,0.0156057309359312
+control/histone_prevalence_matched,42,0.0166347175836563
+control/histone_prevalence_matched,97,0.016647906973958
+control/non_histone_prevalence_matched,17,0.0171884652227163
+control/non_histone_prevalence_matched,42,0.017197361215949
+control/non_histone_prevalence_matched,97,0.0171628147363662

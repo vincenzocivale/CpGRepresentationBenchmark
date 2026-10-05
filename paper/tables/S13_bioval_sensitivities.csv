@@ -1,0 +1,18 @@
+item,status,protocol_status,final_status,ordering_identical
+loyfer_mask_lenient,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+loyfer_drop_single_sample_groups,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+compartment_E1_probe_H1_50kb,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+compartment_E1_probe_GM12878_50kb,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+fantom5_membership_N1,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+fantom5_membership_N3,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+fantom5_membership_N10,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+fantom5_membership_N20,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+fantom5_activity_sample_level,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+fantom5_activity_cat_cell_lines,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+fantom5_activity_cat_primary_cells,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+fantom5_activity_cat_tissues,done,RUNNABLE_FROM_FROZEN,CONFIRMS,True
+fourdn_K_per_bin_pair,not runnable: needs freeze_4dn_pairs with K != 20 (K values not specif,REQUIRES_NEW_ARTIFACT,NOT_EXECUTED_REQUIRES_NEW_PREREGISTRATION_OR_ARTIFACTS,
+fantom5_chromatin_covariate_matching,not runnable: needs a new matching (freeze_fantom5_matching) with chro,REQUIRES_NEW_ARTIFACT,NOT_EXECUTED_REQUIRES_NEW_PREREGISTRATION_OR_ARTIFACTS,
+fourdn_distance_only_covariate_baseline,not runnable: protocol: 'confronto con baseline di sola distanza/covar,PROTOCOL_AMBIGUOUS,NOT_EXECUTED_REQUIRES_NEW_PREREGISTRATION_OR_ARTIFACTS,
+rt_gc_cpgdensity_tss_residualisation,"not runnable: covariate table is frozen, but residualisation model/whi",PROTOCOL_AMBIGUOUS,NOT_EXECUTED_REQUIRES_NEW_PREREGISTRATION_OR_ARTIFACTS,
+rt_normal_vs_tumour_lines,not runnable: normal/tumour assignment of the 15 UW lines is not froze,PROTOCOL_AMBIGUOUS,NOT_EXECUTED_REQUIRES_NEW_PREREGISTRATION_OR_ARTIFACTS,

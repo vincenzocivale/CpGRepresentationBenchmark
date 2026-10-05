@@ -1,0 +1,9 @@
+item,value
+histone_chipseq_tracks,1959
+dnase_seq_tracks,533
+total_tracks,2492
+svd_dim,256
+fit_loci_discovery_chr1_19,388599
+loci_in_store,408399
+dense_columns,0
+beta_values_used_0_false,0

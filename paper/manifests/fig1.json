@@ -1,0 +1,212 @@
+{
+ "name": "fig1",
+ "kind": "figure",
+ "title": "Regulatory representation design, family attribution and family selection",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_fig1.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {},
+ "source_result_files": [
+  {
+   "path": "configs/frozen/regulatory_histone_dnase_v1.json",
+   "sha256": "0a6d9c4f2b6f2a05f47669489705e9cad5dd0d17e813f2d9b1383fe959277a70"
+  },
+  {
+   "path": "outputs/encode_atlas_v1/arms.json",
+   "sha256": "739e5a9c924fbaba17a16c9f6ea9bd9b56ed1a5f36ca5272dbab75c95be23985"
+  },
+  {
+   "path": "outputs/encode_atlas_v1/paired_comparisons.csv",
+   "sha256": "11c0f9d9802af1c21ad084418569f3f96d47559fe22695323f1f4a4d0cc0dcf4"
+  },
+  {
+   "path": "outputs/encode_atlas_v1/reconstruction_metrics.csv",
+   "sha256": "a10556dd58f6d6f40f77e78cef69635ab688ec2533be38b9f10f551bfa9da1f9"
+  },
+  {
+   "path": "outputs/regulatory_confirm_v1/analysis/across_seeds_summary.csv",
+   "sha256": "047446cf415d8b373326521880205d156aca1fb1d8c9258129e294fb8db16992"
+  },
+  {
+   "path": "outputs/regulatory_confirm_v1/analysis/paired_contrasts.csv",
+   "sha256": "d0ccb3b2ef308eca72dce35458c96c0e86e76aab9ad7e6f1923cb35d495e18db"
+  },
+  {
+   "path": "outputs/regulatory_confirm_v1/analysis/per_run_metrics.csv",
+   "sha256": "47afe756015a9d34aa4217ebf6807d7d06e063a9447d29172bfea5b882a40178"
+  },
+  {
+   "path": "outputs/regulatory_family_screen_v1/analysis/criterion.csv",
+   "sha256": "8d67caf9ecdb27f117321fb179d11ec1ec3d991a002df1fdd67d4762b960dc4d"
+  },
+  {
+   "path": "outputs/regulatory_family_screen_v1/analysis/per_arm_metrics.csv",
+   "sha256": "d408e7b6ff5d95cda4c7245ba0445537901739dd1d36d57a62d8d659f839ce47"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/fig1_A_counts.csv",
+   "sha256": "f18ecdfb1c01a77c7f7caaa7b6fd13581ea5f8d2514351748c6a5a3b2f689fc7",
+   "n_rows": 8,
+   "columns": {
+    "item": "quantity shown in the schematic",
+    "value": "count read from configs/frozen/regulatory_histone_dnase_v1.json"
+   },
+   "filters": "configs/frozen/regulatory_histone_dnase_v1.json: feature_set.tracks_per_assay, fit_loci.n, embedding.shape"
+  },
+  {
+   "path": "paper/source_data/fig1_B.csv",
+   "sha256": "631b185f3e980db1caee35427e14dfa7f313327154ac9fbef630ab11b0a34c49",
+   "n_rows": 18,
+   "columns": {
+    "arm": "campaign arm id (encode_atlas_v1)",
+    "seed": "optimisation seed",
+    "mse": "MSE at 50% masking on the campaign evaluation patients (reconstruction_metrics.csv, mask_0.50)",
+    "mae": "MAE at 50% masking",
+    "n_pairs": "evaluated (patient, locus) pairs",
+    "relative_delta_mse": "(arm - full)/full paired relative MSE difference (paired_comparisons.csv); NaN for the reference arm 'full'",
+    "rel_ci_lo": "lower bound of paired 95% bootstrap CI (patient x 1 Mb block) of relative_delta_mse",
+    "rel_ci_hi": "upper bound of the same CI",
+    "arm_label": "plot label"
+   },
+   "filters": "stage=confirm, ood=False, pilot=False, view=seen, mask=mask_0.50; paired: arm vs full, same filters"
+  },
+  {
+   "path": "paper/source_data/fig1_C_family_screen.csv",
+   "sha256": "88c21b4c17844587f2020679052376d34f03b5fb5845b3a972302eb06a117dcc",
+   "n_rows": 4,
+   "columns": {
+    "arm": "regulatory family-screen arm",
+    "mse": "validation MSE at 50% masking of the best checkpoint",
+    "mae": "validation MAE",
+    "best_epoch": "0-based best epoch",
+    "n_epochs": "epochs run",
+    "protocol": "protocol tag (1 seed, batch 32, 30 epochs)",
+    "seed": "seed (single)"
+   },
+   "filters": "regulatory_family_screen_v1/analysis/per_arm_metrics.csv, all 4 arms"
+  },
+  {
+   "path": "paper/source_data/fig1_C_confirmation.csv",
+   "sha256": "158702f98c5b1370ef5f42b0a7d1c579ee08f29bc807f5be5d715dd7081631b7",
+   "n_rows": 9,
+   "columns": {
+    "arm": "arm",
+    "seed": "seed",
+    "mse": "validation MSE at 50% masking (best checkpoint)",
+    "mae": "validation MAE",
+    "best_epoch": "0-based best epoch",
+    "n_epochs": "epochs run (80 = fixed budget)",
+    "not_converged": "True if best epoch in last 10 epochs",
+    "protocol": "protocol tag (3 seeds, batch 8, 80 epochs)"
+   },
+   "filters": "regulatory_confirm_v1/analysis/per_run_metrics.csv, arms histone/+DNase/clean (no +TF in confirmation)"
+  },
+  {
+   "path": "paper/source_data/fig1_D.csv",
+   "sha256": "63605a3a89db11a8eecbfde8281df2a7d43dac1d06cc69f44ba1207670e81877",
+   "n_rows": 8,
+   "columns": {
+    "contrast": "paired contrast (reference -> alternative)",
+    "reference": "reference arm",
+    "alternative": "alternative arm",
+    "seed": "optimisation seed; -1 = unweighted mean over the 3 seeds (across_seeds_summary.mean_relative)",
+    "relative_pct": "100*(alternative - reference)/reference of validation MSE@0.5; negative favours the alternative",
+    "ci_lo_pct": "lower bound, paired 95% CI (patient x 1 Mb block bootstrap), percent; NaN for the mean row",
+    "ci_hi_pct": "upper bound",
+    "n_patients": "patients resampled",
+    "n_blocks": "1 Mb genomic blocks resampled",
+    "replicates": "bootstrap replicates",
+    "bootstrap_seed": "bootstrap RNG seed"
+   },
+   "filters": "metric=mse; reference/alternative as listed; seeds 17/42/97; mean row from across_seeds_summary.csv"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "1B: encode_atlas_v1 reconstruction_metrics.csv stage=confirm, ood=False, pilot=False, view=seen, mask_0.50; arms context_only, add/assay/Histone ChIP-seq, drop/assay/Histone ChIP-seq, full, fm/cpgpt_locus_large, fm/deepcpg_dna_locus; paired_comparisons.csv same filters (arm vs full)",
+  "1C: regulatory_family_screen_v1 per_arm_metrics.csv (4 arms); regulatory_confirm_v1 per_run_metrics.csv (3 arms x 3 seeds)",
+  "1D: regulatory_confirm_v1 paired_contrasts.csv metric=mse; across_seeds_summary.csv mean_relative"
+ ],
+ "caption_statistic_definitions": [
+  "MSE: mean squared error on masked methylation values at 50% masking",
+  "relative delta = (alternative-reference)/reference; CI = paired 95% percentile bootstrap resampling patients and 1 Mb genomic blocks, 2000 replicates",
+  "bars = seed means, dots = individual seeds (N=3), no significance stars",
+  "1C protocols are not comparable on a common axis"
+ ],
+ "qa_checks": [
+  {
+   "label": "histone tracks (frozen config vs encode arms.json)",
+   "expected": 1959.0,
+   "computed": 1959.0,
+   "tol": 0.0,
+   "pass": true,
+   "expected_source": "encode_atlas_v1/arms.json"
+  },
+  {
+   "label": "DNase tracks (frozen config vs encode arms.json)",
+   "expected": 533.0,
+   "computed": 533.0,
+   "tol": 0.0,
+   "pass": true,
+   "expected_source": "encode_atlas_v1/arms.json"
+  },
+  {
+   "label": "histone tracks = 1,959",
+   "expected": 1959.0,
+   "computed": 1959.0,
+   "tol": 0.0,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "DNase tracks = 533",
+   "expected": 533.0,
+   "computed": 533.0,
+   "tol": 0.0,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "discovery fit loci chr1-19 = 388,599",
+   "expected": 388599.0,
+   "computed": 388599.0,
+   "tol": 0.0,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "embedding dim = 256",
+   "expected": 256.0,
+   "computed": 256.0,
+   "tol": 0.0,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "Histone->Histone+DNase mean rel dMSE (%)",
+   "expected": -1.75,
+   "computed": -1.74867275278483,
+   "tol": 0.01,
+   "pass": true,
+   "expected_source": "brief"
+  },
+  {
+   "label": "Histone+DNase->Clean mean rel dMSE (%)",
+   "expected": -0.51,
+   "computed": -0.50935780652257,
+   "tol": 0.01,
+   "pass": true,
+   "expected_source": "brief"
+  }
+ ],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/fig1.md",
+  "paper/figures/fig1.pdf",
+  "paper/figures/fig1.png",
+  "paper/figures/fig1.svg"
+ ],
+ "generated_utc": "2026-10-05T12:34:39+00:00"
+}

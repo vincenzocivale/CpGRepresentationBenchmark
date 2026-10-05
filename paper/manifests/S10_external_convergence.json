@@ -1,0 +1,95 @@
+{
+ "name": "S10_external_convergence",
+ "kind": "figure",
+ "title": "GSE40279 validation MSE vs epoch",
+ "status": "ok",
+ "plotting_script": "paper/scripts/make_supp.py",
+ "git_head_commit": "305f538275ff1183dfea66903631d1d817f7fd7d",
+ "frozen_protocol_tags": {
+  "external-recon-protocol-freeze-v1.2": "1a50b033c3bc1edfd1a12c862c18a592fc707840"
+ },
+ "source_result_files": [
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/cpgpt_large_locus/native_frozen/seed_17/20261005T062515Z-cad3dd2a0d/history.json",
+   "sha256": "9cb8f03e33dc8fffb20fca288151e6e56797df19211e4bf277bb806cd93f9487"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/cpgpt_large_locus/native_frozen/seed_42/20261005T062436Z-b4d74acfb1/history.json",
+   "sha256": "4644a8b0f4de5b5a9e11f96ddce8232ee1fc514a12be85de060cbd3f4ac2d0ef"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/cpgpt_large_locus/native_frozen/seed_97/20261005T062502Z-56447d9820/history.json",
+   "sha256": "463734b81de32a6fa54682be86f425912f11e558f30f0629de5efb96db14a55b"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/deepcpg_dna_locus/native_frozen/seed_17/20261005T063711Z-d71c28e22c/history.json",
+   "sha256": "287c30ead8208971ba1bb00cd42ac38994f40f5f8a8a4456c576d8d4901374c3"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/deepcpg_dna_locus/native_frozen/seed_42/20261005T063724Z-ac9815579b/history.json",
+   "sha256": "ff1753708dd218dec94b023b7db3440f341f0b02b8d9f5c3bde328ec4be4d6b1"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/deepcpg_dna_locus/native_frozen/seed_97/20261005T063811Z-afd4f4703d/history.json",
+   "sha256": "13a188372c20177eec8635c124018554c407018f96c3bf23036addae37f845f6"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/functional_annotations_pca/native_frozen/seed_17/20261005T061604Z-c85400566c/history.json",
+   "sha256": "bde7a539f60f08628d377317e83bdde05b8d0c7d28b590580a446e1a9a96ebef"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/functional_annotations_pca/native_frozen/seed_42/20261005T061539Z-674b519a7d/history.json",
+   "sha256": "d5ef4e7d26ba7b07260c5491e19bc57db2906fd04bcca9a96c229d733df66887"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/functional_annotations_pca/native_frozen/seed_97/20261005T061534Z-dfe69f5b16/history.json",
+   "sha256": "be3ac93e23ff52e529b15f096453e772ea95fb299b293d0a75b4fa0f52a219a6"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/regulatory_histone_dnase/native_frozen/seed_17/20261005T060633Z-975b3c3529/history.json",
+   "sha256": "1729a7a3c3b21448b22107c721b2abd7b8b468536ac549e5e780fc78cd8da3f4"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/regulatory_histone_dnase/native_frozen/seed_42/20261005T060633Z-45210e2d07/history.json",
+   "sha256": "d04fd699c4e53918843f77c4f062e30540e95b7956956a23766439e728f63953"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/benchmark/masking/external_gse40279_v1/regulatory_histone_dnase/native_frozen/seed_97/20261005T060633Z-8528f3b556/history.json",
+   "sha256": "1bc1074c97da927575019a267cc083046602bd6987565486f2b54f0765b43310"
+  },
+  {
+   "path": "outputs/external_reconstruction_v1/test_eval_status.json",
+   "sha256": "d9d5f442047013f68150d329ddcd3124434d3a3afa3cfbf12acd9bd31b8c073a"
+  }
+ ],
+ "source_data_tables": [
+  {
+   "path": "paper/source_data/S10_external_convergence_history.csv",
+   "sha256": "0c27d5937968c64e97cb971a472b0f8ebad21e1494c38be688a5c758101a1d16",
+   "n_rows": 1440,
+   "columns": {
+    "arm": "arm",
+    "seed": "seed",
+    "epoch": "epoch (0-based)",
+    "validation_mse": "validation MSE@0.50 per epoch (history.json)"
+   },
+   "filters": "history.json of the 12 frozen external runs (run dirs from test_eval_status.json); only validation_mse column used"
+  }
+ ],
+ "filters_and_metrics_used": [
+  "history.json validation_mse"
+ ],
+ "caption_statistic_definitions": [
+  "no CI"
+ ],
+ "qa_checks": [],
+ "notes": [],
+ "missing_results": [],
+ "outputs": [
+  "paper/captions/S10_external_convergence.md",
+  "paper/figures/S10_external_convergence.pdf",
+  "paper/figures/S10_external_convergence.png",
+  "paper/figures/S10_external_convergence.svg"
+ ],
+ "generated_utc": "2026-10-05T12:35:04+00:00"
+}
