@@ -1,6 +1,7 @@
 """Experiment B (TCGA -> GSE40279 transfer) inference code: priors, frozen weights, layout, refusals (synthetic, CPU, tiny)."""
 from __future__ import annotations
 
+import functools
 import hashlib
 import json
 from pathlib import Path
@@ -196,12 +197,15 @@ def test_evaluation_layout_frozen_weights_and_masks_shared_across_modes(world, t
 
 def test_test_split_refused_without_authorization_and_never_overwrites(world, tmp_path):
     rd = tmp_path / "B_strict/run"
+    draft_repo = tmp_path / "draft_repo"                      # synthetic draft/unauthorized external manifest (not the real repo)
+    (draft_repo / "configs/external").mkdir(parents=True)
+    (draft_repo / G.MANIFEST_REL).write_text(json.dumps({"freeze_state": "draft", "test_set_authorized": False}))
     prior, _ = T.load_tcga_prior(world["repo"], world["entry"], world["ext_ids"])
     _eval(world, "validation", rd, prior)
     with pytest.raises(PermissionError):
         _eval(world, "test", rd, prior)                      # default authorizer = TCGA matrix (draft): locked
     with pytest.raises(PermissionError):
-        _eval(world, "test", rd, prior, authorize=G.authorize_external_test)   # external manifest: draft + unauthorized
+        _eval(world, "test", rd, prior, authorize=functools.partial(G.authorize_external_test, draft_repo))   # draft + unauthorized manifest
     assert not (rd / "evaluation/test").exists()
     with pytest.raises(FileExistsError):
         _eval(world, "validation", rd, prior)                # same split directory is never reused

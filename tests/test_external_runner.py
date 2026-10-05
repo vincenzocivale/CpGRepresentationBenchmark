@@ -1,6 +1,7 @@
 """External confirmation runner, gate failure modes, configs and status (synthetic; no training, no real data read)."""
 from __future__ import annotations
 
+import functools
 import hashlib
 import importlib.util
 import json
@@ -313,8 +314,12 @@ def test_validation_phase_cannot_evaluate_test_or_overwrite(tmp_path):
     before = {p: _sha(p) for p in run.rglob("*") if p.is_file()}
     # unauthorized test request (TCGA hook default) is refused and writes nothing
     tcfg = R.make_test_config(ARMS[0], 17, ROOT, _write_cfg(run, cfg))
+    assert el.authorizer_from_cfg(tcfg) is G.authorize_external_test      # the config names the external gate
+    draft_repo = tmp_path / "draft_repo"                                    # synthetic draft/unauthorized manifest (not the real repo)
+    (draft_repo / "configs/external").mkdir(parents=True)
+    (draft_repo / G.MANIFEST_REL).write_text(json.dumps({"freeze_state": "draft", "test_set_authorized": False}))
     with pytest.raises(PermissionError):
-        el.evaluate_split(run, tcfg, {"seen": "p"}, [0.5], fake, authorize=el.authorizer_from_cfg(tcfg))
+        el.evaluate_split(run, tcfg, {"seen": "p"}, [0.5], fake, authorize=functools.partial(G.authorize_external_test, draft_repo))
     assert not (run / "evaluation/test").exists()
     # even when authorized, test writes only into evaluation/test and the validation tree is bit-identical
     el.evaluate_split(run, tcfg, {"seen": "p"}, [0.5], fake, authorize=lambda: None)
