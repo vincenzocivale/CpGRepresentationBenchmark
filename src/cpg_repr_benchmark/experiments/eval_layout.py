@@ -93,6 +93,18 @@ def authorize_test_split(matrix_path: Path | None = None, repo_root: Path | None
         raise PermissionError(f"GUARD: confirmation audit has {len(fails)} failure(s); the TEST split stays locked")
 
 
+def authorizer_from_cfg(cfg: dict[str, Any]) -> Callable[[], None] | None:
+    """Opt-in: ``evaluation.test_authorization`` names a non-TCGA authorization policy. Absent (default) -> None, i.e. the
+    historical TCGA-matrix `authorize_test_split` stays in force."""
+    name = cfg.get("evaluation", {}).get("test_authorization")
+    if name is None:
+        return None
+    if name == "external_gse40279_v1":
+        from cpg_repr_benchmark.external.gate import authorize_external_test
+        return authorize_external_test
+    raise ValueError(f"unknown evaluation.test_authorization {name!r}")
+
+
 def prepare_split_dir(run_dir: Path, cfg: dict[str, Any], split: str, *, authorize: Callable[[], None] | None = None) -> Path | None:
     """Pre-flight for split_dirs (call BEFORE any evaluation). Returns the split dir, or None for the legacy layout."""
     layout = get_layout(cfg)

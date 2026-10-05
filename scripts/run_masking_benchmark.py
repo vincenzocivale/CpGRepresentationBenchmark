@@ -166,7 +166,9 @@ def _evaluate_views(
         return metrics, outputs
 
     # Layout (legacy | split_dirs), overwrite and test-authorization guards live in experiments/eval_layout.py.
-    results = evaluate_split(run_dir, cfg, {name: v[2] for name, v in views.items()}, fractions, evaluate_fn)
+    from cpg_repr_benchmark.experiments.eval_layout import authorizer_from_cfg
+    results = evaluate_split(run_dir, cfg, {name: v[2] for name, v in views.items()}, fractions, evaluate_fn,
+                             authorize=authorizer_from_cfg(cfg))  # None (default) = TCGA matrix authorization
     return results
 
 
@@ -183,9 +185,9 @@ def main() -> None:
         raise ValueError('evaluation.patient_view must be validation or test')
     from cpg_repr_benchmark.experiments.guards import enforce_patient_view
     enforce_patient_view(cfg)  # no-op unless evaluation.require_patient_view is set
-    from cpg_repr_benchmark.experiments.eval_layout import authorize_test_split, get_layout
+    from cpg_repr_benchmark.experiments.eval_layout import authorize_test_split, authorizer_from_cfg, get_layout
     if get_layout(cfg) == "split_dirs" and cfg['evaluation'].get('patient_view', 'test') == "test":
-        authorize_test_split()  # fail BEFORE any training/reading: split_dirs test needs matrix authorization + green audit
+        (authorizer_from_cfg(cfg) or authorize_test_split)()  # fail BEFORE any training/reading: split_dirs test needs matrix authorization + green audit
     seed = int(cfg["training"]["seed"])
     random.seed(seed)
     np.random.seed(seed)
@@ -380,6 +382,10 @@ def main() -> None:
             mixed_precision=bool(training_cfg.get("mixed_precision", True)),
             output_dir=run_dir,
             early_stopping=training_cfg.get("early_stopping"),
+            # opt-in (defaults = historical behaviour): see training/engine.py
+            save_epoch_checkpoints=bool(training_cfg.get("save_epoch_checkpoints", True)),
+            save_last_checkpoint=bool(training_cfg.get("save_last_checkpoint", True)),
+            record_update_counts=bool(training_cfg.get("record_update_counts", False)),
         )
     else:
         prior = np.load(run_dir / "prior_logit.npy")

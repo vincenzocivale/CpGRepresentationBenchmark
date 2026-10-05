@@ -59,6 +59,9 @@ def train_model(
     mixed_precision: bool,
     output_dir: Path,
     early_stopping: dict | None = None,
+    save_epoch_checkpoints: bool = True,
+    save_last_checkpoint: bool = True,
+    record_update_counts: bool = False,
 ) -> list[dict]:
     """Train with AdamW at constant learning rate (no LR schedule: `epochs` only caps the run length).
 
@@ -66,6 +69,11 @@ def train_model(
     significant improvement before stopping) and `min_delta_rel` (float >= 0; an epoch is a significant improvement
     iff validation MSE < reference * (1 - min_delta_rel), where the reference is the last significant value).
     `best.pt` is still the strict minimum validation MSE, independent of min_delta_rel.
+
+    Opt-in checkpoint/bookkeeping switches (defaults reproduce the historical behaviour exactly):
+    `save_epoch_checkpoints=False` skips the per-epoch `epoch_XXXX.pt`; `save_last_checkpoint=False` skips `last.pt`;
+    `best.pt` is always written, and only on a STRICT validation-MSE improvement (ties keep the earliest epoch).
+    `record_update_counts=True` adds `updates_in_epoch` / `updates_done` (optimizer updates) to every history record.
     """
     patience, min_delta_rel = None, 0.0
     if early_stopping:
@@ -84,6 +92,7 @@ def train_model(
     reference = float("inf")
     stalled = 0
     stopped_epoch = None
+    updates_done = 0
     for epoch in range(epochs):
         if hasattr(train_loader.dataset, "set_epoch"):
             train_loader.dataset.set_epoch(epoch)
@@ -116,6 +125,10 @@ def train_model(
             n_steps += 1
         validation, _ = evaluate_loader(model, validation_loader, device)
         record = {"epoch": epoch, "train_mse": running / max(n_steps, 1), **{f"validation_{k}": v for k, v in validation.items()}}
+        updates_done += n_steps
+        if record_update_counts:
+            record["updates_in_epoch"] = n_steps
+            record["updates_done"] = updates_done
         history.append(record)
         print(json.dumps(record, sort_keys=True), flush=True)
         state = {
@@ -124,8 +137,10 @@ def train_model(
             "epoch": epoch,
             "metrics": record,
         }
-        torch.save(state, checkpoints / "last.pt")
-        torch.save(state, checkpoints / f"epoch_{epoch:04d}.pt")
+        if save_last_checkpoint:
+            torch.save(state, checkpoints / "last.pt")
+        if save_epoch_checkpoints:
+            torch.save(state, checkpoints / f"epoch_{epoch:04d}.pt")
         if float(validation["mse"]) < best:
             best = float(validation["mse"])
             torch.save(state, checkpoints / "best.pt")

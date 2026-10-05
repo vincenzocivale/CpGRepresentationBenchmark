@@ -1,0 +1,79 @@
+experiment:
+  task: masking
+  name: external_confirmation_cpgpt_large_locus__seed17
+  output_root: outputs/external_reconstruction_v1/benchmark
+  locus_split:
+    heldout_fraction: 0.0
+    seed: 17001
+    protocol_path: data/derived/external_gse40279_v1/loci_seen_external_gse40279_v1.npz
+dataset:
+  name: external_gse40279_v1
+  methylation_h5: data/derived/external_gse40279_v1/methylation.h5
+  cpg_registry: data/cpg/registries/array_cpg_map.parquet
+  patient_split:
+  - 0.8
+  - 0.1
+  - 0.1
+  patient_protocol: data/derived/external_gse40279_v1/patients_external_gse40279_v1.npz
+  patient_split_seed: 20260925
+representation:
+  name: cpgpt_large_locus
+  family: methylation_fm
+  track: native_frozen
+  component: locus_only
+  source: 'regulatory confirmation matrix (main): CpGPT (large) DNA-sequence-encoder
+    projection per CpG, no positional encoding; scripts/cpgpt/README.md'
+  mode: precomputed
+  store_h5: data/cache/representations/cpgpt_locus_large.h5
+  provenance:
+    patient_specific: false
+    supervision: none at extraction; encoder pretrained on methylation (external,
+      unverifiable locally)
+    role: main
+    locus_fit_scope: external_pretrained
+    dim: 512
+    sha256: c08138cd83e08f5015521c2a5d42b88e1834f0670c84906590d9730223d7b71e
+model:
+  locus_latent_dim: 256
+  token_dim: 256
+  patient_dim: 256
+  hidden_dim: 512
+training:
+  seed: 17
+  device: cuda
+  epochs: 120
+  batch_size: 8
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  mixed_precision: true
+  num_workers: 8
+  panel_size: 2048
+  mask_fractions:
+  - 0.15
+  - 0.3
+  - 0.5
+  - 0.7
+  - 0.9
+  beta_epsilon: 0.0001
+  early_stopping: false
+  save_epoch_checkpoints: false
+  save_last_checkpoint: false
+  record_update_counts: true
+evaluation:
+  panel_size: 2048
+  mask_fractions:
+  - 0.15
+  - 0.3
+  - 0.5
+  - 0.7
+  - 0.9
+  selection_mask_fraction: 0.5
+  batch_size: 8
+  num_workers: 0
+  save_predictions: true
+  mask_seed: 17001
+  patient_view: validation
+  panel_repeats: 1
+  require_patient_view: validation
+  output_layout: split_dirs
+  allow_overwrite_split_dir: false
