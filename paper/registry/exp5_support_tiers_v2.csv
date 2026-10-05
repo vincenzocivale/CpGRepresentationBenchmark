@@ -1,0 +1,17 @@
+set,matched_pos_base,matched_pos_probe,tier_base,tier_probe,support_tier,tier_consistent_across_variants
+ewas_atlas_colorectal_cancer,2000.0,2000.0,main-quality,main-quality,main-quality,True
+ewas_atlas_ovarian_cancer,28.0,27.0,insufficient,insufficient,insufficient,True
+ewas_atlas_prostate_cancer,2000.0,2000.0,main-quality,main-quality,main-quality,True
+ewas_catalog_age,2000.0,1998.0,main-quality,main-quality,main-quality,True
+ewas_catalog_bmi,2000.0,2000.0,main-quality,main-quality,main-quality,True
+ewas_catalog_breast_cancer,502.0,479.0,main-quality,main-quality,main-quality,True
+ewas_catalog_coronary_heart_disease,49.0,45.0,insufficient,insufficient,insufficient,True
+ewas_catalog_lung_cancer,241.0,235.0,main-quality,main-quality,main-quality,True
+ewas_catalog_rheumatoid_arthritis,238.0,216.0,main-quality,main-quality,main-quality,True
+ewas_catalog_schizophrenia,28.0,24.0,insufficient,insufficient,insufficient,True
+ewas_catalog_sle,139.0,128.0,exploratory,exploratory,exploratory,True
+ewas_catalog_smoking,2000.0,2000.0,main-quality,main-quality,main-quality,True
+ewas_catalog_type2_diabetes,70.0,67.0,insufficient,insufficient,insufficient,True
+hannum_clock,64.0,62.0,insufficient,insufficient,insufficient,True
+horvath_clock,344.0,336.0,main-quality,main-quality,main-quality,True
+phenoage_clock,498.0,488.0,main-quality,main-quality,main-quality,True
