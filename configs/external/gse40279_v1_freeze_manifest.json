@@ -148,7 +148,7 @@
     "split_csv": "a747aa02d990e4d54a08aa3e604067fb5a224a135213ef7dd692bc60067a2af4",
     "split_manifest": "4d48bd1b1286e19c434530595d187df23b1f986f9bfb05b7cf9f1b9fa7bbb85a"
   },
-  "freeze_state": "draft",
+  "freeze_state": "final",
   "legacy_sensitivity_control": {
     "arms": [
       "functional_annotations_pca"
@@ -279,6 +279,25 @@
     "updates": 110160,
     "validation_points": 1670
   },
+  "test_authorization": {
+    "authorized_at": "2026-10-05T10:23:26+02:00",
+    "authorized_by": "user instruction (conversation, 2026-10-05): promote final + authorized after B-validation and a clean pre-test audit",
+    "one_shot": true,
+    "precondition_audit": {
+      "A_snapshot_preB_vs_postB": "IDENTICAL",
+      "evaluation_test_dir_exists": false,
+      "experiment_B_validation_done": true,
+      "fail": 0,
+      "pending": [
+        "tag external-recon-test-authorization-v1 (created by this commit)"
+      ],
+      "primary_biological_fingerprint": "38b9da12700a8fc83dc08f5a01aaa76b61f0d5097bffe395d8eb5225f1f02094",
+      "report": "outputs/external_reconstruction_v1/audit/pretest_audit_postB.json"
+    },
+    "protocol_version": "v1.2",
+    "tag": "external-recon-test-authorization-v1",
+    "test_read_before_this_commit": false
+  },
   "test_one_shot": true,
   "test_plan": {
     "authorization_tag": "external-recon-test-authorization-v1",
@@ -313,6 +332,6 @@
     ],
     "split": "test"
   },
-  "test_set_authorized": false,
+  "test_set_authorized": true,
   "universe_size": 408017
 }
