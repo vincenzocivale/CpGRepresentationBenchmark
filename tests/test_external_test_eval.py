@@ -187,9 +187,13 @@ def test_refusals_leave_no_test_dir_and_no_lock(world):
     assert not list((repo / G.OUTPUT_ROOT_REL).rglob("test")) and not (repo / TE.STARTED_LOCK).exists()
 
 
-def test_default_authorizer_is_the_real_external_gate_and_is_locked_while_draft(monkeypatch):
+def test_default_authorizer_is_the_real_external_gate_and_is_locked_while_draft(monkeypatch, tmp_path):
+    # synthetic draft/unauthorized manifest in a tmp repo: the default authorizer must refuse (state-independent of the real repo)
+    draft_repo = tmp_path / "draft_repo"
+    (draft_repo / "configs/external").mkdir(parents=True)
+    (draft_repo / G.MANIFEST_REL).write_text(json.dumps({"freeze_state": "draft", "test_set_authorized": False}))
     with pytest.raises(PermissionError):
-        G.authorize_external_test(ROOT)
+        G.authorize_external_test(draft_repo)
     spec = importlib.util.spec_from_file_location("_run_ext2", ROOT / "scripts/run_external_confirmation.py")
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
@@ -202,10 +206,13 @@ def test_default_authorizer_is_the_real_external_gate_and_is_locked_while_draft(
     assert calls["include_legacy"] is False and calls["confirm_one_shot"] is False
 
 
-def test_real_test_eval_refused_while_draft(monkeypatch):
+def test_real_test_eval_refused_while_draft(monkeypatch, tmp_path):
+    # tmp repo (no evaluation/test anywhere): a failing gate (draft) refuses and creates nothing
+    repo = tmp_path / "draft_repo"
+    (repo / G.OUTPUT_ROOT_REL).mkdir(parents=True)
     checks = [G.Check("test_authorized_and_final", False, "draft")]
-    assert TE.evaluate_test_all(ROOT, gate_checks=checks, confirm_one_shot=True, out=lambda *_: None) == 2
-    assert not list((ROOT / G.OUTPUT_ROOT_REL).rglob("test"))
+    assert TE.evaluate_test_all(repo, gate_checks=checks, confirm_one_shot=True, out=lambda *_: None) == 2
+    assert not list((repo / G.OUTPUT_ROOT_REL).rglob("test")) and not (repo / TE.STARTED_LOCK).exists()
 
 
 # ------------------------------------------------------------------ rehearsal (same function, validation split, scratch dir)
@@ -310,8 +317,10 @@ def test_test_phase_frozen_check_excludes_manifest_but_not_other_frozen_files(tm
     assert G.FROZEN_TRACKED_TEST_PHASE and any(isinstance(x, tuple) for x in G.FROZEN_TRACKED_TEST_PHASE)
 
 
-def test_test_gate_requires_authorization_tag_checks_in_real_repo_while_draft():
-    checks = G.run_gate(ROOT, split="test", scope="A", heavy=False)
+def test_test_gate_requires_authorization_tag_checks_in_real_repo_while_draft(tmp_path):
+    # synthetic git repo with a draft/unauthorized manifest and no authorization tag (state-independent of the real repo)
+    repo, m, _ = _auth_repo(tmp_path)
+    checks = G.run_gate(repo, split="test", scope="A", heavy=False, manifest_path=m, verify_fn=lambda *a: [], required=())
     failed = {c.name for c in checks if not c.ok}
     assert "test_authorized_and_final" in failed
     assert "authorization_tag_present" in failed or "authorization_tag_ancestor_of_HEAD" in failed

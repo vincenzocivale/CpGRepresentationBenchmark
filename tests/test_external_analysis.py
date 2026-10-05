@@ -175,7 +175,7 @@ def test_reading_rule():
     assert "CI above 0" in A.reading(0.1, 0.3, 0.2) and "CI below 0" in A.reading(-0.3, -0.1, -0.2) and A.reading(-0.1, 0.1, 0.0) == "CI includes 0"
 
 
-def test_test_split_refused_unless_authorized_and_final():
+def test_test_split_refused_unless_authorized_and_final(tmp_path, monkeypatch):
     draft = {"freeze_state": "draft", "test_set_authorized": False}
     A.check_split_allowed(draft, "validation")
     with pytest.raises(PermissionError):
@@ -184,7 +184,12 @@ def test_test_split_refused_unless_authorized_and_final():
         A.check_split_allowed({"freeze_state": "draft", "test_set_authorized": True}, "test")
     with pytest.raises(PermissionError):
         A.check_split_allowed({"freeze_state": "final", "test_set_authorized": False}, "test")
-    assert A.main(["--split", "test"]) == 2           # real manifest: locked
+    # main() on a synthetic repo whose manifest is draft/unauthorized: must refuse (exit 2) before touching anything
+    mp = tmp_path / "configs/external/gse40279_v1_freeze_manifest.json"
+    mp.parent.mkdir(parents=True)
+    mp.write_text(json.dumps(draft))
+    monkeypatch.setattr(A, "ROOT", tmp_path)
+    assert A.main(["--split", "test"]) == 2
 
 
 def test_load_run_refuses_wrong_split(tmp_path):

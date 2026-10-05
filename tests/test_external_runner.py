@@ -99,12 +99,16 @@ def test_cli_run_test_refused_exit_2():
     assert mod.main(["run", "--split", "test"]) == 2
 
 
-def test_real_gate_refuses_test_while_unauthorized():
-    checks = G.run_gate(ROOT, split="test", scope="A", git=False, heavy=False)
+def test_real_gate_refuses_test_while_unauthorized(tmp_path):
+    # synthetic tmp repo whose manifest is draft / unauthorized (independent of the real repo's current freeze state)
+    repo = tmp_path / "draft_repo"
+    (repo / "configs/external").mkdir(parents=True)
+    (repo / G.MANIFEST_REL).write_text(json.dumps({"freeze_state": "draft", "test_set_authorized": False}))
+    checks = G.run_gate(repo, split="test", scope="A", git=False, heavy=False, verify_fn=lambda *a: [])
     failed = {c.name for c in checks if not c.ok}
     assert "test_authorized_and_final" in failed
     with pytest.raises(PermissionError):
-        G.authorize_external_test(ROOT)
+        G.authorize_external_test(repo)
 
 
 # ------------------------------------------------------------------ gate failure modes (synthetic inputs)
