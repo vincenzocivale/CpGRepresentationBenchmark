@@ -1,0 +1,40 @@
+check_id,scope,item,expected,observed,passed,source_file
+R01,regression,verdict PASS (Amendment 2),PASS,PASS,True,outputs/exp5_candidate_completion/regression/VERDICT.json
+R02,regression,cells / failed,18 / 0,18 / 0,True,
+R03,regression,max |dAUROC| <= 5e-4,<=0.0005,0.000244140625,True,
+R04,regression,min Spearman >= 0.9999,>=0.9999,0.9999865950956481,True,
+R05,regression,max |dscore| (informative only),info,0.0021012425422668457,True,
+R06,regression,cells with pairs_folds_identical,18,18,True,outputs/exp5_candidate_completion/regression/regression_cells.csv
+R07,regression,max |dAUROC| recomputed from regression_cells.csv,0.000244141,0.000244141,True,
+R08,fold_identity,shim reproduces stored folds: cells / mismatches / rows,3120 / 0 / 5785200,3120 / 0 / 5785200,True,outputs/exp5_candidate_completion/regression/shim_vs_stored_folds.txt
+R09,fold_identity,run_manifest stored_fold_cells_mismatching_shim,0,0,True,outputs/exp5_candidate_completion/run_001/run_manifest.json
+R10,run_manifest,git_head recorded,3530077a55fe06ba1a1ade570bf53ec227e6e5a6,3530077a55fe06ba1a1ade570bf53ec227e6e5a6,True,outputs/exp5_candidate_completion/run_001/run_manifest.json
+R11,run_manifest,regression_verdict in manifest,PASS,PASS,True,
+R12,run_manifest,store sha256 == pins,fa3a816338ce2c2ce5669b4be6f5334a44470e2b149395901168dbe673a9fe1e,fa3a816338ce2c2ce5669b4be6f5334a44470e2b149395901168dbe673a9fe1e,True,
+R13,run_manifest,frozen candidate manifest sha256 == pins,0a6d9c4f2b6f2a05f47669489705e9cad5dd0d17e813f2d9b1383fe959277a70,0a6d9c4f2b6f2a05f47669489705e9cad5dd0d17e813f2d9b1383fe959277a70,True,
+R14,run_manifest,"no ABORT_pairs_or_folds_differ.json in run dir (run asserts identical cpg_idx/pair_id/y_true/fold/chromosome vs every stored comparator, every cell)",absent,absent,True,
+R15,run_manifest,"seeds 17001..17020, B","20, 10000","20, 10000",True,
+R20,stored_exp5,outputs/encode_atlas_v1/followup/exp5/evaluable_sets.csv sha256 == exp5_pins.json,7c2504ba104cdb1a085ca38978b2085f85b4a58a367c3382ea946cd7decc5350,7c2504ba104cdb1a085ca38978b2085f85b4a58a367c3382ea946cd7decc5350,True,outputs/encode_atlas_v1/followup/exp5/evaluable_sets.csv
+R21,stored_exp5,outputs/encode_atlas_v1/followup/exp5/evaluable_sets.csv snapshot before == after run (manifest),7c2504ba104cdb1a085ca38978b2085f85b4a58a367c3382ea946cd7decc5350,7c2504ba104cdb1a085ca38978b2085f85b4a58a367c3382ea946cd7decc5350,True,
+R20,stored_exp5,outputs/encode_atlas_v1/followup/exp5/matching_summary_per_seed.csv sha256 == exp5_pins.json,a64c5b3bb54bf880b59c5bd20d02805527732b6504f4faf3d457f34fb7ccb33b,a64c5b3bb54bf880b59c5bd20d02805527732b6504f4faf3d457f34fb7ccb33b,True,outputs/encode_atlas_v1/followup/exp5/matching_summary_per_seed.csv
+R21,stored_exp5,outputs/encode_atlas_v1/followup/exp5/matching_summary_per_seed.csv snapshot before == after run (manifest),a64c5b3bb54bf880b59c5bd20d02805527732b6504f4faf3d457f34fb7ccb33b,a64c5b3bb54bf880b59c5bd20d02805527732b6504f4faf3d457f34fb7ccb33b,True,
+R20,stored_exp5,outputs/encode_atlas_v1/followup/exp5/oof_predictions.parquet sha256 == exp5_pins.json,ba9ee74b1a49944a377a1494ecaaa6430404162fbed5d0a10f7edc8a5806cf81,ba9ee74b1a49944a377a1494ecaaa6430404162fbed5d0a10f7edc8a5806cf81,True,outputs/encode_atlas_v1/followup/exp5/oof_predictions.parquet
+R21,stored_exp5,outputs/encode_atlas_v1/followup/exp5/oof_predictions.parquet snapshot before == after run (manifest),ba9ee74b1a49944a377a1494ecaaa6430404162fbed5d0a10f7edc8a5806cf81,ba9ee74b1a49944a377a1494ecaaa6430404162fbed5d0a10f7edc8a5806cf81,True,
+R20,stored_exp5,outputs/encode_atlas_v1/followup/exp5/probe_type_annotation.parquet sha256 == exp5_pins.json,f26a3338524ce96e1d40b08c66c042be9d3fa7d3eed5b32830919c9e37207d96,f26a3338524ce96e1d40b08c66c042be9d3fa7d3eed5b32830919c9e37207d96,True,outputs/encode_atlas_v1/followup/exp5/probe_type_annotation.parquet
+R21,stored_exp5,outputs/encode_atlas_v1/followup/exp5/probe_type_annotation.parquet snapshot before == after run (manifest),f26a3338524ce96e1d40b08c66c042be9d3fa7d3eed5b32830919c9e37207d96,f26a3338524ce96e1d40b08c66c042be9d3fa7d3eed5b32830919c9e37207d96,True,
+R20,stored_exp5,outputs/encode_atlas_v1/followup/exp5/probe_type_balance.csv sha256 == exp5_pins.json,d4484a0f69b902f9055e1f6229dbb5dab4f7ed4eeb87234dcaf0020fba68ef8b,d4484a0f69b902f9055e1f6229dbb5dab4f7ed4eeb87234dcaf0020fba68ef8b,True,outputs/encode_atlas_v1/followup/exp5/probe_type_balance.csv
+R21,stored_exp5,outputs/encode_atlas_v1/followup/exp5/probe_type_balance.csv snapshot before == after run (manifest),d4484a0f69b902f9055e1f6229dbb5dab4f7ed4eeb87234dcaf0020fba68ef8b,d4484a0f69b902f9055e1f6229dbb5dab4f7ed4eeb87234dcaf0020fba68ef8b,True,
+R20,stored_exp5,outputs/encode_atlas_v1/followup/exp5/protocol.json sha256 == exp5_pins.json,201e01c3b94e40ff65f2da8966493c5a61e0c9be0fa0abd4c989d4f7dab9aae1,201e01c3b94e40ff65f2da8966493c5a61e0c9be0fa0abd4c989d4f7dab9aae1,True,outputs/encode_atlas_v1/followup/exp5/protocol.json
+R21,stored_exp5,outputs/encode_atlas_v1/followup/exp5/protocol.json snapshot before == after run (manifest),201e01c3b94e40ff65f2da8966493c5a61e0c9be0fa0abd4c989d4f7dab9aae1,201e01c3b94e40ff65f2da8966493c5a61e0c9be0fa0abd4c989d4f7dab9aae1,True,
+R20,stored_exp5,outputs/encode_atlas_v1/followup/exp5/summary_auc_delta.csv sha256 == exp5_pins.json,ec213c25e26888c93578976f219428e27e14e75c2ab0e7c1ed00bfbee23e5662,ec213c25e26888c93578976f219428e27e14e75c2ab0e7c1ed00bfbee23e5662,True,outputs/encode_atlas_v1/followup/exp5/summary_auc_delta.csv
+R21,stored_exp5,outputs/encode_atlas_v1/followup/exp5/summary_auc_delta.csv snapshot before == after run (manifest),ec213c25e26888c93578976f219428e27e14e75c2ab0e7c1ed00bfbee23e5662,ec213c25e26888c93578976f219428e27e14e75c2ab0e7c1ed00bfbee23e5662,True,
+S01,summary,sets x variants x kinds,13 x 2,13 x 2,True,outputs/exp5_candidate_completion/run_001/summary_candidate_completion.csv
+S02,summary,skipped sets (no matched support),"ovarian,CHD,schizophrenia","ewas_atlas_ovarian_cancer,ewas_catalog_coronary_heart_disease,ewas_catalog_schizophrenia",True,
+S03,summary,status label on every row,"discovery-campaign completion (exp5 protocol, not preregistered main evidence)",1,True,
+S04,comparators,"comparator AUROC in run summary vs stored exp5 summary: rows, max |diff| (spec: float32 re-derivation <=~1e-4)","78 rows, <1e-3","78 rows, 3.36e-05",True,outputs/encode_atlas_v1/followup/exp5/summary_auc_delta.csv
+S05,comparators,comparator AUROC CI in run summary vs stored: max |diff|,<2e-3,4.13e-04,True,
+S06,comparators,"comparator concordance in run summary vs registry v2 (derived from stored OOF): rows, max |diff|","78 rows, <1e-6","78 rows, 4.93e-11",True,paper/registry/exp5_matched_pair_concordance_v2.csv
+S07,tiers,support_tier in summary == exp5_support_tiers_v2.csv,13/13,13/13,True,
+S08,deltas,delta point == candidate - comparator point (max |diff|; seed-mean of deltas vs delta of seed-means),<1e-9,3.61e-16,True,
+S09,deltas,delta rows (13 sets x 2 variants x 3 comparators x 2 metrics),156,156,True,
+S10,values,no NaN in values/CIs,0,0,True,

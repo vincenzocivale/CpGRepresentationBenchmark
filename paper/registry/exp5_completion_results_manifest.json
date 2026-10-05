@@ -1,0 +1,45 @@
+{
+ "candidate_oof_parquet_not_read": true,
+ "compiled_by": "paper/scripts/compile_ewas_results.py",
+ "git_head": "3530077a55fe06ba1a1ade570bf53ec227e6e5a6",
+ "kind": "exp5_completion_results",
+ "n_integrity_checks": 39,
+ "n_integrity_failed": 0,
+ "outputs_sha256": {
+  "docs/EXP5_CANDIDATE_COMPLETION_RESULTS.md": "9f287241612ff53ff4ba16294a35e3d40c141b4f4a165f4511b844d53010a063",
+  "paper/registry/exp5_completion_results_deltas.csv": "6e0813f3528ac54a94c796534e75495086980b9e0f3deaeaf2848a28ade1747b",
+  "paper/registry/exp5_completion_results_integrity.csv": "3f322378094993a6938598140af79933760f778cc4120a36723748f2669bfd88",
+  "paper/registry/exp5_completion_results_per_set_arm.csv": "b310de950c1f2c9351f8b99d48a2df17700c60f381590b5d8abc14c7dec11fa6",
+  "paper/registry/exp5_completion_results_vs_ewas_v2.csv": "6c7ee41f33728ef5de6d16adb2fa8455ab9b042966ebaf8c75fe2ed923831d2e"
+ },
+ "sources_sha256": {
+  "configs/exp5_candidate_completion/exp5_pins.json": "ed2ec3ad65a2f06affbd6caa06685ba5509d68cf82c60c30fc23ad6297d670ef",
+  "docs/EXP5_CANDIDATE_COMPLETION_REGISTRATION.md": "c73434bc58f5dd716b51cda6e36d3ab6764daf63f1e27e77bc352ec14bfc427a",
+  "outputs/encode_atlas_v1/followup/exp5/evaluable_sets.csv": "7c2504ba104cdb1a085ca38978b2085f85b4a58a367c3382ea946cd7decc5350",
+  "outputs/encode_atlas_v1/followup/exp5/matching_summary_per_seed.csv": "a64c5b3bb54bf880b59c5bd20d02805527732b6504f4faf3d457f34fb7ccb33b",
+  "outputs/encode_atlas_v1/followup/exp5/oof_predictions.parquet": "ba9ee74b1a49944a377a1494ecaaa6430404162fbed5d0a10f7edc8a5806cf81",
+  "outputs/encode_atlas_v1/followup/exp5/probe_type_annotation.parquet": "f26a3338524ce96e1d40b08c66c042be9d3fa7d3eed5b32830919c9e37207d96",
+  "outputs/encode_atlas_v1/followup/exp5/probe_type_balance.csv": "d4484a0f69b902f9055e1f6229dbb5dab4f7ed4eeb87234dcaf0020fba68ef8b",
+  "outputs/encode_atlas_v1/followup/exp5/protocol.json": "201e01c3b94e40ff65f2da8966493c5a61e0c9be0fa0abd4c989d4f7dab9aae1",
+  "outputs/encode_atlas_v1/followup/exp5/summary_auc_delta.csv": "ec213c25e26888c93578976f219428e27e14e75c2ab0e7c1ed00bfbee23e5662",
+  "outputs/exp5_candidate_completion/regression/VERDICT.json": "3a42b290bc095f1845b75afcb152d5241bb6b3c3f4c84eb84d71ce7818b837c9",
+  "outputs/exp5_candidate_completion/regression/regression_cells.csv": "085e5025436d7d929deff389befdd9921e0e8cd454bc69c42959fa84c52e60ba",
+  "outputs/exp5_candidate_completion/regression/shim_vs_stored_folds.txt": "af9039c74f3f3b39aeb7a6c59b68443ab0c971e7fc953f5c8e68cbad3872c54d",
+  "outputs/exp5_candidate_completion/run_001.log": "145dfaea4549fbbb3ce1be7c023f6cd13b84c9bbb7b9c2951f2c8d1eac4ebce2",
+  "outputs/exp5_candidate_completion/run_001/run_manifest.json": "6a38a803f02f77ab175fe7496fce91efbd6e270a801d7ea40e17218578d2f0e5",
+  "outputs/exp5_candidate_completion/run_001/summary_candidate_completion.csv": "0fd00b9964393997d7a8b16a568882e6e735c1298755d6eb72fa3536ead47df8",
+  "paper/registry/ewas_v2_results_contrasts.csv": "d9c876b09986afbb58d3ac32df79ec232f6f7a7ac4751481c04a34bb0b8b511e",
+  "paper/registry/ewas_v2_results_per_task_arm.csv": "a7642561c4a3cfea5a9281c17c8a0b168fcc67be23dae8b1655fdbc7b3e51eb4",
+  "paper/registry/exp5_matched_pair_concordance_v2.csv": "e9e6bc2b6e971698818b19cae13b10de08e595daf7173ae58761905dd16bd593",
+  "paper/registry/exp5_support_tiers_v2.csv": "1d2f03993481fe8b7caedada5f32bde5f2a905e42f1107220da8f12f479c33ef"
+ },
+ "tags": [
+  "bioval-v2-protocol-freeze-v1",
+  "ewas-v2-protocol-freeze-v1",
+  "external-recon-protocol-freeze-v1",
+  "external-recon-protocol-freeze-v1.1",
+  "external-recon-protocol-freeze-v1.2",
+  "external-recon-test-authorization-v1",
+  "legacy-functional-svd-v1"
+ ]
+}
