@@ -1,0 +1,157 @@
+category,trait,task,threshold,matching_design,contrast,metric,status,delta,ci_lo,ci_hi,p,k_le0,k_ge0,B_eff
+Cancer,Cutaneous melanoma versus nevi,melanoma,primary,main,Regulatory - CpGPT,AUROC,complete,0.03518554687499997,-0.016838084120883938,0.0998134353788688,0.22577422577422576,112.0,888.0,1000.0
+Cancer,Cutaneous melanoma versus nevi,melanoma,primary,main,Regulatory - DeepCpG,AUROC,complete,0.0026562500000000266,-0.05004402497535323,0.06268766333906413,0.9250749250749251,462.0,538.0,1000.0
+Cancer,Cutaneous melanoma versus nevi,melanoma,primary,main,CpGPT - DeepCpG,AUROC,complete,-0.03252929687499995,-0.09868714234953309,0.02805173216364816,0.3176823176823177,842.0,158.0,1000.0
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,primary,main,Regulatory - CpGPT,AUROC,complete,-0.002876413410037637,-0.058229536422490666,0.05512094327029392,0.8891108891108891,556.0,444.0,1000.0
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,primary,main,Regulatory - DeepCpG,AUROC,complete,-0.07432801031541358,-0.12955345393785161,-0.021545516237838236,0.005994005994005994,998.0,2.0,1000.0
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,primary,main,CpGPT - DeepCpG,AUROC,complete,-0.07145159690537595,-0.12242275850914311,-0.02463768851169868,0.001998001998001998,1000.0,0.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,primary,main,Regulatory - CpGPT,AUROC,complete,0.1505694415272235,0.11145284690637143,0.19038796528488244,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,primary,main,Regulatory - DeepCpG,AUROC,complete,0.2092347546033747,0.14998560197937882,0.2625826571237275,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,primary,main,CpGPT - DeepCpG,AUROC,complete,0.05866531307615119,0.017923397975636853,0.10131873541900435,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,primary,main,Regulatory - CpGPT,AUROC,complete,0.019830246913580263,-0.04767093850798685,0.08708430358021543,0.5514485514485514,275.0,725.0,1000.0
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,primary,main,Regulatory - DeepCpG,AUROC,complete,-0.028865740740740664,-0.06872474410280463,0.010728420220713169,0.17582417582417584,913.0,87.0,1000.0
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,primary,main,CpGPT - DeepCpG,AUROC,complete,-0.04869598765432093,-0.09806585730606826,0.00576498290686814,0.08591408591408592,958.0,42.0,1000.0
+Cancer,Incident Lung Cancer,lung_cancer,primary,main,Regulatory - CpGPT,AUROC,complete,0.046803801488304986,0.029736191739759242,0.06541798602436488,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Incident Lung Cancer,lung_cancer,primary,main,Regulatory - DeepCpG,AUROC,complete,0.2351633058237309,0.2183270302108561,0.25386171874094715,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Incident Lung Cancer,lung_cancer,primary,main,CpGPT - DeepCpG,AUROC,complete,0.18835950433542592,0.16670282188026259,0.21594100816587902,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,primary,main,Regulatory - CpGPT,AUROC,complete,0.05004336123614561,0.03833276595295195,0.061491975833935696,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,primary,main,Regulatory - DeepCpG,AUROC,complete,0.09819433080517115,0.08094004989103261,0.11479978566650705,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,primary,main,CpGPT - DeepCpG,AUROC,complete,0.04815096956902554,0.031777996239921315,0.06229765087458503,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,primary,main,Regulatory - CpGPT,AUROC,complete,0.09300066830028952,0.05888126007847878,0.12885953076114237,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,primary,main,Regulatory - DeepCpG,AUROC,complete,0.14069948763644458,0.10879118305338065,0.17545253304544234,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,primary,main,CpGPT - DeepCpG,AUROC,complete,0.04769881933615505,0.011268585821926847,0.08726787234803556,0.013986013986013986,6.0,994.0,1000.0
+Immune/inflammatory,Psoriasis,psoriasis,primary,main,Regulatory - CpGPT,AUROC,complete,-0.007881211859160242,-0.06627519799824387,0.05401820790342829,0.8291708291708292,587.0,414.0,1000.0
+Immune/inflammatory,Psoriasis,psoriasis,primary,main,Regulatory - DeepCpG,AUROC,complete,-0.035160817995106175,-0.1006639364433794,0.020564295870014224,0.23976023976023977,881.0,119.0,1000.0
+Immune/inflammatory,Psoriasis,psoriasis,primary,main,CpGPT - DeepCpG,AUROC,complete,-0.027279606135945933,-0.08374316619264129,0.025653291577277887,0.3176823176823177,842.0,158.0,1000.0
+Immune/inflammatory,Graves' disease,graves_disease,primary,main,Regulatory - CpGPT,AUROC,complete,-0.024415259204006556,-0.06871393231992422,0.02961531491836179,0.37962037962037964,812.0,189.0,1000.0
+Immune/inflammatory,Graves' disease,graves_disease,primary,main,Regulatory - DeepCpG,AUROC,complete,0.01936704139805001,-0.03856198792985078,0.07741960877443699,0.4595404595404595,229.0,772.0,1000.0
+Immune/inflammatory,Graves' disease,graves_disease,primary,main,CpGPT - DeepCpG,AUROC,complete,0.04378230060205657,-0.03271852835525275,0.10978684775029207,0.24175824175824176,120.0,880.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,primary,main,Regulatory - CpGPT,AUROC,complete,0.044888818155780386,0.039874855702171946,0.05012231116000928,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,primary,main,Regulatory - DeepCpG,AUROC,complete,0.08682851676526693,0.08143293578124407,0.09178323327031054,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,primary,main,CpGPT - DeepCpG,AUROC,complete,0.04193969860948654,0.036356070030134226,0.04732715091179307,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,primary,main,Regulatory - CpGPT,AUROC,complete,0.028083747693425254,0.016248136345558488,0.04127211504770223,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,primary,main,Regulatory - DeepCpG,AUROC,complete,0.07048177422978708,0.06006317102030551,0.08141057610700264,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,primary,main,CpGPT - DeepCpG,AUROC,complete,0.04239802653636182,0.03486626778361925,0.049972282595595635,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,primary,main,Regulatory - CpGPT,AUROC,complete,0.03635857520155772,0.03211556232568614,0.041676020563582994,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,primary,main,Regulatory - DeepCpG,AUROC,complete,0.06801841353029581,0.06285381410821132,0.0733717812306014,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,primary,main,CpGPT - DeepCpG,AUROC,complete,0.03165983832873809,0.02630132558601355,0.0368134266225254,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,primary,main,Regulatory - CpGPT,AUROC,complete,0.023966551610782427,-0.010782893293758557,0.05870202353818741,0.1918081918081918,95.0,905.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,primary,main,Regulatory - DeepCpG,AUROC,complete,0.08445649791803644,0.04972191515321922,0.11514839440728052,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,primary,main,CpGPT - DeepCpG,AUROC,complete,0.06048994630725402,0.021549945590440055,0.09283170956338867,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Cutaneous melanoma versus nevi,melanoma,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.017817200999956095,-0.048386371289289624,0.07940919051606103,0.5874125874125874,293.0,707.0,1000.0
+Cancer,Cutaneous melanoma versus nevi,melanoma,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.03294811631068806,-0.016700326525139433,0.08103717973263419,0.2037962037962038,101.0,899.0,1000.0
+Cancer,Cutaneous melanoma versus nevi,melanoma,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.015130915310731963,-0.038667795373796145,0.06539681097515057,0.5814185814185814,290.0,710.0,1000.0
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.004747032241124383,-0.0807599232461957,0.08082066875426873,0.995004995004995,503.0,497.0,1000.0
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.00038003897126903663,-0.06057888149452568,0.05790645321436001,0.8891108891108891,556.0,444.0,1000.0
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,-0.004366993269855346,-0.05896180854690828,0.058699310217797576,0.9150849150849151,543.0,457.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.1119231363858898,0.07724682671959127,0.15119268661075208,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.24415406220206648,0.2063401604066029,0.2868809497162145,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.13223092581617668,0.10066618118999904,0.17185075451530196,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,-0.012789741630608975,-0.08352784565399876,0.060365904519173515,0.7512487512487512,625.0,375.0,1000.0
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.028095906452175523,-0.022019080165372455,0.07626066426377327,0.2857142857142857,142.0,858.0,1000.0
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.0408856480827845,-0.04056704148282084,0.11038209278839037,0.2897102897102897,144.0,856.0,1000.0
+Cancer,Incident Lung Cancer,lung_cancer,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.041227451520698954,0.02495239774642786,0.05805078525750738,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Incident Lung Cancer,lung_cancer,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.23715796838102676,0.20400227808405974,0.2695673578739568,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Incident Lung Cancer,lung_cancer,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.1959305168603278,0.1654197677350414,0.2253075673848724,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.01682471543570163,0.0012351106931813044,0.032905152588877974,0.03396603396603397,16.0,984.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.12488176126918094,0.10843495198717813,0.14105101838938364,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.1080570458334793,0.08885805425379678,0.1297122843535496,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.10296168477004297,0.06301028349111233,0.14636942493163277,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.24316772982931806,0.20463845710961132,0.2872544974828065,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.1402060450592751,0.08429117020636774,0.19084890947829036,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Psoriasis,psoriasis,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.07001392947287938,0.026795336008584154,0.11258031602199432,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Psoriasis,psoriasis,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.028770121804338022,-0.019499167088295532,0.0778076008595486,0.24375624375624375,121.0,879.0,1000.0
+Immune/inflammatory,Psoriasis,psoriasis,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,-0.041243807668541355,-0.08407014702080355,0.0005716158211155777,0.061938061938061936,970.0,30.0,1000.0
+Immune/inflammatory,Graves' disease,graves_disease,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.029881784708039483,-0.04222730732649362,0.10647844845630554,0.3776223776223776,188.0,812.0,1000.0
+Immune/inflammatory,Graves' disease,graves_disease,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.1257658651481045,0.06971970235486329,0.1815144329360573,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Graves' disease,graves_disease,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.09588408044006502,0.042455649474187694,0.14006001663485473,0.005994005994005994,2.0,998.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.02378461357956474,0.016668050997679852,0.03264228707502281,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.11008584614680039,0.10264012939871833,0.11788374344442427,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.08630123256723565,0.08092798027954821,0.09078102889262683,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,-0.013479732991385496,-0.030734827137375346,0.003087830415578332,0.11188811188811189,945.0,55.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.08258581110820173,0.06387889433913771,0.0995536277530414,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.09606554409958723,0.08211373783532178,0.10867053953959319,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.03908297786519721,0.03124893801012821,0.047581731609794474,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.08933291688657119,0.08212836562161953,0.09649481178100355,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.05024993902137398,0.043626959412015755,0.05574494888184785,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,primary,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.003836608986906964,-0.040460156526509486,0.04306335750867476,0.8671328671328671,433.0,567.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,primary,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.12231315106044394,0.0867554732592604,0.1542252085577231,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,primary,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.11847654207353697,0.0879531347647539,0.14632893368452146,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Cutaneous melanoma versus nevi,melanoma,sensitivity,main,Regulatory - CpGPT,AUROC,not_evaluable,,,,,,,
+Cancer,Cutaneous melanoma versus nevi,melanoma,sensitivity,main,Regulatory - DeepCpG,AUROC,not_evaluable,,,,,,,
+Cancer,Cutaneous melanoma versus nevi,melanoma,sensitivity,main,CpGPT - DeepCpG,AUROC,not_evaluable,,,,,,,
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,sensitivity,main,Regulatory - CpGPT,AUROC,complete,0.08641975308641975,-0.3902777777777777,0.6282130207454882,0.7172827172827173,358.0,683.0,1000.0
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,sensitivity,main,Regulatory - DeepCpG,AUROC,complete,-0.29629629629629634,-0.8125,0.2448979591836734,0.3156843156843157,869.0,157.0,1000.0
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,sensitivity,main,CpGPT - DeepCpG,AUROC,complete,-0.3827160493827161,-0.6666666666666667,0.0,0.11188811188811189,1000.0,55.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,sensitivity,main,Regulatory - CpGPT,AUROC,complete,0.06228373702422141,-0.15238131009615385,0.27337844702815134,0.5594405594405595,279.0,732.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,sensitivity,main,Regulatory - DeepCpG,AUROC,complete,-0.04498269896193774,-0.29596485260770977,0.19842315197428828,0.6853146853146853,674.0,342.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,sensitivity,main,CpGPT - DeepCpG,AUROC,complete,-0.10726643598615915,-0.2644918646694215,0.09353440984236827,0.26573426573426573,880.0,132.0,1000.0
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,sensitivity,main,Regulatory - CpGPT,AUROC,not_evaluable,,,,,,,
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,sensitivity,main,Regulatory - DeepCpG,AUROC,not_evaluable,,,,,,,
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,sensitivity,main,CpGPT - DeepCpG,AUROC,not_evaluable,,,,,,,
+Cancer,Incident Lung Cancer,lung_cancer,sensitivity,main,Regulatory - CpGPT,AUROC,complete,-0.027234042553191506,-0.07516559984833061,0.028235376655557337,0.36363636363636365,819.0,181.0,1000.0
+Cancer,Incident Lung Cancer,lung_cancer,sensitivity,main,Regulatory - DeepCpG,AUROC,complete,0.09542779538252599,0.041123836113678855,0.15677129919301763,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Incident Lung Cancer,lung_cancer,sensitivity,main,CpGPT - DeepCpG,AUROC,complete,0.1226618379357175,0.04342785368293388,0.19561640724716595,0.005994005994005994,2.0,998.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,sensitivity,main,Regulatory - CpGPT,AUROC,complete,0.008222843158740667,-0.02866560130882742,0.044654970621654716,0.6433566433566433,321.0,679.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,sensitivity,main,Regulatory - DeepCpG,AUROC,complete,0.043118562349331646,-0.0009686061801446234,0.08180559449073928,0.059940059940059943,29.0,971.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,sensitivity,main,CpGPT - DeepCpG,AUROC,complete,0.03489571919059098,-0.008281472008627324,0.07766378790297607,0.11788211788211789,58.0,942.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,sensitivity,main,Regulatory - CpGPT,AUROC,complete,0.07499999999999996,-0.1635156971375808,0.2971466589013726,0.4955044955044955,247.0,762.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,sensitivity,main,Regulatory - DeepCpG,AUROC,complete,0.034999999999999976,-0.31579815455594,0.29018329554043837,0.8511488511488512,425.0,580.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,sensitivity,main,CpGPT - DeepCpG,AUROC,complete,-0.03999999999999998,-0.32820589866863903,0.17302539888504423,0.7272727272727273,645.0,363.0,1000.0
+Immune/inflammatory,Psoriasis,psoriasis,sensitivity,main,Regulatory - CpGPT,AUROC,not_evaluable,,,,,,,
+Immune/inflammatory,Psoriasis,psoriasis,sensitivity,main,Regulatory - DeepCpG,AUROC,not_evaluable,,,,,,,
+Immune/inflammatory,Psoriasis,psoriasis,sensitivity,main,CpGPT - DeepCpG,AUROC,not_evaluable,,,,,,,
+Immune/inflammatory,Graves' disease,graves_disease,sensitivity,main,Regulatory - CpGPT,AUROC,complete,-0.15384615384615385,-0.3648596107221591,0.17162867996201325,0.36363636363636365,833.0,181.0,1000.0
+Immune/inflammatory,Graves' disease,graves_disease,sensitivity,main,Regulatory - DeepCpG,AUROC,complete,-0.07692307692307687,-0.27100694444444445,0.13339506172839496,0.48951048951048953,783.0,244.0,1000.0
+Immune/inflammatory,Graves' disease,graves_disease,sensitivity,main,CpGPT - DeepCpG,AUROC,complete,0.07692307692307698,-0.25023148148148144,0.375,0.7272727272727273,363.0,654.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,sensitivity,main,Regulatory - CpGPT,AUROC,complete,0.033849586203815285,0.025612490698303958,0.042966351653011534,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,sensitivity,main,Regulatory - DeepCpG,AUROC,complete,0.08734194468665701,0.08025284771772287,0.09491247775987981,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,sensitivity,main,CpGPT - DeepCpG,AUROC,complete,0.05349235848284173,0.04783702752809957,0.05940504858600137,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,sensitivity,main,Regulatory - CpGPT,AUROC,complete,0.024815770236293555,0.001283360481910434,0.051295967143945326,0.04395604395604396,21.0,979.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,sensitivity,main,Regulatory - DeepCpG,AUROC,complete,0.09162642817803202,0.07394574759588583,0.11119033574659688,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,sensitivity,main,CpGPT - DeepCpG,AUROC,complete,0.06681065794173846,0.04881149272893724,0.08773461375527083,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,sensitivity,main,Regulatory - CpGPT,AUROC,complete,0.056507248797383114,0.04566063629502242,0.066580382134643,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,sensitivity,main,Regulatory - DeepCpG,AUROC,complete,0.11190990825653846,0.10438907116137071,0.12136500645884032,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,sensitivity,main,CpGPT - DeepCpG,AUROC,complete,0.055402659459155346,0.04690630916449493,0.06398592236594063,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,sensitivity,main,Regulatory - CpGPT,AUROC,complete,-0.014792899408283988,-0.1735551538108356,0.21782525510204076,0.8311688311688312,591.0,415.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,sensitivity,main,Regulatory - DeepCpG,AUROC,complete,0.15680473372781067,0.020807892088991295,0.32121354166666666,0.01998001998001998,9.0,991.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,sensitivity,main,CpGPT - DeepCpG,AUROC,complete,0.17159763313609466,-0.0893779515938607,0.3719570472817226,0.16383616383616384,81.0,921.0,1000.0
+Cancer,Cutaneous melanoma versus nevi,melanoma,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,not_evaluable,,,,,,,
+Cancer,Cutaneous melanoma versus nevi,melanoma,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,not_evaluable,,,,,,,
+Cancer,Cutaneous melanoma versus nevi,melanoma,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,not_evaluable,,,,,,,
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,-0.09876543209876543,-0.28003125,0.4804999999999996,0.7472527472527473,692.0,373.0,1000.0
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,-0.29629629629629634,-0.625,0.4004166666666663,0.26573426573426573,879.0,132.0,1000.0
+Cancer,Oral or pharyngeal squamous cell carcinoma,oral_pharyngeal_scc,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,-0.1975308641975309,-0.8888888888888888,0.3125,0.3256743256743257,854.0,162.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,-0.15916955017301038,-0.37509245562130183,0.05613662131519274,0.15384615384615385,927.0,76.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.13148788927335636,-0.11913573407202213,0.35506388075592227,0.2097902097902098,104.0,903.0,1000.0
+Cancer,Prevalent Breast Cancer (Self-report),breast_cancer,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.29065743944636674,0.023597756410256424,0.5377948717948717,0.04395604395604396,21.0,982.0,1000.0
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,not_evaluable,,,,,,,
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,not_evaluable,,,,,,,
+Cancer,Prevalent Colorectal Cancer (Self-report),colorectal_cancer,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,not_evaluable,,,,,,,
+Cancer,Incident Lung Cancer,lung_cancer,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.009526466836734637,-0.05625325492951086,0.07090983374570663,0.8111888111888111,405.0,595.0,1000.0
+Cancer,Incident Lung Cancer,lung_cancer,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.2748325892857143,0.19247257748393976,0.3415238833692599,0.001998001998001998,0.0,1000.0,1000.0
+Cancer,Incident Lung Cancer,lung_cancer,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.26530612244897966,0.18375743119014004,0.33564658696272276,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,-0.04656006485713837,-0.09231051399306289,0.004630869013124873,0.08191808191808192,960.0,40.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.06691859255742993,0.007149293773190155,0.12234336268106644,0.029970029970029972,14.0,986.0,1000.0
+Immune/inflammatory,Crohn's disease,ibd_family,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.1134786574145683,0.06454711172229055,0.1672657423539379,0.001998001998001998,0.0,1000.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.20775623268698057,0.00775694444444444,0.3890624999999998,0.04595404595404595,22.0,980.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.005540166204986097,-0.18936745073108713,0.20919982832452447,0.9170829170829171,552.0,458.0,1000.0
+Immune/inflammatory,Rheumatoid arthritis,rheumatoid_arthritis,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,-0.20221606648199447,-0.3929246031746032,0.03111458333333331,0.08391608391608392,962.0,41.0,1000.0
+Immune/inflammatory,Psoriasis,psoriasis,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,not_evaluable,,,,,,,
+Immune/inflammatory,Psoriasis,psoriasis,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,not_evaluable,,,,,,,
+Immune/inflammatory,Psoriasis,psoriasis,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,not_evaluable,,,,,,,
+Immune/inflammatory,Graves' disease,graves_disease,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.08284023668639051,-0.3689166666666667,0.4444444444444444,0.7232767232767233,361.0,655.0,1000.0
+Immune/inflammatory,Graves' disease,graves_disease,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.17751479289940825,-0.04938781756963575,0.3877551020408163,0.13986013986013987,69.0,939.0,1000.0
+Immune/inflammatory,Graves' disease,graves_disease,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.09467455621301774,-0.2216220375500154,0.40828402366863903,0.5234765234765235,261.0,748.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.006288107131353637,-0.005169399787369996,0.019470319802266753,0.27172827172827174,135.0,865.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.11890607552862809,0.10565857095625952,0.132890439136348,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Body mass index,adiposity_bmi,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.11261796839727445,0.10603626085127349,0.11803824408118763,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.010149392834626236,-0.023074673592017467,0.03837659153361658,0.4755244755244755,237.0,763.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.1409281543817329,0.10979700398629517,0.16683308679179107,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Type 2 Diabetes,glycemic_t2d,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.13077876154710666,0.10995591858067706,0.155240331814852,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.05278181056187892,0.03989538607400474,0.06607467692550396,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.13778361996704336,0.12721104401980568,0.14926738771274228,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,HDL cholesterol,lipid_hdl,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.08500180940516444,0.07571324143098576,0.09441180517637693,0.001998001998001998,0.0,1000.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,sensitivity,genomic_context_s1,Regulatory - CpGPT,AUROC,complete,0.08159722222222221,-0.05861523205261593,0.3466734693877551,0.22577422577422576,112.0,891.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,sensitivity,genomic_context_s1,Regulatory - DeepCpG,AUROC,complete,0.0954861111111111,-0.020928085432546064,0.2857736446379105,0.10589410589410589,52.0,951.0,1000.0
+Cardiometabolic,Incident Ischemic Heart Disease,cardiovascular_ihd,sensitivity,genomic_context_s1,CpGPT - DeepCpG,AUROC,complete,0.013888888888888895,-0.2222222222222222,0.16264459235322717,0.9010989010989011,450.0,557.0,1000.0

@@ -1,0 +1,23 @@
+{
+  "n_primary_rows": 39,
+  "n_primary_contrasts": 39,
+  "n_total_endpoint_rows": 156,
+  "n_complete": 138,
+  "n_not_evaluable": 18,
+  "not_evaluable_tasks": [
+    "colorectal_cancer",
+    "melanoma",
+    "psoriasis"
+  ],
+  "n_nonconverged_fits": 0,
+  "checks": [
+    "All 13 frozen source analyses retained",
+    "Identical frozen locus pairs and chromosome folds across all arms at every design/threshold",
+    "OOF rows aligned exactly to frozen pair files",
+    "Finite OOF scores for every evaluated endpoint",
+    "Strict matched-pair concordance reproduced from OOF scores",
+    "All primary endpoints and paired contrasts complete",
+    "Non-evaluable sensitivity endpoints retain five-fold protocol; no task substitutions"
+  ],
+  "execution_manifest_sha256": "71f199a2c609a0bd88cd41d49122df2e2e1f086c92cb1faebb9a9f1205ed99ba"
+}

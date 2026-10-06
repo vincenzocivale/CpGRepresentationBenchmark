@@ -1,0 +1,14 @@
+task,category,PMID,zenodo_record,source_analysis_id,n_tasks_same_record,n_tasks_same_PMID
+melanoma,Cancer,30529013.0,4672754,zenodo_4672754__geo_GSE120878_1.csv,6,1
+oral_pharyngeal_scc,Cancer,26635906.0,4672754,zenodo_4672754__geo_GSE70977_1.csv,6,1
+breast_cancer,Cancer,37410739.0,8021411,zenodo_8021411__prevalent_basic_breast_cancer_gs.csv,5,5
+colorectal_cancer,Cancer,37410739.0,8021411,zenodo_8021411__prevalent_basic_colorectal_cancer_gs.csv,5,5
+lung_cancer,Cancer,37410739.0,8021411,zenodo_8021411__incident_basic_lung_cancer_gs.csv,5,5
+ibd_family,Immune/inflammatory,27886173.0,4672754,zenodo_4672754__geo_GSE87640_2.csv,6,1
+rheumatoid_arthritis,Immune/inflammatory,23334450.0,4672754,zenodo_4672754__geo_GSE42861_1.csv,6,1
+psoriasis,Immune/inflammatory,26743604.0,4672754,zenodo_4672754__geo_GSE73894_1.csv,6,1
+graves_disease,Immune/inflammatory,26459776.0,4672754,zenodo_4672754__geo_GSE71955_1.csv,6,1
+adiposity_bmi,Cardiometabolic,39706196.0,13998835,zenodo_13998835__Hannah_Smith_bmi_OSCA_EWAS.csv,2,2
+glycemic_t2d,Cardiometabolic,37410739.0,8021411,zenodo_8021411__incident_basic_diabetes_gs.csv,5,5
+lipid_hdl,Cardiometabolic,39706196.0,13998835,zenodo_13998835__Hannah_Smith_HDL_cholesterol_OSCA_EWAS.csv,2,2
+cardiovascular_ihd,Cardiometabolic,37410739.0,8021411,zenodo_8021411__incident_basic_heart_disease_gs.csv,5,5
