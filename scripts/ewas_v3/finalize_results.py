@@ -33,10 +33,30 @@ corrected_main.to_csv(out/'main_results.csv',index=False)
 pd.DataFrame(corrections).to_csv(out/'auprc_tie_correction.csv',index=False)
 report_path=out/'report.md'
 report_path.write_text(report_path.read_text().split('## Primary results')[0]+'## Primary results\n\nAUPRC uses standard tied-score groups (uniform correction to the inherited legacy row-order kernel).\n\n'+corrected_main[['category','trait','representation','AUROC','ci_lo','ci_hi','AUPRC','matched_pair_concordance']].to_csv(index=False))
+# Render the final publication figure with a legend outside all endpoint rows.
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+fig,axes=plt.subplots(3,1,figsize=(11,10),gridspec_kw={'height_ratios':[5,4,4]},layout='constrained')
+flags=pd.read_csv(ROOT/'data/registry/ewas_v3/primary_overlap_flags.csv')
+correlated=set(flags.trait_a)|set(flags.trait_b)
+arm_ids=['regulatory_histone_dnase_v1','cpgpt_large_locus','deepcpg_dna_locus']
+for ax,category in zip(axes,['Cancer','Immune/inflammatory','Cardiometabolic']):
+ tasks=[t for t in m['main_tasks'] if t['category']==category]
+ for j,(arm,color,label) in enumerate(zip(arm_ids,['#0072B2','#D55E00','#009E73'],['Regulatory 256D','CpGPT 512D','DeepCpG 128D'])):
+  frame=corrected_main[(corrected_main.category==category)&(corrected_main.representation==arm)].set_index('task').loc[[t['task'] for t in tasks]]
+  ax.errorbar(frame.AUROC,np.arange(len(tasks))+(j-1)*.18,xerr=np.vstack([frame.AUROC-frame.ci_lo,frame.ci_hi-frame.AUROC]),fmt='o',capsize=2,color=color,label=label,markersize=4)
+ ax.set_yticks(np.arange(len(tasks)),[t['trait']+(' †' if t['task'] in correlated else '') for t in tasks]);ax.invert_yaxis();ax.set_xlim(.3,1)
+ ax.axvline(.5,color='gray',ls='--',lw=.8);ax.set_title(category,loc='left');ax.grid(axis='x',alpha=.2)
+handles,labels=axes[0].get_legend_handles_labels()
+fig.legend(handles,labels,loc='outside lower center',ncol=3,frameon=False)
+axes[-1].set_xlabel('Pooled out-of-fold AUROC (95% paired chromosome-bootstrap CI)')
+fig.suptitle('EWAS Catalog-associated CpGs: p < 1e-4\n† Positive sets overlap >50% with another selected task',fontsize=12)
+fig.savefig(out/'main_auroc.pdf');fig.savefig(out/'main_auroc.png',dpi=200);plt.close(fig)
 ex['postprocessing']={'script':'scripts/ewas_v3/finalize_results.py','script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'AP_tie_correction':'Standard AP grouping equal scores; applied uniformly to every evaluated endpoint; no model refits, no AUROC/CI/pair/panel changes','n_AP_values_changed':sum(abs(c['delta'])>1e-12 for c in corrections)}
-ex['output_sha256']={str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest() for p in out.glob('*') if p.is_file() and p.name!='execution_manifest.json'}
+ex['output_sha256']={str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest() for p in out.glob('*') if p.is_file() and p.name!='execution_manifest.json' and p.suffix!='.log'}
 # Finalize the stdout log checksum only after the execution process has closed it.
-ex['output_sha256']['run.log']=hashlib.sha256((out/'run.log').read_bytes()).hexdigest()
+ex['run_log_sha256']=hashlib.sha256((out/'run.log').read_bytes()).hexdigest()
 ex['log_checksum_finalized_after_process_completion']=True
 (out/'execution_manifest.json').write_text(json.dumps(ex,indent=2)+'\n')
 for name,digest in ex['output_sha256'].items():assert hashlib.sha256((out/name).read_bytes()).hexdigest()==digest,name
