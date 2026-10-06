@@ -1,0 +1,31 @@
+{
+  "static_bulk_attempts_per_file": 9,
+  "static_bulk_status": "HTTP503",
+  "fallback_source": "https://zenodo.org/communities/ewas-catalog/",
+  "n_community_records": 21,
+  "n_downloaded_records": 19,
+  "n_verified_files": 29,
+  "n_verified_bytes": 4327425436,
+  "integrity": [
+    "official MD5",
+    "local SHA256",
+    "full gzip CRC/ZIP CRC where applicable"
+  ],
+  "catalog_study_ids_available": false,
+  "full_catalog_exhaustiveness": false,
+  "p_threshold": 0.0001,
+  "representations_run": false,
+  "state": "FALLBACK_DESIGN_BUILT",
+  "n_metadata_analyses": 542,
+  "n_in_scope_array_universe_compatible_studies": 404,
+  "n_primary_traits": 351,
+  "support_counts": {
+    "insufficient_support": 307,
+    "main_eligible": 37,
+    "exploratory": 7
+  },
+  "n_overlap_flags": 636,
+  "n_background_capacity_unmatched": 0,
+  "n_dropped_unknown_probe_type_memberships": 423,
+  "n_tier_changes_after_matching": 0
+}

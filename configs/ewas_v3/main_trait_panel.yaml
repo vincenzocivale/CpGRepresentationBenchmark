@@ -1,0 +1,1119 @@
+schema_version: 1
+status: FROZEN_AWAITING_USER_APPROVAL_NO_REPRESENTATIONS_RUN
+source: Official EWAS Catalog Zenodo fallback
+complete_current_catalog_coverage: false
+catalog_study_ids_available: false
+selection_uses_representation_results: false
+selection_rule:
+- main_eligible
+- descending intersected positive count
+- complete matching
+- descending N_study
+- ascending source_analysis_id
+support_tiers:
+  main_eligible: '>=200 intersected positives'
+  exploratory: 100–199
+  insufficient_support: <100
+task_counts:
+  Cancer: 5
+  Immune/inflammatory: 4
+  Cardiometabolic: 4
+  total: 13
+terms:
+  primary: EWAS Catalog-associated CpGs; p < 1e-4
+  sensitivity: high-confidence EWAS-associated CpGs; p < 1e-7
+universe_size: 408399
+matching:
+  main: Exact chromosome x Infinium type; 1:1 without replacement
+  genomic_context_s1: EWAS-v2 exact chromosome x Infinium type x island class; nearest
+    neighbor standardized GC, CpG density hg38, stored log10 TSS distance; Euclidean
+    caliper 0.25; ddof=0 over probe-known universe
+  seed: 17
+  pair_cap: null
+  background_exclusion: Union of all 351 inventory primary p<1e-4 sets and the 16
+    frozen EWAS-v2 sets; fixed at both p thresholds
+  mask_sha256: 231e80bd489c464d416e78fca64fa0e25309c3492f1ecb67b91336f34363627c
+  same_pairs_for_all_representations: true
+evaluation_contract_from_ewas_v2:
+  folds:
+    map: biological_validation_v2.splits.chromosome_blocked_folds(chr1..chr22, 5,
+      seed=17)
+    n_outer: 5
+    pair_in_one_fold: true
+  probe:
+    model: LogisticRegression
+    penalty: l2
+    solver: lbfgs
+    class_weight: null
+    max_iter: 10000
+    C_grid:
+    - 0.001
+    - 0.01
+    - 0.1
+    - 1.0
+    - 10.0
+    C_selection: 'nested: per outer fold, leave-one-outer-train-fold-out inner CV
+      on the outer-train rows only; mean inner AUROC; ties -> smaller C; refit on
+      the outer-train rows'
+    scaler: StandardScaler fitted only on the training rows of each inner or outer
+      fold; never on validation/test rows
+    scores: OOF decision_function, float64, stored
+    n_fits_per_task_design: 105
+    implementation: bioval_v2_launch.chrom_probes.logistic_blocked_cv (imported, unmodified)
+    convergence: n_iter_max and n_nonconverged_fits recorded per endpoint; contrasts
+      refuse non-converged fits unless --allow-nonconverged (then flagged)
+  zero_rows:
+    policy: candidate zero rows kept as valid features; identical backgrounds for
+      all arms; counts of all-zero rows among positives and backgrounds per task,
+      arm, design reported
+  uncertainty:
+    scheme: paired chromosome-block bootstrap; bioval_v2_launch.block_bootstrap.BlockBootstrap(names=sorted
+      chr1..chr22, B=1000, seed=17); block weights = multiplicity; pairs never split;
+      same draws for every arm/task/metric/design
+    ci: 95% percentile
+    p: two-sided bootstrap p with (1+k)/(1+B) floor (descriptive)
+    multiplicity: NONE (descriptive; no adjustment, no Holm gating)
+evaluation_addenda:
+  matched_pair_concordance: P(OOF score positive > OOF score matched background);
+    strict ties count zero
+  category_average_auroc: false
+  category_win_counts: false
+  AUROC: pooled out-of-fold primary
+  AUPRC: secondary descriptive; artificial 50% prevalence
+  bootstrap: paired chromosome blocks; 1000 draws; seed 17; percentile 95% CI; identical
+    draws all arms and contrasts
+  contrasts:
+  - Regulatory - CpGPT
+  - Regulatory - DeepCpG
+  - CpGPT - DeepCpG
+  sensitivity_panel: Same source analyses; no reselection/drop based on strict-threshold
+    support
+representations:
+- regulatory_histone_dnase_v1
+- cpgpt_large_locus native 512D
+- deepcpg_dna_locus native 128D
+main_tasks:
+- task: melanoma
+  category: Cancer
+  source_analysis_id: zenodo_4672754__geo_GSE120878_1.csv
+  trait: Cutaneous melanoma versus nevi
+  n_positive_raw: 419
+  n_positive_universe: 321
+  n_matchable: 320
+  complete_matching: false
+  N_study: 162.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '30529013.0'
+  Catalog_StudyID: null
+  tissue: Skin lesions
+  platform: Illumina HumanMethylation450
+  zenodo_record: '4672754'
+  source_url: https://zenodo.org/records/4672754
+  original_filename: full_stats/geo_GSE120878_1.csv
+  container: 4672754/full_stats.tar.gz
+  source_sha256: d0fa280e93d9afb30b9848e3f4e1f41db14d844ec07915599a86e86041dd7050
+  official_md5: md5:3deeddfd5598391ad183742bc421737c
+  metadata_provenance: official studies-full.csv; endpoint/tissue resolved from original
+    associated publication
+  n_provenance: official study metadata N
+  cache_sha256: 41397a1b7994f8f116cdbb414d97498cac76560045cf10042403280c164a9907
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 419
+      n_positive_universe: 321
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/melanoma_primary.npy
+      positive_sha256: 321dff261a7e638f1c4feca17344ed9e0429e60d4e3d477156e4f222e9ec108e
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 1
+          n_unmatched: 0
+          n_matched_positives: 320
+          path: data/registry/ewas_v3/melanoma_primary_main_pairs.csv.gz
+          sha256: 0eb6317b3d90d18d0f102e95c81b91d74a997aa569ec3cb83eb48fdf04f48713
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 1
+          n_unmatched: 18
+          n_matched_positives: 302
+          path: data/registry/ewas_v3/melanoma_primary_genomic_context_s1_pairs.csv.gz
+          sha256: ce74e0a780f636d2e0ab2a8294bbe5e3f72cf68d566304d45dfed5da236ffd81
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 6
+      n_positive_universe: 2
+      support_tier: insufficient_support
+      positive_set: data/derived/ewas_v3/melanoma_sensitivity.npy
+      positive_sha256: 1d314ca13cd2446a6efb9497beba2fe348032750d1536d037d9b78575b668724
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 2
+          path: data/registry/ewas_v3/melanoma_sensitivity_main_pairs.csv.gz
+          sha256: b4124ace3199ba148f8b439a7ec8567b87710f99719e1b284a13ba003256888d
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 2
+          path: data/registry/ewas_v3/melanoma_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: 6081c010d0ec47626c0fd6b2dbea2e3bb68f31f26cd3009c77932beb4bf4b09e
+- task: oral_pharyngeal_scc
+  category: Cancer
+  source_analysis_id: zenodo_4672754__geo_GSE70977_1.csv
+  trait: Oral or pharyngeal squamous cell carcinoma
+  n_positive_raw: 324
+  n_positive_universe: 289
+  n_matchable: 284
+  complete_matching: false
+  N_study: 223.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '26635906.0'
+  Catalog_StudyID: null
+  tissue: Saliva
+  platform: Illumina HumanMethylation450
+  zenodo_record: '4672754'
+  source_url: https://zenodo.org/records/4672754
+  original_filename: full_stats/geo_GSE70977_1.csv
+  container: 4672754/full_stats.tar.gz
+  source_sha256: d0fa280e93d9afb30b9848e3f4e1f41db14d844ec07915599a86e86041dd7050
+  official_md5: md5:3deeddfd5598391ad183742bc421737c
+  metadata_provenance: official studies-full.csv joined by Results_file
+  n_provenance: official study metadata N
+  cache_sha256: 40c71408ec21921a50518717399ed9348dc88509e0225a89fc5537788f0ef60d
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 324
+      n_positive_universe: 289
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/oral_pharyngeal_scc_primary.npy
+      positive_sha256: 241905c39657332d8454a49a8596486aa65b3f1d9a7b73391ef05bf6da5824ee
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 5
+          n_unmatched: 0
+          n_matched_positives: 284
+          path: data/registry/ewas_v3/oral_pharyngeal_scc_primary_main_pairs.csv.gz
+          sha256: e3cf4707391896beff62b38643a977270aa94dbb8148b9aa34738289fd8eb80d
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 5
+          n_unmatched: 15
+          n_matched_positives: 269
+          path: data/registry/ewas_v3/oral_pharyngeal_scc_primary_genomic_context_s1_pairs.csv.gz
+          sha256: 17470b019afb08eb1e9a1523b4258fe803de243f79b4f72ef21ccf75fd7218cb
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 10
+      n_positive_universe: 10
+      support_tier: insufficient_support
+      positive_set: data/derived/ewas_v3/oral_pharyngeal_scc_sensitivity.npy
+      positive_sha256: 9074f73996770514eb69f95e1a94af9cf765fab3b5d93227170b78f864c1ee42
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 1
+          n_unmatched: 0
+          n_matched_positives: 9
+          path: data/registry/ewas_v3/oral_pharyngeal_scc_sensitivity_main_pairs.csv.gz
+          sha256: 7bbbe0c54dd6f96045b6f07df5a5336ffb7b7d2fe684631d2e4ec4c0fbcd5d3b
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 1
+          n_unmatched: 0
+          n_matched_positives: 9
+          path: data/registry/ewas_v3/oral_pharyngeal_scc_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: 56f2a405feed3e672f5651bb1efdf7497cb7e984adeaad7989af825ef047d277
+- task: breast_cancer
+  category: Cancer
+  source_analysis_id: zenodo_8021411__prevalent_basic_breast_cancer_gs.csv
+  trait: Prevalent Breast Cancer (Self-report)
+  n_positive_raw: 930
+  n_positive_universe: 414
+  n_matchable: 414
+  complete_matching: true
+  N_study: 10650.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '37410739.0'
+  Catalog_StudyID: null
+  tissue: Whole blood
+  platform: Illumina HumanMethylationEPIC
+  zenodo_record: '8021411'
+  source_url: https://zenodo.org/records/8021411
+  original_filename: prevalent_basic_breast_cancer_gs.csv
+  container: 8021411/compressed-disease-states-ewas.tar.gz
+  source_sha256: 213d8cd6c902fdc59b53f828b223b0558f76597eeeab7faae13d461397e4a277
+  official_md5: md5:d20b187c909dd432088fe2e3afb27d24
+  metadata_provenance: official hillary-studies.csv joined by Results_file (case-insensitive
+    match to archive); PMID resolved from final publication
+  n_provenance: official hillary-studies.csv N
+  cache_sha256: d1628be2f53c9c6c72b27c630c34077ab577780ccb0fc1075b40dd6abf45de55
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 930
+      n_positive_universe: 414
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/breast_cancer_primary.npy
+      positive_sha256: 1ca39b5c97d9bad5d8af454a79b924e013cf53fd1e802ad65d204b2278114048
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 414
+          path: data/registry/ewas_v3/breast_cancer_primary_main_pairs.csv.gz
+          sha256: 3893430caf394e67e8c20d5cb660d15bd4d5f164d94aec44fe10ee8d73f9d8f2
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 20
+          n_matched_positives: 394
+          path: data/registry/ewas_v3/breast_cancer_primary_genomic_context_s1_pairs.csv.gz
+          sha256: 1a494d82c9bdfdb1c3eec044ca55c05bdbd6db46d85bbb2c36594d7a8ac911cf
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 36
+      n_positive_universe: 17
+      support_tier: insufficient_support
+      positive_set: data/derived/ewas_v3/breast_cancer_sensitivity.npy
+      positive_sha256: 269b0ef7dea637a98abd97b8b568f0379899f3c891d50156107341435ee989c5
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 17
+          path: data/registry/ewas_v3/breast_cancer_sensitivity_main_pairs.csv.gz
+          sha256: 2ac346632a9df56c313408acbac767b4454dd5733c7317de35e3955fd831fa0a
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 17
+          path: data/registry/ewas_v3/breast_cancer_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: 530e99e9a4cc12461d8251ac9574fea63a95971d90ab8ac2d61301cbd206b18e
+- task: colorectal_cancer
+  category: Cancer
+  source_analysis_id: zenodo_8021411__prevalent_basic_colorectal_cancer_gs.csv
+  trait: Prevalent Colorectal Cancer (Self-report)
+  n_positive_raw: 887
+  n_positive_universe: 360
+  n_matchable: 360
+  complete_matching: true
+  N_study: 18055.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '37410739.0'
+  Catalog_StudyID: null
+  tissue: Whole blood
+  platform: Illumina HumanMethylationEPIC
+  zenodo_record: '8021411'
+  source_url: https://zenodo.org/records/8021411
+  original_filename: prevalent_basic_colorectal_cancer_gs.csv
+  container: 8021411/compressed-disease-states-ewas.tar.gz
+  source_sha256: 213d8cd6c902fdc59b53f828b223b0558f76597eeeab7faae13d461397e4a277
+  official_md5: md5:d20b187c909dd432088fe2e3afb27d24
+  metadata_provenance: official hillary-studies.csv joined by Results_file (case-insensitive
+    match to archive); PMID resolved from final publication
+  n_provenance: official hillary-studies.csv N
+  cache_sha256: 22dfacfc960bedcf923b71db2e2f7d38b76e30753e0639c6e40307c0451664b1
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 887
+      n_positive_universe: 360
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/colorectal_cancer_primary.npy
+      positive_sha256: a446be56dfacef4807ce1ca9300ce73d19533b28e9dee55fbf11f63164b37996
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 360
+          path: data/registry/ewas_v3/colorectal_cancer_primary_main_pairs.csv.gz
+          sha256: f010a3d3eb2931be7b8d827cd58c4bdd7d845cb3affc8faf613ff3965e8813e2
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 13
+          n_matched_positives: 347
+          path: data/registry/ewas_v3/colorectal_cancer_primary_genomic_context_s1_pairs.csv.gz
+          sha256: 06a68902a005183ffb884a03d0f6368f559f232bafeb9a939e1ecb663228c3b4
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 18
+      n_positive_universe: 5
+      support_tier: insufficient_support
+      positive_set: data/derived/ewas_v3/colorectal_cancer_sensitivity.npy
+      positive_sha256: ea69b92db1afa36c34f3399f24abefd9014c71398deb3b45aa4f34b0ddb22bfb
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 5
+          path: data/registry/ewas_v3/colorectal_cancer_sensitivity_main_pairs.csv.gz
+          sha256: 2f48b9675676ca11ca33a899ebe9aaf97e73409904e1da5839554b16ae105a0f
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 5
+          path: data/registry/ewas_v3/colorectal_cancer_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: 026d0c9e8c0edb7f9b140c28fa6255b2270570a13fb141bbd9053458441fc947
+- task: lung_cancer
+  category: Cancer
+  source_analysis_id: zenodo_8021411__incident_basic_lung_cancer_gs.csv
+  trait: Incident Lung Cancer
+  n_positive_raw: 4012
+  n_positive_universe: 1976
+  n_matchable: 1976
+  complete_matching: true
+  N_study: 18364.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '37410739.0'
+  Catalog_StudyID: null
+  tissue: Whole blood
+  platform: Illumina HumanMethylationEPIC
+  zenodo_record: '8021411'
+  source_url: https://zenodo.org/records/8021411
+  original_filename: incident_basic_lung_cancer_gs.csv
+  container: 8021411/compressed-disease-states-ewas.tar.gz
+  source_sha256: 213d8cd6c902fdc59b53f828b223b0558f76597eeeab7faae13d461397e4a277
+  official_md5: md5:d20b187c909dd432088fe2e3afb27d24
+  metadata_provenance: official hillary-studies.csv joined by Results_file (case-insensitive
+    match to archive); PMID resolved from final publication
+  n_provenance: official hillary-studies.csv N
+  cache_sha256: 782f7752b6f45d384d0568e0e3cbb5dfdd09e4a8bf272b7158618197d03a00f2
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 4012
+      n_positive_universe: 1976
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/lung_cancer_primary.npy
+      positive_sha256: 265622de47d3547288b27ba787a4863b631755073cb934bf702163c8e1a1f02f
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 1976
+          path: data/registry/ewas_v3/lung_cancer_primary_main_pairs.csv.gz
+          sha256: f63aff232ee555ff9de0eada7623ea5f8b57f5445d26c1fd4d06efd6e05ad888
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 94
+          n_matched_positives: 1882
+          path: data/registry/ewas_v3/lung_cancer_primary_genomic_context_s1_pairs.csv.gz
+          sha256: a463eac908d45743d63480ea86656c3aeaceaed2539b7ff66e02f4baeed413e6
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 489
+      n_positive_universe: 235
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/lung_cancer_sensitivity.npy
+      positive_sha256: ff106072cb20dc3043d1ffac4db6cb5200a5c7e99f3ae1fbecab3087601d8188
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 235
+          path: data/registry/ewas_v3/lung_cancer_sensitivity_main_pairs.csv.gz
+          sha256: 906af39aa9813a67376eff40eb42a8c070939fe9b114e3fb3849cbbfb6414953
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 11
+          n_matched_positives: 224
+          path: data/registry/ewas_v3/lung_cancer_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: 960a2bbbca022528a89e4e16591b9d02dabd32173986c24d70c6ed28cab2f303
+- task: ibd_family
+  category: Immune/inflammatory
+  source_analysis_id: zenodo_4672754__geo_GSE87640_2.csv
+  trait: Crohn's disease
+  n_positive_raw: 5418
+  n_positive_universe: 4040
+  n_matchable: 3994
+  complete_matching: false
+  N_study: 161.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '27886173.0'
+  Catalog_StudyID: null
+  tissue: Whole blood
+  platform: Illumina HumanMethylation450
+  zenodo_record: '4672754'
+  source_url: https://zenodo.org/records/4672754
+  original_filename: full_stats/geo_GSE87640_2.csv
+  container: 4672754/full_stats.tar.gz
+  source_sha256: d0fa280e93d9afb30b9848e3f4e1f41db14d844ec07915599a86e86041dd7050
+  official_md5: md5:3deeddfd5598391ad183742bc421737c
+  metadata_provenance: official studies-full.csv joined by Results_file
+  n_provenance: official study metadata N
+  cache_sha256: f4351e3b6f1319f05ea89541230eb75f6310ca8067421be322f8434adc1a27fc
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 5418
+      n_positive_universe: 4040
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/ibd_family_primary.npy
+      positive_sha256: fb7684781c1a600f9dc74d2e3d47dca71d23251d4551c6ed502ef2383a8bc5da
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 46
+          n_unmatched: 0
+          n_matched_positives: 3994
+          path: data/registry/ewas_v3/ibd_family_primary_main_pairs.csv.gz
+          sha256: 7a79d6d330d8e7fab28f5a7765072eae3673c67ffbba68f58c5a7b34063d80c6
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 46
+          n_unmatched: 211
+          n_matched_positives: 3783
+          path: data/registry/ewas_v3/ibd_family_primary_genomic_context_s1_pairs.csv.gz
+          sha256: dfc0a00456804be282a301d13d18fc1a075df014382c89a5d071ed4275ec159b
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 677
+      n_positive_universe: 473
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/ibd_family_sensitivity.npy
+      positive_sha256: 6237ed7e7fa65d5f50ee074d5964a0031cf4958c10cc3e65cd3d8079a74edafb
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 5
+          n_unmatched: 0
+          n_matched_positives: 468
+          path: data/registry/ewas_v3/ibd_family_sensitivity_main_pairs.csv.gz
+          sha256: 2a7e562b387ed69c2cdb42d903b25bd962a36b8da6ebed07c99a3475f5bab4d5
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 5
+          n_unmatched: 35
+          n_matched_positives: 433
+          path: data/registry/ewas_v3/ibd_family_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: 4ddab6fe90bc667b3260022f87db4f29ab812d4ec0f7076d1813fd1daaf85b8c
+- task: rheumatoid_arthritis
+  category: Immune/inflammatory
+  source_analysis_id: zenodo_4672754__geo_GSE42861_1.csv
+  trait: Rheumatoid arthritis
+  n_positive_raw: 815
+  n_positive_universe: 676
+  n_matchable: 670
+  complete_matching: false
+  N_study: 689.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '23334450.0'
+  Catalog_StudyID: null
+  tissue: Whole blood
+  platform: Illumina HumanMethylation450
+  zenodo_record: '4672754'
+  source_url: https://zenodo.org/records/4672754
+  original_filename: full_stats/geo_GSE42861_1.csv
+  container: 4672754/full_stats.tar.gz
+  source_sha256: d0fa280e93d9afb30b9848e3f4e1f41db14d844ec07915599a86e86041dd7050
+  official_md5: md5:3deeddfd5598391ad183742bc421737c
+  metadata_provenance: official studies-full.csv joined by Results_file
+  n_provenance: official study metadata N
+  cache_sha256: 0b2791e6f76e4ece9b907c295d71beacca4b385d17c007579563048b97a0e642
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 815
+      n_positive_universe: 676
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/rheumatoid_arthritis_primary.npy
+      positive_sha256: f1075e0ab981f4dedad4f1077e35621467ef35fcac5861ca0ce0dd4aed5df880
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 6
+          n_unmatched: 0
+          n_matched_positives: 670
+          path: data/registry/ewas_v3/rheumatoid_arthritis_primary_main_pairs.csv.gz
+          sha256: 3213c4673bbd2e94fad655be6cd1f8bffed0f113c610f3df8c58f1c0abb6da73
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 6
+          n_unmatched: 29
+          n_matched_positives: 641
+          path: data/registry/ewas_v3/rheumatoid_arthritis_primary_genomic_context_s1_pairs.csv.gz
+          sha256: ecf0366abfad4c7039bef210b7fc9d387082879ab64392ebb6b14e3437535b89
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 27
+      n_positive_universe: 20
+      support_tier: insufficient_support
+      positive_set: data/derived/ewas_v3/rheumatoid_arthritis_sensitivity.npy
+      positive_sha256: d1564bb95ff6bad04b4b68c41a018e5f706b009f76256c7c5622dd66da193eca
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 20
+          path: data/registry/ewas_v3/rheumatoid_arthritis_sensitivity_main_pairs.csv.gz
+          sha256: afb9af25f2d0e90d37297ffa87a4b8d0298b106d5f4f8aacb7fe0cab257e125e
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 1
+          n_matched_positives: 19
+          path: data/registry/ewas_v3/rheumatoid_arthritis_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: f410ba0fc153694571525d33fe4e2c61c929c8d53331cc2a94b85d3dfc6e8138
+- task: psoriasis
+  category: Immune/inflammatory
+  source_analysis_id: zenodo_4672754__geo_GSE73894_1.csv
+  trait: Psoriasis
+  n_positive_raw: 367
+  n_positive_universe: 321
+  n_matchable: 319
+  complete_matching: false
+  N_study: 219.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '26743604.0'
+  Catalog_StudyID: null
+  tissue: Skin
+  platform: Illumina HumanMethylation450
+  zenodo_record: '4672754'
+  source_url: https://zenodo.org/records/4672754
+  original_filename: full_stats/geo_GSE73894_1.csv
+  container: 4672754/full_stats.tar.gz
+  source_sha256: d0fa280e93d9afb30b9848e3f4e1f41db14d844ec07915599a86e86041dd7050
+  official_md5: md5:3deeddfd5598391ad183742bc421737c
+  metadata_provenance: official studies-full.csv joined by Results_file
+  n_provenance: official study metadata N
+  cache_sha256: c754a391ce505ad7e266e5a15634efc65252089f39ffdc0e1f18313372dec81a
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 367
+      n_positive_universe: 321
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/psoriasis_primary.npy
+      positive_sha256: 005c2a135bba858c8d12c851262ebf4dfffce6379f79845d65126a60805d8ba4
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 2
+          n_unmatched: 0
+          n_matched_positives: 319
+          path: data/registry/ewas_v3/psoriasis_primary_main_pairs.csv.gz
+          sha256: c3a9890149b75db36811e8e173eb51bc2db87165907910bfdef407b08d3a2aca
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 2
+          n_unmatched: 10
+          n_matched_positives: 309
+          path: data/registry/ewas_v3/psoriasis_primary_genomic_context_s1_pairs.csv.gz
+          sha256: 7e594d73567d15984ecc31363208b36bab95207a7bbef4fbbff260d601d440e0
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 6
+      n_positive_universe: 4
+      support_tier: insufficient_support
+      positive_set: data/derived/ewas_v3/psoriasis_sensitivity.npy
+      positive_sha256: cfd86c97be1d2dbdc2e257b487bd3ebe6b592052dfc15b70ff99095c445a6100
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 4
+          path: data/registry/ewas_v3/psoriasis_sensitivity_main_pairs.csv.gz
+          sha256: b4097f5cf9c865f7eded2513cf7db577849d904feeb35fbdbb876d555ec1e572
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 4
+          path: data/registry/ewas_v3/psoriasis_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: 1bc3ee09105a4d2bcfc9f0c7ebb0a37cfc58249dfd6088f69d818e130f353431
+- task: graves_disease
+  category: Immune/inflammatory
+  source_analysis_id: zenodo_4672754__geo_GSE71955_1.csv
+  trait: Graves' disease
+  n_positive_raw: 295
+  n_positive_universe: 281
+  n_matchable: 274
+  complete_matching: false
+  N_study: 135.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '26459776.0'
+  Catalog_StudyID: null
+  tissue: T cells
+  platform: Illumina HumanMethylation450
+  zenodo_record: '4672754'
+  source_url: https://zenodo.org/records/4672754
+  original_filename: full_stats/geo_GSE71955_1.csv
+  container: 4672754/full_stats.tar.gz
+  source_sha256: d0fa280e93d9afb30b9848e3f4e1f41db14d844ec07915599a86e86041dd7050
+  official_md5: md5:3deeddfd5598391ad183742bc421737c
+  metadata_provenance: official studies-full.csv joined by Results_file
+  n_provenance: official study metadata N
+  cache_sha256: 17f1577fe724595c34a6a5e3913f7d6a692938f403affc47385dea773fc0c2fb
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 295
+      n_positive_universe: 281
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/graves_disease_primary.npy
+      positive_sha256: 2fd7de0efeb1b00dccf1d0a7547fe7d9511f53d89ed3897197f6cdea7012bcae
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 7
+          n_unmatched: 0
+          n_matched_positives: 274
+          path: data/registry/ewas_v3/graves_disease_primary_main_pairs.csv.gz
+          sha256: cc582d4161cb63bfa9034d8c1ab6ff74be79b1a9a5723e558c8ef002954860ce
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 7
+          n_unmatched: 15
+          n_matched_positives: 259
+          path: data/registry/ewas_v3/graves_disease_primary_genomic_context_s1_pairs.csv.gz
+          sha256: b7d3ff9a2dc0b22fe8a64e30e08bfb580f9653701e5d249b275675a4702a8033
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 13
+      n_positive_universe: 13
+      support_tier: insufficient_support
+      positive_set: data/derived/ewas_v3/graves_disease_sensitivity.npy
+      positive_sha256: 540f9b007552b7737e33dfc99d3b103322df8b6ca5ef23d3dbfc1396989fc0fc
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 13
+          path: data/registry/ewas_v3/graves_disease_sensitivity_main_pairs.csv.gz
+          sha256: b5d644ecaaf729d2f228eba25a79f2422db2d52ee9888b7f2cf30d3ff11d4b21
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 13
+          path: data/registry/ewas_v3/graves_disease_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: 12cc2062fe39786f50706a07c7d6dff0e095381ce1e5fcc1c8d9e074f6b7df7f
+- task: adiposity_bmi
+  category: Cardiometabolic
+  source_analysis_id: zenodo_13998835__Hannah_Smith_bmi_OSCA_EWAS.csv
+  trait: Body mass index
+  n_positive_raw: 123691
+  n_positive_universe: 48071
+  n_matchable: 48071
+  complete_matching: true
+  N_study: 17304.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '39706196.0'
+  Catalog_StudyID: null
+  tissue: Whole blood
+  platform: EPIC
+  zenodo_record: '13998835'
+  source_url: https://zenodo.org/records/13998835
+  original_filename: Hannah_Smith_bmi_OSCA_EWAS.csv
+  container: 13998835/hannah_smith_metabolic_traits.zip
+  source_sha256: e00757561beea34cb5479d8d21fb3f6b531e709ff72c2ecdf2e449fc786fb1bc
+  official_md5: md5:08cfe61bbbbd5fc9d3148a5158f243c0
+  metadata_provenance: official Zenodo record description and original associated
+    publication; no Catalog StudyID supplied
+  n_provenance: maximum per-probe N in official summary statistics; range recorded
+    separately
+  cache_sha256: 3224c8d3c1fd5c2fa670a731b2a5308647b8a679f40301f37c352938477a7642
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 123691
+      n_positive_universe: 48071
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/adiposity_bmi_primary.npy
+      positive_sha256: ca52100338de59b50626e41fa1a05d74a61ec26758fce5ae41708c3ac1052528
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 48071
+          path: data/registry/ewas_v3/adiposity_bmi_primary_main_pairs.csv.gz
+          sha256: 8ef80e395f5684e23311217469fdb99c77627b622e1cc3f5fd0a6c5d1fbf3707
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 2156
+          n_matched_positives: 45915
+          path: data/registry/ewas_v3/adiposity_bmi_primary_genomic_context_s1_pairs.csv.gz
+          sha256: 5784281375c53ff10882cb20445366cb2705469b77089c151c12a7421ec24418
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 62259
+      n_positive_universe: 22119
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/adiposity_bmi_sensitivity.npy
+      positive_sha256: f5d5dd2d7e93570185ebbe19f646facbafaaac0e783fd16aa9c6266b6b3d4d2c
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 22119
+          path: data/registry/ewas_v3/adiposity_bmi_sensitivity_main_pairs.csv.gz
+          sha256: 2800c281310de1b06ee769b0d52736dcbd4422919a7eba0ddfab30c23997f1a2
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 888
+          n_matched_positives: 21231
+          path: data/registry/ewas_v3/adiposity_bmi_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: 0a270fd4027f13d4736382144228fd7a0d81a079c715eb421b95e9fa29c7c666
+- task: glycemic_t2d
+  category: Cardiometabolic
+  source_analysis_id: zenodo_8021411__incident_basic_diabetes_gs.csv
+  trait: Incident Type 2 Diabetes
+  n_positive_raw: 30199
+  n_positive_universe: 10269
+  n_matchable: 10269
+  complete_matching: true
+  N_study: 17749.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '37410739.0'
+  Catalog_StudyID: null
+  tissue: Whole blood
+  platform: Illumina HumanMethylationEPIC
+  zenodo_record: '8021411'
+  source_url: https://zenodo.org/records/8021411
+  original_filename: incident_basic_diabetes_gs.csv
+  container: 8021411/compressed-disease-states-ewas.tar.gz
+  source_sha256: 213d8cd6c902fdc59b53f828b223b0558f76597eeeab7faae13d461397e4a277
+  official_md5: md5:d20b187c909dd432088fe2e3afb27d24
+  metadata_provenance: official hillary-studies.csv joined by Results_file (case-insensitive
+    match to archive); PMID resolved from final publication
+  n_provenance: official hillary-studies.csv N
+  cache_sha256: 18ea6d4a56b85aefa00611e88e7c45f349ec27c5cd4aeedba41dadf314222091
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 30199
+      n_positive_universe: 10269
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/glycemic_t2d_primary.npy
+      positive_sha256: 54b8d69c057b456b28bb67aa15a448815f9483dac6647b8e0d5ce68989ffa60d
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 10269
+          path: data/registry/ewas_v3/glycemic_t2d_primary_main_pairs.csv.gz
+          sha256: 26e5a2acfc21b05cf130d09ae40d6cccc7e88edbdb7f131bb85049b19baed52f
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 376
+          n_matched_positives: 9893
+          path: data/registry/ewas_v3/glycemic_t2d_primary_genomic_context_s1_pairs.csv.gz
+          sha256: 7a596320e7da479355599839f871eac5db3f8a25e18f3f2990b76504bbc1756b
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 6119
+      n_positive_universe: 1979
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/glycemic_t2d_sensitivity.npy
+      positive_sha256: dccbd1f6e315816d44c0757de4c026ce9a8f7acf257639fc18b026f8cf44439e
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 1979
+          path: data/registry/ewas_v3/glycemic_t2d_sensitivity_main_pairs.csv.gz
+          sha256: 49af00a60a317a8cb1d93f87c894e43d224f35c9accb12789f4487b69c2a8b54
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 69
+          n_matched_positives: 1910
+          path: data/registry/ewas_v3/glycemic_t2d_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: 1a7b2fa92f40b230e5e00333730802cc2505f90179f8ddd3595688b05a67cc67
+- task: lipid_hdl
+  category: Cardiometabolic
+  source_analysis_id: zenodo_13998835__Hannah_Smith_HDL_cholesterol_OSCA_EWAS.csv
+  trait: HDL cholesterol
+  n_positive_raw: 113156
+  n_positive_universe: 48936
+  n_matchable: 48936
+  complete_matching: true
+  N_study: 18225.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '39706196.0'
+  Catalog_StudyID: null
+  tissue: Whole blood
+  platform: EPIC
+  zenodo_record: '13998835'
+  source_url: https://zenodo.org/records/13998835
+  original_filename: Hannah_Smith_HDL_cholesterol_OSCA_EWAS.csv
+  container: 13998835/hannah_smith_metabolic_traits.zip
+  source_sha256: e00757561beea34cb5479d8d21fb3f6b531e709ff72c2ecdf2e449fc786fb1bc
+  official_md5: md5:08cfe61bbbbd5fc9d3148a5158f243c0
+  metadata_provenance: official Zenodo record description and original associated
+    publication; no Catalog StudyID supplied
+  n_provenance: maximum per-probe N in official summary statistics; range recorded
+    separately
+  cache_sha256: 5c00e0298a1ff9e2933016f2410bae7ea0d0e721ea37658bd54b5deb17ed58a0
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 113156
+      n_positive_universe: 48936
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/lipid_hdl_primary.npy
+      positive_sha256: e87e33f1ef48b91d4edcd036396708dd223ed0a6309395aff2aa085bf876b740
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 48936
+          path: data/registry/ewas_v3/lipid_hdl_primary_main_pairs.csv.gz
+          sha256: d531e6c524e8af551ebb8f4f3ca3c28047785c4da2c5783caac1b9d12ca9f645
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 2541
+          n_matched_positives: 46395
+          path: data/registry/ewas_v3/lipid_hdl_primary_genomic_context_s1_pairs.csv.gz
+          sha256: ee559674632c3d1ca36d41926758d6f5dee0bd63f2de831c8df358b2051c49da
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 37320
+      n_positive_universe: 14439
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/lipid_hdl_sensitivity.npy
+      positive_sha256: 32b088b88c81986d84303aa844763b83185723b978d3979f50a85ea9b945a7f1
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 14439
+          path: data/registry/ewas_v3/lipid_hdl_sensitivity_main_pairs.csv.gz
+          sha256: 991b3a5802539638925cba758bd109cd43cec91a2cb72ef285901cc8369d907c
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 586
+          n_matched_positives: 13853
+          path: data/registry/ewas_v3/lipid_hdl_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: 1042e71a01d92318664ba03742f630a89477018d0951a83890335547d9a317e8
+- task: cardiovascular_ihd
+  category: Cardiometabolic
+  source_analysis_id: zenodo_8021411__incident_basic_heart_disease_gs.csv
+  trait: Incident Ischemic Heart Disease
+  n_positive_raw: 2627
+  n_positive_universe: 936
+  n_matchable: 936
+  complete_matching: true
+  N_study: 17483.0
+  support_tier: main_eligible
+  selected: true
+  PMID: '37410739.0'
+  Catalog_StudyID: null
+  tissue: Whole blood
+  platform: Illumina HumanMethylationEPIC
+  zenodo_record: '8021411'
+  source_url: https://zenodo.org/records/8021411
+  original_filename: incident_basic_heart_disease_gs.csv
+  container: 8021411/compressed-disease-states-ewas.tar.gz
+  source_sha256: 213d8cd6c902fdc59b53f828b223b0558f76597eeeab7faae13d461397e4a277
+  official_md5: md5:d20b187c909dd432088fe2e3afb27d24
+  metadata_provenance: official hillary-studies.csv joined by Results_file (case-insensitive
+    match to archive); PMID resolved from final publication
+  n_provenance: official hillary-studies.csv N
+  cache_sha256: c412a929bd9857be7a64c501d86a8b0ea012e232901c5af76ed818cab915cae2
+  sets:
+    primary:
+      p_strictly_less_than: 0.0001
+      n_positive_raw: 2627
+      n_positive_universe: 936
+      support_tier: main_eligible
+      positive_set: data/derived/ewas_v3/cardiovascular_ihd_primary.npy
+      positive_sha256: 54d3b9c34c01785d003c52d945a7db3032efb1b528c43edace91f327cd7186c9
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 936
+          path: data/registry/ewas_v3/cardiovascular_ihd_primary_main_pairs.csv.gz
+          sha256: 70468f4bc4d9acc3aba72a67a247287ffb6f561798e4e89c8c881fabaa24676b
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 43
+          n_matched_positives: 893
+          path: data/registry/ewas_v3/cardiovascular_ihd_primary_genomic_context_s1_pairs.csv.gz
+          sha256: aeb12f74aca857f1c19bd9e12d472e448d6dfb54293f0050b38fc3c90905d16a
+    sensitivity:
+      p_strictly_less_than: 1.0e-07
+      n_positive_raw: 72
+      n_positive_universe: 26
+      support_tier: insufficient_support
+      positive_set: data/derived/ewas_v3/cardiovascular_ihd_sensitivity.npy
+      positive_sha256: 9abc945166d1661f037fdd7fe0b302d97ec1d3a16bf0742a0b58ff6b8ea534f0
+      matching:
+        main:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 0
+          n_matched_positives: 26
+          path: data/registry/ewas_v3/cardiovascular_ihd_sensitivity_main_pairs.csv.gz
+          sha256: 41fb66b847836a2045fc4e7db652845de66562961b1a0d8b766d9580b3805cd6
+        genomic_context_s1:
+          n_dropped_unknown_probe_type: 0
+          n_unmatched: 2
+          n_matched_positives: 24
+          path: data/registry/ewas_v3/cardiovascular_ihd_sensitivity_genomic_context_s1_pairs.csv.gz
+          sha256: d0f33ca54519c47157062b08fe8cdf85b815049aa9f2ea97a3a76021f6a1d374
+prespecified_supplementary_tasks:
+- task: glucose
+  category: Supplementary
+  source_analysis_id: zenodo_13998835__Hannah_Smith_Glucose_OSCA_EWAS.csv
+  trait: Glucose
+  n_positive_raw: 4339
+  n_positive_universe: 1643
+  n_matchable: 1643
+  complete_matching: true
+  N_study: 17908.0
+  support_tier: main_eligible
+  selected: true
+- task: total_cholesterol
+  category: Supplementary
+  source_analysis_id: zenodo_13998835__Hannah_Smith_Total_cholesterol_OSCA_EWAS.csv
+  trait: Total cholesterol
+  n_positive_raw: 10897
+  n_positive_universe: 4455
+  n_matchable: 4455
+  complete_matching: true
+  N_study: 18270.0
+  support_tier: main_eligible
+  selected: true
+- task: body_fat
+  category: Supplementary
+  source_analysis_id: zenodo_13998835__Hannah_Smith_body_fat_OSCA_EWAS.csv
+  trait: Body fat percentage
+  n_positive_raw: 80722
+  n_positive_universe: 30647
+  n_matchable: 30647
+  complete_matching: true
+  N_study: 17304.0
+  support_tier: main_eligible
+  selected: true
+- task: ckd
+  category: Supplementary
+  source_analysis_id: zenodo_8021411__prevalent_basic_CKD_gs.csv
+  trait: Prevalent Chronic Kidney Disease (Estimated)
+  n_positive_raw: 1340
+  n_positive_universe: 539
+  n_matchable: 539
+  complete_matching: true
+  N_study: 18318.0
+  support_tier: main_eligible
+  selected: true
+- task: stroke
+  category: Supplementary
+  source_analysis_id: zenodo_8021411__incident_basic_stroke_gs.csv
+  trait: Incident Stroke
+  n_positive_raw: 868
+  n_positive_universe: 409
+  n_matchable: 409
+  complete_matching: true
+  N_study: 18023.0
+  support_tier: main_eligible
+  selected: true
+- task: whr
+  category: Supplementary
+  source_analysis_id: zenodo_13998835__Hannah_Smith_whr_OSCA_EWAS.csv
+  trait: Waist-hip ratio
+  n_positive_raw: 62649
+  n_positive_universe: 22369
+  n_matchable: 22369
+  complete_matching: true
+  N_study: 17304.0
+  support_tier: main_eligible
+  selected: true
+inventory_only_families:
+- environmental/behavioral
+- psychiatric
+other_cardiometabolic_inventory_traits: Inventory only; any supplementary panel extension
+  requires a new prospective freeze before evaluation
+overlap_flags:
+  primary: 5
+  sensitivity: 6
+provenance_sha256:
+  outputs/encode_atlas_v1/loci.parquet: 45c5a0bd2d78472f541e293994b5930609a5f2e33fc45691cabbb5ddd50aacbe
+  data/derived/bioval_v2/covariates/universe_covariates.parquet: 466428137dcc1a80f998b2dd07a52812b015f239a4a798b12ce77660f69e3997
+  data/processed/ComputAgeBench/illumina_probe_grch38.parquet: 055ac47c45cfac5578af8b721a257ef84aec66da2802cf52b237966bd7d526a6
+  data/registry/ewas_catalog_expansion/all_candidate_studies.csv: ce153703714e28681151e980581f8d921439127b4532f8223d9fe71bc935f983
+  data/registry/ewas_catalog_expansion/zenodo_analysis_metadata.csv: 8c4587368e2cf78db94d37c5972ee5cb482ca4b33394fa9f1183e4ba297a5768
+  data/registry/ewas_catalog_expansion/zenodo_download_manifest.json: c69323c21c1a03f75b24d14cc1ec41b20d382da4bb9190a1217986deee1781b5
+  data/registry/ewas_catalog_expansion/bulk_retry_manifest.json: a9f1a133f140fee65e4b2ca6c4f33e755693434da51894386f9fd4f8d999c2bb
+  configs/ewas_v2/ewas_v2_spec_v1.yaml: e39741e94fd8a7cee464eb712004df7f3a6a667f9de0b09f6d94354c5e43005a
+  src/cpg_repr_benchmark/ewas_v2/design.py: 7b0a85cae350bc6f0696a1db5b176b3f493e1941833e0e7dff31f2515e546024
+  scripts/ewas_v3/build_main_panel.py: 294b1b0ca8abe9089000064633242135f16837612221ed2870b28ed1d65a3d4c
+  scripts/ewas_v3/check_freeze.py: ed39ad1fae4977f566ae0aa1ac17fffd50ee5b8a244a48c68538d7c8e50793b5
+artifact_sha256:
+  data/registry/ewas_v3/adiposity_bmi_primary_genomic_context_s1_pairs.csv.gz: 5784281375c53ff10882cb20445366cb2705469b77089c151c12a7421ec24418
+  data/registry/ewas_v3/adiposity_bmi_primary_main_pairs.csv.gz: 8ef80e395f5684e23311217469fdb99c77627b622e1cc3f5fd0a6c5d1fbf3707
+  data/registry/ewas_v3/adiposity_bmi_sensitivity_genomic_context_s1_pairs.csv.gz: 0a270fd4027f13d4736382144228fd7a0d81a079c715eb421b95e9fa29c7c666
+  data/registry/ewas_v3/adiposity_bmi_sensitivity_main_pairs.csv.gz: 2800c281310de1b06ee769b0d52736dcbd4422919a7eba0ddfab30c23997f1a2
+  data/registry/ewas_v3/breast_cancer_primary_genomic_context_s1_pairs.csv.gz: 1a494d82c9bdfdb1c3eec044ca55c05bdbd6db46d85bbb2c36594d7a8ac911cf
+  data/registry/ewas_v3/breast_cancer_primary_main_pairs.csv.gz: 3893430caf394e67e8c20d5cb660d15bd4d5f164d94aec44fe10ee8d73f9d8f2
+  data/registry/ewas_v3/breast_cancer_sensitivity_genomic_context_s1_pairs.csv.gz: 530e99e9a4cc12461d8251ac9574fea63a95971d90ab8ac2d61301cbd206b18e
+  data/registry/ewas_v3/breast_cancer_sensitivity_main_pairs.csv.gz: 2ac346632a9df56c313408acbac767b4454dd5733c7317de35e3955fd831fa0a
+  data/registry/ewas_v3/candidate_selection_audit.csv: 6b0e587b9447afa4fba9ef9915fe3b75dfb109a505f4d072b3ce4063f20e7da8
+  data/registry/ewas_v3/cardiovascular_ihd_primary_genomic_context_s1_pairs.csv.gz: aeb12f74aca857f1c19bd9e12d472e448d6dfb54293f0050b38fc3c90905d16a
+  data/registry/ewas_v3/cardiovascular_ihd_primary_main_pairs.csv.gz: 70468f4bc4d9acc3aba72a67a247287ffb6f561798e4e89c8c881fabaa24676b
+  data/registry/ewas_v3/cardiovascular_ihd_sensitivity_genomic_context_s1_pairs.csv.gz: d0f33ca54519c47157062b08fe8cdf85b815049aa9f2ea97a3a76021f6a1d374
+  data/registry/ewas_v3/cardiovascular_ihd_sensitivity_main_pairs.csv.gz: 41fb66b847836a2045fc4e7db652845de66562961b1a0d8b766d9580b3805cd6
+  data/registry/ewas_v3/chromosome_bootstrap_multiplicities.csv: da2f62a1e95a76e443efaea4efcd6bc1e90fb2af91b06891a28d1d0a94f5b75d
+  data/registry/ewas_v3/colorectal_cancer_primary_genomic_context_s1_pairs.csv.gz: 06a68902a005183ffb884a03d0f6368f559f232bafeb9a939e1ecb663228c3b4
+  data/registry/ewas_v3/colorectal_cancer_primary_main_pairs.csv.gz: f010a3d3eb2931be7b8d827cd58c4bdd7d845cb3affc8faf613ff3965e8813e2
+  data/registry/ewas_v3/colorectal_cancer_sensitivity_genomic_context_s1_pairs.csv.gz: 026d0c9e8c0edb7f9b140c28fa6255b2270570a13fb141bbd9053458441fc947
+  data/registry/ewas_v3/colorectal_cancer_sensitivity_main_pairs.csv.gz: 2f48b9675676ca11ca33a899ebe9aaf97e73409904e1da5839554b16ae105a0f
+  data/registry/ewas_v3/glycemic_t2d_primary_genomic_context_s1_pairs.csv.gz: 7a596320e7da479355599839f871eac5db3f8a25e18f3f2990b76504bbc1756b
+  data/registry/ewas_v3/glycemic_t2d_primary_main_pairs.csv.gz: 26e5a2acfc21b05cf130d09ae40d6cccc7e88edbdb7f131bb85049b19baed52f
+  data/registry/ewas_v3/glycemic_t2d_sensitivity_genomic_context_s1_pairs.csv.gz: 1a7b2fa92f40b230e5e00333730802cc2505f90179f8ddd3595688b05a67cc67
+  data/registry/ewas_v3/glycemic_t2d_sensitivity_main_pairs.csv.gz: 49af00a60a317a8cb1d93f87c894e43d224f35c9accb12789f4487b69c2a8b54
+  data/registry/ewas_v3/graves_disease_primary_genomic_context_s1_pairs.csv.gz: b7d3ff9a2dc0b22fe8a64e30e08bfb580f9653701e5d249b275675a4702a8033
+  data/registry/ewas_v3/graves_disease_primary_main_pairs.csv.gz: cc582d4161cb63bfa9034d8c1ab6ff74be79b1a9a5723e558c8ef002954860ce
+  data/registry/ewas_v3/graves_disease_sensitivity_genomic_context_s1_pairs.csv.gz: 12cc2062fe39786f50706a07c7d6dff0e095381ce1e5fcc1c8d9e074f6b7df7f
+  data/registry/ewas_v3/graves_disease_sensitivity_main_pairs.csv.gz: b5d644ecaaf729d2f228eba25a79f2422db2d52ee9888b7f2cf30d3ff11d4b21
+  data/registry/ewas_v3/ibd_family_primary_genomic_context_s1_pairs.csv.gz: dfc0a00456804be282a301d13d18fc1a075df014382c89a5d071ed4275ec159b
+  data/registry/ewas_v3/ibd_family_primary_main_pairs.csv.gz: 7a79d6d330d8e7fab28f5a7765072eae3673c67ffbba68f58c5a7b34063d80c6
+  data/registry/ewas_v3/ibd_family_sensitivity_genomic_context_s1_pairs.csv.gz: 4ddab6fe90bc667b3260022f87db4f29ab812d4ec0f7076d1813fd1daaf85b8c
+  data/registry/ewas_v3/ibd_family_sensitivity_main_pairs.csv.gz: 2a7e562b387ed69c2cdb42d903b25bd962a36b8da6ebed07c99a3475f5bab4d5
+  data/registry/ewas_v3/lipid_hdl_primary_genomic_context_s1_pairs.csv.gz: ee559674632c3d1ca36d41926758d6f5dee0bd63f2de831c8df358b2051c49da
+  data/registry/ewas_v3/lipid_hdl_primary_main_pairs.csv.gz: d531e6c524e8af551ebb8f4f3ca3c28047785c4da2c5783caac1b9d12ca9f645
+  data/registry/ewas_v3/lipid_hdl_sensitivity_genomic_context_s1_pairs.csv.gz: 1042e71a01d92318664ba03742f630a89477018d0951a83890335547d9a317e8
+  data/registry/ewas_v3/lipid_hdl_sensitivity_main_pairs.csv.gz: 991b3a5802539638925cba758bd109cd43cec91a2cb72ef285901cc8369d907c
+  data/registry/ewas_v3/lung_cancer_primary_genomic_context_s1_pairs.csv.gz: a463eac908d45743d63480ea86656c3aeaceaed2539b7ff66e02f4baeed413e6
+  data/registry/ewas_v3/lung_cancer_primary_main_pairs.csv.gz: f63aff232ee555ff9de0eada7623ea5f8b57f5445d26c1fd4d06efd6e05ad888
+  data/registry/ewas_v3/lung_cancer_sensitivity_genomic_context_s1_pairs.csv.gz: 960a2bbbca022528a89e4e16591b9d02dabd32173986c24d70c6ed28cab2f303
+  data/registry/ewas_v3/lung_cancer_sensitivity_main_pairs.csv.gz: 906af39aa9813a67376eff40eb42a8c070939fe9b114e3fb3849cbbfb6414953
+  data/registry/ewas_v3/main_panel_summary.csv: dd103e8b7baa03f2ea2eb71d844e5fc65ad44e7b91111023292587eab6b50446
+  data/registry/ewas_v3/matching_feasibility.csv: d1693ccba4b38d04c51870af18887c1dacb4e02d458991b9c4165f331d11c4d2
+  data/registry/ewas_v3/melanoma_primary_genomic_context_s1_pairs.csv.gz: ce74e0a780f636d2e0ab2a8294bbe5e3f72cf68d566304d45dfed5da236ffd81
+  data/registry/ewas_v3/melanoma_primary_main_pairs.csv.gz: 0eb6317b3d90d18d0f102e95c81b91d74a997aa569ec3cb83eb48fdf04f48713
+  data/registry/ewas_v3/melanoma_sensitivity_genomic_context_s1_pairs.csv.gz: 6081c010d0ec47626c0fd6b2dbea2e3bb68f31f26cd3009c77932beb4bf4b09e
+  data/registry/ewas_v3/melanoma_sensitivity_main_pairs.csv.gz: b4124ace3199ba148f8b439a7ec8567b87710f99719e1b284a13ba003256888d
+  data/registry/ewas_v3/oral_pharyngeal_scc_primary_genomic_context_s1_pairs.csv.gz: 17470b019afb08eb1e9a1523b4258fe803de243f79b4f72ef21ccf75fd7218cb
+  data/registry/ewas_v3/oral_pharyngeal_scc_primary_main_pairs.csv.gz: e3cf4707391896beff62b38643a977270aa94dbb8148b9aa34738289fd8eb80d
+  data/registry/ewas_v3/oral_pharyngeal_scc_sensitivity_genomic_context_s1_pairs.csv.gz: 56f2a405feed3e672f5651bb1efdf7497cb7e984adeaad7989af825ef047d277
+  data/registry/ewas_v3/oral_pharyngeal_scc_sensitivity_main_pairs.csv.gz: 7bbbe0c54dd6f96045b6f07df5a5336ffb7b7d2fe684631d2e4ec4c0fbcd5d3b
+  data/registry/ewas_v3/primary_overlap_flags.csv: 7ad95cee0f6ae041244cab8216e1e5c9aadc071af7327798d6f94d710e819816
+  data/registry/ewas_v3/primary_overlap_pairs.csv: 6ce8ca3410daf398a50b60ae072f648796b60f36e06109b2f9857b85b187e1f7
+  data/registry/ewas_v3/primary_redundancy_matrix.csv: d06f8ffefaed765f0f3e602fc423ca78673e4641973b1302d30c5b62686c8289
+  data/registry/ewas_v3/psoriasis_primary_genomic_context_s1_pairs.csv.gz: 7e594d73567d15984ecc31363208b36bab95207a7bbef4fbbff260d601d440e0
+  data/registry/ewas_v3/psoriasis_primary_main_pairs.csv.gz: c3a9890149b75db36811e8e173eb51bc2db87165907910bfdef407b08d3a2aca
+  data/registry/ewas_v3/psoriasis_sensitivity_genomic_context_s1_pairs.csv.gz: 1bc3ee09105a4d2bcfc9f0c7ebb0a37cfc58249dfd6088f69d818e130f353431
+  data/registry/ewas_v3/psoriasis_sensitivity_main_pairs.csv.gz: b4097f5cf9c865f7eded2513cf7db577849d904feeb35fbdbb876d555ec1e572
+  data/registry/ewas_v3/rheumatoid_arthritis_primary_genomic_context_s1_pairs.csv.gz: ecf0366abfad4c7039bef210b7fc9d387082879ab64392ebb6b14e3437535b89
+  data/registry/ewas_v3/rheumatoid_arthritis_primary_main_pairs.csv.gz: 3213c4673bbd2e94fad655be6cd1f8bffed0f113c610f3df8c58f1c0abb6da73
+  data/registry/ewas_v3/rheumatoid_arthritis_sensitivity_genomic_context_s1_pairs.csv.gz: f410ba0fc153694571525d33fe4e2c61c929c8d53331cc2a94b85d3dfc6e8138
+  data/registry/ewas_v3/rheumatoid_arthritis_sensitivity_main_pairs.csv.gz: afb9af25f2d0e90d37297ffa87a4b8d0298b106d5f4f8aacb7fe0cab257e125e
+  data/registry/ewas_v3/sensitivity_overlap_flags.csv: 04a086136ac7a032365c2975bf045ed647aa0e1c1d452f508ed89bf1660ce8bd
+  data/registry/ewas_v3/sensitivity_overlap_pairs.csv: 41bd22a96ea2f909ddbd37e1e5080ac50bb945cbe475337b0174d1c87ecfddec
+  data/registry/ewas_v3/sensitivity_redundancy_matrix.csv: c54a5d2432265be9cff78def8a5322e503dc25ddbbc06ec517016729b73c2dd3
+  data/registry/ewas_v3/supplementary_panel.csv: 4101ae5f9a5fe0978db4f83ca1f2a229f577ab84d48840f9a96f36f9aae4d480
+future_result_table_columns:
+- category
+- trait
+- source_analysis_id
+- PMID
+- tissue
+- N_study
+- n_positive_universe
+- n_matched
+- representation
+- AUROC
+- ci_lo
+- ci_hi
+- AUPRC
+- matched_pair_concordance
+execution_gate: Manifest and artifact hashes must match a committed freeze tag AND
+  explicit user approval must be recorded before any representation execution.
+freeze_tag: ewas-v3-main-panel-freeze-v1

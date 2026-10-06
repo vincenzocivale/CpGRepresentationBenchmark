@@ -1,0 +1,205 @@
+[
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/13998835/files/hannah_smith_metabolic_traits.zip/content",
+    "expected_md5": "md5:08cfe61bbbbd5fc9d3148a5158f243c0",
+    "sha256": "e00757561beea34cb5479d8d21fb3f6b531e709ff72c2ecdf2e449fc786fb1bc",
+    "bytes": 426161992
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/10857974/files/mateduewas_summarystatistics.zip/content",
+    "expected_md5": "md5:553ca534461132689b5bc436e4f25117",
+    "sha256": "1f6c42f7dedd0da2e227bfdc534f7561eede7290d8e3b6a693373222a5b8e98c",
+    "bytes": 130625787
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/10857317/files/ewas_result_PAHallBatches_PPMI_ADNI_NFBC66_FIVEepistructurePCs_TENcontrolprobePCs.zip/content",
+    "expected_md5": "md5:1725859744790c8410e81e3d54d7699f",
+    "sha256": "410ae550c0bf02ce460499494fc4992138e7bdae31fd69fcb3fa54f5b3596415",
+    "bytes": 18174716
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/10426446/files/maternal-glycemia-taschereauetal.zip/content",
+    "expected_md5": "md5:a7ac62477a273d83c3d83655bcee4f6e",
+    "sha256": "b3a5af96945f5a8d71311843d77569e8b543a829a5b74b91c6445aa06ab79225",
+    "bytes": 6888
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/10426429/files/crp_hillaryetal.zip/content",
+    "expected_md5": "md5:f3214d49d5c77d00ff1948ba4cee09e4",
+    "sha256": "07da28bc3d8947209255fc5e44d6b91fa34695d7d0c9497de47e8245f67f9abb",
+    "bytes": 27549275
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/8021411/files/compressed-disease-states-ewas.tar.gz/content",
+    "expected_md5": "md5:d20b187c909dd432088fe2e3afb27d24",
+    "sha256": "213d8cd6c902fdc59b53f828b223b0558f76597eeeab7faae13d461397e4a277",
+    "bytes": 828630448
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/7314534/files/ppBMI_placenta_unadjustedmodel_NFJ.csv/content",
+    "expected_md5": "md5:574c7878f55e8db387f78554d53b9ae4",
+    "sha256": "344a61fc0144df6c769d8aaf0ccae822965dfa1fe0b20ba1e8018398fe43b998",
+    "bytes": 29844552
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/7314534/files/ppBMI_placenta_adjustedmodel_NFJ.csv/content",
+    "expected_md5": "md5:a955c7acebb0f3611dc19834137d3fcf",
+    "sha256": "19a88c0cd4689064879c46f301f6f67efec1199a4286ef07bce25ffffdcc13e3",
+    "bytes": 29871883
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/6546809/files/ewas_final_truncate_green500.csv/content",
+    "expected_md5": "md5:eea5b65d75ff3956cf67b298727f3503",
+    "sha256": "a54fdda873327c6b0be52cf70011fba4d7e88fb9eb4c33dc3a2e85cc32b83b51",
+    "bytes": 42915080
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/6546809/files/ewas_final_truncate_green30.csv/content",
+    "expected_md5": "md5:34f33fe0deda6fc43c20034aeebf811c",
+    "sha256": "1802ed845eb0b1213f3e374a317219d73b3ee3b527abe464532f2f49e8bd2dbd",
+    "bytes": 43167164
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/6546469/files/smvsnon_mainmodel.csv/content",
+    "expected_md5": "md5:8026230e7035050a4097f040ca857e5d",
+    "sha256": "61d953e17a21395fb334040df437e08d146e85a45b6cc8fc5f65b00dcf21c938",
+    "bytes": 58556150
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/6546469/files/vapevsnon_mainmodel.csv/content",
+    "expected_md5": "md5:6fa12fc55ca35b7085323c10af4340c9",
+    "sha256": "21b70d83ba73b038db6c4835835ea61d5175e91f30d042f2caf290777e7ee4fb",
+    "bytes": 58560055
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/6546469/files/vapevssm_mainmodel.csv/content",
+    "expected_md5": "md5:9057d66135fe72fec647ffa2849296b1",
+    "sha256": "70d8483bdbc3ec8585d59c16d7642ebc81dd49333a6b7a6fc855f8e82c8bf53c",
+    "bytes": 58516331
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/5887036/files/MAKI-intervention-EWAS.csv/content",
+    "expected_md5": "md5:98ef3352e323006f872d7c6e302c2f2a",
+    "sha256": "55077b0ba751ba72fa0a63da82cfbab9e2a022f9c1808cc64b92a0a646c207e3",
+    "bytes": 53349504
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/5886997/files/glucose_EWAS_MRC.txt.gz/content",
+    "expected_md5": "md5:b67f045cf7596edebd57d9e70849994d",
+    "sha256": "bcef71d44fd7f44cea7dc5619d9713a6262da72711f29b90b2c8437edce396f3",
+    "bytes": 36771311
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/5886997/files/insulin_EWAS_MRC.txt.gz/content",
+    "expected_md5": "md5:ac9c621ab7a9d31035611b12a03ab52b",
+    "sha256": "90105f838da8f9bea0c88f514d2dc6fd344fd629dc5ae7c87ec21a5058f8ad61",
+    "bytes": 14367973
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/5886997/files/OGTT_EWAS_MRC.txt.gz/content",
+    "expected_md5": "md5:1dc427b15b63002507c8fc4367b390af",
+    "sha256": "9c0e56f839cd6e07208a29a3d35bd676d727d3eb5dd4aedcb592c699b999b535",
+    "bytes": 33635729
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/5886997/files/fastinginsulin_EWAS_MRC.txt.gz/content",
+    "expected_md5": "md5:1f6982e07e48dade692f019b316c231c",
+    "sha256": "a10345cc377bbc7926d3d8c5a343842a3881d95be399a9391bb22b3e5e99ff73",
+    "bytes": 13881573
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/5886997/files/fastingglucose_EWAS_MRC.txt.gz/content",
+    "expected_md5": "md5:7cb236f5b2509375db2fdf6984c02cf9",
+    "sha256": "b4758d68e3f37605b863795aa83d61766751cb93cf7d5d7aeae5baa87c1e266e",
+    "bytes": 35345458
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/5825713/files/results.csv/content",
+    "expected_md5": "md5:41dd25e7d3c8257cf829609eb1d2be71",
+    "sha256": "f4035a8df47f68455a9c10b3c2f551d7c3cf6312507e3e8e3ffc9b9932b1e693",
+    "bytes": 51340933
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/4672754/files/full_stats.tar.gz/content",
+    "expected_md5": "md5:3deeddfd5598391ad183742bc421737c",
+    "sha256": "d0fa280e93d9afb30b9848e3f4e1f41db14d844ec07915599a86e86041dd7050",
+    "bytes": 239784007
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/4672754/files/studies-full.csv/content",
+    "expected_md5": "md5:478ad78d922bd84c24626631aff71a56",
+    "sha256": "1a758437b0f4593bba568288a92070d85a7f8e64c11937d8f936ca561864906e",
+    "bytes": 14194
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/4672645/files/studies-full.csv/content",
+    "expected_md5": "md5:b597054edd706c45856249d43c4ca9fe",
+    "sha256": "56f03d0c2a489bf3747476000f5f830be37a56a65d6614337218e84fd3e30bc2",
+    "bytes": 117349
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/4672645/files/full_stats.tar.gz/content",
+    "expected_md5": "md5:6e70766586380f7221a373be866154e1",
+    "sha256": "f34efa30615921a2ea43dedccd0c9f2799b8991f1dd322649f753722fbdecfa9",
+    "bytes": 2023066420
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/4147845/files/results.csv/content",
+    "expected_md5": "md5:d03571d438f41f2c2afae66d17fc0bf4",
+    "sha256": "09a43e8abc2c6db2e2e7af73dc9e1c268c64e14fea6e4edc0c27411aa6f16bfc",
+    "bytes": 10726555
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/4147831/files/results.csv/content",
+    "expected_md5": "md5:fbcf31536615ac12ede986a55397e601",
+    "sha256": "edd714df51ad532b178695ec9878bd85058ebefa54e53983ba2987ff041a711d",
+    "bytes": 12889203
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/4147817/files/results.csv/content",
+    "expected_md5": "md5:02d915673d90dc49c2aba5d89499706d",
+    "sha256": "6d8f7ab571ba0bdeca03f021530c01f06062db73ebcb86de9317a2f8700b5bee",
+    "bytes": 14716762
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/4031387/files/results.csv/content",
+    "expected_md5": "md5:792b07f72e0b72cd6bf6882542bcc379",
+    "sha256": "6dada9fedc085ffcef47a3df68574f670b47db70a2b6d28cb5e524493277b2b9",
+    "bytes": 16270574
+  },
+  {
+    "status": "verified",
+    "url": "https://zenodo.org/api/records/4031357/files/results.csv/content",
+    "expected_md5": "md5:1d9f075c9fbf3b611f4207cbbce8fbc5",
+    "sha256": "fd64ce68d98e0983caa419c50ceda1bbfdfda63cf8a5e92eca82a20e4fa6387d",
+    "bytes": 18567570
+  }
+]

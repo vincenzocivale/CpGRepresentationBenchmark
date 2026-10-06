@@ -1,0 +1,19 @@
+{
+  "data/registry/ewas_catalog_expansion/all_candidate_studies.csv": "ce153703714e28681151e980581f8d921439127b4532f8223d9fe71bc935f983",
+  "data/registry/ewas_catalog_expansion/all_studies_metadata.csv": "0e189b4e26967fd94525fdbd772cb1471e75a01a8aabf97188253954705625e4",
+  "data/registry/ewas_catalog_expansion/bulk_retry_manifest.json": "a9f1a133f140fee65e4b2ca6c4f33e755693434da51894386f9fd4f8d999c2bb",
+  "data/registry/ewas_catalog_expansion/excluded_arrays.csv": "1de799e64d2499de6068c0c45898cd9f773b0ce13deecbdfd0cc7ce0a771e9f4",
+  "data/registry/ewas_catalog_expansion/family_support_summary.csv": "6edda3709d5c14c72e2f8851b73a021b9e6ff954266f39ea2050f0aa1138b302",
+  "data/registry/ewas_catalog_expansion/manifest.json": "c06c98ca694da950302ae05980abc91aee8a9e26bbf01c2068b0a510a5a6fd35",
+  "data/registry/ewas_catalog_expansion/matching_strata.csv": "2ceeb8ce372c954e304bd2759a3ce88cc738a660c6cb3f1db631c2785561bb72",
+  "data/registry/ewas_catalog_expansion/overlap_all_pairs.csv": "0b63c8836d7fd268d3da4d6c6ffb6b8812f1d234aa70775b515828087b9f40df",
+  "data/registry/ewas_catalog_expansion/overlap_flags.csv": "a6b72f4a1c615345ddfca244db847bba2a268c661abc211ed1afe190bfb1a493",
+  "data/registry/ewas_catalog_expansion/primary_traits.csv": "b3e4922a52dfeba911939e8af5454dbd1207097e0f61ca58599750779286bd48",
+  "data/registry/ewas_catalog_expansion/report.md": "4d16aa3afe7dba9b6e5061d1bc98b28888927f2c8d158fe33c8a123aeca00e6b",
+  "data/registry/ewas_catalog_expansion/source_status.json": "95957aa5f71fbf601ffbd8c1305fa790d3db3c8d0bd0a609d7a13bfe56df633a",
+  "data/registry/ewas_catalog_expansion/trait_categories.csv": "16019fe9b2381d685411384d86791023f18ecf15c1f8bae5bfc78e99ff5098c3",
+  "data/registry/ewas_catalog_expansion/traits_without_compatible_study.csv": "c5a9da422a4813bd6db144152e36f5422ad3194e9284aba4504019e8691019a6",
+  "data/registry/ewas_catalog_expansion/zenodo_analysis_metadata.csv": "8c4587368e2cf78db94d37c5972ee5cb482ca4b33394fa9f1183e4ba297a5768",
+  "data/registry/ewas_catalog_expansion/zenodo_download_manifest.json": "c69323c21c1a03f75b24d14cc1ec41b20d382da4bb9190a1217986deee1781b5",
+  "data/registry/ewas_catalog_expansion/zenodo_records_inventory.csv": "def9cce3ebf151b6376643d13665461e5afca349f5f24f7767afb478d60b37a2"
+}

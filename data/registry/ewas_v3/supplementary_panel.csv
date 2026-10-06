@@ -1,0 +1,7 @@
+task,category,source_analysis_id,trait,n_positive_raw,n_positive_universe,n_matchable,complete_matching,N_study,support_tier,selected
+glucose,Supplementary,zenodo_13998835__Hannah_Smith_Glucose_OSCA_EWAS.csv,Glucose,4339,1643,1643,True,17908.0,main_eligible,True
+total_cholesterol,Supplementary,zenodo_13998835__Hannah_Smith_Total_cholesterol_OSCA_EWAS.csv,Total cholesterol,10897,4455,4455,True,18270.0,main_eligible,True
+body_fat,Supplementary,zenodo_13998835__Hannah_Smith_body_fat_OSCA_EWAS.csv,Body fat percentage,80722,30647,30647,True,17304.0,main_eligible,True
+ckd,Supplementary,zenodo_8021411__prevalent_basic_CKD_gs.csv,Prevalent Chronic Kidney Disease (Estimated),1340,539,539,True,18318.0,main_eligible,True
+stroke,Supplementary,zenodo_8021411__incident_basic_stroke_gs.csv,Incident Stroke,868,409,409,True,18023.0,main_eligible,True
+whr,Supplementary,zenodo_13998835__Hannah_Smith_whr_OSCA_EWAS.csv,Waist-hip ratio,62649,22369,22369,True,17304.0,main_eligible,True

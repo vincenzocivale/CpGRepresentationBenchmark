@@ -1,0 +1,478 @@
+trait_key,trait,family,classification_note,n_studies
+17?-hydroxyprogesterone (17ohp),17?-hydroxyprogesterone (17OHP),out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+18:2 linoleic acid,18:2 linoleic acid,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+22:6 docosahexaenoic acid,22:6 docosahexaenoic acid,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+3-hydroxybutyrate,3-hydroxybutyrate,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+acetate,Acetate,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+acetoacetate,Acetoacetate,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+acute respiratory distress syndrome,Acute respiratory distress syndrome,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+age,Age,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",5
+age at menarche,Age at menarche,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+alanine,Alanine,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+albumin,Albumin,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+alpha neck angle (hip measurement),Alpha neck angle (hip measurement),out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+alzheimer's disease,Alzheimer's disease,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",2
+android bone mass,Android bone mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+android fat free mass,Android fat free mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+android fat mass,Android fat mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+android lean mass,Android lean mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+android region fat,Android region fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+android tissue fat,Android tissue fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+android tissue mass,Android tissue mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+android total mass,Android total mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+androstenedione,Androstenedione,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+anti-müllerian hormone,Anti-Müllerian hormone,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+anti-thyroperoxidase,Anti-thyroperoxidase,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+apolipoprotein a-i,Apolipoprotein A-I,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+apolipoprotein b,Apolipoprotein B,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+arm area,Arm area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+arm bone mass,Arm bone mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+arm bone mineral content,Arm bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+arm bone mineral density,Arm bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+arm circumference,Arm circumference,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+arm fat free mass,Arm fat free mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+arm fat mass,Arm fat mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+arm lean mass,Arm lean mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+arm region fat,Arm region fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+arm tissue fat,Arm tissue fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+arm total mass,Arm total mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+arms tissue mass,Arms tissue mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+arsenic exposure,Arsenic exposure,environmental/behavioral,Exposure or exposure-related diagnosis; combined drug-use/HCV endpoint kept distinct,2
+arterial distensibility,Arterial distensibility,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+asthma,Asthma,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+body fat percentage,Body fat percentage,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,2
+body mass index,Body mass index,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",3
+c-reactive protein,C-Reactive Protein,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,3
+cholesterol,Cholesterol,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in chylomicrons and extremely large vldl,Cholesterol esters in chylomicrons and extremely large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in idl,Cholesterol esters in IDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in large hdl,Cholesterol esters in large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in large ldl,Cholesterol esters in large LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in large vldl,Cholesterol esters in large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in medium hdl,Cholesterol esters in medium HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in medium ldl,Cholesterol esters in medium LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in medium vldl,Cholesterol esters in medium VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in small hdl,Cholesterol esters in small HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in small ldl,Cholesterol esters in small LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in small vldl,Cholesterol esters in small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in very large hdl,Cholesterol esters in very large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in very large vldl,Cholesterol esters in very large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters in very small vldl,Cholesterol esters in very small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in chylomicrons and xxl vldl,Cholesterol esters to total lipids ratio in chylomicrons and XXL VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in idl,Cholesterol esters to total lipids ratio in IDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in large hdl,Cholesterol esters to total lipids ratio in large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in large ldl,Cholesterol esters to total lipids ratio in large LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in large vldl,Cholesterol esters to total lipids ratio in large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in medium hdl,Cholesterol esters to total lipids ratio in medium HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in medium ldl,Cholesterol esters to total lipids ratio in medium LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in medium vldl,Cholesterol esters to total lipids ratio in medium VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in small hdl,Cholesterol esters to total lipids ratio in small HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in small ldl,Cholesterol esters to total lipids ratio in small LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in small vldl,Cholesterol esters to total lipids ratio in small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in very large hdl,Cholesterol esters to total lipids ratio in very large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in very large vldl,Cholesterol esters to total lipids ratio in very large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+cholesterol esters to total lipids ratio in very small vldl,Cholesterol esters to total lipids ratio in very small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+citrate,Citrate,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+common carotid intima-media thickness,Common carotid intima-media thickness,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of chylomicrons and extremely large vldl particles,Concentration of chylomicrons and extremely large VLDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of idl particles,Concentration of IDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of large hdl particles,Concentration of large HDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of large ldl particles,Concentration of large LDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of large vldl particles,Concentration of large VLDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of medium hdl particles,Concentration of medium HDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of medium ldl particles,Concentration of medium LDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of medium vldl particles,Concentration of medium VLDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of small hdl particles,Concentration of small HDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of small ldl particles,Concentration of small LDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of small vldl particles,Concentration of small VLDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of very large hdl particles,Concentration of very large HDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of very large vldl particles,Concentration of very large VLDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+concentration of very small vldl particles,Concentration of very small VLDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+conjugated linoleic acid,Conjugated linoleic acid,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+covid-19 severity (hospitalisation),COVID-19 Severity (Hospitalisation),immune/inflammatory,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+creatinine,Creatinine,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+crohn's disease,Crohn's disease,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+cross sectional moment of inertia (hip measurement),Cross sectional moment of inertia (hip measurement),out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+ctx,CTx,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+current smoking status,current smoking status,environmental/behavioral,Exposure or exposure-related diagnosis; combined drug-use/HCV endpoint kept distinct,1
+cutaneous melanoma versus nevi,Cutaneous melanoma versus nevi,cancer,Generic Catalog label disease state resolved from original PMID30529013 and GSE120878;89 melanomas+73 nevi,1
+depression,Depression,psychiatric,Psychiatric diagnosis,1
+diacylglycerol,Diacylglycerol,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+diastolic blood pressure,Diastolic blood pressure,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+e-cigarette use versus non-smoking,E-cigarette use versus non-smoking,environmental/behavioral,Clinical or exposure endpoint kept separate from other trait labels,1
+e-cigarette use versus smoking,E-cigarette use versus smoking,environmental/behavioral,Clinical or exposure endpoint kept separate from other trait labels,1
+esterified cholesterol,Esterified cholesterol,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+estimated degree of fatty acid unsaturation,Estimated degree of fatty acid unsaturation,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+estimated description of fatty acid chain length not actual carbon number,Estimated description of fatty acid chain length not actual carbon number,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+estimated glomerular filtration rate,Estimated glomerular filtration rate,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,1
+ethnicity,Ethnicity,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+fetal alcohol spectrum disorder,Fetal alcohol spectrum disorder,environmental/behavioral,Exposure or exposure-related diagnosis; combined drug-use/HCV endpoint kept distinct,1
+fetal brain development,Fetal brain development,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+fetal intolerance of labor,Fetal intolerance of labor,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+follicle stimulating hormone,Follicle stimulating hormone,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+free cholesterol,Free cholesterol,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in chylomicrons and extremely large vldl,Free cholesterol in chylomicrons and extremely large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in idl,Free cholesterol in IDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in large hdl,Free cholesterol in large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in large ldl,Free cholesterol in large LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in large vldl,Free cholesterol in large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in medium hdl,Free cholesterol in medium HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in medium ldl,Free cholesterol in medium LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in medium vldl,Free cholesterol in medium VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in small hdl,Free cholesterol in small HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in small ldl,Free cholesterol in small LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in small vldl,Free cholesterol in small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in very large hdl,Free cholesterol in very large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in very large vldl,Free cholesterol in very large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol in very small vldl,Free cholesterol in very small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in chylomicrons and xxl vldl,Free cholesterol to total lipids ratio in chylomicrons and XXL VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in idl,Free cholesterol to total lipids ratio in IDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in large hdl,Free cholesterol to total lipids ratio in large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in large ldl,Free cholesterol to total lipids ratio in large LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in large vldl,Free cholesterol to total lipids ratio in large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in medium hdl,Free cholesterol to total lipids ratio in medium HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in medium ldl,Free cholesterol to total lipids ratio in medium LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in medium vldl,Free cholesterol to total lipids ratio in medium VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in small hdl,Free cholesterol to total lipids ratio in small HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in small ldl,Free cholesterol to total lipids ratio in small LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in small vldl,Free cholesterol to total lipids ratio in small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in very large hdl,Free cholesterol to total lipids ratio in very large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in very large vldl,Free cholesterol to total lipids ratio in very large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+free cholesterol to total lipids ratio in very small vldl,Free cholesterol to total lipids ratio in very small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+frontotemporal dementia,Frontotemporal dementia,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+glucose,Glucose,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",4
+glutamine,Glutamine,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+glycoprotein acetyls,Glycoprotein acetyls,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+graves' disease,Graves' disease,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+gynoid bone mass,Gynoid bone mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+gynoid fat free mass,Gynoid fat free mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+gynoid fat mass,Gynoid fat mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+gynoid lean mass,Gynoid lean mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+gynoid region fat,Gynoid region fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+gynoid tissue fat,Gynoid tissue fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+gynoid tissue mass,Gynoid tissue mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+gynoid total mass,Gynoid total mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+haemoglobin,Haemoglobin,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hdl cholesterol,HDL cholesterol,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",3
+head area,Head area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+head bone mineral content,Head bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+head bone mineral density,Head bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+head circumference,Head circumference,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+height,Height,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip axis length,Hip axis length,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip bone cross sectional area,Hip bone cross sectional area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip bone strength,Hip bone strength,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip circumference,Hip circumference,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+hip cortical ratio calcar,Hip cortical ratio calcar,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip cortical ratio neck,Hip cortical ratio neck,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip cortical ratio shaft,Hip cortical ratio shaft,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip cortical width calcar,Hip cortical width calcar,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip cortical width neck,Hip cortical width neck,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip cortical width shaft,Hip cortical width shaft,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip lower neck area,Hip lower neck area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip lower neck bone mineral content,Hip lower neck bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip lower neck bone mineral density,Hip lower neck bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip neck area,Hip neck area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip neck bone mineral content,Hip neck bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip neck bone mineral density,Hip neck bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip neck t score,Hip neck T score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip neck z score,Hip neck Z score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip shaft area,Hip shaft area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip shaft bone mineral content,Hip shaft bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip shaft bone mineral density,Hip shaft bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip total area,Hip total area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip total bone mineral content,Hip total bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip total bone mineral density,Hip total bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip total t score,Hip total T score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip total z score,Hip total Z score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip trochanter area,Hip Trochanter area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip trochanter bone mineral content,Hip Trochanter bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip trochanter bone mineral density,Hip Trochanter bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip trochanter t score,Hip Trochanter T score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip trochanter z score,Hip Trochanter Z score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip upper neck area,Hip upper neck area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip upper neck bone mineral content,Hip upper neck bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip upper neck bone mineral density,Hip upper neck bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip upper neck t score,Hip upper neck T score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip upper neck z score,Hip upper neck Z score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip ward's triangle area,Hip Ward's Triangle area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip ward's triangle bone mineral content,Hip Ward's Triangle bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip ward's triangle bone mineral density,Hip Ward's Triangle bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip ward's triangle t score,Hip Ward's Triangle T score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+hip ward's triangle z score,Hip Ward's Triangle Z score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+histidine,Histidine,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+incident alzheimer's disease,Incident Alzheimer's Disease,out_of_scope,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident breast cancer,Incident Breast Cancer,cancer,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident chronic kidney disease,Incident Chronic Kidney Disease,cardiometabolic,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident chronic pain,Incident Chronic Pain,out_of_scope,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident colorectal cancer,Incident Colorectal Cancer,cancer,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident copd,Incident COPD,immune/inflammatory,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident inflammatory bowel disease,Incident Inflammatory Bowel Disease,immune/inflammatory,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident ischemic heart disease,Incident Ischemic Heart Disease,cardiometabolic,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident liver cirrhosis,Incident Liver Cirrhosis,cardiometabolic,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident lung cancer,Incident Lung Cancer,cancer,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident osteoarthritis,Incident Osteoarthritis,immune/inflammatory,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident ovarian cancer,Incident Ovarian Cancer,cancer,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident parkinson's disease,Incident Parkinson's Disease,out_of_scope,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident prostate cancer,Incident Prostate Cancer,cancer,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident rheumatoid arthritis,Incident Rheumatoid Arthritis,immune/inflammatory,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident stroke,Incident Stroke,cardiometabolic,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+incident type 2 diabetes,Incident Type 2 Diabetes,cardiometabolic,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+inflammatory bowel disease,Inflammatory bowel disease,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+insulin,Insulin,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",2
+intravenous illicit drug use and hepatitis c infection,Intravenous illicit drug use and hepatitis C infection,environmental/behavioral,Exposure or exposure-related diagnosis; combined drug-use/HCV endpoint kept distinct,1
+isoleucine,Isoleucine,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+lactate,Lactate,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ldl cholesterol,LDL cholesterol,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+leg area,Leg area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+leg bone mass,Leg bone mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+leg bone mineral content,Leg bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+leg bone mineral density,Leg bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+leg fat free mass,Leg fat free mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+leg fat mass,Leg fat mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+leg lean mass,Leg lean mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+leg length,Leg length,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+leg region fat,Leg region fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+leg tissue fat,Leg tissue fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+leg tissue mass,Leg tissue mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+leg total mass,Leg total mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+leucine,Leucine,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+long covid,Long COVID,immune/inflammatory,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,1
+long covid (self-report),Long COVID (Self-report),immune/inflammatory,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,1
+luteinizing hormone,Luteinizing hormone,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+maternal 1-hour glucose: longitudinal offspring dnam,Maternal 1-hour glucose: longitudinal offspring DNAm,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,1
+maternal 2-hour glucose: longitudinal offspring dnam,Maternal 2-hour glucose: longitudinal offspring DNAm,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,1
+maternal educational attainment: offspring adolescence,Maternal educational attainment: offspring adolescence,environmental/behavioral,Clinical or exposure endpoint kept separate from other trait labels,3
+maternal educational attainment: offspring birth,Maternal educational attainment: offspring birth,environmental/behavioral,Clinical or exposure endpoint kept separate from other trait labels,4
+maternal educational attainment: offspring childhood,Maternal educational attainment: offspring childhood,environmental/behavioral,Clinical or exposure endpoint kept separate from other trait labels,3
+maternal fasting glucose: cord dnam,Maternal fasting glucose: cord DNAm,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,1
+maternal fasting glucose: longitudinal offspring dnam,Maternal fasting glucose: longitudinal offspring DNAm,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,1
+maternal fasting insulin: cord dnam,Maternal fasting insulin: cord DNAm,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,1
+maternal general anxiety: cord dnam,Maternal general anxiety: cord DNAm,psychiatric,Clinical or exposure endpoint kept separate from other trait labels,2
+maternal glucose (fasting/nonfasting): cord dnam,Maternal glucose (fasting/nonfasting): cord DNAm,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,1
+maternal glucose auc: cord dnam,Maternal glucose AUC: cord DNAm,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,1
+maternal glucose auc: longitudinal offspring dnam,Maternal glucose AUC: longitudinal offspring DNAm,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,1
+maternal insulin (fasting/nonfasting): cord dnam,Maternal insulin (fasting/nonfasting): cord DNAm,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,1
+maternal pre-pregnancy bmi: placental dnam,Maternal pre-pregnancy BMI: placental DNAm,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,2
+maternal pregnancy-related anxiety: cord dnam,Maternal pregnancy-related anxiety: cord DNAm,psychiatric,Clinical or exposure endpoint kept separate from other trait labels,1
+mean diameter for hdl particles,Mean diameter for HDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+mean diameter for ldl particles,Mean diameter for LDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+mean diameter for vldl particles,Mean diameter for VLDL particles,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+monounsaturated fatty acids 16:1 18:1,Monounsaturated fatty acids 16:1 18:1,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+multiple sclerosis,Multiple sclerosis,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+multiple sclerosis treatment,Multiple sclerosis treatment,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+n-terminal pro-b-type natriuretic peptide,N-terminal pro-B-type natriuretic peptide,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+neonatal leptin,Neonatal leptin,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+omega 3 fatty acids,Omega 3 fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+omega 6 fatty acids,Omega 6 fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+oral or pharyngeal squamous cell carcinoma,Oral or pharyngeal squamous cell carcinoma,cancer,Cancer diagnosis; anatomically distinct cancers retained,1
+parathyroid hormone,Parathyroid hormone,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+pelvis area,Pelvis area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+pelvis bone mineral content,Pelvis bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+pelvis bone mineral density,Pelvis bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+phenylalanine,Phenylalanine,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phosphatidylcholine and other cholines,Phosphatidylcholine and other cholines,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in chylomicrons and extremely large vldl,Phospholipids in chylomicrons and extremely large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in idl,Phospholipids in IDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in large hdl,Phospholipids in large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in large ldl,Phospholipids in large LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in large vldl,Phospholipids in large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in medium hdl,Phospholipids in medium HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in medium ldl,Phospholipids in medium LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in medium vldl,Phospholipids in medium VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in small hdl,Phospholipids in small HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in small ldl,Phospholipids in small LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in small vldl,Phospholipids in small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in very large hdl,Phospholipids in very large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in very large vldl,Phospholipids in very large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids in very small vldl,Phospholipids in very small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in chylomicrons and xxl vldl,Phospholipids to total lipids ratio in chylomicrons and XXL VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in idl,Phospholipids to total lipids ratio in IDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in large hdl,Phospholipids to total lipids ratio in large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in large ldl,Phospholipids to total lipids ratio in large LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in large vldl,Phospholipids to total lipids ratio in large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in medium hdl,Phospholipids to total lipids ratio in medium HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in medium ldl,Phospholipids to total lipids ratio in medium LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in medium vldl,Phospholipids to total lipids ratio in medium VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in small hdl,Phospholipids to total lipids ratio in small HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in small ldl,Phospholipids to total lipids ratio in small LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in small vldl,Phospholipids to total lipids ratio in small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in very large hdl,Phospholipids to total lipids ratio in very large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in very large vldl,Phospholipids to total lipids ratio in very large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+phospholipids to total lipids ratio in very small vldl,Phospholipids to total lipids ratio in very small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+polyunsaturated fatty acids,Polyunsaturated fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+prevalent alzheimer's disease (self-report),Prevalent Alzheimer's Disease (Self-report),out_of_scope,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent breast cancer (self-report),Prevalent Breast Cancer (Self-report),cancer,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent chronic kidney disease (estimated),Prevalent Chronic Kidney Disease (Estimated),cardiometabolic,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent chronic pain (self-report),Prevalent Chronic Pain (Self-report),out_of_scope,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent colorectal cancer (self-report),Prevalent Colorectal Cancer (Self-report),cancer,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent copd (self-report),Prevalent COPD (Self-report),immune/inflammatory,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent ischemic heart disease (self-report),Prevalent Ischemic Heart Disease (Self-report),cardiometabolic,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent lung cancer (self-report),Prevalent Lung Cancer (Self-report),cancer,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent osteoarthritis (self-report),Prevalent Osteoarthritis (Self-report),immune/inflammatory,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent parkinson's disease (self-report),Prevalent Parkinson's Disease (Self-report),out_of_scope,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent prostate cancer (self-report),Prevalent Prostate Cancer (Self-report),cancer,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent rheumatoid arthritis (self-report),Prevalent Rheumatoid Arthritis (Self-report),immune/inflammatory,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent stroke (self-report),Prevalent Stroke (Self-report),cardiometabolic,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+prevalent type 2 diabetes (self-report),Prevalent Type 2 Diabetes (Self-report),cardiometabolic,Incident and prevalent diagnoses kept distinct; arthritis/COPD/infectious inflammatory endpoints included in immune/inflammatory,2
+progressive supranuclear palsy,Progressive supranuclear palsy,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+proinsulin,Proinsulin,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+prostate cancer,Prostate cancer,cancer,Cancer diagnosis; anatomically distinct cancers retained,1
+psoriasis,Psoriasis,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+pulmonary arterial hypertension,Pulmonary arterial hypertension,cardiometabolic,"429 cases + 1206 controls; pooled analysis, not a meta-analysis. Zenodo abstract is miscopied from MEA study, so metadata use PMID38184627",1
+pulse rate,Pulse rate,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+pyruvate,Pyruvate,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ratio of 18:2 linoleic acid to total fatty acids,Ratio of 18:2 linoleic acid to total fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ratio of 22:6 docosahexaenoic acid to total fatty acids,Ratio of 22:6 docosahexaenoic acid to total fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ratio of apolipoprotein b to apolipoprotein a i,Ratio of apolipoprotein B to apolipoprotein A I,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ratio of conjugated linoleic acid to total fatty acids,Ratio of conjugated linoleic acid to total fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ratio of diacylglycerol to triglycerides,Ratio of diacylglycerol to triglycerides,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ratio of monounsaturated fatty acids to total fatty acids,Ratio of monounsaturated fatty acids to total fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ratio of omega 3 fatty acids to total fatty acids,Ratio of omega 3 fatty acids to total fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ratio of omega 6 fatty acids to total fatty acids,Ratio of omega 6 fatty acids to total fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ratio of polyunsaturated fatty acids to total fatty acids,Ratio of polyunsaturated fatty acids to total fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ratio of saturated fatty acids to total fatty acids,Ratio of saturated fatty acids to total fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ratio of triglycerides to phosphoglycerides,Ratio of triglycerides to phosphoglycerides,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+"remnant cholesterol (non-hdl, non-ldl -cholesterol)","Remnant cholesterol (non-HDL, non-LDL -cholesterol)",cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+residential greenness: green30,Residential greenness: green30,environmental/behavioral,Clinical or exposure endpoint kept separate from other trait labels,1
+residential greenness: green500,Residential greenness: green500,environmental/behavioral,Clinical or exposure endpoint kept separate from other trait labels,1
+rheumatoid arthritis,Rheumatoid arthritis,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+ribs area,Ribs area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+ribs bone mineral content,Ribs bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+ribs bone mineral density,Ribs bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+rsv immunoprophylaxis,RSV immunoprophylaxis,immune/inflammatory,Clinical or exposure endpoint kept separate from other trait labels,1
+saturated fatty acids,Saturated fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+serum total cholesterol,Serum total cholesterol,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+serum total triglycerides,Serum total triglycerides,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+sex,Sex,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",2
+sex hormone binding globulin,Sex hormone binding globulin,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+sitting height,Sitting height,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+smoking,Smoking,environmental/behavioral,Exposure or exposure-related diagnosis; combined drug-use/HCV endpoint kept distinct,5
+social communication trajectories: dnam at age7,Social communication trajectories: DNAm at age7,psychiatric,Clinical or exposure endpoint kept separate from other trait labels,1
+social communication trajectories: dnam at birth,Social communication trajectories: DNAm at birth,psychiatric,Clinical or exposure endpoint kept separate from other trait labels,1
+sphingomyelins,Sphingomyelins,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+spine area,Spine area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+spine bone mineral content,Spine bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+spine bone mineral density,Spine bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+systolic blood pressure,Systolic blood pressure,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+testosterone,Testosterone,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+theta neck angle (hip measurement),Theta neck angle (hip measurement),out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+thyroid stimulating hormone,Thyroid stimulating hormone,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+thyroxine (ft4),Thyroxine (FT4),out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+tissue,Tissue,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+total body area,Total body area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+total body bone mass,Total body bone mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+total body bone mineral content,Total body bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+total body bone mineral density,Total body bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+total body mass,Total body mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total body naevus count,Total body naevus count,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+total body t score,Total body T score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+total body z score,Total body Z score,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+total cholesterol,Total cholesterol,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,2
+total cholesterol in chylomicrons and extremely large vldl,Total cholesterol in chylomicrons and extremely large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in hdl,Total cholesterol in HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in hdl2,Total cholesterol in HDL2,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in hdl3,Total cholesterol in HDL3,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in idl,Total cholesterol in IDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in large hdl,Total cholesterol in large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in large ldl,Total cholesterol in large LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in large vldl,Total cholesterol in large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in ldl,Total cholesterol in LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in medium hdl,Total cholesterol in medium HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in medium ldl,Total cholesterol in medium LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in medium vldl,Total cholesterol in medium VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in small hdl,Total cholesterol in small HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in small ldl,Total cholesterol in small LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in small vldl,Total cholesterol in small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in very large hdl,Total cholesterol in very large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in very large vldl,Total cholesterol in very large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in very small vldl,Total cholesterol in very small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol in vldl,Total cholesterol in VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in chylomicrons and xxl-vldl,Total cholesterol to total lipids ratio in chylomicrons and XXL-VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in idl,Total cholesterol to total lipids ratio in IDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in large hdl,Total cholesterol to total lipids ratio in large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in large ldl,Total cholesterol to total lipids ratio in large LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in large vldl,Total cholesterol to total lipids ratio in large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in medium hdl,Total cholesterol to total lipids ratio in medium HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in medium ldl,Total cholesterol to total lipids ratio in medium LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in medium vldl,Total cholesterol to total lipids ratio in medium VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in small hdl,Total cholesterol to total lipids ratio in small HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in small ldl,Total cholesterol to total lipids ratio in small LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in small vldl,Total cholesterol to total lipids ratio in small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in very large hdl,Total cholesterol to total lipids ratio in very large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in very large vldl,Total cholesterol to total lipids ratio in very large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholesterol to total lipids ratio in very small vldl,Total cholesterol to total lipids ratio in very small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total cholines,Total cholines,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total fat free mass,Total fat free mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total fat mass,Total fat mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total fatty acids,Total fatty acids,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lean mass,Total lean mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+total lipids in chylomicrons and extremely large vldl,Total lipids in chylomicrons and extremely large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in idl,Total lipids in IDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in large hdl,Total lipids in large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in large ldl,Total lipids in large LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in large vldl,Total lipids in large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in medium hdl,Total lipids in medium HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in medium ldl,Total lipids in medium LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in medium vldl,Total lipids in medium VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in small hdl,Total lipids in small HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in small ldl,Total lipids in small LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in small vldl,Total lipids in small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in very large hdl,Total lipids in very large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in very large vldl,Total lipids in very large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total lipids in very small vldl,Total lipids in very small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total phosphoglycerides,Total phosphoglycerides,cardiometabolic,Circulating metabolic lipid biomarker,1
+total region fat,Total region fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total tissue fat,Total tissue fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+total tissue mass,Total tissue mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+triglycerides,Triglycerides,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in chylomicrons and extremely large vldl,Triglycerides in chylomicrons and extremely large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in hdl,Triglycerides in HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in idl,Triglycerides in IDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in large hdl,Triglycerides in large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in large ldl,Triglycerides in large LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in large vldl,Triglycerides in large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in ldl,Triglycerides in LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in medium hdl,Triglycerides in medium HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in medium ldl,Triglycerides in medium LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in medium vldl,Triglycerides in medium VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in small hdl,Triglycerides in small HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in small ldl,Triglycerides in small LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in small vldl,Triglycerides in small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in very large hdl,Triglycerides in very large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in very large vldl,Triglycerides in very large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in very small vldl,Triglycerides in very small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides in vldl,Triglycerides in VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in chylomicrons and xxl-vldl,Triglycerides to total lipids ratio in chylomicrons and XXL-VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in idl,Triglycerides to total lipids ratio in IDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in large hdl,Triglycerides to total lipids ratio in large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in large ldl,Triglycerides to total lipids ratio in large LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in large vldl,Triglycerides to total lipids ratio in large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in medium hdl,Triglycerides to total lipids ratio in medium HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in medium ldl,Triglycerides to total lipids ratio in medium LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in medium vldl,Triglycerides to total lipids ratio in medium VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in small hdl,Triglycerides to total lipids ratio in small HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in small ldl,Triglycerides to total lipids ratio in small LDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in small vldl,Triglycerides to total lipids ratio in small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in very large hdl,Triglycerides to total lipids ratio in very large HDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in very large vldl,Triglycerides to total lipids ratio in very large VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+triglycerides to total lipids ratio in very small vldl,Triglycerides to total lipids ratio in very small VLDL,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+trunk area,Trunk area,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+trunk bone mass,Trunk bone mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+trunk bone mineral content,Trunk bone mineral content,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+trunk bone mineral density,Trunk bone mineral density,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+trunk fat free mass,Trunk fat free mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+trunk fat mass,Trunk fat mass,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+trunk lean mass,Trunk lean mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+trunk region fat,Trunk region fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+trunk tissue fat,Trunk tissue fat,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+trunk tissue mass,Trunk tissue mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+trunk total mass,Trunk total mass,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+tyrosine,Tyrosine,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+ulcerative colitis,Ulcerative colitis,immune/inflammatory,Inflammatory disease or immune/inflammatory biomarker; treatment remains a distinct endpoint,1
+valine,Valine,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+vitamin d,Vitamin D,out_of_scope,"Outside five requested families (age/sex/ancestry, reproductive/bone/anatomical or neurological trait), or generic disease-state label not identifiable",1
+vldl cholesterol,VLDL cholesterol,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+waist circumference,Waist circumference,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1
+waist-hip ratio,Waist-hip ratio,cardiometabolic,Clinical or exposure endpoint kept separate from other trait labels,2
+weight,Weight,cardiometabolic,"Cardiovascular, adiposity or circulating metabolic biomarker; subfractions kept distinct",1

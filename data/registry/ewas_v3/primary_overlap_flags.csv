@@ -1,0 +1,6 @@
+trait_a,trait_b,n_shared,n_smaller,containment,flag_above_50_percent
+adiposity_bmi,glycemic_t2d,9076,10269,0.8838251046840004,True
+adiposity_bmi,cardiovascular_ihd,734,936,0.7841880341880342,True
+glycemic_t2d,lipid_hdl,7103,10269,0.6916934462946733,True
+glycemic_t2d,cardiovascular_ihd,521,936,0.5566239316239316,True
+lipid_hdl,cardiovascular_ihd,610,936,0.6517094017094017,True

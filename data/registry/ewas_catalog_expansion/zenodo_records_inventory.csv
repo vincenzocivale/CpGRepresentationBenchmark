@@ -1,0 +1,22 @@
+record_id,title,doi,n_files,downloaded_results,exclusion_reason,record_metadata_sha256
+13998835,DNA methylation-based predictors of metabolic traits in Scottish and Singaporean cohorts,10.5281/zenodo.13998835,1,True,,6ecbad76f6c7dae34f61492db5f0f8626ab9aca80490a15713c8fd51c1c4d06c
+10857974,Maternal educational attainment in pregnancy and epigenome-wide DNA methylation changes in the offspring from birth until adolescence,10.5281/zenodo.10857974,1,True,,8eb654b959eb17e24bea782167b27417c4add5ebd0a11009501aa113f71cb6a5
+10857317,Blood DNA Methylation Profiling Identifies Cathepsin Z Dysregulation in Pulmonary Arterial Hypertension,10.5281/zenodo.10857317,1,True,,759f100d6a732e7cc94fa7f817b25ab61fa8f23231baa507fb1401dcd1199206
+10359769,Differential methylation analysis in neuropathological confirmed dementia with Lewy bodies,10.5281/zenodo.10359769,1,False,Neurodegenerative dementia; outside psychiatric scope adopted here,0b0a08e567e278bc6afedd5a18e5795e570adee8ee3d81d28ac8579e5844b5b4
+10426446,Maternal glycemia in pregnancy is longitudinally associated with blood DNAm variation at the FSD1L gene from birth to 5 years of age,10.5281/zenodo.10426446,1,True,,6f5269aa48c9e0f7280c5c0bf3d25832c91436a644b29448ef76972a4f5fabc4
+10426429,Blood-based epigenome–wide analyses of chronic low–grade inflammation across diverse population cohorts,10.5281/zenodo.10426429,1,True,,793e87bc8060f75c869f812da9c04b32467cd5bb24e963d27dc35ea0463e6787
+8021411,Blood-based epigenome-wide analyses on the prevalence and incidence of nineteen common disease states,10.5281/zenodo.8021411,1,True,,67465b64c5c0c32547a8038f2a5c5a31c70f966b1c753aafb8bf82d1bf747e2f
+7314534,A meta-analysis of pre-pregnancy maternal body mass index and placental DNA methylation identifies 27 CpG sites with implications for mother-child health,10.5281/zenodo.7314534,2,True,,3734a2e92bf761ed9b26a835846ebcbca23cb604541c952d7243357b7165cbc3
+6801458,Integrated methylome and phenome study of the circulating proteome reveals markers pertinent to brain health,10.5281/zenodo.6801458,2,False,Untargeted circulating protein abundance (not clinical/exposure endpoints),dde59a42154c75b0ac2e0e9047e251f0b73aa37f59f1424e3671a3e81522e1d1
+6546809,Residential greenness-related DNA methylation changes,10.5281/zenodo.6546809,2,True,,57c4bb120db9db8b6fae1b2fca415ecd4a79c4d1c930efc97235df132edc71de
+6546469,Investigating the DNA methylation profile of e-cigarette use,10.5281/zenodo.6546469,3,True,,14aea263b5649a7cefb542a047c7965ad04972ce4daf366aace3145d6aa36d05
+5887036,Infant RSV immunoprophylaxis changes nasal epithelial DNAmethylation at 6 years of age,10.5281/zenodo.5887036,1,True,,ce45dd06fd062b221bd9ec1388b36f55dfa6bde83ca0e3398124c627d5c730dc
+5886997,Maternal Glycemic Dysregulation During Pregnancy and Neonatal Blood DNA Methylation: Meta-analyses of Epigenome-Wide Association Studies,10.5281/zenodo.5886997,5,True,,4befd69ffca5ae8994e70c8fcc36f96796a75d470217162850ac2c4432f9aaf3
+5825713,Epigenome-wide association study of kidney function identifies trans-ethnic and ethnic-specific loci,10.5281/zenodo.5825713,1,True,,84e7fd5eea9bb9d1b84095c126b0ed72bf896dd5d8668a6d44b322b9e1b65cf0
+4672754,Full summary statistics from 41 EWAS conducted for the EWAS Catalog,10.5281/zenodo.4672754,2,True,,653dc1396d6ffb7e8cdc159bf468d5eb362b8bb30b1ebde942d11dbc27778b4b
+4672645,Full summary statistics from 387 EWAS conducted for the EWAS Catalog,10.5281/zenodo.4672645,2,True,,d14f5b342fd739eb00ff492a88412abdfff5da722d669172a3bbda774b32413c
+4147845,Maternal anxiety during pregnancy and newborn epigenome-wide DNA methylation,10.5281/zenodo.4147845,1,True,,afadf94997187724ccc146ee38afbe2854d34af51f4c1a3387ecb6fffd59b16c
+4147831,Maternal anxiety during pregnancy and newborn epigenome-wide DNA methylation,10.5281/zenodo.4147831,1,True,,2fdc0ad6deee326be5395f4f7bba801a8c0bc4e17afa8326c2152e03bbccf0d8
+4147817,Maternal anxiety during pregnancy and newborn epigenome-wide DNA methylation,10.5281/zenodo.4147817,1,True,,8cb3e27e391afa37c6d6c6b47e3ed5627526f0bf4e1c017522de20320bc71b54
+4031387,"Epigenetic Profiling of Social Communication Trajectories and Co-occurring Mental Health Problems: A Prospective, Methylome-wide Association Study",10.5281/zenodo.4031387,1,True,,1853154394ef0ba30d0bbcd670a8e63d85519957ae238f738bf8d7bae8914310
+4031357,"Epigenetic Profiling of Social Communication Trajectories and Co-occurring Mental Health Problems: A Prospective, Methylome-wide Association Study",10.5281/zenodo.4031357,1,True,,5c67ac1a561894ef9f41c82e492695136436be7553379d97c7eb0ac10a71904b
