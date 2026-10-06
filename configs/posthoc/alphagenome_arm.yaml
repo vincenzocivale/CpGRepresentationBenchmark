@@ -1,0 +1,17 @@
+# POST-HOC comparator registry (outside the frozen matrix.yaml and every frozen inferential family).
+# AlphaGenome was added AFTER the original-arm results (incl. the GSE40279 test evaluation) were known.
+arms:
+  - id: alphagenome_locus
+    posthoc_comparator: true
+    role: posthoc_comparator
+    family: genomic_fm
+    store_h5: data/cache/representations/alphagenome_locus.h5
+    sha256: 3906d888964fe71e303e2437ae64445b3f91803dcc04d15484fc5d5565850e00
+    dim: 1536
+    dtype: float16
+    provenance:
+      source: AlphaGenome trunk embedding_1bp (1536-d) at the CpG cytosine, GRCh38 reference sequence only (scripts/build_alphagenome_embedding.py)
+      supervision: supervised on experimental functional-genomics tracks (not methylation-specific); reference-sequence-only input at inference
+      locus_fit_scope: external_pretrained
+      patient_specific: false
+      genome_build: GRCh38

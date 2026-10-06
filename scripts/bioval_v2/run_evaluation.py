@@ -51,6 +51,7 @@ from cpg_repr_benchmark.bioval_v2_launch.block_bootstrap import (
 )
 from cpg_repr_benchmark.bioval_v2_launch.embedding_eval import (
     ARMS,
+    POSTHOC_ARMS,
     REFERENCE_ARM,
     EmbeddingStore,
     exclusion_mask,
@@ -84,8 +85,10 @@ def resolve_arms(args):
     if not args.arm:
         raise SystemExit("give --arm <id> (repeatable) or --all")
     for a in args.arm:
-        if a not in ARMS:
-            raise SystemExit(f"unknown arm {a}; known: {ARMS}")
+        if a not in (*ARMS, *POSTHOC_ARMS):
+            raise SystemExit(f"unknown arm {a}; known: {ARMS} (+ post-hoc {POSTHOC_ARMS})")
+        if a in POSTHOC_ARMS and Path(args.out_root).resolve() == DEFAULT_OUT.resolve():
+            raise SystemExit(f"post-hoc arm {a} must not write into the frozen output tree; pass --out-root <new dir>")
     return args.arm
 
 
@@ -203,18 +206,22 @@ def assemble_results(w: lg.GuardedWriter, arm):
         allj[b["endpoint_id"]] = b
         for s in b["stats"].values():
             rows.append({"arm": arm, "endpoint": b["endpoint_id"], "endpoint_class": b["class"], "stat": s["name"],
-                         "stat_class": s["class"], "value": s["value"], "ci_lo": s["ci_lo"], "ci_hi": s["ci_hi"], "n": s["n"]})
+                         "stat_class": s["class"], "value": s["value"], "ci_lo": s["ci_lo"], "ci_hi": s["ci_hi"], "n": s["n"],
+                         "posthoc_comparator": arm in POSTHOC_ARMS})
     w.write_json(f"{arm}/results.json", allj)
     w.write_text(f"{arm}/results.csv", pd.DataFrame(rows).to_csv(index=False))
 
 
 def cmd_run_arm(args, arm, endpoints, checks, man_sha):
-    specs = load_arm_specs(ROOT, ARMS)
+    posthoc = arm in POSTHOC_ARMS
+    specs = load_arm_specs(ROOT, (*ARMS, arm) if posthoc else ARMS)
     out_root = Path(args.out_root)
     w = lg.GuardedWriter(ROOT, out_root)
     log(f"[{arm}] loading stores + zero-row scan (D2: union over the 4 stores)")
     zero, stores = all_zero_loci(specs, verify_sha=True, log=lambda *a: None)
-    union = union_zero_loci(zero)
+    union = union_zero_loci({a: z for a, z in zero.items() if a in ARMS})  # D2 over the 4 registered stores only
+    if posthoc and len(np.setdiff1d(zero[arm], union)):
+        raise SystemExit(f"{arm} has all-zero loci outside the registered union: endpoint exclusions would change; refusing")
     store = stores[arm]
     for a in list(stores):
         if a != arm:
@@ -228,6 +235,7 @@ def cmd_run_arm(args, arm, endpoints, checks, man_sha):
         exclusion_counts={"all_zero_rows_per_store": {a: len(z) for a, z in zero.items()},
                           "union_zero_loci": len(union), "per_endpoint": {}},
         checks=checks, endpoints=endpoints, command=" ".join(sys.argv), manifest_checksums_sha256=man_sha, out_root=out_root)
+    manifest["posthoc_comparator"] = posthoc
     w.write_json(f"{arm}/run_manifest.json", manifest)
     for e in endpoints:
         log(f"[{arm}] endpoint {e} ...")
@@ -253,6 +261,8 @@ def cmd_contrasts(args, arms):
     w = lg.GuardedWriter(ROOT, out_root)
     comps = [a for a in arms if a != REFERENCE_ARM] or [a for a in ARMS if a != REFERENCE_ARM]
     ref_dir = out_root / REFERENCE_ARM / "endpoints"
+    if not ref_dir.exists() and out_root.resolve() != DEFAULT_OUT.resolve():
+        ref_dir = DEFAULT_OUT / REFERENCE_ARM / "endpoints"  # frozen reference arm, read-only (post-hoc out-root)
     fps = {}
     for comp in comps:
         rows, per_ep = [], {}
@@ -272,7 +282,7 @@ def cmd_contrasts(args, arms):
                 row = {"reference": REFERENCE_ARM, "comparator": comp, "endpoint": eid, "stat": name,
                        "stat_class": sa["class"], "ref_value": sa["value"], "comp_value": sb["value"],
                        "sign_convention": "delta = regulatory - comparator; higher-is-better metric, so delta>0 = regulatory better",
-                       "in_holm_family": is_primary, **c}
+                       "in_holm_family": is_primary, "posthoc_comparator": comp in POSTHOC_ARMS, **c}
                 rows.append(row)
                 if is_primary:
                     per_ep[eid] = row
@@ -285,7 +295,7 @@ def cmd_contrasts(args, arms):
             r["supports_regulatory"] = bool(adj[e] < 0.05 and r["delta"] > 0)
         for r in rows:
             r.setdefault("holm_p_adjusted", None)
-        out = {"reference": REFERENCE_ARM, "comparator": comp, "bootstrap": {"B": args.n_boot, "seed": SEED_DEFAULT},
+        out = {"reference": REFERENCE_ARM, "comparator": comp, "posthoc_comparator": comp in POSTHOC_ARMS, "bootstrap": {"B": args.n_boot, "seed": SEED_DEFAULT},
                "holm_family_missing_endpoints": missing,
                "note": "Holm over the 4 primary endpoints only; every other row is descriptive (raw p, no claim)",
                "rows": rows}
@@ -318,7 +328,7 @@ def main():
     endpoints = resolve_endpoints(args)
     if args.dry_run:
         return cmd_dry_run(args, arms, endpoints)
-    specs = load_arm_specs(ROOT, ARMS)
+    specs = load_arm_specs(ROOT, tuple(dict.fromkeys((*ARMS, *arms))))
     checks = lg.run_gate(ROOT, arms, Path(args.out_root), input_paths=input_paths_for_gate(specs))
     log("Pre-run gate:\n" + lg.format_checks(checks))
     lg.enforce(checks)
