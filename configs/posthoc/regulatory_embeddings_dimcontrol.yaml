@@ -1,0 +1,10 @@
+# POST-HOC dimension control: linear global SVD at 512 dims, same feature set / fit protocol / store as the frozen SVD-256 arm.
+store: data/derived/functional_annotations/reference_functional_features_tcga_array_all_v1_cpgidx_fixed.h5
+catalog: data/external/functional/locus_features_v1/regulatory/track_contract.tsv
+registry: data/cpg/registries/array_cpg_map.parquet
+output_dir: data/cache/representations
+protocol: discovery_chr1_19
+seed: 17
+dtype: float32
+embeddings:
+  - {feature_set: regulatory_histone_dnase, method: global_svd, dim: 512}

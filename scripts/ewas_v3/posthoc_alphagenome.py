@@ -15,13 +15,16 @@ import run_experiments as R
 from cpg_repr_benchmark.bioval_v2_launch.embedding_eval import ArmSpec, EmbeddingStore
 from cpg_repr_benchmark.bioval_v2_launch.block_bootstrap import BlockBootstrap, RankPlan, block_index, weighted_auroc, weighted_mean, percentile_ci, contrast
 
-ARM = "alphagenome_locus"
+import argparse
+_ap = argparse.ArgumentParser(); _ap.add_argument("--arm", default="alphagenome_locus"); ARM = _ap.parse_args().arm
 FROZEN = R.OUT
-OUT = ROOT / "outputs/ewas_v3_posthoc_alphagenome"
+OUT = ROOT / ("outputs/ewas_v3_posthoc_alphagenome" if ARM == "alphagenome_locus" else f"outputs/ewas_v3_posthoc/{ARM}")  # arm registered in configs/posthoc/*.yaml
 R.OUT, R.ARMS = OUT, (ARM,)  # endpoint_dir() reads the module global -> new tree; fork keeps it in workers
 assert OUT != FROZEN and FROZEN not in OUT.parents
-STORE = "data/cache/representations/alphagenome_locus.h5"
-SPEC = dict(store=STORE, sha256="3906d888964fe71e303e2437ae64445b3f91803dcc04d15484fc5d5565850e00", dim=1536, dtype="float16")
+_reg = {a["id"]: a for f in ("alphagenome_arm.yaml", "dimcontrol_arms.yaml") if (ROOT / "configs/posthoc" / f).exists()
+        for a in yaml.safe_load((ROOT / "configs/posthoc" / f).read_text())["arms"]}
+STORE = _reg[ARM]["store_h5"]
+SPEC = dict(store=STORE, sha256=_reg[ARM]["sha256"], dim=int(_reg[ARM]["dim"]), dtype=str(_reg[ARM]["dtype"]))
 REF = ("regulatory_histone_dnase_v1", "cpgpt_large_locus", "deepcpg_dna_locus")
 
 
@@ -61,17 +64,17 @@ def main():
                 fp = FROZEN / "primary/main/arms" / ref / name
                 fe = json.loads((fp / "endpoint.json").read_text())
                 if fe["status"] != "complete" or fe["n_nonconverged_fits"] or e["n_nonconverged_fits"]:
-                    cons.append(dict(task=name, contrast=f"AlphaGenome - {ref}", status="not_evaluable")); continue
+                    cons.append(dict(task=name, contrast=f"{ARM} - {ref}", status="not_evaluable")); continue
                 fd = pd.read_parquet(fp / "oof.parquet")
                 assert fd.drop(columns=["oof_score"]).equals(df.drop(columns=["oof_score"])), "pairs differ"
                 fplan = RankPlan(fd.oof_score.to_numpy())
                 frep = bb.replicates(lambda w: weighted_auroc(fplan, y, w), blk)
-                cons.append(dict(category=t["category"], trait=t["trait"], task=name, contrast=f"AlphaGenome - {ref}", metric="AUROC",
+                cons.append(dict(category=t["category"], trait=t["trait"], task=name, contrast=f"{ARM} - {ref}", metric="AUROC",
                                  status="complete", **contrast(e["AUROC"], rep, fe["AUROC"], frep)))
         rows.append(r)
     pd.DataFrame(rows).to_csv(OUT / "posthoc_results.csv", index=False)
     pd.DataFrame(cons).to_csv(OUT / "posthoc_paired_contrasts.csv", index=False)
-    (OUT / "README.md").write_text("POST-HOC arm, outside the approved EWAS-v3 scope (3 arms). Same frozen pairs/probe/bootstrap draws; "
+    (OUT / "README.md").write_text(f"POST-HOC arm {ARM}, outside the approved EWAS-v3 scope (3 arms). Same frozen pairs/probe/bootstrap draws; "
                                    "frozen outputs untouched. Store sha256 %s.\n" % SPEC["sha256"])
     print("DONE", len(rows), "rows;", sum(r["status"] == "complete" for r in rows), "complete", flush=True)
 

@@ -1,0 +1,17 @@
+# POST-HOC dimension/compression-control arms (diagnostic: is compression the bottleneck of the SVD-256 regulatory arm?)
+arms:
+- id: regulatory_svd512
+  posthoc_comparator: true
+  role: posthoc_comparator
+  family: regulatory_dimcontrol
+  store_h5: data/cache/representations/regulatory_histone_dnase__global_svd512__discovery_chr1_19.h5
+  sha256: 90a45cf44e38ecf4e15b69cf789327a0e322fe641a47c13a5e52a480c114b887
+  dim: 512
+  dtype: float32
+  provenance:
+    source: regulatory_histone_dnase (2,492 binary ENCODE tracks), label-free, patient-independent;
+      post-hoc compression diagnostic
+    supervision: none
+    locus_fit_scope: chr1-19 fit, chr20-22 transform-only
+    patient_specific: false
+    genome_build: GRCh38

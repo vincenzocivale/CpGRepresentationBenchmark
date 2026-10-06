@@ -20,8 +20,8 @@ ARM_ALIASES = {"regulatory_histone_dnase_v1": "regulatory_histone_dnase"}
 ARMS = ("regulatory_histone_dnase_v1", "functional_annotations_pca", "cpgpt_large_locus", "deepcpg_dna_locus")
 REFERENCE_ARM = "regulatory_histone_dnase_v1"
 # post-hoc comparators: registered outside matrix.yaml, never part of ARMS / --all / the original Holm families
-POSTHOC_ARMS = ("alphagenome_locus",)
-POSTHOC_YAML = "configs/posthoc/alphagenome_arm.yaml"
+POSTHOC_ARMS = ("alphagenome_locus", "regulatory_raw2492", "regulatory_lpca256", "regulatory_lpca512", "regulatory_svd512")
+POSTHOC_YAMLS = ("configs/posthoc/alphagenome_arm.yaml", "configs/posthoc/dimcontrol_arms.yaml")
 MATRIX_YAML = "configs/experiments/regulatory_confirmation_matrix/matrix.yaml"
 FORBIDDEN_READ_SUBSTRINGS = ("tcga", "data/protocols")  # the TCGA test set / masking-benchmark protocols are never read
 
@@ -70,7 +70,9 @@ def load_arm_specs(root: Path, arms=ARMS) -> dict[str, ArmSpec]:
     mx = yaml.safe_load((Path(root) / MATRIX_YAML).read_text())
     by_id = {x["id"]: x for x in _walk_arms(mx)}
     if any(a in POSTHOC_ARMS for a in arms):
-        by_id.update({x["id"]: x for x in yaml.safe_load((Path(root) / POSTHOC_YAML).read_text())["arms"]})
+        for rel in POSTHOC_YAMLS:
+            if (Path(root) / rel).exists():
+                by_id.update({x["id"]: x for x in yaml.safe_load((Path(root) / rel).read_text())["arms"]})
     out = {}
     for a in arms:
         e = by_id[ARM_ALIASES.get(a, a)]
