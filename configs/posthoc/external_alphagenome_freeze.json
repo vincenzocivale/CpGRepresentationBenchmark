@@ -1,0 +1,61 @@
+{
+  "arm": "alphagenome_locus",
+  "created_utc": "2026-10-06T17:55:13+00:00",
+  "frozen_data_sha256": {
+    "dataset_h5": "57f2dc8ada1d20da98a4b35dcc83520aa1a6f4fe9df8e5251d9fc6949ace951e",
+    "locus_protocol_npz": "5d6bf7715bd5a12b0facc31f778d4ba68ce10576c6755158cc316b673fae0d0b",
+    "patient_protocol_npz": "b826db5dec7f790c5f4f57cbca51c7c8224cfcb52102a8761cd99fc2a358328d"
+  },
+  "frozen_manifest": "configs/external/gse40279_v1_freeze_manifest.json",
+  "mask_fractions": [
+    0.15,
+    0.3,
+    0.5,
+    0.7,
+    0.9
+  ],
+  "posthoc_comparator": true,
+  "schema": "posthoc_external_alphagenome_freeze/1",
+  "seeds": {
+    "17": {
+      "best_epoch_0based": 117,
+      "best_pt_sha256": "236a06a117cec0bcdef1cae229486aa2919a571368c76760c1ad2954af9e200f",
+      "config": "configs/experiments/posthoc_alphagenome/external/alphagenome_locus__seed17.yaml",
+      "config_sha256": "c5399466a171b8833cf099ace19b8f4c385332e8f40a5e024cdd29cc2382ae0d",
+      "experiment_code_git_commit": "3d9142142b22cc51478ca3e86084439a5880aae7",
+      "locus_split_sha256": "6a923f42121cf6341a140cc26093c29ce265f312b31a36c597284203b433b5ee",
+      "patient_split_sha256": "2d366849b85e15b84b011f2853a742af4daf9c0c832dcf21f7fe50945005db0d",
+      "prior_logit_sha256": "21362f00d84641bc23f05d2fb37b2a0578778ccfea2ddba0be003477fe38623a",
+      "resolved_config_sha256": "c5399466a171b8833cf099ace19b8f4c385332e8f40a5e024cdd29cc2382ae0d",
+      "run_dir": "outputs/external_reconstruction_posthoc_alphagenome/benchmark/masking/external_gse40279_v1/alphagenome_locus/native_frozen/seed_17/20261006T151404Z-ba75ed6228"
+    },
+    "42": {
+      "best_epoch_0based": 118,
+      "best_pt_sha256": "c7c83f3bcf703b46fe1c21c4e7e5a8675326e23e5ffe29a93f28d7dde6f3edd0",
+      "config": "configs/experiments/posthoc_alphagenome/external/alphagenome_locus__seed42.yaml",
+      "config_sha256": "60dcf4a1475bfa43367ac0c0d4f858e50e9101f0681c0f0a02413ef38a73075d",
+      "experiment_code_git_commit": "081acaf6645ded7861a00403d836145fdb56b508",
+      "locus_split_sha256": "6a923f42121cf6341a140cc26093c29ce265f312b31a36c597284203b433b5ee",
+      "patient_split_sha256": "2d366849b85e15b84b011f2853a742af4daf9c0c832dcf21f7fe50945005db0d",
+      "prior_logit_sha256": "21362f00d84641bc23f05d2fb37b2a0578778ccfea2ddba0be003477fe38623a",
+      "resolved_config_sha256": "60dcf4a1475bfa43367ac0c0d4f858e50e9101f0681c0f0a02413ef38a73075d",
+      "run_dir": "outputs/external_reconstruction_posthoc_alphagenome/benchmark/masking/external_gse40279_v1/alphagenome_locus/native_frozen/seed_42/20261006T153023Z-87a6864406"
+    },
+    "97": {
+      "best_epoch_0based": 116,
+      "best_pt_sha256": "bbc2907e2c3855c0feb4da92178742b2f976081c6a155aa614efb82842b36c89",
+      "config": "configs/experiments/posthoc_alphagenome/external/alphagenome_locus__seed97.yaml",
+      "config_sha256": "bf6b0d06e14685722df311e51cfd514f0970b56af77459a5e6e97ddaa0a5df9e",
+      "experiment_code_git_commit": "081acaf6645ded7861a00403d836145fdb56b508",
+      "locus_split_sha256": "6a923f42121cf6341a140cc26093c29ce265f312b31a36c597284203b433b5ee",
+      "patient_split_sha256": "2d366849b85e15b84b011f2853a742af4daf9c0c832dcf21f7fe50945005db0d",
+      "prior_logit_sha256": "21362f00d84641bc23f05d2fb37b2a0578778ccfea2ddba0be003477fe38623a",
+      "resolved_config_sha256": "bf6b0d06e14685722df311e51cfd514f0970b56af77459a5e6e97ddaa0a5df9e",
+      "run_dir": "outputs/external_reconstruction_posthoc_alphagenome/benchmark/masking/external_gse40279_v1/alphagenome_locus/native_frozen/seed_97/20261006T153023Z-0159dc4df7"
+    }
+  },
+  "statement": "AlphaGenome was added AFTER the original-arm GSE40279 test results were known. The AlphaGenome test set has never been accessed at the time of this record. Exactly one test evaluation per frozen seed/checkpoint on the original 66 test subjects and the same masking fractions; no retraining, reselection or post-test tuning.",
+  "store_h5": "data/cache/representations/alphagenome_locus.h5",
+  "store_sha256": "3906d888964fe71e303e2437ae64445b3f91803dcc04d15484fc5d5565850e00",
+  "test_accessed": false
+}
