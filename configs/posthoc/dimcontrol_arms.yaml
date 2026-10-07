@@ -17,7 +17,7 @@ arms:
     genome_build: GRCh38
 - id: regulatory_raw2492
   posthoc_comparator: true
-  role: reference_baseline  # from 2026-10-07; selected after post-hoc EWAS/bioval results; reconstruction runs not yet executed
+  role: reference_baseline  # from 2026-10-07; selected after post-hoc EWAS/bioval results; reconstruction runs deliberately not executed
   family: regulatory_dimcontrol
   store_h5: data/cache/representations/regulatory_histone_dnase__raw2492.h5
   sha256: 1b8cd47bb0924e03c1434945c7a1b70904227a63775888b861b9918fae5142ff

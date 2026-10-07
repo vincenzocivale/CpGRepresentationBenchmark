@@ -4,7 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this benchmark measures
 
-> Framing: `functional_annotations_pca` is the discovery/baseline representation, not necessarily the final method.
+> Framing: `functional_annotations_pca` is the discovery representation, not necessarily the final method.
+> Baseline policy (2026-10-07): the reference regulatory arm is Histone+DNase **raw, no PCA** (`regulatory_raw2492`, 2,492 binary tracks); SVD-256 stays as the compact frozen variant behind all existing results. Raw reconstruction (TCGA, GSE40279) is deliberately not run: Fig. 4 keeps SVD-256 and the text says so. Details: `docs/POSTHOC_ALPHAGENOME_REPORT.md` section 4.
 > The objective is a patient-independent, interpretable CpG-locus representation grounded in experimental
 > functional/regulatory evidence, evaluated against sequence/foundation-model embeddings. Genomic context is part of
 > the functional input (not independent validation). Downstream phenotype prediction is not a central objective.

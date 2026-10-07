@@ -1,7 +1,7 @@
 # AlphaGenome as a post-hoc comparator, and a compression diagnostic for the regulatory arm
 
 Status: **draft, complete** (all sections filled; not yet reviewed or committed).
-Baseline policy: from 2026-10-07 the reference Histone+DNase arm is the **raw 2,492 binary tracks without PCA** (`regulatory_raw2492`); SVD-256 is the compact frozen variant used for all registered results. The raw arm was chosen after seeing these post-hoc results, and its reconstruction runs have not been executed.
+Baseline policy: from 2026-10-07 the reference Histone+DNase arm is the **raw 2,492 binary tracks without PCA** (`regulatory_raw2492`); SVD-256 is the compact frozen variant used for all registered results. The raw arm was chosen after seeing these post-hoc results, and its reconstruction runs (TCGA, GSE40279) are deliberately not executed: the reconstruction comparison keeps SVD-256.
 Every AlphaGenome and diagnostic result below is labelled `posthoc_comparator: true`. No original frozen benchmark, protocol, hash or inferential family was modified.
 
 ## 1. What was added and why
