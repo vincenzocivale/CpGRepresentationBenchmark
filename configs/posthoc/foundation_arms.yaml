@@ -1,0 +1,14 @@
+# POST-HOC raw (no SVD/PCA) foundation-model arms, registered 2026-10-07 AFTER the 3-arm/AlphaGenome results were known.
+arms:
+- {id: sei_functional_native, role: posthoc_comparator, posthoc_comparator: true, family: sequence_to_function, primary: true,
+   store_h5: data/cache/representations/sei_functional_native.h5, sha256: 7c3fbe64087c388370735fcffdc6750ffbc4389d7e44d646ae667e0a134ba482, dim: 21907, dtype: float16,
+   provenance: {source: "Sei 21,907 sigmoid chromatin-profile outputs, 4096-bp window, fwd+rc mean, raw", supervision: supervised on functional-genomics tracks, locus_fit_scope: external_pretrained, patient_specific: false, genome_build: GRCh38}}
+- {id: sei_latent_native, role: posthoc_comparator, posthoc_comparator: true, family: sequence_to_function, primary: false,
+   store_h5: data/cache/representations/sei_latent_native.h5, sha256: f3d9a472564d4926857575eb7f3b20f67936927fec2e79cabdc73c9895659298, dim: 15360, dtype: float16,
+   provenance: {source: "Sei pre-head spline_tr output (960x16) flattened, forward, raw", supervision: supervised on functional-genomics tracks, locus_fit_scope: external_pretrained, patient_specific: false, genome_build: GRCh38}}
+- {id: enformer_latent_native, role: posthoc_comparator, posthoc_comparator: true, family: sequence_to_function, primary: true,
+   store_h5: data/cache/representations/enformer_latent_native.h5, sha256: 4b994917a04674a44d2b2de3e07a9af3299c55a35bc4575e55e4dafacf9ffb82, dim: 3072, dtype: float16,
+   provenance: {source: "Enformer trunk output (3072-d) at the 128-bp bin of the CpG, forward, raw", supervision: supervised on functional-genomics tracks, locus_fit_scope: external_pretrained, patient_specific: false, genome_build: GRCh38}}
+- {id: enformer_functional_native, role: posthoc_comparator, posthoc_comparator: true, family: sequence_to_function, primary: false,
+   store_h5: data/cache/representations/enformer_functional_native.h5, sha256: 3d7db710ac18a291ae4a76021b74d190352d1a3e97e52d6ac5b45818be59696e, dim: 5313, dtype: float16,
+   provenance: {source: "Enformer human-head 5,313 track predictions at the CpG bin, forward, raw", supervision: supervised on functional-genomics tracks, locus_fit_scope: external_pretrained, patient_specific: false, genome_build: GRCh38}}
