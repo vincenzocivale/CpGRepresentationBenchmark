@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 > The objective is a patient-independent, interpretable CpG-locus representation grounded in experimental
 > functional/regulatory evidence, evaluated against sequence/foundation-model embeddings. Genomic context is part of
 > the functional input (not independent validation). Downstream phenotype prediction is not a central objective.
-> See `docs/REFACTOR_AUDIT.md` for the keep/archive/remove classification (nothing removed yet).
+> Repo was pruned to the 3 definitive experiments (TCGA masking, external GSE40279, bioval v2 + EWAS v2 + exp5); pre-cleanup state: git tag `legacy-pre-cleanup-2026-10-06`.
 
 This repo controls for everything except the **patient-agnostic CpG locus representation**. The downstream
 reconstruction/prediction model, patient split, locus split, masking sweep, optimizer budget, and prior policy
@@ -47,12 +47,11 @@ CUDA_VISIBLE_DEVICES=0 python scripts/run_masking_benchmark.py \
 # compact the raw ENCODE functional-annotation feature store into a PCA embedding
 python scripts/build_functional_pca_embedding.py --help
 
-# audit regulatory feature-set contracts (catalog metadata only; see docs/REGULATORY_REPRESENTATION.md)
-python scripts/audit_regulatory_feature_sets.py --feature-set all
-
-# regulatory (ENCODE-track-only) label-free embeddings: materialize, then describe their properties
+# regulatory (ENCODE-track-only) label-free embeddings
 python scripts/build_regulatory_embeddings.py --config configs/regulatory_embeddings.yaml [--only <name>]
-python scripts/report_regulatory_embeddings.py
+
+# final figures from frozen outputs/ CSVs (fig1 TCGA, fig2 external, fig3 bioval v2, fig4 EWAS v2)
+python scripts/make_figures.py
 
 # aggregate finished runs into a summary CSV
 python scripts/summarize_runs.py --outputs outputs --csv outputs/masking_summary.csv

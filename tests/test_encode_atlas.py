@@ -160,33 +160,6 @@ def test_macro_specs_contain_assay_combinations(feature_fixture):
     assert specs['breadth_only']['breadth_policy'] == 'preserve'
     assert specs['drop/assay/DNase-seq']['tracks'] == [1, 2, 3, 4]
 
-
-def test_prevalence_matched_assay_control_has_equal_counts_and_common_support(feature_fixture):
-    from cpg_repr_benchmark.encode_atlas.focused import prevalence_matched_assays
-
-    source, catalog, _ = feature_fixture
-    frame = FeatureData.read(source, catalog).catalog
-    frame['prevalence'] = [.1, .201, .801, .202, .802, .9]
-    histone, other, audit = prevalence_matched_assays(frame)
-    assert histone['tracks'] == [1, 2]
-    assert other['tracks'] == [3, 4]
-    assert histone['dense'] == other['dense'] == list(range(18))
-    assert audit['n_tracks_each'] == 2
-
-
-def test_ewas_background_is_matched_without_replacement():
-    from cpg_repr_benchmark.encode_atlas.ewas import matched_membership
-    labels = np.array([True, False, False, True, True, False, True])
-    strata = np.array(['a', 'a', 'a', 'b', 'b', 'b', 'c'])
-    rows = matched_membership(labels, strata, maximum=10)
-    assert len(rows) == 4
-    assert len(np.unique(rows)) == len(rows)
-    for label in ['a', 'b']:
-        y = labels[rows[strata[rows] == label]]
-        assert y.sum() == 1 and len(y) == 2
-    assert not np.any(strata[rows] == 'c')
-
-
 def test_real_benchmark_cli_uses_frozen_patients_and_paired_repeated_masks(feature_fixture, tmp_path):
     import os
     import subprocess

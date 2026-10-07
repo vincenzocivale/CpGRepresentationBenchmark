@@ -28,7 +28,7 @@ LOCI = "outputs/encode_atlas_v1/loci.parquet"
 COVARIATES = "data/derived/bioval_v2/covariates/universe_covariates.parquet"
 KNOWN_SETS_DIR = "data/bio_annotations/known_sets"
 PINS = "configs/exp5_candidate_completion/exp5_pins.json"
-EXP5_TIERS = "paper/registry/exp5_support_tiers_v2.csv"
+EXP5_TIERS = "data/registry/exp5_support_tiers_v2.csv"
 DESIGN_DIR = "data/derived/ewas_v2_v1"
 MANIFEST = "configs/ewas_v2/manifest_v1.json"
 

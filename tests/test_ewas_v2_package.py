@@ -362,7 +362,7 @@ def _synthetic_root(tmp_path):
     mp = root / "configs/experiments/regulatory_confirmation_matrix/matrix.yaml"
     mp.parent.mkdir(parents=True)
     mp.write_text(yaml.safe_dump({"arms": entries}))
-    (root / "paper/registry").mkdir(parents=True)
+    (root / "data/registry").mkdir(parents=True)
     pd.DataFrame(dict(set=["ewas_catalog_bmi", "ewas_catalog_sle"], support_tier=["main-quality", "main-quality"])).to_csv(root / D.EXP5_TIERS, index=False)
     return root
 
