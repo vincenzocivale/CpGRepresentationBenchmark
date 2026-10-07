@@ -15,3 +15,48 @@ arms:
     locus_fit_scope: chr1-19 fit, chr20-22 transform-only
     patient_specific: false
     genome_build: GRCh38
+- id: regulatory_raw2492
+  posthoc_comparator: true
+  role: reference_baseline  # from 2026-10-07; selected after post-hoc EWAS/bioval results; reconstruction runs not yet executed
+  family: regulatory_dimcontrol
+  store_h5: data/cache/representations/regulatory_histone_dnase__raw2492.h5
+  sha256: 1b8cd47bb0924e03c1434945c7a1b70904227a63775888b861b9918fae5142ff
+  dim: 2492
+  dtype: float16
+  provenance:
+    source: regulatory_histone_dnase (2,492 binary ENCODE tracks), label-free, patient-independent;
+      post-hoc compression diagnostic
+    supervision: none
+    locus_fit_scope: chr1-19 fit, chr20-22 transform-only
+    patient_specific: false
+    genome_build: GRCh38
+- id: regulatory_lpca256
+  posthoc_comparator: true
+  role: posthoc_comparator
+  family: regulatory_dimcontrol
+  store_h5: data/cache/representations/regulatory_histone_dnase__lpca256__discovery_chr1_19.h5
+  sha256: 14994228f74215651897f9ba8905fdf708f3642a274a040077d35c43b81b0a6e
+  dim: 256
+  dtype: float32
+  provenance:
+    source: regulatory_histone_dnase (2,492 binary ENCODE tracks), label-free, patient-independent;
+      post-hoc compression diagnostic
+    supervision: none
+    locus_fit_scope: chr1-19 fit, chr20-22 transform-only
+    patient_specific: false
+    genome_build: GRCh38
+- id: regulatory_lpca512
+  posthoc_comparator: true
+  role: posthoc_comparator
+  family: regulatory_dimcontrol
+  store_h5: data/cache/representations/regulatory_histone_dnase__lpca512__discovery_chr1_19.h5
+  sha256: 9ce21c3a2ef43169c8a4447b290bdea0d9841ef3e6521a718c8cc4b67b377e05
+  dim: 512
+  dtype: float32
+  provenance:
+    source: regulatory_histone_dnase (2,492 binary ENCODE tracks), label-free, patient-independent;
+      post-hoc compression diagnostic
+    supervision: none
+    locus_fit_scope: chr1-19 fit, chr20-22 transform-only
+    patient_specific: false
+    genome_build: GRCh38

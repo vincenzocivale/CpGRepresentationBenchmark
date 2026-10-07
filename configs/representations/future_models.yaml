@@ -171,3 +171,19 @@ representations:
       locus_fit_scope: external_pretrained
       pooling: deepcpg_dna_module_stem_pre_output_head
 
+
+  alphagenome_locus_native:
+    name: alphagenome_locus
+    family: genomic_fm
+    track: native_frozen
+    component: locus_only
+    mode: precomputed
+    store_h5: data/cache/representations/alphagenome_locus.h5
+    source: AlphaGenome sequence embedding on GRCh38 reference (scripts/build_alphagenome_embedding.py)
+    bio_validation_cpg_registry: data/cpg/registries/array_cpg_map.parquet
+    provenance:
+      genome_build: GRCh38
+      patient_specific: false
+      supervision: supervised_multimodal_functional_genomics  # trained on experimental tracks; reference-only input at inference
+      locus_fit_scope: external_pretrained
+      pooling: single_base_decoder_embedding_at_cytosine_1Mb_tiles

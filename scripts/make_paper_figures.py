@@ -22,6 +22,10 @@ O = Path("outputs")
 HD, CP, DC = "regulatory_histone_dnase", "cpgpt_large_locus", "deepcpg_dna_locus"
 # order and colours are shared by every figure (Okabe-Ito)
 ARMS = {HD: ("Histone+DNase", "#0072B2"), CP: ("CpGPT-large", "#D55E00"), DC: ("DeepCpG-DNA", "#E69F00")}
+# AlphaGenome is a POST-HOC arm (outside the frozen 3-arm protocols): drawn only when its own output files exist, never mixed into frozen CSVs.
+AG = "alphagenome_locus"
+AG_STYLE = ("AlphaGenome (post-hoc)", "#CC79A7")
+PH = O / "posthoc_alphagenome_figures"  # per-figure post-hoc CSVs: fig2_primary.csv, fig4_tcga.csv, fig4_external.csv (+ ewas below)
 plt.rcParams.update({"font.size": 9, "axes.spines.top": False, "axes.spines.right": False,
                      "figure.dpi": 150, "axes.titlesize": 9, "axes.titleweight": "bold"})
 
@@ -89,14 +93,26 @@ def fig1(out):
 
 
 # ---------------------------------------------------------------- Fig 2
-def _legend(fig):
-    fig.legend([plt.Rectangle((0, 0), 1, 1, color=c) for _, c in ARMS.values()], [n for n, _ in ARMS.values()],
-               loc="lower center", ncol=3, frameon=False, bbox_to_anchor=(.5, -.04))
+def _arms(ag):
+    return {**ARMS, AG: AG_STYLE} if ag else ARMS
+
+
+def _extra(path):
+    return pd.read_csv(path) if Path(path).exists() else None
+
+
+def _legend(fig, arms=ARMS):
+    fig.legend([plt.Rectangle((0, 0), 1, 1, color=c) for _, c in arms.values()], [n for n, _ in arms.values()],
+               loc="lower center", ncol=len(arms), frameon=False, bbox_to_anchor=(.5, -.04), fontsize=8)
 
 
 def fig2(out):
     d = pd.read_csv(O / "biological_validation_v2/bioval-v2-protocol-freeze-v1/report/summary_primary.csv")
     d["arm"] = d.arm.replace({"regulatory_histone_dnase_v1": HD})
+    ag = _extra(PH / "fig2_primary.csv")  # columns as summary_primary.csv, arm == alphagenome_locus
+    if ag is not None:
+        d = pd.concat([d, ag], ignore_index=True)
+    arms = _arms(ag is not None)
     # (endpoint, title, ylabel, reference line, axis floor)
     panels = [("fantom5_membership", "Enhancer identity", "AUROC (dashed = chance)", 0.5, 0.5),
               ("microc_H1_intra10kb", "3D chromatin contacts", "AUROC (dashed = chance)", 0.5, 0.5),
@@ -104,14 +120,14 @@ def fig2(out):
     fig, axes = plt.subplots(1, 3, figsize=(7.5, 2.7))
     for ax, (ep, title, yl, ref, floor), L in zip(axes, panels, "ABC"):
         g = d[d.endpoint == ep].set_index("arm")
-        for i, (arm, (_, c)) in enumerate(ARMS.items()):
+        for i, (arm, (_, c)) in enumerate(arms.items()):
             r = g.loc[arm]
             ax.bar(i, r.value - floor, bottom=floor, color=c, width=.65, yerr=[[r.value - r.ci_lo], [r.ci_hi - r.value]], capsize=2)
             ax.text(i, r.ci_hi, f"{r.value:.3f}", ha="center", va="bottom", fontsize=7)
         ax.axhline(ref, color="0.3", ls="--", lw=.8)
         ax.set(xticks=[], ylabel=yl, title=title, ylim=(floor, g.ci_hi.max() * 1.08))
         _panel(ax, L)
-    _legend(fig)
+    _legend(fig, arms)
     _save(fig, out, "fig2_biology")
 
 
@@ -138,18 +154,24 @@ def fig3(out):
     assert set(a.task) == set(order) == set(EWAS_LABELS)
     assert len(a) == len(order) * len(ARMS) and set(a.arm) == set(ARMS)
     assert (a.status == "complete").all() and not a.duplicated(["task", "arm"]).any()
+    ag = _extra(O / "ewas_v3_posthoc_alphagenome/posthoc_results.csv")  # frozen CSV stays untouched; post-hoc rows appended in memory
+    arms = _arms(ag is not None)
+    if ag is not None:
+        assert set(ag.task) == set(order) and (ag.status == "complete").all()
+        a = pd.concat([a, ag.assign(arm=AG)], ignore_index=True)
     for task in manifest["main_tasks"]:
         assert set(a.loc[a.task == task["task"], "source_analysis_id"]) == {task["source_analysis_id"]}
     flags = pd.read_csv(root / "data/registry/ewas_v3/primary_overlap_flags.csv")
     correlated = set(flags.trait_a) | set(flags.trait_b)
     families = ["Cancer", "Immune/inflammatory", "Cardiometabolic"]
     fig, axes = plt.subplots(3, 1, figsize=(7.5, 8.2), gridspec_kw={"height_ratios": [5, 4, 4]})
-    h = .26
+    n = len(arms)
+    h = .78 / n
     for ax, family, letter in zip(axes, families, "ABC"):
         tasks = [t["task"] for t in manifest["main_tasks"] if t["category"] == family]
-        for k, (arm, (lab, color)) in enumerate(ARMS.items()):
+        for k, (arm, (lab, color)) in enumerate(arms.items()):
             g = a[(a.arm == arm) & (a.category == family)].set_index("task").loc[tasks]
-            y = np.arange(len(tasks)) + (k - 1) * h
+            y = np.arange(len(tasks)) + (k - (n - 1) / 2) * h
             ax.barh(y, g.AUROC - .5, left=.5, height=h * .92, color=color, label=lab,
                     xerr=[g.AUROC - g.ci_lo, g.ci_hi - g.AUROC], error_kw=dict(lw=.8, capsize=1.5))
         ax.axvline(.5, color="0.3", ls="--", lw=.8)
@@ -160,13 +182,16 @@ def fig3(out):
         ax.invert_yaxis()
         _panel(ax, letter)
     axes[-1].set_xlabel("Pooled out-of-fold AUROC (95% CI)")
-    fig.legend([plt.Rectangle((0, 0), 1, 1, color=c) for _, c in ARMS.values()],
-               [name for name, _ in ARMS.values()], loc="lower center", ncol=3,
+    fig.legend([plt.Rectangle((0, 0), 1, 1, color=c) for _, c in arms.values()],
+               [name for name, _ in arms.values()], loc="lower center", ncol=n,
                frameon=False, fontsize=8, bbox_to_anchor=(.5, .062))
     fig.text(.02, .036, "EWAS Catalog-associated CpGs: p < 10⁻⁴; fixed 408,399-CpG universe.",
              fontsize=6.5, color="0.35")
     fig.text(.02, .016, "† >50% overlap with another selected task; shared cohorts are not independent replications.",
              fontsize=6.5, color="0.35")
+    if ag is not None:
+        fig.text(.02, -.004, "AlphaGenome: post-hoc comparator (posthoc_comparator: true), added after the original-arm results; same frozen pairs, "
+                 "probe and bootstrap draws; outside the approved 3-arm panel and every inferential family.", fontsize=6.5, color="0.35")
     fig.tight_layout(rect=(0, .12, 1, .985), h_pad=2.0)
     for ext in ("pdf", "png"):
         fig.savefig(out / f"fig3_ewas.{ext}", bbox_inches="tight", dpi=300)
@@ -177,10 +202,17 @@ def fig3(out):
 def fig4(out):
     src = {"TCGA": ("TCGA (held-out patients)", O / "regulatory_confirmation_v1/analysis/per_run_all_fractions.csv"),
            "GSE40279": ("GSE40279 (independent cohort)", O / "external_reconstruction_v1/analysis/A_v1.2/test/per_run_metrics.csv")}
+    ph = {"TCGA": PH / "fig4_tcga.csv", "GSE40279": PH / "fig4_external.csv"}  # per-run CSVs, same columns (arm, seed, mask_fraction, mse)
+    arms = _arms(any(p.exists() for p in ph.values()))
     fig, axes = plt.subplots(1, 2, figsize=(7, 2.9))
-    for ax, (title, path), L in zip(axes, src.values(), "AB"):
+    for ax, (key, (title, path)), L in zip(axes, src.items(), "AB"):
         d = pd.read_csv(path)
-        for arm, (lab, c) in ARMS.items():
+        extra = _extra(ph[key])
+        if extra is not None:
+            d = pd.concat([d, extra], ignore_index=True)
+        for arm, (lab, c) in arms.items():
+            if arm not in set(d.arm):
+                continue
             g = d[d.arm == arm]
             m = g.groupby("mask_fraction").mse
             ax.fill_between(m.min().index * 100, m.min(), m.max(), color=c, alpha=.2, lw=0)
@@ -188,7 +220,7 @@ def fig4(out):
             ax.plot(g.mask_fraction * 100, g.mse, ".", color=c, alpha=.4, ms=3)
         ax.set(xlabel="Masking fraction (%)", ylabel="Masked-CpG MSE", title=title)
         _panel(ax, L)
-    _legend(fig)
+    _legend(fig, arms)
     _save(fig, out, "fig4_reconstruction")
 
 
