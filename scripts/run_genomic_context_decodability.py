@@ -34,10 +34,12 @@ OUT = ROOT / "outputs/genomic_context_decodability_v1"
 CHROMS = [f"chr{i}" for i in range(1, 23)]
 LABEL = {"regulatory_histone_dnase_v1": "Histone+DNase", "cpgpt_large_locus": "CpGPT-large",
          "deepcpg_dna_locus": "DeepCpG-DNA", "functional_annotations_pca": "Functional PCA (legacy)", "alphagenome_locus": "AlphaGenome (post-hoc)", "regulatory_raw2492": "Raw 2,492 tracks (post-hoc)",
-         "regulatory_lpca256": "Logistic PCA-256 (post-hoc)", "regulatory_lpca512": "Logistic PCA-512 (post-hoc)", "regulatory_svd512": "SVD-512 (post-hoc)"}
+         "regulatory_lpca256": "Logistic PCA-256 (post-hoc)", "regulatory_lpca512": "Logistic PCA-512 (post-hoc)", "regulatory_svd512": "SVD-512 (post-hoc)",
+         "sei_functional_native": "Sei functional (post-hoc)", "sei_latent_native": "Sei latent (post-hoc)", "enformer_latent_native": "Enformer latent (post-hoc)", "enformer_functional_native": "Enformer functional (post-hoc)", "ntv3_post_latent_native": "NTv3-post latent (post-hoc)", "ntv3_post_functional_native": "NTv3-post functional (post-hoc)", "ntv3_pre_latent_native": "NTv3-pre latent (post-hoc)"}
 COLOR = {"regulatory_histone_dnase_v1": "#0072B2", "cpgpt_large_locus": "#D55E00",
          "deepcpg_dna_locus": "#E69F00", "functional_annotations_pca": "#009E73", "alphagenome_locus": "#CC79A7", "regulatory_raw2492": "#56B4E9",
-         "regulatory_lpca256": "#F0E442", "regulatory_lpca512": "#999999", "regulatory_svd512": "#000000"}
+         "regulatory_lpca256": "#F0E442", "regulatory_lpca512": "#999999", "regulatory_svd512": "#000000",
+         "sei_functional_native": "#882255", "sei_latent_native": "#AA4499", "enformer_latent_native": "#117733", "enformer_functional_native": "#44AA99", "ntv3_post_latent_native": "#332288", "ntv3_post_functional_native": "#6699CC", "ntv3_pre_latent_native": "#888888"}
 
 
 def folds_for(labels):

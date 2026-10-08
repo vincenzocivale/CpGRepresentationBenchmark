@@ -43,7 +43,8 @@ LOGREG_MAX_ITER = 1000
 N_BOOT = 2000
 SEED = 17
 MAIN_ARMS = ("regulatory_histone_dnase_v1", "cpgpt_large_locus", "deepcpg_dna_locus")
-SUPPLEMENTARY_ARMS = ("functional_annotations_pca", "alphagenome_locus", "regulatory_raw2492", "regulatory_lpca256", "regulatory_lpca512", "regulatory_svd512")  # alphagenome: post-hoc, outside Holm family
+SUPPLEMENTARY_ARMS = ("functional_annotations_pca", "alphagenome_locus", "regulatory_raw2492", "regulatory_lpca256", "regulatory_lpca512", "regulatory_svd512",
+                     "sei_functional_native", "sei_latent_native", "enformer_latent_native", "enformer_functional_native", "ntv3_post_latent_native", "ntv3_post_functional_native", "ntv3_pre_latent_native")  # alphagenome: post-hoc, outside Holm family
 ENDPOINTS = {  # id -> (primary stat, secondary stats)
     "cpg_context": ("macro_auroc", ("macro_f1",)),
     "gene_region": ("macro_auroc", ("macro_f1",)),
@@ -87,8 +88,10 @@ def multiclass_oof(X, y, fold, n_classes, C=LOGREG_C, max_iter=LOGREG_MAX_ITER):
 
     y, fold = np.asarray(y).astype(int), np.asarray(fold)
     proba = np.full((len(y), n_classes), np.nan, dtype=np.float32)
-    nonconv = 0
-    for f in np.unique(fold):
+    folds = np.unique(fold)
+
+    def one_fold(i):
+        f = folds[i]
         te, tr = np.flatnonzero(fold == f), np.flatnonzero(fold != f)
         cp.assert_blocked(np.unique(fold[tr]), [f])
         mu, sd = cp._std_stats(X, tr)  # scaler on training chromosomes only
@@ -96,10 +99,14 @@ def multiclass_oof(X, y, fold, n_classes, C=LOGREG_C, max_iter=LOGREG_MAX_ITER):
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always", ConvergenceWarning)
             m.fit(cp._scaled(X, tr, mu, sd), y[tr])
-        nonconv += int(any(issubclass(x.category, ConvergenceWarning) for x in w))
         if not np.array_equal(m.classes_, np.arange(n_classes)):
             raise ValueError("a training fold is missing a class")
-        proba[te] = m.predict_proba(cp._scaled(X, te, mu, sd))
+        return te, m.predict_proba(cp._scaled(X, te, mu, sd)), int(any(issubclass(x.category, ConvergenceWarning) for x in w))
+
+    nonconv = 0
+    for te, pr, nc in cp.fold_map(one_fold, len(folds)):  # CPG_PROBE_FOLD_JOBS>1 -> folds in parallel (identical results)
+        proba[te] = pr
+        nonconv += nc
     return {"proba": proba, "n_nonconverged_folds": nonconv}
 
 

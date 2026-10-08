@@ -132,6 +132,34 @@ def ridge_blocked_cv(X, Y, fold, alphas=RIDGE_ALPHAS):
     return {"oof": oof, "alpha": chosen, "folds": folds}
 
 
+_JOB = None
+
+
+def _run_job(i):
+    return _JOB(i)
+
+
+def fold_map(fn, n):
+    """[fn(0..n-1)]; serial by default. CPG_PROBE_FOLD_JOBS=k>1 runs the (independent) outer folds in k forked processes,
+    each limited to CPG_PROBE_THREADS BLAS threads (default 2). Results are identical to the serial loop."""
+    import os
+    k = min(int(os.environ.get("CPG_PROBE_FOLD_JOBS", "1")), n)
+    if k <= 1:
+        return [fn(i) for i in range(n)]
+    import multiprocessing
+
+    from threadpoolctl import threadpool_limits
+    global _JOB
+
+    def job(i):
+        with threadpool_limits(int(os.environ.get("CPG_PROBE_THREADS", "2"))):
+            return fn(i)
+
+    _JOB = job
+    with multiprocessing.get_context("fork").Pool(k) as pool:
+        return pool.map(_run_job, range(n), chunksize=1)
+
+
 def logistic_blocked_cv(X, y, fold, Cs=LOGREG_CS, max_iter=LOGREG_MAX_ITER):
     """Chromosome(fold)-blocked L2 logistic probe. Returns dict(oof=decision scores (n,), C=(n_folds,), n_iter_max)."""
     from sklearn.exceptions import ConvergenceWarning
@@ -143,22 +171,16 @@ def logistic_blocked_cv(X, y, fold, Cs=LOGREG_CS, max_iter=LOGREG_MAX_ITER):
     if (fold < 0).any():
         raise ValueError("rows with fold < 0 must be removed before probing")
     folds = np.unique(fold)
-    oof = np.full(len(y), np.nan)
-    chosen = np.zeros(len(folds))
-    n_iter_max = 0
-    n_nonconv = 0
 
     def fit(Xa, ya, C):
-        nonlocal n_iter_max, n_nonconv
         m = LogisticRegression(penalty="l2", solver="lbfgs", C=C, max_iter=max_iter, class_weight=None)
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always", ConvergenceWarning)
             m.fit(Xa, ya)
-        n_nonconv += int(any(issubclass(x.category, ConvergenceWarning) for x in w))
-        n_iter_max = max(n_iter_max, int(np.max(m.n_iter_)))
-        return m
+        return m, int(any(issubclass(x.category, ConvergenceWarning) for x in w)), int(np.max(m.n_iter_))
 
-    for fi, f in enumerate(folds):
+    def one_fold(fi):
+        f = folds[fi]
         te = np.flatnonzero(fold == f)
         tr_folds = [g for g in folds if g != f]
         assert_blocked(tr_folds, [f])
@@ -166,18 +188,29 @@ def logistic_blocked_cv(X, y, fold, Cs=LOGREG_CS, max_iter=LOGREG_MAX_ITER):
         all_tr = np.concatenate([tr_rows[g] for g in tr_folds])
         mu, sd = _std_stats(X, all_tr)
         xs = {g: _scaled(X, tr_rows[g], mu, sd) for g in tr_folds}
+        nconv, nit = 0, 0
         score = []
         for C in Cs:
             aucs = []
             for g in tr_folds:
                 xa = np.concatenate([xs[h] for h in tr_folds if h != g])
                 ya = np.concatenate([y[tr_rows[h]] for h in tr_folds if h != g])
-                m = fit(xa, ya, C)
+                m, nc, ni = fit(xa, ya, C)
+                nconv, nit = nconv + nc, max(nit, ni)
                 aucs.append(auroc_binary(y[tr_rows[g]], m.decision_function(xs[g])))
             score.append(np.nanmean(aucs))
         score = np.array(score)
         bestC = min(c for c, s in zip(Cs, score, strict=True) if s == np.nanmax(score))
+        m, nc, ni = fit(np.concatenate([xs[g] for g in tr_folds]), np.concatenate([y[tr_rows[g]] for g in tr_folds]), bestC)
+        nconv, nit = nconv + nc, max(nit, ni)
+        return te, m.decision_function(_scaled(X, te, mu, sd)), bestC, nconv, nit
+
+    oof = np.full(len(y), np.nan)
+    chosen = np.zeros(len(folds))
+    n_iter_max = n_nonconv = 0
+    for fi, (te, dec, bestC, nc, ni) in enumerate(fold_map(one_fold, len(folds))):
+        oof[te] = dec
         chosen[fi] = bestC
-        m = fit(np.concatenate([xs[g] for g in tr_folds]), np.concatenate([y[tr_rows[g]] for g in tr_folds]), bestC)
-        oof[te] = m.decision_function(_scaled(X, te, mu, sd))
+        n_nonconv += nc
+        n_iter_max = max(n_iter_max, ni)
     return {"oof": oof, "C": chosen, "folds": folds, "n_iter_max": n_iter_max, "n_nonconverged_fits": n_nonconv}
