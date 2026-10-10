@@ -22,8 +22,8 @@ REFERENCE_ARM = "regulatory_histone_dnase_v1"
 # post-hoc comparators: registered outside matrix.yaml, never part of ARMS / --all / the original Holm families
 POSTHOC_ARMS = ("alphagenome_locus", "regulatory_raw2492", "regulatory_lpca256", "regulatory_lpca512", "regulatory_svd512",
                  "sei_functional_native", "sei_latent_native", "enformer_latent_native", "enformer_functional_native",
-                 "ntv3_post_latent_native", "ntv3_post_functional_native", "ntv3_pre_latent_native")
-POSTHOC_YAMLS = ("configs/posthoc/alphagenome_arm.yaml", "configs/posthoc/dimcontrol_arms.yaml", "configs/posthoc/foundation_arms.yaml", "configs/posthoc/ntv3_arms.yaml")
+                 "ntv3_post_latent_native", "ntv3_post_functional_native", "ntv3_pre_latent_native", "alphagenome_functional_native")
+POSTHOC_YAMLS = ("configs/posthoc/alphagenome_arm.yaml", "configs/posthoc/dimcontrol_arms.yaml", "configs/posthoc/foundation_arms.yaml", "configs/posthoc/ntv3_arms.yaml", "configs/posthoc/alphagenome_functional_arm.yaml")
 MATRIX_YAML = "configs/experiments/regulatory_confirmation_matrix/matrix.yaml"
 FORBIDDEN_READ_SUBSTRINGS = ("tcga", "data/protocols")  # the TCGA test set / masking-benchmark protocols are never read
 
