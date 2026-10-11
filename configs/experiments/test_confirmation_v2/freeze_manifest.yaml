@@ -517,11 +517,45 @@ runs:
   sei_latent_native__seed42:
     arm: sei_latent_native
     seed: 42
-    status: pending
+    status: complete
+    run_dir: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_42/20261010T204821Z-13d4719f91
+    best_pt: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_42/20261010T204821Z-13d4719f91/checkpoints/best.pt
+    best_sha256: 51870989ab117510fa038d9700b0730473ae6f3e067b59dcafb78c36b4a4d392
+    best_epoch: 119
+    resolved_config: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_42/20261010T204821Z-13d4719f91/resolved_config.yaml
+    resolved_config_sha256: 6be1d7b193f8645121b69a6a506642145536c3a785462b001a87c6c8bf7f361e
+    store_h5: data/cache/representations/sei_latent_native.h5
+    store_sha256: f3d9a472564d4926857575eb7f3b20f67936927fec2e79cabdc73c9895659298
+    patient_split: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_42/20261010T204821Z-13d4719f91/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_42/20261010T204821Z-13d4719f91/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_42/20261010T204821Z-13d4719f91/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013305805623531342
+    eval_config: configs/experiments/test_confirmation_v2/sei_latent_native__seed42.yaml
+    eval_config_sha256: 941f1aff7a93b0a84778692f22b669173baddb46b955c3a6dabfb2f61c20391a
+    eval_config_canonical_sha256: 884a3990c681f3c810ceebf9f3cf818bcea557ce86c8f7f9f3b50732dd163d3e
   sei_latent_native__seed97:
     arm: sei_latent_native
     seed: 97
-    status: pending
-build_issues:
-- 'sei_latent_native__seed42: PENDING (not on hal / not complete)'
-- 'sei_latent_native__seed97: PENDING (not on hal / not complete)'
+    status: complete
+    run_dir: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_97/20261010T210505Z-e1895608d2
+    best_pt: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_97/20261010T210505Z-e1895608d2/checkpoints/best.pt
+    best_sha256: 1a259b39e1ad2ba3b738e350dce74fb40ae2cc3a10c074815aabf6aa11276990
+    best_epoch: 119
+    resolved_config: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_97/20261010T210505Z-e1895608d2/resolved_config.yaml
+    resolved_config_sha256: 4891544f0204ca10963f388a94690ea63d75f9ffa4315e6916fe941071bafc8e
+    store_h5: data/cache/representations/sei_latent_native.h5
+    store_sha256: f3d9a472564d4926857575eb7f3b20f67936927fec2e79cabdc73c9895659298
+    patient_split: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_97/20261010T210505Z-e1895608d2/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_97/20261010T210505Z-e1895608d2/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_97/20261010T210505Z-e1895608d2/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013268757611513138
+    eval_config: configs/experiments/test_confirmation_v2/sei_latent_native__seed97.yaml
+    eval_config_sha256: 5b62be5a090c9bb29d7246dbc555763e4de744ce25bc6f163a4a17d813c82510
+    eval_config_canonical_sha256: 26ca6b64bc901cf579fa2c712d312a420bea1fda1d47fcd0f829d5de025e4a30
+build_issues: []
