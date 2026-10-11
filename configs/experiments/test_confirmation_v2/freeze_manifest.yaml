@@ -1,0 +1,527 @@
+name: tcga_posthoc_freeze_v2
+freeze_state: draft
+test_set_authorized: false
+policy: tcga_posthoc_freeze_v2
+panel_arms:
+- regulatory_raw2492
+- cpgpt_large_locus
+- deepcpg_dna_locus
+- alphagenome_locus
+- enformer_latent_native
+- ntv3_post_latent_native
+- ntv3_pre_latent_native
+- sei_latent_native
+seeds:
+- 17
+- 42
+- 97
+variant: latent / locus (no functional, no SVD)
+checkpoint: best.pt (min validation MSE at mask 0.50, 120 epochs, selected before
+  any test read)
+primary_endpoint:
+  metric: mse
+  mask_fraction: 0.5
+  patient_view: test
+protocol_files:
+  patient_protocol:
+    path: outputs/encode_atlas_v1/patients.npz
+    sha256: 73add7f52e3481bd64fd7f247aef276524244b8c257efe4fb577d41327f24d11
+  loci_protocol:
+    path: outputs/encode_atlas_v1/loci_seen.npz
+    sha256: f135a589d4e9c5b7527a81275b3ec943efbae6a479c46bc0907e67adcbf9d07a
+runs:
+  regulatory_raw2492__seed17:
+    arm: regulatory_raw2492
+    seed: 17
+    status: complete
+    run_dir: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_17/20261008T011455Z-79aea5865c
+    best_pt: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_17/20261008T011455Z-79aea5865c/checkpoints/best.pt
+    best_sha256: 0b9a7f7555c27a659994b4cd3dd0c897dc71b1fd74d182360101e6b55fcd21d6
+    best_epoch: 116
+    resolved_config: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_17/20261008T011455Z-79aea5865c/resolved_config.yaml
+    resolved_config_sha256: bceb84e488f480be7ff9f02b11561e61cf714270e90684b097f3ec07a9e3c0d4
+    store_h5: data/cache/representations/regulatory_histone_dnase__raw2492.h5
+    store_sha256: 1b8cd47bb0924e03c1434945c7a1b70904227a63775888b861b9918fae5142ff
+    patient_split: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_17/20261008T011455Z-79aea5865c/patient_split.npz
+    patient_split_sha256: 7985553b225c3431882251c61b2d512bfa579b18f3cd1f1c2b68123def9f5b9d
+    locus_split: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_17/20261008T011455Z-79aea5865c/locus_split.npz
+    locus_split_sha256: 93b778717fefc1ff80ce8b13343408bfe28e3e8e98170ab23b6b3dc113eb5bdf
+    prior_logit: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_17/20261008T011455Z-79aea5865c/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013564914464950562
+    eval_config: configs/experiments/test_confirmation_v2/regulatory_raw2492__seed17.yaml
+    eval_config_sha256: 54dcddeb50b6d8712ac99bb29ffa250060ce6c547280ff97e109805524304c28
+    eval_config_canonical_sha256: ce8a5eef1927a3269f983c6180900a04ae5984c3847c6224dd1d471d0441a5c2
+  regulatory_raw2492__seed42:
+    arm: regulatory_raw2492
+    seed: 42
+    status: complete
+    run_dir: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_42/20261010T085547Z-af3e8994ed
+    best_pt: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_42/20261010T085547Z-af3e8994ed/checkpoints/best.pt
+    best_sha256: 46ca41147c222b89e40dbdd0c3353f8ea43e2ca3ee97b7d1202bf8e010d0c648
+    best_epoch: 116
+    resolved_config: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_42/20261010T085547Z-af3e8994ed/resolved_config.yaml
+    resolved_config_sha256: c36c5d131149af8d552eeb992a627eb398b2c89dd4d00c89af842dc6107acb30
+    store_h5: data/cache/representations/regulatory_histone_dnase__raw2492.h5
+    store_sha256: 1b8cd47bb0924e03c1434945c7a1b70904227a63775888b861b9918fae5142ff
+    patient_split: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_42/20261010T085547Z-af3e8994ed/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_42/20261010T085547Z-af3e8994ed/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_42/20261010T085547Z-af3e8994ed/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013571811839938164
+    eval_config: configs/experiments/test_confirmation_v2/regulatory_raw2492__seed42.yaml
+    eval_config_sha256: 62201bd585845876cfad597864768eceb8c93f10c52277e175b8ddc3e1bee668
+    eval_config_canonical_sha256: 1b197814c6d917210751219d283793ebd48e6ca737f5cb8c3eea01bc0ecbf46d
+  regulatory_raw2492__seed97:
+    arm: regulatory_raw2492
+    seed: 97
+    status: complete
+    run_dir: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_97/20261010T085550Z-c3664141eb
+    best_pt: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_97/20261010T085550Z-c3664141eb/checkpoints/best.pt
+    best_sha256: 4ad481f1ee86672fb671fbd08f18250c52c6b8cd2bf85add5ec55c996630793c
+    best_epoch: 119
+    resolved_config: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_97/20261010T085550Z-c3664141eb/resolved_config.yaml
+    resolved_config_sha256: 584a22d18d160bb32a7d09e16392674695d18f0c037154e77e4a5080df651741
+    store_h5: data/cache/representations/regulatory_histone_dnase__raw2492.h5
+    store_sha256: 1b8cd47bb0924e03c1434945c7a1b70904227a63775888b861b9918fae5142ff
+    patient_split: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_97/20261010T085550Z-c3664141eb/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_97/20261010T085550Z-c3664141eb/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/regulatory_raw2492_reconstruction/benchmark/masking/tcga_array_genomewide/regulatory_raw2492/native_frozen/seed_97/20261010T085550Z-c3664141eb/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013576480560004711
+    eval_config: configs/experiments/test_confirmation_v2/regulatory_raw2492__seed97.yaml
+    eval_config_sha256: 602b66e3e87536de4477108a0e649c3e5366778e596fb3434c50f994a8f36e5c
+    eval_config_canonical_sha256: 264b205dcd3f2551a6845fe3942d1d19ce4912eee754ada88d4d4b33a3baaeed
+  cpgpt_large_locus__seed17:
+    arm: cpgpt_large_locus
+    seed: 17
+    status: complete
+    run_dir: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_17/20261003T144100Z-5d87d4abf1
+    best_pt: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_17/20261003T144100Z-5d87d4abf1/checkpoints/best.pt
+    best_sha256: 533ad8e0fbeb8aa9abe6be02fc8a4cb324fe31095149008938b34532f6ae5825
+    best_epoch: 119
+    resolved_config: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_17/20261003T144100Z-5d87d4abf1/resolved_config.yaml
+    resolved_config_sha256: a64068659ec15a65b1dddb93a11ca61f552a3f0ed8c6b09d8e8aebf8f1ac0d3a
+    store_h5: data/cache/representations/cpgpt_locus_large.h5
+    store_sha256: c08138cd83e08f5015521c2a5d42b88e1834f0670c84906590d9730223d7b71e
+    patient_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_17/20261003T144100Z-5d87d4abf1/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_17/20261003T144100Z-5d87d4abf1/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_17/20261003T144100Z-5d87d4abf1/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.016661163419485092
+    eval_config: configs/experiments/test_confirmation_v2/cpgpt_large_locus__seed17.yaml
+    eval_config_sha256: 822e7ff6ef12fb73578bee72a5796a7a9a97b5affa92428c81d0a242e7e43b4f
+    eval_config_canonical_sha256: e43c4a6d6d4777f8f0973495a56de504025a383f0d9e3c71c2738f0adf7e9f89
+  cpgpt_large_locus__seed42:
+    arm: cpgpt_large_locus
+    seed: 42
+    status: complete
+    run_dir: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_42/20261003T162814Z-5d02637966
+    best_pt: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_42/20261003T162814Z-5d02637966/checkpoints/best.pt
+    best_sha256: 030449e823cc5dc648e7827f5e29397bf25a8783577be52e5164115dd94506c8
+    best_epoch: 119
+    resolved_config: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_42/20261003T162814Z-5d02637966/resolved_config.yaml
+    resolved_config_sha256: 867601399e48b9c597c06f1bc313e7eec3fd514e6532d8e6f8af2bc893ddcc88
+    store_h5: data/cache/representations/cpgpt_locus_large.h5
+    store_sha256: c08138cd83e08f5015521c2a5d42b88e1834f0670c84906590d9730223d7b71e
+    patient_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_42/20261003T162814Z-5d02637966/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_42/20261003T162814Z-5d02637966/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_42/20261003T162814Z-5d02637966/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.01668158732354641
+    eval_config: configs/experiments/test_confirmation_v2/cpgpt_large_locus__seed42.yaml
+    eval_config_sha256: 862a031ec85c0e27adf628d838dd63cf695305f5766590f6c71f132bae3bb0a1
+    eval_config_canonical_sha256: e6ce846153b6276580ba71aab0606b4860154103e09b327e82a537698b81c02a
+  cpgpt_large_locus__seed97:
+    arm: cpgpt_large_locus
+    seed: 97
+    status: complete
+    run_dir: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_97/20261003T162619Z-1b6b1955cf
+    best_pt: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_97/20261003T162619Z-1b6b1955cf/checkpoints/best.pt
+    best_sha256: 79e5aaf24540b8314c307b085e45d4d69222d9fffe42ca23351efc692c8498f5
+    best_epoch: 116
+    resolved_config: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_97/20261003T162619Z-1b6b1955cf/resolved_config.yaml
+    resolved_config_sha256: 677db14acd09418a2d0bce9e69a905d599daa3668793d76a5e3ec65f5a886dbe
+    store_h5: data/cache/representations/cpgpt_locus_large.h5
+    store_sha256: c08138cd83e08f5015521c2a5d42b88e1834f0670c84906590d9730223d7b71e
+    patient_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_97/20261003T162619Z-1b6b1955cf/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_97/20261003T162619Z-1b6b1955cf/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/cpgpt_large_locus/native_frozen/seed_97/20261003T162619Z-1b6b1955cf/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.016673866659402847
+    eval_config: configs/experiments/test_confirmation_v2/cpgpt_large_locus__seed97.yaml
+    eval_config_sha256: 8b9502f0ab5ff5faf524b25b80b80b790d21b287732e22e786fc46e20817e723
+    eval_config_canonical_sha256: 9289287047610942bd25aeed5535b98be2521bb5dc30cecdbe4f70935d2c34ce
+  deepcpg_dna_locus__seed17:
+    arm: deepcpg_dna_locus
+    seed: 17
+    status: complete
+    run_dir: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_17/20261003T170325Z-484cd90b96
+    best_pt: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_17/20261003T170325Z-484cd90b96/checkpoints/best.pt
+    best_sha256: 6bb38d7c7989725e18ecfc9e58604a902f15b108513982e6c622a12dd2a319da
+    best_epoch: 117
+    resolved_config: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_17/20261003T170325Z-484cd90b96/resolved_config.yaml
+    resolved_config_sha256: 9265e2124689cf6b0035fac1cdb79883c99f6be3a95dce28bc27285f8fe1ddf3
+    store_h5: data/cache/representations/deepcpg_dna_locus.h5
+    store_sha256: e7280d5ff14d89a247e4cb3560a952250a3f1fa78daf653b9ec02761389b82b7
+    patient_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_17/20261003T170325Z-484cd90b96/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_17/20261003T170325Z-484cd90b96/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_17/20261003T170325Z-484cd90b96/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.019621936604380608
+    eval_config: configs/experiments/test_confirmation_v2/deepcpg_dna_locus__seed17.yaml
+    eval_config_sha256: 367c31061946125e6608968b36b7c67eb0d3ad305c117f64ea71e783d9658544
+    eval_config_canonical_sha256: 0820d67566322dfa5b1f2c45bd2789801919d79e9cc43ac6c70049b706289c89
+  deepcpg_dna_locus__seed42:
+    arm: deepcpg_dna_locus
+    seed: 42
+    status: complete
+    run_dir: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_42/20261003T184733Z-c72b576708
+    best_pt: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_42/20261003T184733Z-c72b576708/checkpoints/best.pt
+    best_sha256: e69a2211fcfdf769fa9bcd34d92ee3acc8d32ba68759a7ab321dbc28df3f0956
+    best_epoch: 119
+    resolved_config: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_42/20261003T184733Z-c72b576708/resolved_config.yaml
+    resolved_config_sha256: 8d3e4f67178811b7a114082e258dbc0ca8d4e218b054ff8c0956e481f9779b8c
+    store_h5: data/cache/representations/deepcpg_dna_locus.h5
+    store_sha256: e7280d5ff14d89a247e4cb3560a952250a3f1fa78daf653b9ec02761389b82b7
+    patient_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_42/20261003T184733Z-c72b576708/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_42/20261003T184733Z-c72b576708/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_42/20261003T184733Z-c72b576708/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.01961682364344597
+    eval_config: configs/experiments/test_confirmation_v2/deepcpg_dna_locus__seed42.yaml
+    eval_config_sha256: 79d4c3399833678aa72e741ffe76556bec271ab163cc9a1d82c2d5238316bd20
+    eval_config_canonical_sha256: 7b4753f808bd8042cc49567cfa9a75762b749874cd63cde7635bb34360da8760
+  deepcpg_dna_locus__seed97:
+    arm: deepcpg_dna_locus
+    seed: 97
+    status: complete
+    run_dir: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_97/20261003T184620Z-a8d0bed5ee
+    best_pt: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_97/20261003T184620Z-a8d0bed5ee/checkpoints/best.pt
+    best_sha256: 63c4759e485b7aeb1089f97b926ec63cb330ed735f92fbf3a805eab7614160d6
+    best_epoch: 119
+    resolved_config: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_97/20261003T184620Z-a8d0bed5ee/resolved_config.yaml
+    resolved_config_sha256: a047c85e694c79e884b2cf72e0924782f132322feb368f9ad9a83127b8e0904f
+    store_h5: data/cache/representations/deepcpg_dna_locus.h5
+    store_sha256: e7280d5ff14d89a247e4cb3560a952250a3f1fa78daf653b9ec02761389b82b7
+    patient_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_97/20261003T184620Z-a8d0bed5ee/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_97/20261003T184620Z-a8d0bed5ee/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/regulatory_confirmation_v1/benchmark/masking/tcga_array_genomewide/deepcpg_dna_locus/native_frozen/seed_97/20261003T184620Z-a8d0bed5ee/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.019633790478110313
+    eval_config: configs/experiments/test_confirmation_v2/deepcpg_dna_locus__seed97.yaml
+    eval_config_sha256: 28e2dbeb75d665b6b953e84004f003a0b390b77a22f0b29deec92fbeb1064189
+    eval_config_canonical_sha256: 8f8e06dc416861e4e145ba7108fa8ab9a2b965317e2d1f4fe48f02a525871df4
+  alphagenome_locus__seed17:
+    arm: alphagenome_locus
+    seed: 17
+    status: complete
+    run_dir: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_17/20261006T153022Z-fb892c4d6b
+    best_pt: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_17/20261006T153022Z-fb892c4d6b/checkpoints/best.pt
+    best_sha256: 702b64f4c7f8a41d3fc7c2db119df9ba3e0f8b591bdfaae3e804dbda1ef00096
+    best_epoch: 119
+    resolved_config: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_17/20261006T153022Z-fb892c4d6b/resolved_config.yaml
+    resolved_config_sha256: 1b79545ee9fb9e873b365c952739fca824b5de42bdf0d389330a2372c67b4498
+    store_h5: data/cache/representations/alphagenome_locus.h5
+    store_sha256: 3906d888964fe71e303e2437ae64445b3f91803dcc04d15484fc5d5565850e00
+    patient_split: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_17/20261006T153022Z-fb892c4d6b/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_17/20261006T153022Z-fb892c4d6b/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_17/20261006T153022Z-fb892c4d6b/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013599341735243797
+    eval_config: configs/experiments/test_confirmation_v2/alphagenome_locus__seed17.yaml
+    eval_config_sha256: d44558770f00192323fce0a864951965ff84554ffd2b3ca9fa4f20fbc5d24917
+    eval_config_canonical_sha256: 5089370b7101929215d899352c03af7138c22a26b294b0ab5122c94cac5e9695
+  alphagenome_locus__seed42:
+    arm: alphagenome_locus
+    seed: 42
+    status: complete
+    run_dir: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_42/20261006T153023Z-dc3bc2daf0
+    best_pt: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_42/20261006T153023Z-dc3bc2daf0/checkpoints/best.pt
+    best_sha256: 99a2b391387f1b682a34b5dc03c22257822523752e101b4998de498e01abfbd4
+    best_epoch: 119
+    resolved_config: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_42/20261006T153023Z-dc3bc2daf0/resolved_config.yaml
+    resolved_config_sha256: d23fa7023e1cb25a2017d8bf921c4b23c4a72f86da2ef8a4980775240dbbbca8
+    store_h5: data/cache/representations/alphagenome_locus.h5
+    store_sha256: 3906d888964fe71e303e2437ae64445b3f91803dcc04d15484fc5d5565850e00
+    patient_split: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_42/20261006T153023Z-dc3bc2daf0/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_42/20261006T153023Z-dc3bc2daf0/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_42/20261006T153023Z-dc3bc2daf0/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013582692481577396
+    eval_config: configs/experiments/test_confirmation_v2/alphagenome_locus__seed42.yaml
+    eval_config_sha256: 998efe6736b40b09d492916d34c6e01904bf18d1ad671aadab4f9da9543e455c
+    eval_config_canonical_sha256: 6a140c9bf79e333048eef1407ba6c87fd8368e076088002e36caafd7069ad790
+  alphagenome_locus__seed97:
+    arm: alphagenome_locus
+    seed: 97
+    status: complete
+    run_dir: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_97/20261006T153023Z-2c3548f49e
+    best_pt: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_97/20261006T153023Z-2c3548f49e/checkpoints/best.pt
+    best_sha256: 6b18a8a89053f000b9b1fbc41e10142b0e107af61bd84ac1862d3e9050ae49b7
+    best_epoch: 118
+    resolved_config: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_97/20261006T153023Z-2c3548f49e/resolved_config.yaml
+    resolved_config_sha256: de568e7347aa76b784573965c90084c75441f00ff2b2d37e5ffd9f93f0d2c533
+    store_h5: data/cache/representations/alphagenome_locus.h5
+    store_sha256: 3906d888964fe71e303e2437ae64445b3f91803dcc04d15484fc5d5565850e00
+    patient_split: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_97/20261006T153023Z-2c3548f49e/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_97/20261006T153023Z-2c3548f49e/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark/masking/tcga_array_genomewide/alphagenome_locus/native_frozen/seed_97/20261006T153023Z-2c3548f49e/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013575541786849499
+    eval_config: configs/experiments/test_confirmation_v2/alphagenome_locus__seed97.yaml
+    eval_config_sha256: c6d7a9477ea9708724a9dfd98ecd0b9389257de08fda71f554f21a63ab7d9a86
+    eval_config_canonical_sha256: 35c9728da6f1bf557a7dab40b4acc2dc60ddb1addb2fc72b8cbc55cf980acac0
+  enformer_latent_native__seed17:
+    arm: enformer_latent_native
+    seed: 17
+    status: complete
+    run_dir: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_17/20261010T085609Z-b1412b2a82
+    best_pt: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_17/20261010T085609Z-b1412b2a82/checkpoints/best.pt
+    best_sha256: 11d0f475ff3c8ef8bb4a41f9cd6fbb776592cced2c8502aacb2f72f49955d646
+    best_epoch: 114
+    resolved_config: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_17/20261010T085609Z-b1412b2a82/resolved_config.yaml
+    resolved_config_sha256: 3ed381c25e8bc8c936436c5a4cfd906ad3229c5371478f6381141a485528ac85
+    store_h5: data/cache/representations/enformer_latent_native.h5
+    store_sha256: 4b994917a04674a44d2b2de3e07a9af3299c55a35bc4575e55e4dafacf9ffb82
+    patient_split: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_17/20261010T085609Z-b1412b2a82/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_17/20261010T085609Z-b1412b2a82/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_17/20261010T085609Z-b1412b2a82/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013020689599215984
+    eval_config: configs/experiments/test_confirmation_v2/enformer_latent_native__seed17.yaml
+    eval_config_sha256: 94776d2a81ed01d79f5c8d2ffc4e052bb59fd3ec9bacd0dcf4f7c87a366e8a50
+    eval_config_canonical_sha256: b217a80c2a8688e8a8ff328f8bf3e65b83c8c3e204fe868b38ce090dfb181520
+  enformer_latent_native__seed42:
+    arm: enformer_latent_native
+    seed: 42
+    status: complete
+    run_dir: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_42/20261010T085614Z-97ebceb4a6
+    best_pt: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_42/20261010T085614Z-97ebceb4a6/checkpoints/best.pt
+    best_sha256: 6c842753ef9c4b3f9220bbd8d1fc379ba2439ec9427c136147454f51b0381a74
+    best_epoch: 116
+    resolved_config: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_42/20261010T085614Z-97ebceb4a6/resolved_config.yaml
+    resolved_config_sha256: a53db50db6f1453a8a7f0820ad43e8a5fcc725744314d1c49f318b74cb531a76
+    store_h5: data/cache/representations/enformer_latent_native.h5
+    store_sha256: 4b994917a04674a44d2b2de3e07a9af3299c55a35bc4575e55e4dafacf9ffb82
+    patient_split: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_42/20261010T085614Z-97ebceb4a6/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_42/20261010T085614Z-97ebceb4a6/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_42/20261010T085614Z-97ebceb4a6/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013024753890931606
+    eval_config: configs/experiments/test_confirmation_v2/enformer_latent_native__seed42.yaml
+    eval_config_sha256: 75014c0c338971b683415bd205ab785214d736b7c67967adc8cde45082ccedad
+    eval_config_canonical_sha256: 5b40a0adf626d549ed142ea1d874e9d3a016cb71173c3f72c319cf3ab37ccb24
+  enformer_latent_native__seed97:
+    arm: enformer_latent_native
+    seed: 97
+    status: complete
+    run_dir: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_97/20261010T130043Z-e6e9084997
+    best_pt: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_97/20261010T130043Z-e6e9084997/checkpoints/best.pt
+    best_sha256: 231ae80646fae8472a746b260505dd384f7dad64eccdce0a4fbe8ea979c0acbe
+    best_epoch: 116
+    resolved_config: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_97/20261010T130043Z-e6e9084997/resolved_config.yaml
+    resolved_config_sha256: f4bd23406358aed80100c9ea4c8ab0a1bd7c2672f7eb778012ae407661cf3ad4
+    store_h5: data/cache/representations/enformer_latent_native.h5
+    store_sha256: 4b994917a04674a44d2b2de3e07a9af3299c55a35bc4575e55e4dafacf9ffb82
+    patient_split: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_97/20261010T130043Z-e6e9084997/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_97/20261010T130043Z-e6e9084997/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/enformer_posthoc/benchmark/masking/tcga_array_genomewide/enformer_latent_native/native_frozen/seed_97/20261010T130043Z-e6e9084997/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013054108247160912
+    eval_config: configs/experiments/test_confirmation_v2/enformer_latent_native__seed97.yaml
+    eval_config_sha256: a4db5fa896e83ddb4cf345f69b61d0a64671e4eba479a7b39a986f19903e5e93
+    eval_config_canonical_sha256: 969d09d758f40bf4cc21fd037efaba91b8b0578fa3683a2920b495e4e912fcd9
+  ntv3_post_latent_native__seed17:
+    arm: ntv3_post_latent_native
+    seed: 17
+    status: complete
+    run_dir: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_17/20261010T133507Z-a857ab1a69
+    best_pt: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_17/20261010T133507Z-a857ab1a69/checkpoints/best.pt
+    best_sha256: 30d968b28c3fccd02862a5f9efdf8aab4b7af8b9aade287d4d7818d9143c37cd
+    best_epoch: 116
+    resolved_config: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_17/20261010T133507Z-a857ab1a69/resolved_config.yaml
+    resolved_config_sha256: 47020ffb78afad2537865c61069ce8abb2e8b2c15179babc595af42b43037f14
+    store_h5: data/cache/representations/ntv3_post_latent_native.h5
+    store_sha256: aee5a8ff865802819d95b4f0715d1397a64e167e8d49856fb1a05cdc85444544
+    patient_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_17/20261010T133507Z-a857ab1a69/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_17/20261010T133507Z-a857ab1a69/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_17/20261010T133507Z-a857ab1a69/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.014235477894544601
+    eval_config: configs/experiments/test_confirmation_v2/ntv3_post_latent_native__seed17.yaml
+    eval_config_sha256: 6f3c9aa62b1a27a1d4d070d8e5881666b1424497342b951e3788dd205e3a62bd
+    eval_config_canonical_sha256: 08d7d4f7bdacb2a1471d70ae82364b16ddee2458d35899fbd5520082fd7f7822
+  ntv3_post_latent_native__seed42:
+    arm: ntv3_post_latent_native
+    seed: 42
+    status: complete
+    run_dir: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_42/20261010T133513Z-a180039fe2
+    best_pt: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_42/20261010T133513Z-a180039fe2/checkpoints/best.pt
+    best_sha256: af79ca810a1b58281bcf4e5e6fcb6e170d6bc0e771a6e353f1d97032f444c2de
+    best_epoch: 116
+    resolved_config: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_42/20261010T133513Z-a180039fe2/resolved_config.yaml
+    resolved_config_sha256: 6931bc8ecb095e95f747593a13351dbaf7c2df3446c5a7065978dd0798335d75
+    store_h5: data/cache/representations/ntv3_post_latent_native.h5
+    store_sha256: aee5a8ff865802819d95b4f0715d1397a64e167e8d49856fb1a05cdc85444544
+    patient_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_42/20261010T133513Z-a180039fe2/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_42/20261010T133513Z-a180039fe2/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_42/20261010T133513Z-a180039fe2/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.014244471676647663
+    eval_config: configs/experiments/test_confirmation_v2/ntv3_post_latent_native__seed42.yaml
+    eval_config_sha256: d9845be6cd2d16a6c88c4f233ff0e82826db60a2d511ecb43f52a235abfbe504
+    eval_config_canonical_sha256: 36ec08d1c355761589217b138fb850819e3b91cc43b5ddbf8fe40fe25affd5f9
+  ntv3_post_latent_native__seed97:
+    arm: ntv3_post_latent_native
+    seed: 97
+    status: complete
+    run_dir: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_97/20261010T133516Z-856a45cbc6
+    best_pt: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_97/20261010T133516Z-856a45cbc6/checkpoints/best.pt
+    best_sha256: 8d16a084a58ffc99bd93832c3eb05cf30cd12326462a22d1d5fdbc2ab0414664
+    best_epoch: 116
+    resolved_config: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_97/20261010T133516Z-856a45cbc6/resolved_config.yaml
+    resolved_config_sha256: 57b7ad7b2e78109a6f1f0d6e9384a497ffeac82d4a6dc00c2766eb6b26348410
+    store_h5: data/cache/representations/ntv3_post_latent_native.h5
+    store_sha256: aee5a8ff865802819d95b4f0715d1397a64e167e8d49856fb1a05cdc85444544
+    patient_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_97/20261010T133516Z-856a45cbc6/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_97/20261010T133516Z-856a45cbc6/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_post_latent_native/native_frozen/seed_97/20261010T133516Z-856a45cbc6/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.01421650592237711
+    eval_config: configs/experiments/test_confirmation_v2/ntv3_post_latent_native__seed97.yaml
+    eval_config_sha256: 77354ccc7dea45182aff8c68a086ceec368dda949b5b21afea937a44ba7aafe9
+    eval_config_canonical_sha256: 15b1debbeec0fde9702287172292d355816bb764e7a8e233562b7c4206e4dc0c
+  ntv3_pre_latent_native__seed17:
+    arm: ntv3_pre_latent_native
+    seed: 17
+    status: complete
+    run_dir: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_17/20261010T170655Z-c3a29925dc
+    best_pt: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_17/20261010T170655Z-c3a29925dc/checkpoints/best.pt
+    best_sha256: 1691f5d360b07c08ad2c3130f7ed9721d1beda1408431afa4c183c446a44f21d
+    best_epoch: 114
+    resolved_config: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_17/20261010T170655Z-c3a29925dc/resolved_config.yaml
+    resolved_config_sha256: 81735c03091e395f05b3a3bf0a6da1dd308031963a12e2ca8e47d7d262dedcff
+    store_h5: data/cache/representations/ntv3_pre_latent_native.h5
+    store_sha256: a60ed1a44abc4ef7c66c9d44e24127b21e99bee5b5453f6d781a70fc1f4f6f07
+    patient_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_17/20261010T170655Z-c3a29925dc/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_17/20261010T170655Z-c3a29925dc/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_17/20261010T170655Z-c3a29925dc/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.019028112292289734
+    eval_config: configs/experiments/test_confirmation_v2/ntv3_pre_latent_native__seed17.yaml
+    eval_config_sha256: a4a22f2b9a532309a2423d3ff6de1ac5f3847ec9836d28276bced835fd9acca3
+    eval_config_canonical_sha256: 67f50ccaa614d329bbf1d0339616ebcf2d65da96346496ac9516539e81bda2b3
+  ntv3_pre_latent_native__seed42:
+    arm: ntv3_pre_latent_native
+    seed: 42
+    status: complete
+    run_dir: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_42/20261010T172315Z-df5d3615af
+    best_pt: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_42/20261010T172315Z-df5d3615af/checkpoints/best.pt
+    best_sha256: d7f548b7bf7270334044f26efb8a8e560aacdd2eacce335e0cdbff0574a80745
+    best_epoch: 116
+    resolved_config: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_42/20261010T172315Z-df5d3615af/resolved_config.yaml
+    resolved_config_sha256: d27618fa11acdfd4d1b93c55ece8799ec4de94c3a3f8a9a3a4c98c2580df1196
+    store_h5: data/cache/representations/ntv3_pre_latent_native.h5
+    store_sha256: a60ed1a44abc4ef7c66c9d44e24127b21e99bee5b5453f6d781a70fc1f4f6f07
+    patient_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_42/20261010T172315Z-df5d3615af/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_42/20261010T172315Z-df5d3615af/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_42/20261010T172315Z-df5d3615af/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.019025029614567757
+    eval_config: configs/experiments/test_confirmation_v2/ntv3_pre_latent_native__seed42.yaml
+    eval_config_sha256: a004938a9c8c1aa28325b1180f217d94a90b657c95667a89cd56dfa1140674a5
+    eval_config_canonical_sha256: 6d75f41a160b2c7f584a42d93d104d5c0f5d244f348caa4532297790e741a860
+  ntv3_pre_latent_native__seed97:
+    arm: ntv3_pre_latent_native
+    seed: 97
+    status: complete
+    run_dir: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_97/20261010T172318Z-404665a27f
+    best_pt: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_97/20261010T172318Z-404665a27f/checkpoints/best.pt
+    best_sha256: 45def28a8ae73a3c4b81be6b83251ab56ba811288d53ce1ec611c73a857a67df
+    best_epoch: 116
+    resolved_config: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_97/20261010T172318Z-404665a27f/resolved_config.yaml
+    resolved_config_sha256: f0b789f9ff1dabc57ccf49c6ae692638f9d5fb1c20e9156efa127251a5ef1395
+    store_h5: data/cache/representations/ntv3_pre_latent_native.h5
+    store_sha256: a60ed1a44abc4ef7c66c9d44e24127b21e99bee5b5453f6d781a70fc1f4f6f07
+    patient_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_97/20261010T172318Z-404665a27f/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_97/20261010T172318Z-404665a27f/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/ntv3_posthoc/benchmark/masking/tcga_array_genomewide/ntv3_pre_latent_native/native_frozen/seed_97/20261010T172318Z-404665a27f/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.018994811922311783
+    eval_config: configs/experiments/test_confirmation_v2/ntv3_pre_latent_native__seed97.yaml
+    eval_config_sha256: 5418fceb07314184298585c8aa63da09c35bfeeed6ba4289c3daa9b864845186
+    eval_config_canonical_sha256: 21e54b4f655d133bba1601c6ba2c8b88f0f6898e92ed59d0cb29ef0fdd5df6d6
+  sei_latent_native__seed17:
+    arm: sei_latent_native
+    seed: 17
+    status: complete
+    run_dir: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_17/20261010T172649Z-c9abf2b2fd
+    best_pt: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_17/20261010T172649Z-c9abf2b2fd/checkpoints/best.pt
+    best_sha256: daf3c33872f669c93922b23a4ffd1cf0ad474c9619642116d3c1a2c4219078cc
+    best_epoch: 119
+    resolved_config: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_17/20261010T172649Z-c9abf2b2fd/resolved_config.yaml
+    resolved_config_sha256: 2acbee68558acf2e7915bb1151df4743af85018dd0e360808329e749de3d03c8
+    store_h5: data/cache/representations/sei_latent_native.h5
+    store_sha256: f3d9a472564d4926857575eb7f3b20f67936927fec2e79cabdc73c9895659298
+    patient_split: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_17/20261010T172649Z-c9abf2b2fd/patient_split.npz
+    patient_split_sha256: 7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65
+    locus_split: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_17/20261010T172649Z-c9abf2b2fd/locus_split.npz
+    locus_split_sha256: 66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93
+    prior_logit: outputs/sei_phase1/benchmark/masking/tcga_array_genomewide/sei_latent_native/native_frozen/seed_17/20261010T172649Z-c9abf2b2fd/prior_logit.npy
+    prior_logit_sha256: 1d14e90e72a2d76565a163658cda33428cf65b86852785c69d8e79886cd654fa
+    validation_mse_mask050: 0.013244988396763802
+    eval_config: configs/experiments/test_confirmation_v2/sei_latent_native__seed17.yaml
+    eval_config_sha256: b18efb0c2c23f8b80bb170743665493535bb3f5a71106c980b2034d2a2c1402d
+    eval_config_canonical_sha256: 6f4a598574fd2b2ea9a3c31bb857ee1edae3c7defea7834b91048f7be32590a8
+  sei_latent_native__seed42:
+    arm: sei_latent_native
+    seed: 42
+    status: pending
+  sei_latent_native__seed97:
+    arm: sei_latent_native
+    seed: 97
+    status: pending
+build_issues:
+- 'sei_latent_native__seed42: PENDING (not on hal / not complete)'
+- 'sei_latent_native__seed97: PENDING (not on hal / not complete)'

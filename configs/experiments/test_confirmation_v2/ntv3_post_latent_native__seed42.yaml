@@ -1,0 +1,79 @@
+dataset:
+  cpg_registry: data/cpg/registries/array_cpg_map.parquet
+  methylation_h5: data/methylation/tcga_array_official_full.h5
+  name: tcga_array_genomewide
+  patient_protocol: outputs/encode_atlas_v1/patients.npz
+  patient_split:
+  - 0.8
+  - 0.1
+  - 0.1
+  patient_split_seed: 20260925
+evaluation:
+  allow_overwrite_split_dir: false
+  batch_size: 8
+  mask_fractions:
+  - 0.15
+  - 0.3
+  - 0.5
+  - 0.7
+  - 0.9
+  mask_seed: 17001
+  num_workers: 0
+  output_layout: split_dirs
+  panel_repeats: 1
+  panel_size: 2048
+  patient_view: test
+  save_predictions: true
+  selection_mask_fraction: 0.5
+  preserve_run_files: true
+  test_authorization: tcga_posthoc_freeze_v2
+  test_freeze_manifest: configs/experiments/test_confirmation_v2/freeze_manifest.yaml
+  test_freeze_run_id: ntv3_post_latent_native__seed42
+experiment:
+  locus_split:
+    heldout_fraction: 0.0
+    protocol_path: outputs/encode_atlas_v1/loci_seen.npz
+    seed: 17001
+  name: ntv3post_latent_s42_m50
+  output_root: outputs/ntv3_posthoc/benchmark
+  task: masking
+model:
+  hidden_dim: 512
+  locus_latent_dim: 256
+  patient_dim: 256
+  token_dim: 256
+representation:
+  component: locus_only
+  family: genomic_fm
+  mode: precomputed
+  name: ntv3_post_latent_native
+  provenance:
+    dim: 1536
+    locus_fit_scope: external_pretrained
+    patient_specific: false
+    role: posthoc
+    sha256: aee5a8ff865802819d95b4f0715d1397a64e167e8d49856fb1a05cdc85444544
+    supervision: supervised on experimental functional-genomics tracks (not methylation-specific);
+      reference-sequence-only input, species=human
+  source: NTv3_650M_post (hg38 human) final deconv-tower embedding (1536-d, pre-head)
+    at the CpG cytosine, 1 bp, 65,536 bp window
+  store_h5: data/cache/representations/ntv3_post_latent_native.h5
+  track: native_frozen
+training:
+  batch_size: 8
+  beta_epsilon: 0.0001
+  device: cuda
+  early_stopping: false
+  epochs: 120
+  learning_rate: 0.0001
+  mask_fractions:
+  - 0.15
+  - 0.3
+  - 0.5
+  - 0.7
+  - 0.9
+  mixed_precision: true
+  num_workers: 8
+  panel_size: 2048
+  seed: 42
+  weight_decay: 0.0001

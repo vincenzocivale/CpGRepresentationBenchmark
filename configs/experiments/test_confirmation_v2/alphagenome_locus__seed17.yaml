@@ -1,0 +1,79 @@
+experiment:
+  task: masking
+  name: posthoc_alphagenome_tcga__seed17
+  output_root: outputs/regulatory_confirmation_posthoc_alphagenome/benchmark
+  locus_split:
+    heldout_fraction: 0.0
+    seed: 17001
+    protocol_path: outputs/encode_atlas_v1/loci_seen.npz
+dataset:
+  name: tcga_array_genomewide
+  methylation_h5: data/methylation/tcga_array_official_full.h5
+  cpg_registry: data/cpg/registries/array_cpg_map.parquet
+  patient_split:
+  - 0.8
+  - 0.1
+  - 0.1
+  patient_protocol: outputs/encode_atlas_v1/patients.npz
+  patient_split_seed: 20260925
+representation:
+  name: alphagenome_locus
+  family: genomic_fm
+  track: native_frozen
+  component: locus_only
+  source: 'regulatory confirmation matrix (main): AlphaGenome trunk embedding_1bp
+    (1536-d) at the CpG cytosine, GRCh38 reference sequence only; scripts/build_alphagenome_embedding.py'
+  mode: precomputed
+  store_h5: data/cache/representations/alphagenome_locus.h5
+  provenance:
+    patient_specific: false
+    supervision: supervised on experimental functional-genomics tracks (not methylation-specific);
+      reference-sequence-only input at inference
+    role: main
+    locus_fit_scope: external_pretrained
+    dim: 1536
+    sha256: 3906d888964fe71e303e2437ae64445b3f91803dcc04d15484fc5d5565850e00
+model:
+  locus_latent_dim: 256
+  token_dim: 256
+  patient_dim: 256
+  hidden_dim: 512
+training:
+  seed: 17
+  device: cuda
+  epochs: 120
+  batch_size: 8
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  mixed_precision: true
+  num_workers: 8
+  panel_size: 2048
+  mask_fractions:
+  - 0.15
+  - 0.3
+  - 0.5
+  - 0.7
+  - 0.9
+  beta_epsilon: 0.0001
+  early_stopping: false
+evaluation:
+  panel_size: 2048
+  mask_fractions:
+  - 0.15
+  - 0.3
+  - 0.5
+  - 0.7
+  - 0.9
+  selection_mask_fraction: 0.5
+  batch_size: 8
+  num_workers: 0
+  save_predictions: true
+  mask_seed: 17001
+  patient_view: test
+  panel_repeats: 1
+  output_layout: split_dirs
+  allow_overwrite_split_dir: false
+  preserve_run_files: true
+  test_authorization: tcga_posthoc_freeze_v2
+  test_freeze_manifest: configs/experiments/test_confirmation_v2/freeze_manifest.yaml
+  test_freeze_run_id: alphagenome_locus__seed17

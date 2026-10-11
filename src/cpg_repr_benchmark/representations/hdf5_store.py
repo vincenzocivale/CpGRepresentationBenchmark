@@ -116,12 +116,14 @@ class HDF5RepresentationStore:
         needed_store_rows = store_rows[present_idx]
         read_order = np.argsort(needed_store_rows)
         with h5py.File(self.path, "r") as handle:
-            sorted_values = np.asarray(
-                handle[self.embedding_key][needed_store_rows[read_order]], dtype=np.float32
-            )
+            raw_values = handle[self.embedding_key][needed_store_rows[read_order]]
+            # I/O-only optimisation: keep float16 stores in float16 (half the bytes through the DataLoader / pin-memory
+            # path); the training engine casts back to float32 on device, which is exact (fp16 -> fp32 is lossless).
+            self._store_dtype = np.float16 if raw_values.dtype == np.float16 else np.float32
+            sorted_values = np.asarray(raw_values, dtype=self._store_dtype)
         inverse = np.empty_like(read_order)
         inverse[read_order] = np.arange(len(read_order))
-        self._embedding_matrix = np.zeros((len(matrix_cpg_ids), self._dim), dtype=np.float32)
+        self._embedding_matrix = np.zeros((len(matrix_cpg_ids), self._dim), dtype=self._store_dtype)
         self._embedding_matrix[present_idx] = sorted_values[inverse]
 
     @property

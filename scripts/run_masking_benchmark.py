@@ -240,6 +240,8 @@ def main() -> None:
             registry_path=registry_path or Path("."),
             run_dir=run_dir,
             repo_root=repo_root,
+            # opt-in: evaluating a frozen run must not rewrite its representation_manifest.json
+            write_manifest=not (args.mode == "evaluate" and cfg["evaluation"].get("preserve_run_files", False)),
         )
         store = HDF5RepresentationStore(
             representation.store_path,
@@ -271,12 +273,21 @@ def main() -> None:
         ))
         if not protocol_path.is_absolute():
             protocol_path = (repo_root / protocol_path).resolve()
+        held_chroms = locus_cfg.get("heldout_chromosomes")  # opt-in strict chromosome holdout
+        chrom_labels = None
+        if held_chroms:
+            if registry_path is None:
+                raise ValueError("locus_split.heldout_chromosomes requires dataset.cpg_registry")
+            from cpg_repr_benchmark.data.chromosomes import chromosome_by_cpg
+            chrom_labels = np.asarray(chromosome_by_cpg(cpg_ids, registry_path))
         locus_split = load_or_create_locus_protocol(
             protocol_path,
             candidate_columns,
             cpg_ids,
             seed=int(locus_cfg.get("seed", seed)),
             heldout_fraction=float(locus_cfg["heldout_fraction"]),
+            heldout_chromosomes=held_chroms,
+            chromosome_labels=chrom_labels,
         )
         required_columns = np.concatenate([locus_split.train_columns, locus_split.heldout_columns])
         missing_coverage = required_columns[~store.coverage_mask[required_columns]]
@@ -297,7 +308,14 @@ def main() -> None:
         heldout_columns = locus_split.heldout_columns
         if len(train_columns) < 2:
             raise RuntimeError("locus split became empty after train-prior availability filtering")
-        if len(heldout_columns) < 1 and float(locus_cfg["heldout_fraction"]) > 0.0:
+        if held_chroms:
+            from cpg_repr_benchmark.data.splits import assert_no_heldout_chromosomes
+            # no held-out chromosome in prior-fit loci, train/context/target loci
+            assert_no_heldout_chromosomes({"train_columns": train_columns,
+                                           "prior_fit_loci": locus_split.train_columns},
+                                          chrom_labels, held_chroms)
+            assert len(np.intersect1d(train_columns, heldout_columns)) == 0
+        if len(heldout_columns) < 1 and (float(locus_cfg["heldout_fraction"]) > 0.0 or held_chroms):
             raise RuntimeError("locus split became empty after train-prior availability filtering")
         # Persist the exact post-filter split used by training/evaluation.
         class _Split: pass
@@ -366,6 +384,7 @@ def main() -> None:
                 "global_train_beta_prior": float(global_train_beta),
                 "unseen_locus_prior_policy": "global train-patients x train-loci mean",
                 "locus_protocol": str(protocol_path),
+                "heldout_chromosomes": held_chroms,
                 "mask_fractions_train": [float(x) for x in training_cfg["mask_fractions"]],
                 "mask_fractions_evaluation": [float(x) for x in cfg["evaluation"]["mask_fractions"]],
             },

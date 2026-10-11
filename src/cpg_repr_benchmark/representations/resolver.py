@@ -22,6 +22,7 @@ def resolve_representation(
     registry_path: Path,
     run_dir: Path,
     repo_root: Path,
+    write_manifest: bool = True,
 ) -> RepresentationInfo:
     """Resolve a representation to the canonical HDF5 contract.
 
@@ -107,5 +108,6 @@ def resolve_representation(
         "generator": cfg.get("generator"),
         "provenance": cfg.get("provenance", {}),
     }
-    (run_dir / "representation_manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True))
+    if write_manifest:  # False only for evaluation.preserve_run_files (frozen runs must not be modified)
+        (run_dir / "representation_manifest.json").write_text(json.dumps(manifest, indent=2, sort_keys=True))
     return info

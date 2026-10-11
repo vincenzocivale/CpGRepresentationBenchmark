@@ -11,7 +11,11 @@ from cpg_repr_benchmark.evaluation.metrics import reconstruction_metrics
 
 
 def _move(batch: dict[str, torch.Tensor], device: torch.device) -> dict[str, torch.Tensor]:
-    return {k: v.to(device, non_blocking=True) for k, v in batch.items()}
+    out = {k: v.to(device, non_blocking=True) for k, v in batch.items()}
+    for k in ("observed_locus", "target_locus"):  # float16 locus batches (see hdf5_store) -> float32 on device, lossless
+        if out[k].dtype == torch.float16:
+            out[k] = out[k].float()
+    return out
 
 
 @torch.no_grad()

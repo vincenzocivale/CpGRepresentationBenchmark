@@ -102,6 +102,9 @@ def authorizer_from_cfg(cfg: dict[str, Any]) -> Callable[[], None] | None:
     if name == "external_gse40279_v1":
         from cpg_repr_benchmark.external.gate import authorize_external_test
         return authorize_external_test
+    if name == "tcga_posthoc_freeze_v2":
+        from cpg_repr_benchmark.experiments.test_confirmation_v2 import authorizer_from_cfg_v2
+        return authorizer_from_cfg_v2(cfg)
     raise ValueError(f"unknown evaluation.test_authorization {name!r}")
 
 
