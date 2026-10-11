@@ -40,6 +40,7 @@ def preflight(manifest: dict, *, need_authorization: bool) -> list[str]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--execute", action="store_true", help="really evaluate the TEST split (default: check only)")
+    ap.add_argument("--workers", type=int, default=1, help="parallel runs (default 1 = sequential under the GPU lock)")
     ap.add_argument("--manifest", default=t2.MANIFEST_REL)
     ap.add_argument("--only", nargs="*", help="run ids (debug; still needs the full green preflight)")
     args = ap.parse_args()
@@ -51,6 +52,7 @@ def main() -> int:
     print("preflight green (24 runs hashed, committed and clean)" + (" + test authorized" if args.execute else ""))
     if not args.execute:
         return 0
+    todo = []
     for rid, e in manifest["runs"].items():
         if args.only and rid not in args.only:
             continue
@@ -61,18 +63,49 @@ def main() -> int:
         test_dir = run_dir / "evaluation" / "test"
         if test_dir.exists() and any(test_dir.iterdir()):
             print(f"[STOP] {rid}: evaluation/test is non-empty without done marker (partial run); inspect manually"); return 3
+        todo.append((rid, e, run_dir, marker))
+
+    def run_one(rid, e, run_dir, marker) -> int:
         # hashes were verified by the preflight; the child re-verifies this run's files via the authorizer before reading any data
-        cmd = ["flock", GPU_LOCK, "nice", "-n", "10", sys.executable, str(ROOT / "scripts/run_masking_benchmark.py"),
+        cmd = ["nice", "-n", "10", sys.executable, str(ROOT / "scripts/run_masking_benchmark.py"),
                "--config", str(ROOT / e["eval_config"]), "--mode", "evaluate", "--run-dir", str(run_dir)]
-        env = {**os.environ, "OMP_NUM_THREADS": "8", "MKL_NUM_THREADS": "8", "PYTHONPATH": str(ROOT / "src")}
+        if args.workers == 1:  # default: serialized on the GPU lock
+            cmd = ["flock", GPU_LOCK] + cmd
+        env = {**os.environ, "OMP_NUM_THREADS": str(max(1, 8 // args.workers)), "MKL_NUM_THREADS": str(max(1, 8 // args.workers)),
+               "PYTHONPATH": str(ROOT / "src")}
         print(f"[run ] {rid}", flush=True)
         t0 = time.time()
         r = subprocess.run(cmd, cwd=ROOT, env=env, check=False)
         if r.returncode != 0:
-            print(f"[FAIL] {rid}: exit {r.returncode}; stopping"); return r.returncode
+            print(f"[FAIL] {rid}: exit {r.returncode}; stopping", flush=True); return r.returncode
         head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=False).stdout.strip()
         marker.write_text(json.dumps({"run_id": rid, "git_head": head, "seconds": time.time() - t0,
                                       "finished_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=2))
+        print(f"[done] {rid} {time.time() - t0:.0f}s", flush=True)
+        return 0
+
+    if args.workers == 1:
+        for item in todo:
+            rc = run_one(*item)
+            if rc:
+                return rc
+    else:  # I/O-bound (random row reads of the 15 GB matrix): N independent runs, each writing only its own evaluation/test/
+        import threading
+        lock, failed = threading.Lock(), []
+
+        def worker():
+            while True:
+                with lock:
+                    if failed or not todo:
+                        return
+                    item = todo.pop(0)
+                rc = run_one(*item)
+                if rc:
+                    failed.append(item[0]); return
+        threads = [threading.Thread(target=worker) for _ in range(args.workers)]
+        [t.start() for t in threads]; [t.join() for t in threads]
+        if failed:
+            print(f"[FAILED] {failed}"); return 1
     print("all requested runs done")
     return 0
 
