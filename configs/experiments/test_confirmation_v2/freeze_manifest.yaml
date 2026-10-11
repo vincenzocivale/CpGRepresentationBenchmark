@@ -1,6 +1,6 @@
 name: tcga_posthoc_freeze_v2
-freeze_state: draft
-test_set_authorized: false
+freeze_state: final
+test_set_authorized: true
 policy: tcga_posthoc_freeze_v2
 panel_arms:
 - regulatory_raw2492
