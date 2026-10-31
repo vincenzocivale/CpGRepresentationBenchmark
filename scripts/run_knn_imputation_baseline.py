@@ -3,7 +3,8 @@
 
 For each VALIDATION patient the observed panel columns are those of `MaskingDataset` (same mask_seed/panel_size/protocols as every
 frozen arm); the k nearest TRAIN patients (nan-aware mean squared beta distance on the observed columns) are found and their mean beta at the
-masked columns is the prediction (fallback: train-locus prior). No locus representation is used; no test row is read.
+masked columns is the prediction (fallback: train-locus prior). No locus representation is used; no test row is read
+unless `--split test` is passed (default: validation; the test split is read only by that explicit option).
 Metrics use the benchmark's `reconstruction_metrics`, so MSE/MAE/skill are directly comparable with evaluation/validation/summary.json.
 """
 from __future__ import annotations
@@ -39,12 +40,16 @@ def main():
     ap.add_argument("--fractions", type=float, nargs="+", default=[0.15, 0.3, 0.5, 0.7, 0.9])
     ap.add_argument("--out", default=str(ROOT / "outputs/b1_b2_baselines/knn/summary.json"))
     ap.add_argument("--threads", type=int, default=16)
+    ap.add_argument("--split", choices=["validation", "test"], default="validation",
+                    help="patient split to impute (default validation; test reads the test rows with the same masks, mask seed 17001)")
+    ap.add_argument("--save-predictions", default=None,
+                    help="optional .npz with the per-entry predictions of the primary k (single mask fraction only)")
     a = ap.parse_args()
     torch.set_num_threads(a.threads)
     run = Path(a.prior_run)
     prior = np.load(run / "prior_logit.npy")
     ps = np.load(run / "patient_split.npz")
-    train_rows, val_rows = ps["train"], ps["validation"]  # test rows are never read
+    train_rows, val_rows = ps["train"], ps[a.split]  # val_rows = rows of the requested split; test rows are read only with --split test
     train_cols = np.load(run / "locus_split.npz")["train_matrix_columns"]
     ds = MaskingDataset(methylation_h5=a.matrix, representation_store=_NullStore(), prior_logit_full=prior, sample_indices=val_rows,
                         context_columns=train_cols, target_columns=train_cols, panel_size=2048, mask_fractions=[0.5], seed=17001)
@@ -59,7 +64,7 @@ def main():
             train[idx] = h["beta"][np.sort(train_rows[idx])]
     train_t = torch.from_numpy(train)
     prior_beta = 1 / (1 + np.exp(-prior))
-    out = {"method": "knn_patient_neighbours", "ks": a.ks, "primary_k": a.primary_k, "patient_view": "validation",
+    out = {"method": "knn_patient_neighbours", "ks": a.ks, "primary_k": a.primary_k, "patient_view": a.split,
            "prior_run": str(run), "results": {}}
     for frac in a.fractions:
         ds.mask_fractions = (frac,)
@@ -88,6 +93,11 @@ def main():
                 print(frac, i, len(ds), flush=True)
         T, P, C = np.stack(targets), np.stack(priors), np.stack(cols)
         out["results"][f"mask_{frac:.2f}"] = {f"k{k}": reconstruction_metrics(np.stack(preds[k]), T, P, target_matrix_column=C) for k in a.ks}
+        if a.save_predictions:
+            assert len(a.fractions) == 1 and a.primary_k in a.ks, "--save-predictions needs one fraction and primary-k in --ks"
+            Path(a.save_predictions).parent.mkdir(parents=True, exist_ok=True)
+            np.savez_compressed(a.save_predictions, prediction=np.stack(preds[a.primary_k]), target=T, prior_prediction=P,
+                                target_matrix_column=C, sample_index=np.asarray(val_rows, dtype=np.int64), k=a.primary_k)
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text(json.dumps(out, indent=2, allow_nan=True))
     print(json.dumps({f: {k: v["mse"] for k, v in r.items()} for f, r in out["results"].items()}, indent=1))
