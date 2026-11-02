@@ -1,0 +1,208 @@
+{
+ "policy": "tcga_controls_freeze_v1",
+ "created_utc": "2026-11-02T09:20:08Z",
+ "freeze_state": "draft",
+ "test_set_authorized": false,
+ "authorization": "pending: Vincenzo authorised this test evaluation on 2026-11-02 (relayed by the project lead); run `freeze --authorize` to record it and unlock",
+ "checkpoint": "best.pt (min validation MSE at mask 0.50, 120 epochs, selected before any test read)",
+ "shared_files": {
+  "scripts/hal/controls_test_eval.py": "cdbeab680ef8410fd576cfd89aa31fe3550c490e0b9ea091f90ec8a9ca00dfcd",
+  "scripts/run_b1b2_arm.py": "cfcfdceb34dc45b07cb52ea6ef165d077ec7851b88f6e4607108d0195a2c8be1",
+  "scripts/run_masking_benchmark.py": "596b6b4ec9e7ff52c8e778ff0d6bb4d21615b16b6c6d0671463b6c70605774c6",
+  "src/cpg_repr_benchmark/experiments/controls_gate.py": "77db6ba295e85d2d027f2498b15c9e739c4c4d8b67f711fb392d358ddca9c58f",
+  "src/cpg_repr_benchmark/experiments/eval_layout.py": "9083d61e0e6bb552b6c3c483d2b908f2fbfe0ed16bac5823b11d65014756dff6",
+  "src/cpg_repr_benchmark/experiments/test_confirmation_v2.py": "5048b7c04469e8759b091c87912e6e44467358267bd05d3dd1b7c40a885dfd32",
+  "src/cpg_repr_benchmark/experiments/guards.py": "ee34a10271ac112085eac0886b881e3973cb2b4313555ba0cccc1f2f9eb73275",
+  "src/cpg_repr_benchmark/representations/baselines.py": "4c44e8751719f6a7fda468ff80e51a0612480ab2d2af6556910b242ea6be3ee1",
+  "src/cpg_repr_benchmark/representations/resolver.py": "b8101e594ce682c9c5f9788c9c2e4b94419d59a678ffcd2f58fc4452b524703f",
+  "src/cpg_repr_benchmark/representations/hdf5_store.py": "a0d84254181bbef447dfdca9fd8c182b837acb31338435cfaf049f6621e3e186",
+  "src/cpg_repr_benchmark/training/engine.py": "de42a276b288ac02142a0f02889400beb998615473ab23e18c9e894769445e74",
+  "src/cpg_repr_benchmark/data/splits.py": "c8672313e2772d162550908769ec80e7a409bf2dd6d2fdf5ff30e1c374ffbb3b",
+  "src/cpg_repr_benchmark/data/masking.py": "838c5460d2d2fbd48a60dc672476db29d0612275361c5586d55a93c3ee7037a5",
+  "src/cpg_repr_benchmark/models/model.py": "f175376324699de5e35bef4399faa696c6eb93c3f4aac6c234667f1227d7d887",
+  "outputs/encode_atlas_v1/patients.npz": "73add7f52e3481bd64fd7f247aef276524244b8c257efe4fb577d41327f24d11",
+  "outputs/encode_atlas_v1/loci_seen.npz": "f135a589d4e9c5b7527a81275b3ec943efbae6a479c46bc0907e67adcbf9d07a"
+ },
+ "runs": {
+  "b1_constant__seed17": {
+   "arm": "b1_constant",
+   "seed": 17,
+   "run_dir": "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_constant/native_frozen/seed_17/20261020T083334Z-1c9f0b1490",
+   "best_epoch": 101,
+   "eval_config": "configs/experiments/test_controls_v1/b1_constant__seed17.yaml",
+   "validation_mse_mask050": 0.02103903889656067,
+   "eval_config_canonical_sha256": "d9ec91fef99b940c74a53653678bdeb007010596ea5054f5e1a971168b6bcd0a",
+   "files": {
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_constant/native_frozen/seed_17/20261020T083334Z-1c9f0b1490/checkpoints/best.pt": "8c484b93ff9f98de509e69920bdf49b52c6dce22450212ea77af49c54b19cb96",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_constant/native_frozen/seed_17/20261020T083334Z-1c9f0b1490/resolved_config.yaml": "c56e1e1f3e81db814843784f2bf4ea97931cc58382a22e8e9669a806a84ab6a3",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_constant/native_frozen/seed_17/20261020T083334Z-1c9f0b1490/patient_split.npz": "7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_constant/native_frozen/seed_17/20261020T083334Z-1c9f0b1490/locus_split.npz": "66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_constant/native_frozen/seed_17/20261020T083334Z-1c9f0b1490/prior_logit.npy": "1fa46523017c75d8e31a2957c2c5a48d2d203424efb96c81b2f0c36fc7db2641",
+    "data/cache/representations/b1b2/b1_constant.h5": "fad4eec5d93b665e1df2f10a38cc55584be565b33e37b0606cda25242610371e",
+    "configs/experiments/test_controls_v1/b1_constant__seed17.yaml": "6cfa1a19a9a04ce9d1813498ad18516af8d5b7f17da99403e7b578b8b4b86048"
+   }
+  },
+  "b1_lookup__seed17": {
+   "arm": "b1_lookup",
+   "seed": 17,
+   "run_dir": "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_lookup/native_frozen/seed_17/20261020T115526Z-16501b6ed7",
+   "best_epoch": 119,
+   "eval_config": "configs/experiments/test_controls_v1/b1_lookup__seed17.yaml",
+   "validation_mse_mask050": 0.018426792696118355,
+   "eval_config_canonical_sha256": "7316d65ff5ad01d9a2de43c9f1e6429574c349ad19ad4ebb23fe3bfa63ffdf55",
+   "files": {
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_lookup/native_frozen/seed_17/20261020T115526Z-16501b6ed7/checkpoints/best.pt": "7f2ea95d51de391ac75785d640ca68bebb377bc152f06757d4c3eac27f5fe878",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_lookup/native_frozen/seed_17/20261020T115526Z-16501b6ed7/resolved_config.yaml": "37977515324027ec067f1aa5e122a7b9083bc92400fdf1c51c7e214b2a80bc6e",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_lookup/native_frozen/seed_17/20261020T115526Z-16501b6ed7/patient_split.npz": "7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_lookup/native_frozen/seed_17/20261020T115526Z-16501b6ed7/locus_split.npz": "66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b1_lookup/native_frozen/seed_17/20261020T115526Z-16501b6ed7/prior_logit.npy": "1fa46523017c75d8e31a2957c2c5a48d2d203424efb96c81b2f0c36fc7db2641",
+    "data/cache/representations/b1b2/b1_lookup_index.h5": "eab20ee515ea63753460ed5b4b425d7c236a574512d17abd38deed79c6d6cb53",
+    "configs/experiments/test_controls_v1/b1_lookup__seed17.yaml": "eb4f799529152f532a1866e0841c33f5bea82966c39a4c6ad2e80ac5b74b8e00"
+   }
+  },
+  "b2_gauss_d128__seed17": {
+   "arm": "b2_gauss_d128",
+   "seed": 17,
+   "run_dir": "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_gauss_d128/native_frozen/seed_17/20261020T102034Z-d865e0173b",
+   "best_epoch": 114,
+   "eval_config": "configs/experiments/test_controls_v1/b2_gauss_d128__seed17.yaml",
+   "validation_mse_mask050": 0.020091267302632332,
+   "eval_config_canonical_sha256": "dc360101b43193208ce1723d30af266f4c94da0c61839e51e4e96259f66c315e",
+   "files": {
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_gauss_d128/native_frozen/seed_17/20261020T102034Z-d865e0173b/checkpoints/best.pt": "2074e4c754aaa7ae973d33af2ed46385fa853c9553ef58862489a372c342087a",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_gauss_d128/native_frozen/seed_17/20261020T102034Z-d865e0173b/resolved_config.yaml": "3fec1b68ac1ecf76e30452ba28bb42826bdd036a15d0366f6d12c4699c3533e9",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_gauss_d128/native_frozen/seed_17/20261020T102034Z-d865e0173b/patient_split.npz": "7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_gauss_d128/native_frozen/seed_17/20261020T102034Z-d865e0173b/locus_split.npz": "66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_gauss_d128/native_frozen/seed_17/20261020T102034Z-d865e0173b/prior_logit.npy": "1fa46523017c75d8e31a2957c2c5a48d2d203424efb96c81b2f0c36fc7db2641",
+    "data/cache/representations/b1b2/b2_gauss_d128.h5": "f2d000b3552e7a2da2a4152406a2de44e436a77f0dc562cc3a3cc94dd16c5e14",
+    "configs/experiments/test_controls_v1/b2_gauss_d128__seed17.yaml": "b351ac6d5aa41a3f7347a61a195f1ae99a34bb8a9c97844d25cf9d6b6a262ebe"
+   }
+  },
+  "b2_regulatory_raw2492_pca128__seed17": {
+   "arm": "b2_regulatory_raw2492_pca128",
+   "seed": 17,
+   "run_dir": "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_regulatory_raw2492_pca128/native_frozen/seed_17/20261020T140513Z-526a3347dd",
+   "best_epoch": 116,
+   "eval_config": "configs/experiments/test_controls_v1/b2_regulatory_raw2492_pca128__seed17.yaml",
+   "validation_mse_mask050": 0.015151730738580227,
+   "eval_config_canonical_sha256": "8798340282fc763a47c54d65c350dbb44e41ba51eca60d6259adf6537cbbe7ac",
+   "files": {
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_regulatory_raw2492_pca128/native_frozen/seed_17/20261020T140513Z-526a3347dd/checkpoints/best.pt": "afceba52589dab3ac833bac3ad1c7008fb820b433f669f1bb05854fa90da1d09",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_regulatory_raw2492_pca128/native_frozen/seed_17/20261020T140513Z-526a3347dd/resolved_config.yaml": "0aa3f5171cb2f23a075cfc3ce457b2259a194f47757fbef8953b66cd28a0d774",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_regulatory_raw2492_pca128/native_frozen/seed_17/20261020T140513Z-526a3347dd/patient_split.npz": "7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_regulatory_raw2492_pca128/native_frozen/seed_17/20261020T140513Z-526a3347dd/locus_split.npz": "66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_regulatory_raw2492_pca128/native_frozen/seed_17/20261020T140513Z-526a3347dd/prior_logit.npy": "1fa46523017c75d8e31a2957c2c5a48d2d203424efb96c81b2f0c36fc7db2641",
+    "data/cache/representations/b1b2/b2_regulatory_raw2492_pca128.h5": "547b399e89ef56a38f02ed104f3ca653b491966b36a5853b69ad3fb7a29231fd",
+    "configs/experiments/test_controls_v1/b2_regulatory_raw2492_pca128__seed17.yaml": "2181c7782ac760348aaabdab451acf360d5e4791ad924418efe7148717057234"
+   }
+  },
+  "b2_cpgpt_large_locus_pca128__seed17": {
+   "arm": "b2_cpgpt_large_locus_pca128",
+   "seed": 17,
+   "run_dir": "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_cpgpt_large_locus_pca128/native_frozen/seed_17/20261021T161303Z-6f9ee9d5b3",
+   "best_epoch": 119,
+   "eval_config": "configs/experiments/test_controls_v1/b2_cpgpt_large_locus_pca128__seed17.yaml",
+   "validation_mse_mask050": 0.01739240437746048,
+   "eval_config_canonical_sha256": "5f52b293691b4dd14a34c8eae35728e43f3d70eb23a88656cc467a3afd586a53",
+   "files": {
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_cpgpt_large_locus_pca128/native_frozen/seed_17/20261021T161303Z-6f9ee9d5b3/checkpoints/best.pt": "0e347e7d21ebfa531b130fb537e5da7026771c13aacee32defba08e107efbd99",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_cpgpt_large_locus_pca128/native_frozen/seed_17/20261021T161303Z-6f9ee9d5b3/resolved_config.yaml": "dd98e5d9895da2fef6feaecdf7fcea8e1171121121a884cc56551aaa4494351b",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_cpgpt_large_locus_pca128/native_frozen/seed_17/20261021T161303Z-6f9ee9d5b3/patient_split.npz": "7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_cpgpt_large_locus_pca128/native_frozen/seed_17/20261021T161303Z-6f9ee9d5b3/locus_split.npz": "66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_cpgpt_large_locus_pca128/native_frozen/seed_17/20261021T161303Z-6f9ee9d5b3/prior_logit.npy": "1fa46523017c75d8e31a2957c2c5a48d2d203424efb96c81b2f0c36fc7db2641",
+    "data/cache/representations/b1b2/b2_cpgpt_large_locus_pca128.h5": "440c0e98befae2b51d29a1c35dfd0c4cf0ee4b216d56a0dc0d8523d37cfe200d",
+    "configs/experiments/test_controls_v1/b2_cpgpt_large_locus_pca128__seed17.yaml": "53db9c0a873894126236a15497f99fd71f30f890b7d8eaf4a05487e9edac8afb"
+   }
+  },
+  "b2_ntv3_pre_latent_native_pca128__seed17": {
+   "arm": "b2_ntv3_pre_latent_native_pca128",
+   "seed": 17,
+   "run_dir": "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_pre_latent_native_pca128/native_frozen/seed_17/20261021T230712Z-b82f80de5b",
+   "best_epoch": 116,
+   "eval_config": "configs/experiments/test_controls_v1/b2_ntv3_pre_latent_native_pca128__seed17.yaml",
+   "validation_mse_mask050": 0.01931541971862316,
+   "eval_config_canonical_sha256": "4a8e88c12700236d7a69813f0cf846ed31f5a9119790b7c8d1c5a1e2e8ab7dcb",
+   "files": {
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_pre_latent_native_pca128/native_frozen/seed_17/20261021T230712Z-b82f80de5b/checkpoints/best.pt": "d8cec42dae66f792a4bee13c472630b40eacb7c97b997220338c04d374db3f15",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_pre_latent_native_pca128/native_frozen/seed_17/20261021T230712Z-b82f80de5b/resolved_config.yaml": "db4236eb8bac5cdf7e474f8443da8a7b21064ff8074b2b5367cddb6e48d4b1b9",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_pre_latent_native_pca128/native_frozen/seed_17/20261021T230712Z-b82f80de5b/patient_split.npz": "7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_pre_latent_native_pca128/native_frozen/seed_17/20261021T230712Z-b82f80de5b/locus_split.npz": "66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_pre_latent_native_pca128/native_frozen/seed_17/20261021T230712Z-b82f80de5b/prior_logit.npy": "1fa46523017c75d8e31a2957c2c5a48d2d203424efb96c81b2f0c36fc7db2641",
+    "data/cache/representations/b1b2/b2_ntv3_pre_latent_native_pca128.h5": "553e621459fec09971cccc623c3ef189629a89dabb8508ba1cb2394b625201cc",
+    "configs/experiments/test_controls_v1/b2_ntv3_pre_latent_native_pca128__seed17.yaml": "2f5a5f0a59490e34e3464930536bbd6b81c9dd6f5d948c29ce533af8ab69d675"
+   }
+  },
+  "b2_alphagenome_locus_pca128__seed17": {
+   "arm": "b2_alphagenome_locus_pca128",
+   "seed": 17,
+   "run_dir": "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_alphagenome_locus_pca128/native_frozen/seed_17/20261021T125416Z-951fb8cd8a",
+   "best_epoch": 116,
+   "eval_config": "configs/experiments/test_controls_v1/b2_alphagenome_locus_pca128__seed17.yaml",
+   "validation_mse_mask050": 0.014967207796871662,
+   "eval_config_canonical_sha256": "f8038870b704976f6083b30bed4af8a270966a788c19d8b88aede267a6a9e9cb",
+   "files": {
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_alphagenome_locus_pca128/native_frozen/seed_17/20261021T125416Z-951fb8cd8a/checkpoints/best.pt": "a098fe3e86c85b8fa0d17f79086707794cb32225e52f219fd8879952bb6ab8d8",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_alphagenome_locus_pca128/native_frozen/seed_17/20261021T125416Z-951fb8cd8a/resolved_config.yaml": "a44bf13a0ef63c903c5252529163bb1e53faeccc11af2030ff77f461ce1e3d43",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_alphagenome_locus_pca128/native_frozen/seed_17/20261021T125416Z-951fb8cd8a/patient_split.npz": "7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_alphagenome_locus_pca128/native_frozen/seed_17/20261021T125416Z-951fb8cd8a/locus_split.npz": "66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_alphagenome_locus_pca128/native_frozen/seed_17/20261021T125416Z-951fb8cd8a/prior_logit.npy": "1fa46523017c75d8e31a2957c2c5a48d2d203424efb96c81b2f0c36fc7db2641",
+    "data/cache/representations/b1b2/b2_alphagenome_locus_pca128.h5": "26f1a52fe88a58bf02daca3ca0da2154cb7f33cb5579fb6a3f4030720084e124",
+    "configs/experiments/test_controls_v1/b2_alphagenome_locus_pca128__seed17.yaml": "aa3f1738be4e0bd762415c84629dd9822eb7873832629d6e902712671b25a6bc"
+   }
+  },
+  "b2_enformer_latent_native_pca128__seed17": {
+   "arm": "b2_enformer_latent_native_pca128",
+   "seed": 17,
+   "run_dir": "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_enformer_latent_native_pca128/native_frozen/seed_17/20261021T082558Z-3e2153ef47",
+   "best_epoch": 116,
+   "eval_config": "configs/experiments/test_controls_v1/b2_enformer_latent_native_pca128__seed17.yaml",
+   "validation_mse_mask050": 0.01499183289706707,
+   "eval_config_canonical_sha256": "ea535db5a9444701d4eafe3d9e41c6e564c9b8f10d6c98c0324b1c7b9488effe",
+   "files": {
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_enformer_latent_native_pca128/native_frozen/seed_17/20261021T082558Z-3e2153ef47/checkpoints/best.pt": "c39269394741f605d1e723775cfb2e8d0a73d2f37540a1838d20a5aa449e64b1",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_enformer_latent_native_pca128/native_frozen/seed_17/20261021T082558Z-3e2153ef47/resolved_config.yaml": "21be8f001b9872d0018a3a80f44ae95111f7a4b1a42c8bc0018aa6a96c134ee0",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_enformer_latent_native_pca128/native_frozen/seed_17/20261021T082558Z-3e2153ef47/patient_split.npz": "7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_enformer_latent_native_pca128/native_frozen/seed_17/20261021T082558Z-3e2153ef47/locus_split.npz": "66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_enformer_latent_native_pca128/native_frozen/seed_17/20261021T082558Z-3e2153ef47/prior_logit.npy": "1fa46523017c75d8e31a2957c2c5a48d2d203424efb96c81b2f0c36fc7db2641",
+    "data/cache/representations/b1b2/b2_enformer_latent_native_pca128.h5": "aaf45b212ead92f2fe0cfca27b1a9080ed005091c963f6a922e575a855f8ea9a",
+    "configs/experiments/test_controls_v1/b2_enformer_latent_native_pca128__seed17.yaml": "5a0e7ac84b09d3a30cfbd951c759e96da49b8e16ff7e0414a53c819d75c7472b"
+   }
+  },
+  "b2_ntv3_post_latent_native_pca128__seed17": {
+   "arm": "b2_ntv3_post_latent_native_pca128",
+   "seed": 17,
+   "run_dir": "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_post_latent_native_pca128/native_frozen/seed_17/20261021T200205Z-bebdab8735",
+   "best_epoch": 116,
+   "eval_config": "configs/experiments/test_controls_v1/b2_ntv3_post_latent_native_pca128__seed17.yaml",
+   "validation_mse_mask050": 0.014901640824973583,
+   "eval_config_canonical_sha256": "a3a9afacbc10520a37f87a2b30f5d7e57940e452a5fe4cdac0d1a309a2791591",
+   "files": {
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_post_latent_native_pca128/native_frozen/seed_17/20261021T200205Z-bebdab8735/checkpoints/best.pt": "1ef2f6a2ad07c2e18802211bbcaf7002a1c9afaf66ec043c89cc1aa29e9a8543",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_post_latent_native_pca128/native_frozen/seed_17/20261021T200205Z-bebdab8735/resolved_config.yaml": "2219c35fb36cefa59b9bdee70bb32ba685e840be143eae16ca6cc8b159bf8a7c",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_post_latent_native_pca128/native_frozen/seed_17/20261021T200205Z-bebdab8735/patient_split.npz": "7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_post_latent_native_pca128/native_frozen/seed_17/20261021T200205Z-bebdab8735/locus_split.npz": "66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_ntv3_post_latent_native_pca128/native_frozen/seed_17/20261021T200205Z-bebdab8735/prior_logit.npy": "1fa46523017c75d8e31a2957c2c5a48d2d203424efb96c81b2f0c36fc7db2641",
+    "data/cache/representations/b1b2/b2_ntv3_post_latent_native_pca128.h5": "c962b6867cc211c3a29de168ccd584189ec2fcc409d0e8101e2f2829e8b8d8b9",
+    "configs/experiments/test_controls_v1/b2_ntv3_post_latent_native_pca128__seed17.yaml": "089978bcfb172c4ed136a08e9f44cff4de62f56331f0eadb04b7bb4047cd3d47"
+   }
+  },
+  "b2_sei_latent_native_pca128__seed17": {
+   "arm": "b2_sei_latent_native_pca128",
+   "seed": 17,
+   "run_dir": "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_sei_latent_native_pca128/native_frozen/seed_17/20261022T014005Z-ddadd8d1dd",
+   "best_epoch": 116,
+   "eval_config": "configs/experiments/test_controls_v1/b2_sei_latent_native_pca128__seed17.yaml",
+   "validation_mse_mask050": 0.015973929315805435,
+   "eval_config_canonical_sha256": "92a4ce5d7e49923a22b3a87ed9405c9c3ca11eda9462ffe0af4e89c1dbfe6c8b",
+   "files": {
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_sei_latent_native_pca128/native_frozen/seed_17/20261022T014005Z-ddadd8d1dd/checkpoints/best.pt": "0ac1a46d4931a5c72177729d24ad121c5d2c3180f165e9020aa15e3fd48fcac1",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_sei_latent_native_pca128/native_frozen/seed_17/20261022T014005Z-ddadd8d1dd/resolved_config.yaml": "fad01b41e7c88644d1ec5fb2d4570b650de20d0cdfca0fb723ae100400d6bb35",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_sei_latent_native_pca128/native_frozen/seed_17/20261022T014005Z-ddadd8d1dd/patient_split.npz": "7d72f898b47ae9fbf23ee698a293778c58f777dd5b2e6cc443842519bb44ad65",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_sei_latent_native_pca128/native_frozen/seed_17/20261022T014005Z-ddadd8d1dd/locus_split.npz": "66636a34f28fb5fab7b792738141b93feddca25ab13a23644344bbd8b6866a93",
+    "outputs/b1_b2_baselines/runs/masking/tcga_array_genomewide/b2_sei_latent_native_pca128/native_frozen/seed_17/20261022T014005Z-ddadd8d1dd/prior_logit.npy": "1fa46523017c75d8e31a2957c2c5a48d2d203424efb96c81b2f0c36fc7db2641",
+    "data/cache/representations/b1b2/b2_sei_latent_native_pca128.h5": "3b3da12ec29af9e294a65cc0672aefd1b04920af11032da6270ee201b6d11ece",
+    "configs/experiments/test_controls_v1/b2_sei_latent_native_pca128__seed17.yaml": "30f634c8c71386e9746bbe9a21068bd20f21759aee710e50a1169af3636ec02a"
+   }
+  }
+ }
+}

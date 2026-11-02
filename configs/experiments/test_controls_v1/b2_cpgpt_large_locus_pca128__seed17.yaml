@@ -1,0 +1,77 @@
+experiment:
+  task: masking
+  name: b2_cpgpt_large_locus_pca128__seed17
+  output_root: outputs/b1_b2_baselines/runs
+  locus_split:
+    heldout_fraction: 0.0
+    seed: 17001
+    protocol_path: outputs/encode_atlas_v1/loci_seen.npz
+dataset:
+  name: tcga_array_genomewide
+  methylation_h5: data/methylation/tcga_array_official_full.h5
+  cpg_registry: data/cpg/registries/array_cpg_map.parquet
+  patient_split:
+  - 0.8
+  - 0.1
+  - 0.1
+  patient_protocol: outputs/encode_atlas_v1/patients.npz
+  patient_split_seed: 20260925
+representation:
+  name: b2_cpgpt_large_locus_pca128
+  family: control_baseline
+  track: native_frozen
+  component: locus_only
+  mode: precomputed
+  store_h5: data/cache/representations/b1b2/b2_cpgpt_large_locus_pca128.h5
+  source: PCA (train loci only) of cpgpt_large_locus to 128
+  provenance:
+    patient_specific: false
+    supervision: none
+    role: B2_pca
+    locus_fit_scope: train_protocol_only
+    dim: 128
+model:
+  locus_latent_dim: 256
+  token_dim: 256
+  patient_dim: 256
+  hidden_dim: 512
+training:
+  seed: 17
+  device: cuda
+  epochs: 120
+  batch_size: 8
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  mixed_precision: true
+  num_workers: 8
+  panel_size: 2048
+  mask_fractions:
+  - 0.15
+  - 0.3
+  - 0.5
+  - 0.7
+  - 0.9
+  beta_epsilon: 0.0001
+  early_stopping: false
+  save_epoch_checkpoints: false
+  save_last_checkpoint: false
+evaluation:
+  panel_size: 2048
+  mask_fractions:
+  - 0.15
+  - 0.3
+  - 0.5
+  - 0.7
+  - 0.9
+  selection_mask_fraction: 0.5
+  batch_size: 8
+  num_workers: 0
+  save_predictions: true
+  mask_seed: 17001
+  patient_view: test
+  panel_repeats: 1
+  output_layout: split_dirs
+  allow_overwrite_split_dir: false
+  preserve_run_files: true
+  test_authorization: tcga_controls_freeze_v1
+  test_freeze_run_id: b2_cpgpt_large_locus_pca128__seed17
