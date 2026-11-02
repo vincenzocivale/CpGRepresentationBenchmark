@@ -1,9 +1,9 @@
 {
  "policy": "tcga_controls_freeze_v1",
- "created_utc": "2026-11-02T09:20:08Z",
- "freeze_state": "draft",
- "test_set_authorized": false,
- "authorization": "pending: Vincenzo authorised this test evaluation on 2026-11-02 (relayed by the project lead); run `freeze --authorize` to record it and unlock",
+ "created_utc": "2026-11-02T09:36:50Z",
+ "freeze_state": "final",
+ "test_set_authorized": true,
+ "authorization": "Vincenzo Civale 2026-11-02",
  "checkpoint": "best.pt (min validation MSE at mask 0.50, 120 epochs, selected before any test read)",
  "shared_files": {
   "scripts/hal/controls_test_eval.py": "cdbeab680ef8410fd576cfd89aa31fe3550c490e0b9ea091f90ec8a9ca00dfcd",
